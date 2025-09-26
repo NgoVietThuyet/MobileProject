@@ -12,13 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-/**
- * Header xám translucent, tái sử dụng cho mọi screen.
- * - Mặc định cao 36.dp, màu xám #D9D9D9 @ 60% để "nhìn xuyên".
- * - Hỗ trợ scrollBehavior để dùng với nestedScroll().
- * - Có slots: navigationIcon, title, actions giống TopAppBar chuẩn.
- * - windowInsets = WindowInsets(0) để tràn viền (edge-to-edge) như yêu cầu.
- */
 @Composable
 fun TranslucentHeader(
     modifier: Modifier = Modifier,
@@ -44,9 +37,6 @@ fun TranslucentHeader(
     )
 }
 
-/**
- * Overload nhanh gọn nếu chỉ cần title dạng text.
- */
 @Composable
 fun SimpleTranslucentHeader(
     text: String,
