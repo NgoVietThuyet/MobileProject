@@ -1,0 +1,21 @@
+﻿using BEMobile.Data.Entities;
+using System.Text.Json.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace BEMobile.Models.DTOs
+{
+    public class UserDto
+    {
+        public string  UserId { get; set; }
+        public string Name { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Facebook { get; set; }
+        public string? Twitter { get; set; }
+        public string Email { get; set; } 
+        [JsonIgnore] // Không trả về password trong response
+        public string? Password { get; set; } = string.Empty;
+        public string CreatedDate { get; set; }
+        public string? UpdatedDate { get; set; }
+        
+    }
+}
