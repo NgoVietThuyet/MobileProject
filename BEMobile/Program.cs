@@ -20,6 +20,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add Services
 builder.Services.AddScoped<IUserService, UserService>();
+
+
+
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
