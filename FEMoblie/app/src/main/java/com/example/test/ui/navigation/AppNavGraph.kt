@@ -2,14 +2,19 @@ package com.example.test.ui.navigation
 
 import android.net.Uri
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.test.ui.mock.AuthResult
+import com.example.test.ui.mock.MockData
 import com.example.test.ui.screens.*
 
 sealed class Screen(val route: String) {
@@ -57,14 +62,12 @@ fun AppNavGraph(navController: NavHostController) {
             }
 
             composable(Screen.EmailLogin.route) {
+                val context = LocalContext.current
+
                 EmailLoginScreen(
                     onBack = { navController.popBackStack() },
-                    onLogin = {
-                        navController.navigate("main") {
-                            popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                    onLogin = { email, password ->
+
                     },
                     onRegister = { navController.navigate(Screen.Register.route) }
                 )

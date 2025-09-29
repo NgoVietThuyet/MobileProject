@@ -12,7 +12,7 @@ object AppGradient {
         listOf(Color(0xFF4C80FF), Color(0xFF3DDC84))
     )
 
-    // Dọc (giống layout ban đầu)
+
     val BluePurpleVertical = Brush.verticalGradient(
         listOf(Color(0xFF4C80FF), Color(0xFFA847FF))
     )

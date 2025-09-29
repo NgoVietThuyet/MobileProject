@@ -20,6 +20,18 @@ data class TransactionMock(
     val isPositive: Boolean
 )
 
+/* ====== AUTH MOCK ====== */
+data class UserMock(
+    val id: String,
+    val name: String,
+    val email: String
+)
+
+sealed interface AuthResult {
+    data class Success(val user: UserMock) : AuthResult
+    data class Error(val message: String) : AuthResult
+}
+
 object MockData {
     // ===== Header =====
     const val greetingName = "Tuất"
@@ -51,6 +63,55 @@ object MockData {
 
     const val unreadChats = 3
 
+    /* ===================== */
+    /* ===== AUTH MOCK ===== */
+    /* ===================== */
+
+    // Chỉ cho phép đúng cặp này
+    private const val ALLOWED_EMAIL = "user@example.com"
+    private const val ALLOWED_PASSWORD = "123456"
+
+    // User giả lập trả về khi đăng nhập đúng
+    private val allowedUser = UserMock(
+        id = "u_001",
+        name = greetingName,
+        email = ALLOWED_EMAIL
+    )
+
+    // check format email đơn giản (tránh phụ thuộc android.util.Patterns)
+    private fun looksLikeEmail(e: String): Boolean {
+        val s = e.trim()
+        if (s.isEmpty()) return false
+        if (!s.contains('@')) return false
+        val parts = s.split('@')
+        if (parts.size != 2) return false
+        if (parts[0].isEmpty() || parts[1].isEmpty()) return false
+        if (!parts[1].contains('.')) return false
+        return true
+    }
+
+    /** Gọi hàm này trong onLogin để xác thực mock */
+    fun loginMock(email: String, password: String): AuthResult {
+        val e = email.trim()
+        val p = password
+
+        if (e.isEmpty() || p.isEmpty()) {
+            return AuthResult.Error("Vui lòng nhập email và mật khẩu")
+        }
+        if (!looksLikeEmail(e)) {
+            return AuthResult.Error("Email không hợp lệ")
+        }
+        return if (e.equals(ALLOWED_EMAIL, ignoreCase = true) && p == ALLOWED_PASSWORD) {
+            AuthResult.Success(allowedUser)
+        } else {
+            AuthResult.Error("Email hoặc mật khẩu không đúng")
+        }
+    }
+
+    /* ======================== */
+    /* ===== Budget utils ===== */
+    /* ======================== */
+
     private fun parseFirstM(text: String): Double {
         val first = text.split('/').firstOrNull().orEmpty()
         val cleaned = first.lowercase()
@@ -65,6 +126,7 @@ object MockData {
         else String.format(java.util.Locale.US, "%.1f", r)
         return "${s}M"
     }
+
     fun updateBudgetTotalM(index: Int, newTotalM: Double) {
         val item = budgetCategories.getOrNull(index) ?: return
         val usedM = parseFirstM(item.amount)
@@ -76,7 +138,6 @@ object MockData {
             formatM(usedM) // total = 0 → chỉ hiển thị used
         }
         budgetCategories[index] = item.copy(amount = newAmount, progress = newProgress)
-
         rawTotalsVnd[index] = (safeTotal * 1_000_000).roundToLong()
     }
 
@@ -84,7 +145,7 @@ object MockData {
         if (index !in budgetCategories.indices) return
         budgetCategories.removeAt(index)
 
-        // Re-index map: các item sau vị trí xoá dịch trái 1.
+        // Re-index map
         val old = rawTotalsVnd.toMap()
         rawTotalsVnd.clear()
         for (i in budgetCategories.indices) {
@@ -107,14 +168,16 @@ object MockData {
         )
         rawTotalsVnd[budgetCategories.lastIndex] = (safeTotal * 1_000_000).roundToLong()
     }
+
     fun getBudgetTotalVnd(index: Int): Long? = rawTotalsVnd[index]
 
-   /* fun updateBudgetTotalVnd(index: Int, totalVnd: Long) {
+    /*  Nếu cần cập nhật theo VND, bật lại block này
+    fun updateBudgetTotalVnd(index: Int, totalVnd: Long) {
         val safeVnd = if (totalVnd >= 0) totalVnd else 0L
         rawTotalsVnd[index] = safeVnd
 
         val item = budgetCategories.getOrNull(index) ?: return
-        val usedM = parseFirstM(item.amount)                   // used vẫn đang lưu theo M trong chuỗi
+        val usedM = parseFirstM(item.amount)
         val totalM = safeVnd / 1_000_000.0
         val safeTotalM = if (totalM > 0.0) totalM else 0.0
         val newProgress = if (safeTotalM > 0.0) (usedM / safeTotalM).toFloat().coerceIn(0f, 1f) else 0f
@@ -124,7 +187,8 @@ object MockData {
             formatM(usedM)
         }
         budgetCategories[index] = item.copy(amount = newAmount, progress = newProgress)
-    }*/
+    }
+    */
 
     fun addBudgetVnd(name: String, totalVnd: Long, icon: String, color: Color) {
         val m = (totalVnd / 1_000_000.0)

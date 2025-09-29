@@ -23,7 +23,7 @@ import com.example.test.ui.theme.AppGradient
 @Composable
 fun EmailLoginScreen(
     onBack: () -> Unit = {},
-    onLogin: () -> Unit = {},
+    onLogin: (email: String, password: String) -> Unit,
     onRegister: () -> Unit = {}
 ) {
     var email by remember { mutableStateOf("") }
@@ -126,7 +126,11 @@ fun EmailLoginScreen(
                 }
                 // button login
                 Button(
-                    onClick = { onLogin() },
+                    onClick = {
+                        val e = email.trim()
+                        val p = password
+                        onLogin(e, p)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
