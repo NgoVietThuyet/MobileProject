@@ -6,8 +6,8 @@ import retrofit2.http.Part
 
 interface AuthApi {
     @Multipart
-    @POST("auth/login-file") // đổi path theo BE của bạn
+    @POST("auth/login-file")
     suspend fun loginJsonFile(
-        @Part file: MultipartBody.Part // tên field "file" — đổi nếu BE yêu cầu tên khác
-    ): retrofit2.Response<Unit> // hoặc LoginResponse nếu BE trả user/token
+        @Part file: MultipartBody.Part
+    ): retrofit2.Response<Unit>
 }
