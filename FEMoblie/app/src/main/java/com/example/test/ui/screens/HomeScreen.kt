@@ -10,6 +10,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -511,7 +512,13 @@ private fun TransactionItem(tx: TransactionMock) {
 /* ===================== Bottom Bar ===================== */
 
 @Composable
-private fun BottomMenuFixed() {
+private fun BottomMenuFixed(
+    onHome: () -> Unit = {},
+    onReport: () -> Unit = {},
+    onCamera: () -> Unit = {},
+    onSaving: () -> Unit = {},
+    onSettings: () -> Unit = {}
+) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = Color.White,
@@ -521,16 +528,23 @@ private fun BottomMenuFixed() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            BottomMenuItem(icon = R.drawable.ic_home, label = "Trang chủ", isSelected = true)
-            BottomMenuItem(icon = R.drawable.ic_report, label = "Báo cáo", isSelected = false)
+            BottomMenuItem(
+                icon = R.drawable.ic_home, label = "Trang chủ", isSelected = true,
+                onClick = onHome, modifier = Modifier.weight(1f)
+            )
+            BottomMenuItem(
+                icon = R.drawable.ic_report, label = "Báo cáo", isSelected = false,
+                onClick = onReport, modifier = Modifier.weight(1f)
+            )
 
             Box(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(RoundedCornerShape(25.dp))
-                    .background(Color(0xfff5f5f5)),
+                    .background(Color(0xfff5f5f5))
+                    .clickable { onCamera() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -540,8 +554,14 @@ private fun BottomMenuFixed() {
                 )
             }
 
-            BottomMenuItem(icon = R.drawable.ic_saving, label = "Tiết kiệm", isSelected = false)
-            BottomMenuItem(icon = R.drawable.ic_settings, label = "Cài đặt", isSelected = false)
+            BottomMenuItem(
+                icon = R.drawable.ic_saving, label = "Tiết kiệm", isSelected = false,
+                onClick = onSaving, modifier = Modifier.weight(1f)
+            )
+            BottomMenuItem(
+                icon = R.drawable.ic_settings, label = "Cài đặt", isSelected = false,
+                onClick = onSettings, modifier = Modifier.weight(1f)
+            )
         }
     }
 }
@@ -550,15 +570,21 @@ private fun BottomMenuFixed() {
 private fun BottomMenuItem(
     icon: Int,
     label: String,
-    isSelected: Boolean
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(
+    Box(
+        modifier = modifier
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
             modifier = Modifier
-                .size(50.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(if (isSelected) Color(0xffe5e7eb) else Color.Transparent),
-            contentAlignment = Alignment.Center
+                .clip(RoundedCornerShape(12.dp))
+                .background(if (isSelected) Color(0xffe5e7eb) else Color.Transparent) // nền quanh button
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
                 painter = painterResource(icon),
@@ -566,15 +592,17 @@ private fun BottomMenuItem(
                 modifier = Modifier.size(24.dp),
                 tint = if (isSelected) Color.Black else Color(0xff7b8090)
             )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = label,
+                fontSize = 11.sp,
+                color = if (isSelected) Color.Black else Color(0xff7b8090)
+            )
         }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = label,
-            fontSize = 11.sp,
-            color = if (isSelected) Color.Black else Color(0xff7b8090)
-        )
     }
 }
+
+
 
 /* ===================== Chat Overlay ===================== */
 
