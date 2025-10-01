@@ -1,9 +1,8 @@
 package com.example.test.ui.navigation
 
-import LoginReq
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -16,8 +15,18 @@ import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.test.ui.api.LoginReq
+import com.example.test.ui.api.SignUpRequest
+import com.example.test.ui.api.SignUpResponse
+import com.example.test.ui.api.UserDto
 import com.example.test.ui.screens.*
 import kotlinx.coroutines.launch
+import com.google.gson.Gson
+import java.time.Instant
+import java.util.UUID
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 
 sealed class Screen(val route: String) {
     data object Login : Screen("login")
@@ -44,6 +53,7 @@ sealed class Screen(val route: String) {
     data object ExpenseCreate : Screen("expense_create")
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalAnimationApi::class)
 
@@ -72,25 +82,33 @@ fun AppNavGraph(navController: NavHostController) {
                     onBack = { navController.popBackStack() },
                     onLogin = { email, password ->
                         scope.launch {
-                            val res = runCatching { api.login(LoginReq(email, password)) }.getOrElse {
-                                Toast.makeText(ctx, "Lỗi mạng: ${it.message}", Toast.LENGTH_SHORT).show()
-                                return@launch
-                            }
-                            val body = res.body()
-                            if (res.isSuccessful && body != null) {
-                                AuthStore.token = body.token
-                                navController.navigate("main") {
-                                    popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
-                                    launchSingleTop = true
+                            try {
+                                val res = api.login(LoginReq(email, password))
+                                val body = res.body()
+                                if (res.isSuccessful && body != null) {
+                                    AuthStore.token = body.token
+                                    navController.navigate("main") {
+                                        popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
+                                        launchSingleTop = true
+                                    }
+                                } else {
+                                    Toast.makeText(ctx, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show()
                                 }
-                            } else {
-                                Toast.makeText(ctx, "Đăng nhập thất bại: ${res.code()}", Toast.LENGTH_SHORT).show()
+                            } catch (e: kotlinx.coroutines.CancellationException) {
+                                throw e
+                            } catch (e: Exception) {
+                                val isConnErr = e is java.net.UnknownHostException ||
+                                        e is java.net.ConnectException ||
+                                        e is java.net.SocketTimeoutException
+                                val msg = if (isConnErr) "Mất kết nối máy chủ" else "Đăng nhập thất bại"
+                                Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
                             }
                         }
                     },
                     onRegister = { navController.navigate(Screen.Register.route) }
                 )
             }
+
 
             composable(Screen.PhoneLogin.route) {
                 PhoneLoginScreen(
@@ -122,11 +140,52 @@ fun AppNavGraph(navController: NavHostController) {
             }
 
             composable(Screen.Register.route) {
-                RegisterScreen(
-                    onBack = { navController.popBackStack() },
-                    onLoginNow = { navController.popBackStack(Screen.Login.route, false) }
-                )
+                val ctx = LocalContext.current
+                val scope = rememberCoroutineScope()
+                val api = remember { Api.service }
+                val snackbar = remember { SnackbarHostState() }
+
+                Scaffold(snackbarHost = { SnackbarHost(hostState = snackbar) }) {
+                    RegisterScreen(
+                        onBack = { navController.popBackStack() },
+                        onRegister = { fullName, email, phone, password ->
+                            val now = Instant.now().toString()
+                            val id  = UUID.randomUUID().toString()
+
+                            scope.launch {
+                                try {
+                                    val res = api.register(
+                                        SignUpRequest(
+                                            UserDto(
+                                                userId = id,
+                                                name = fullName.trim(),
+                                                phoneNumber = phone.trim(),
+                                                email = email.trim(),
+                                                password = password,
+                                                createdDate = now,
+                                                updatedDate = now
+                                            )
+                                        )
+                                    )
+                                    if (res.isSuccessful) {
+                                        Toast.makeText(ctx, "Đăng ký thành công", Toast.LENGTH_SHORT).show()
+                                        navController.popBackStack(Screen.Login.route, false)
+                                    } else {
+                                        snackbar.showSnackbar("Mất kết nối máy chủ")
+                                    }
+                                } catch (e: kotlinx.coroutines.CancellationException) {
+                                    throw e
+                                } catch (_: Exception) {
+                                    snackbar.showSnackbar("Mất kết nối máy chủ")
+                                }
+                            }
+                        }
+                    )
+                }
             }
+
+
+
         }
 
         // ============== MAIN GRAPH ==============
