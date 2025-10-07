@@ -1,4 +1,3 @@
-// com.example.test.ui.api.UsersApi.kt
 import com.example.test.ui.api.LoginReq
 import com.example.test.ui.api.LoginResp
 import com.example.test.ui.api.SignUpRequest

@@ -9,8 +9,7 @@ object AuthStore {
 }
 
 object Api {
-    // Android Emulator: 10.0.2.2 = localhost của máy host
-    private const val BASE_URL = "http://10.0.2.2:5012/"  // ← Đổi port 7200 thành 5012
+    private const val BASE_URL = "http://10.0.2.2:5012/"
 
     val service: UsersApi by lazy {
         val logging = HttpLoggingInterceptor().apply {

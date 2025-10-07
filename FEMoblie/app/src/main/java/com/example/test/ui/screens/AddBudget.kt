@@ -1,4 +1,3 @@
-// AddBudgetScreen.kt
 package com.example.test.ui.screens
 
 import android.annotation.SuppressLint
@@ -246,11 +245,6 @@ fun AddBudgetScreen(
         }
     }
 }
-
-//@Composable
-//fun AmountStyleChips(style: AmountStyle, onChange: () -> Unit) {
-//    TODO("Not yet implemented")
-//}
 
 @Composable
 private fun IconGrid(

@@ -2,7 +2,6 @@ package com.example.test.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -69,7 +68,7 @@ fun PhoneLoginScreen(
 
                 // Button nhận mã xác thực
                 Button(
-                    onClick = { onRequestOtp(phone) }, // 🔹 truyền số điện thoại sang OTP
+                    onClick = { onRequestOtp(phone) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
@@ -80,7 +79,7 @@ fun PhoneLoginScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(
-                                brush = AppGradient.BluePurple, // dùng gradient.kt
+                                brush = AppGradient.BluePurple,
                                 shape = RoundedCornerShape(24.dp)
                             ),
                         contentAlignment = Alignment.Center

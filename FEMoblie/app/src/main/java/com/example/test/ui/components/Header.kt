@@ -36,26 +36,3 @@ fun TranslucentHeader(
         windowInsets = windowInsets
     )
 }
-
-@Composable
-fun SimpleTranslucentHeader(
-    text: String,
-    modifier: Modifier = Modifier,
-    height: Dp = 36.dp,
-    containerColor: Color = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-    scrollBehavior: TopAppBarScrollBehavior? = null,
-    windowInsets: WindowInsets = WindowInsets(0),
-    navigationIcon: @Composable () -> Unit = {},
-    actions: @Composable RowScope.() -> Unit = {}
-) {
-    TranslucentHeader(
-        modifier = modifier,
-        height = height,
-        containerColor = containerColor,
-        scrollBehavior = scrollBehavior,
-        windowInsets = windowInsets,
-        navigationIcon = navigationIcon,
-        title = { Text(text) },
-        actions = actions
-    )
-}

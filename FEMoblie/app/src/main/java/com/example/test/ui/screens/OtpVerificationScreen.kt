@@ -24,8 +24,6 @@ import com.example.test.ui.components.AuthContainer
 import kotlinx.coroutines.delay
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalFocusManager
-
 @Composable
 fun OtpVerificationScreen(
     phoneNumber: String = "+84090808080",
@@ -36,11 +34,8 @@ fun OtpVerificationScreen(
     var otp by remember { mutableStateOf(List(6) { "" }) }
     var counter by remember { mutableStateOf(60) }
 
-    // Focus controllers cho 6 ô
     val focusRequesters = List(6) { FocusRequester() }
-    /*val focusManager = LocalFocusManager.current*/
 
-    // Countdown resend OTP
     LaunchedEffect(counter) {
         if (counter > 0) {
             delay(1000)
@@ -56,7 +51,6 @@ fun OtpVerificationScreen(
         gradientColors = listOf(Color(0xFF4C80FF), Color(0xFF3DDC84))
     ) {
 
-        // Container chính
         Surface(
             shape = RoundedCornerShape(20.dp),
             border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
@@ -72,7 +66,6 @@ fun OtpVerificationScreen(
 
                 Text("Mã xác thực 6 số", color = Color.Gray, fontSize = 14.sp)
 
-                // Ô nhập OTP
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -123,7 +116,6 @@ fun OtpVerificationScreen(
                     }
                 }
 
-                // Nút xác thực
                 Button(
                     onClick = { onVerify(otp.joinToString("")) },
                     modifier = Modifier
@@ -147,7 +139,6 @@ fun OtpVerificationScreen(
                     }
                 }
 
-                // Resend OTP
                 if (counter > 0) {
                     Text("Không nhận được mã?", color = Color.Gray, fontSize = 14.sp)
                     Text("Gửi lại sau ${counter}s", color = Color.Black, fontSize = 14.sp)
@@ -163,7 +154,6 @@ fun OtpVerificationScreen(
                     )
                 }
 
-                // Thông báo
                 Surface(
                     shape = RoundedCornerShape(12.dp),
                     color = Color(0xFFE6F0FF),

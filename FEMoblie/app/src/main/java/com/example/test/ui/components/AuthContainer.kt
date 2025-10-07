@@ -73,7 +73,7 @@ fun AuthContainer(
                 .align(Alignment.CenterHorizontally)
                 .size(100.dp)
                 .background(
-                    brush = Brush.verticalGradient(gradientColors), // 👈 dùng tham số
+                    brush = Brush.verticalGradient(gradientColors),
                     shape = CircleShape
                 ),
             contentAlignment = Alignment.Center

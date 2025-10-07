@@ -21,16 +21,17 @@ import com.example.test.ui.theme.AppGradient
 
 @Composable
 fun LoginScreen(
-    onNavigateToEmail: () -> Unit = {},   //callback khi bấm Email
-    onNavigateToPhone: () -> Unit = {},   //callback khi bấm SĐT
-    onNavigateToRegister: () -> Unit = {} // callback khi bấm Đăng ký
+    onNavigateToEmail: () -> Unit = {},
+    onNavigateToPhone: () -> Unit = {},
+    onNavigateToRegister: () -> Unit = {},
+    onFb: () -> Unit = {}
 ) {
     AuthContainer(
         iconRes = R.drawable.piggy,
         title = "Chào mừng",
         subtitle = "Đăng nhập để quản lý tài chính của bạn"
     ) {
-        // 🔹 Login email + phone
+        // Login email + phone
         Surface(
             shape = RoundedCornerShape(20.dp),
             border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
@@ -100,7 +101,7 @@ fun LoginScreen(
 
         Spacer(Modifier.height(40.dp))
 
-        // 🔹 Social login
+        // Social login
         Surface(
             shape = RoundedCornerShape(20.dp),
             border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
@@ -118,7 +119,7 @@ fun LoginScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    SocialButton(R.drawable.ic_facebook, "Facebook")
+                    SocialButton(R.drawable.ic_facebook, "Facebook", onClick = onFb)
                     SocialButton(R.drawable.ic_google, "Google")
                     SocialButton(R.drawable.ic_x, "X")
                 }
@@ -127,7 +128,7 @@ fun LoginScreen(
 
         Spacer(Modifier.height(32.dp))
 
-        // 🔹 Footer
+        // Footer
         Row {
             Text("Chưa có tài khoản?", color = Color.Gray, fontSize = 14.sp)
             Spacer(Modifier.width(4.dp))
@@ -143,9 +144,9 @@ fun LoginScreen(
 }
 
 @Composable
-fun SocialButton(iconRes: Int, desc: String) {
+fun SocialButton(iconRes: Int, desc: String, onClick: () -> Unit = {}) {
     Button(
-        onClick = { },
+        onClick = onClick,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
         contentPadding = PaddingValues(0.dp),

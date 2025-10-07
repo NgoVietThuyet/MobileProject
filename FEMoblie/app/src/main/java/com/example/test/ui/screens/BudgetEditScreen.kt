@@ -23,7 +23,6 @@ import com.example.test.R
 import com.example.test.ui.mock.MockData
 import com.example.test.ui.theme.AppGradient
 import kotlinx.coroutines.launch
-import java.util.Locale
 import kotlin.math.roundToLong
 import com.example.test.ui.util.parseUsedMFromMock
 import com.example.test.ui.util.parseTotalMFromMock
@@ -41,7 +40,7 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
 
     LaunchedEffect(item) { if (item == null) onBack() }
 
-    fun parseUsedM(amount: String): Double {
+    /*fun parseUsedM(amount: String): Double {
         val first = amount.split('/').firstOrNull().orEmpty()
         val cleaned = first.lowercase().replace(",", ".").replace("[^0-9\\.]".toRegex(), "")
         return cleaned.toDoubleOrNull() ?: 0.0
@@ -51,7 +50,7 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
         if (second.isEmpty()) return null
         val cleaned = second.lowercase().replace(",", ".").replace("[^0-9\\.]".toRegex(), "")
         return cleaned.toDoubleOrNull()
-    }
+    }*/
 
     val usedVnd: Long = item?.let { (parseUsedMFromMock(it.amount) * 1_000_000).roundToLong() } ?: 0L
 
@@ -155,7 +154,6 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
 
             Spacer(Modifier.height(16.dp))
 
-            // Card nhập số tiền
             Card(
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),

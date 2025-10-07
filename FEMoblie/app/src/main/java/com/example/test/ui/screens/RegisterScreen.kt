@@ -43,7 +43,7 @@ fun RegisterScreen(
             color = Color.White,
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = (-70).dp) // kéo khung lên gần subtitle
+                .offset(y = (-70).dp)
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),

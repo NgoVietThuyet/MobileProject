@@ -21,7 +21,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -57,7 +56,7 @@ fun AddIncomeScreen(
     onSave: (IncomeInput) -> Unit
 ) {
     // State
-    var amountRaw by rememberSaveable { mutableStateOf("") }           // chỉ digits
+    var amountRaw by rememberSaveable { mutableStateOf("") }
     var selectedCategory by rememberSaveable { mutableStateOf<IncomeCategory?>(null) }
     var note by rememberSaveable { mutableStateOf("") }
     val today = LocalDate.now()
@@ -89,7 +88,6 @@ fun AddIncomeScreen(
     val statusTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val headerHeight = 36.dp
 
-    // UI
     Scaffold(
         topBar = {
             Surface(
@@ -136,7 +134,6 @@ fun AddIncomeScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            // Header row
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = onBack) {
                     Icon(

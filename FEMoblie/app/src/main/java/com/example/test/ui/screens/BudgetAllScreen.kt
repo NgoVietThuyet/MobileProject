@@ -1,4 +1,3 @@
-// BudgetAllScreen.kt
 package com.example.test.ui.screens
 
 import android.annotation.SuppressLint
@@ -17,12 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
-import com.example.test.ui.components.header.SimpleTranslucentHeader
 import com.example.test.ui.mock.MockData
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -34,8 +34,7 @@ fun BudgetAllScreen(
     onAdd: () -> Unit = {}
 ) {
     val appBarHeight = 36.dp
-    val statusTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-    val topPadding = statusTop + appBarHeight
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     val budgets = MockData.budgetCategories
     val totalUsedM = budgets.sumOf { parseUsedM(it.amount) }
@@ -43,21 +42,36 @@ fun BudgetAllScreen(
     val progress = if (totalBudgetM > 0.0) (totalUsedM / totalBudgetM).toFloat().coerceIn(0f, 1f) else 0f
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentWindowInsets = WindowInsets(0),
         topBar = {
-            SimpleTranslucentHeader(
-                text = "",
-                height = appBarHeight,
-                windowInsets = WindowInsets(0)
+            TopAppBar(
+                title = { Text("") },
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
+                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
+                ),
+                windowInsets = WindowInsets(0),
+                modifier = Modifier.height(appBarHeight)
             )
         },
-        contentWindowInsets = WindowInsets(0)
-    ) {
+        containerColor = Color.White
+    ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = topPadding),
-            contentPadding = PaddingValues(top = 12.dp, start = 20.dp, end = 20.dp, bottom = 20.dp)
+                .background(Color.White)
+                .padding(
+                    start = padding.calculateStartPadding(LayoutDirection.Ltr),
+                    end = padding.calculateEndPadding(LayoutDirection.Ltr),
+                    top = 0.dp,
+                    bottom = padding.calculateBottomPadding()
+                ),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 20.dp)
         ) {
+            item { Spacer(Modifier.height(appBarHeight + 12.dp)) }
+
             // Header
             item {
                 TitleRow(
@@ -166,30 +180,15 @@ private fun TotalBudgetCard(
 
 @Composable
 private fun TitleRow(title: String, onBack: () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = onBack,
-            modifier = Modifier.size(40.dp)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back),
-                contentDescription = "Quay lại",
-                tint = Color.Black,
-                modifier = Modifier.size(24.dp)
-            )
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
+            Icon(painter = painterResource(R.drawable.ic_back), contentDescription = "Quay lại", tint = Color.Black)
         }
         Spacer(Modifier.width(6.dp))
-        Text(
-            text = title,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.Black
-        )
+        Text(title, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = Color.Black)
     }
 }
+
 
 @Composable
 private fun BudgetRow(

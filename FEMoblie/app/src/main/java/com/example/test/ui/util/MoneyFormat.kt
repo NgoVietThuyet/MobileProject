@@ -8,13 +8,12 @@ import java.text.NumberFormat
 import java.util.Locale
 import kotlin.math.roundToLong
 
-/** Style hiển thị số tiền */
+
 enum class AmountStyle { VND_PLAIN, VND_PADDED, MILLION_1DP, MILLION_0DP }
 
-/** Đổi 1 chỗ là cả app đổi “giọng” */
 object MoneyUiConfig {
     var DEFAULT_STYLE: AmountStyle = AmountStyle.VND_PLAIN
-    var ROUND_DECIMALS_FOR_M: Int = 1 // làm tròn khi LƯU tổng M (0/1)
+    var ROUND_DECIMALS_FOR_M: Int = 1
 }
 
 object NumberFmt {
@@ -40,7 +39,6 @@ object NumberFmt {
         return "${s}M"
     }
 
-    /** Format used/total theo style */
     fun formatUsedTotal(usedM: Double, totalM: Double?, style: AmountStyle): String = when (style) {
         AmountStyle.VND_PLAIN -> {
             val u = (usedM * 1_000_000).roundToLong()
@@ -67,7 +65,6 @@ object NumberFmt {
     }
 }
 
-/* ===== Helpers parse M từ chuỗi mock "2.1M / 3.0M" (dùng tạm) ===== */
 fun parseUsedMFromMock(amount: String): Double =
     amount.split('/').firstOrNull().orEmpty().lowercase()
         .replace(",", ".").replace("[^0-9\\.]".toRegex(), "").toDoubleOrNull() ?: 0.0

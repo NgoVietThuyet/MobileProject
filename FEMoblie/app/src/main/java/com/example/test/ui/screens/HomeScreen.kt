@@ -34,10 +34,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.test.R
+import com.example.test.ui.components.BottomTab
+import com.example.test.ui.components.MainBottomBar
 import com.example.test.ui.mock.BudgetCategoryMock
 import com.example.test.ui.mock.MockData as HomeMock
 import com.example.test.ui.mock.TransactionMock
 import com.example.test.ui.theme.AppGradient
+private val IncomeBg   = Color(0xFFDFF3E6)
+private val IncomeMain = Color(0xFF2E7D32)
+private val ExpenseBg  = Color(0xFFFFE4E6)
+private val ExpenseMain= Color(0xFFD32F2F)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +51,13 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onOpenBudgetAll: () -> Unit = {},
     onAddIncome: () -> Unit = {},
-    onAddExpense: () -> Unit = {}
+    onAddExpense: () -> Unit = {},
+    onOpenNotifications: () -> Unit = {},
+    onOpenAllTransactions: () -> Unit = {},
+    onReport: () -> Unit = {},
+    onSaving: () -> Unit = {},
+    onSetting: () -> Unit = {},
+    onCamera: () -> Unit = {}
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val appBarHeight = 36.dp
@@ -67,7 +79,16 @@ fun HomeScreen(
                 modifier = Modifier.height(appBarHeight)
             )
         },
-        bottomBar = { BottomMenuFixed() },
+        bottomBar = {
+            MainBottomBar(
+                selected = BottomTab.HOME,
+                onHome = { },
+                onReport = onReport,
+                onCamera = onCamera,
+                onSaving = onSaving,
+                onSetting = onSetting,
+            )
+        },
         floatingActionButton = {
             if (!chatOpen) {
                 ChatAssistButton(
@@ -90,7 +111,7 @@ fun HomeScreen(
                 ),
             contentPadding = PaddingValues(bottom = 48.dp)
         ) {
-            item { HeaderSection() }
+            item { HeaderSection(onOpenNotifications = onOpenNotifications) }
             item { Spacer(Modifier.height(16.dp)) }
             item { QuickActionButtons(onAddIncome = onAddIncome, onAddExpense = onAddExpense) }
             item { Spacer(Modifier.height(24.dp)) }
@@ -98,7 +119,7 @@ fun HomeScreen(
             item { Spacer(Modifier.height(24.dp)) }
             item { BudgetCategoriesCard(onSeeAll = onOpenBudgetAll) }
             item { Spacer(Modifier.height(24.dp)) }
-            item { RecentTransactionsCard() }
+            item { RecentTransactionsCard(onSeeAll = onOpenAllTransactions) }
         }
 
         ChatOverlay(open = chatOpen, onDismiss = { chatOpen = false })
@@ -108,7 +129,9 @@ fun HomeScreen(
 /* ===================== Header ===================== */
 
 @Composable
-private fun HeaderSection() {
+private fun HeaderSection(
+    onOpenNotifications: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -132,7 +155,9 @@ private fun HeaderSection() {
                 )
 
                 Surface(
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable(onClick = onOpenNotifications),
                     shape = CircleShape,
                     color = Color.White.copy(alpha = 0.18f),
                     border = BorderStroke(1.dp, Color.White.copy(alpha = 0.35f))
@@ -178,74 +203,71 @@ private fun HeaderSection() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Card(
+                StatCard(
                     modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF268233))
-                ) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(28.dp)
-                                .background(Color.White, shape = RoundedCornerShape(8.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.inc),
-                                contentDescription = null,
-                                tint = Color(0xFF7CFF7C),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-                        Spacer(Modifier.width(10.dp))
-                        Column {
-                            Text("Thu nhập", color = Color.White.copy(alpha = 0.9f), fontSize = 12.sp)
-                            Text(
-                                text = HomeMock.monthlyIncome,
-                                color = Color.White,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-                }
+                    bg = IncomeBg,
+                    main = IncomeMain,
+                    iconRes = R.drawable.inc,
+                    title = "Thu nhập",
+                    value = HomeMock.monthlyIncome
+                )
+                StatCard(
+                    modifier = Modifier.weight(1f),
+                    bg = ExpenseBg,
+                    main = ExpenseMain,
+                    iconRes = R.drawable.dec,
+                    title = "Chi tiêu",
+                    value = HomeMock.monthlyExpense
+                )
+            }
+        }
+    }
+}
 
-                Card(
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF51515))
+/* =============== StatCard =============== */
+
+@Composable
+private fun StatCard(
+    modifier: Modifier = Modifier,
+    bg: Color,
+    main: Color,
+    iconRes: Int,
+    title: String,
+    value: String
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = bg),
+        border = BorderStroke(1.dp, main.copy(alpha = 0.35f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .background(main, RoundedCornerShape(8.dp)),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(28.dp)
-                                .background(Color.White, shape = RoundedCornerShape(8.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.dec),
-                                contentDescription = null,
-                                tint = Color(0xFFFF8A80),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-                        Spacer(Modifier.width(10.dp))
-                        Column {
-                            Text("Chi tiêu", color = Color.White.copy(alpha = 0.9f), fontSize = 12.sp)
-                            Text(
-                                text = HomeMock.monthlyExpense,
-                                color = Color.White,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
+                    Icon(
+                        painter = painterResource(iconRes),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(title, color = main, fontSize = 12.sp)
+                    Text(value, color = main, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -442,6 +464,12 @@ private fun BudgetCategoryItem(data: BudgetCategoryMock) {
 
 @Composable
 private fun RecentTransactionsCard(onSeeAll: () -> Unit = {}) {
+    val items = remember(HomeMock.recentTransactions) {
+        HomeMock.recentTransactions
+            .sortedByDescending { it.createdAt }
+            .take(4)
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -457,18 +485,14 @@ private fun RecentTransactionsCard(onSeeAll: () -> Unit = {}) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("Giao dịch gần đây", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.Black)
-                TextButton(
-                    onClick = onSeeAll,
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    colors = ButtonDefaults.textButtonColors(contentColor = Color.Black)
-                ) {
-                    Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                TextButton(onClick = onSeeAll) {
+                    Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.Black)
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(Modifier.height(20.dp))
 
-            HomeMock.recentTransactions.forEach { tx ->
+            items.forEach { tx ->
                 TransactionItem(tx)
             }
         }
@@ -508,101 +532,6 @@ private fun TransactionItem(tx: TransactionMock) {
         )
     }
 }
-
-/* ===================== Bottom Bar ===================== */
-
-@Composable
-private fun BottomMenuFixed(
-    onHome: () -> Unit = {},
-    onReport: () -> Unit = {},
-    onCamera: () -> Unit = {},
-    onSaving: () -> Unit = {},
-    onSettings: () -> Unit = {}
-) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = Color.White,
-        border = BorderStroke(1.dp, Color(0xffe5e7eb))
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            BottomMenuItem(
-                icon = R.drawable.ic_home, label = "Trang chủ", isSelected = true,
-                onClick = onHome, modifier = Modifier.weight(1f)
-            )
-            BottomMenuItem(
-                icon = R.drawable.ic_report, label = "Báo cáo", isSelected = false,
-                onClick = onReport, modifier = Modifier.weight(1f)
-            )
-
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(RoundedCornerShape(25.dp))
-                    .background(Color(0xfff5f5f5))
-                    .clickable { onCamera() },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_camera),
-                    contentDescription = "Camera",
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-
-            BottomMenuItem(
-                icon = R.drawable.ic_saving, label = "Tiết kiệm", isSelected = false,
-                onClick = onSaving, modifier = Modifier.weight(1f)
-            )
-            BottomMenuItem(
-                icon = R.drawable.ic_settings, label = "Cài đặt", isSelected = false,
-                onClick = onSettings, modifier = Modifier.weight(1f)
-            )
-        }
-    }
-}
-
-@Composable
-private fun BottomMenuItem(
-    icon: Int,
-    label: String,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
-                .background(if (isSelected) Color(0xffe5e7eb) else Color.Transparent) // nền quanh button
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                painter = painterResource(icon),
-                contentDescription = label,
-                modifier = Modifier.size(24.dp),
-                tint = if (isSelected) Color.Black else Color(0xff7b8090)
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = label,
-                fontSize = 11.sp,
-                color = if (isSelected) Color.Black else Color(0xff7b8090)
-            )
-        }
-    }
-}
-
-
 
 /* ===================== Chat Overlay ===================== */
 
@@ -650,7 +579,6 @@ private fun ChatOverlay(
 ) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
 
-        // SCRIM
         AnimatedVisibility(visible = open, enter = fadeIn(), exit = fadeOut()) {
             Box(
                 Modifier
@@ -661,7 +589,6 @@ private fun ChatOverlay(
             )
         }
 
-        // PANEL
         AnimatedVisibility(
             visible = open,
             enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
@@ -721,7 +648,7 @@ private fun ChatOverlay(
                             fontSize = 14.sp,
                             modifier = Modifier.weight(1f)
                         )
-                        TextButton(onClick = { /* TODO send */ }) {
+                        TextButton(onClick = { }) {
                             Text("Gửi", color = Color(0xFF3D73F5), fontSize = 14.sp)
                         }
                     }
