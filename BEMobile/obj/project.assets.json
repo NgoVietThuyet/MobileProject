@@ -5195,11 +5195,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Period5\\BE\\BEMobile\\BEMobile.csproj",
+      "projectUniqueName": "D:\\Period5\\BE\\MobileProject\\BEMobile\\BEMobile.csproj",
       "projectName": "BEMobile",
-      "projectPath": "D:\\Period5\\BE\\BEMobile\\BEMobile.csproj",
+      "projectPath": "D:\\Period5\\BE\\MobileProject\\BEMobile\\BEMobile.csproj",
       "packagesPath": "C:\\Users\\ngoth\\.nuget\\packages\\",
-      "outputPath": "D:\\Period5\\BE\\BEMobile\\obj\\",
+      "outputPath": "D:\\Period5\\BE\\MobileProject\\BEMobile\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

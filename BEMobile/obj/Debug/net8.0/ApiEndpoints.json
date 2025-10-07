@@ -1,5 +1,93 @@
 [
   {
+    "ContainingType": "BEMobile.Controllers.BudgetsController",
+    "Method": "CreateUser",
+    "RelativePath": "api/Budgets/Create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.Budget.CreateBudget.Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BEMobile.Data.Entities.Budget",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.BudgetsController",
+    "Method": "DeleteBudget",
+    "RelativePath": "api/Budgets/DeleteById",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.BudgetsController",
+    "Method": "GetAllBudgets",
+    "RelativePath": "api/Budgets/GetAllBudgets",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.DTOs.BudgetDto, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.BudgetsController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/Budgets/Update",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.Budget.UpdateAmount.UpdateAmountRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BEMobile.Data.Entities.Budget",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "BEMobile.Controllers.UsersController",
     "Method": "CreateUser",
     "RelativePath": "api/Users/Create",
@@ -71,7 +159,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "BEMobile.Models.RequestResponse.Login.LoginRequest",
+        "Type": "BEMobile.Models.RequestResponse.User.Login.LoginRequest",
         "IsRequired": true
       }
     ],
@@ -141,7 +229,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userDto",
+        "Name": "UserDto",
         "Type": "BEMobile.Models.DTOs.UserDto",
         "IsRequired": true
       }

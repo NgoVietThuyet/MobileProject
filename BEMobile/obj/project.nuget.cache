@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TQBey1xjm6s=",
+  "dgSpecHash": "Lt+3gGPCJek=",
   "success": true,
-  "projectFilePath": "D:\\Period5\\BE\\BEMobile\\BEMobile.csproj",
+  "projectFilePath": "D:\\Period5\\BE\\MobileProject\\BEMobile\\BEMobile.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ngoth\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\ngoth\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
