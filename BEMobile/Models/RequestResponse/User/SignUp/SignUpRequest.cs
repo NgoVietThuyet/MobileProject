@@ -5,6 +5,6 @@ namespace BEMobile.Models.RequestResponse.SignUp
 {
     public class SignUpRequest
     {
-        public UserDto userDto { get; set; }
+        public UserDto UserDto { get; set; }
     }
 }

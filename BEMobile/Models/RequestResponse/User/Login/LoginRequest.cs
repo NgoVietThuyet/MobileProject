@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BEMobile.Models.RequestResponse.Login
+namespace BEMobile.Models.RequestResponse.User.Login
 {
     public class LoginRequest
     {

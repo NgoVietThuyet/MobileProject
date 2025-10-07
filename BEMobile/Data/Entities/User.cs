@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BEMobile.Data.Entities
 {
-    [Table("USERS")]
+    [Table("UserS")]
     public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("USER_ID")]
+        [Column("User_ID")]
         public string UserId { get; set; }
 
         [Required]
