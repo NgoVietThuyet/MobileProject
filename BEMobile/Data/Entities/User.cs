@@ -27,15 +27,16 @@ namespace BEMobile.Data.Entities
         [Required]
         [EmailAddress]
         [Column("EMAIL")]
-        public string Email { get; set; } = string.Empty;
+        public string? Email { get; set; } = string.Empty;
 
         [Required]
         [Column("PASSWORD")]
         public string Password { get; set; } = string.Empty;
 
-        [Column("CREATE_DATE")]
+        [Column("CREATED_DATE")]
         public string CreatedDate { get; set; } 
-        [Column("UPDATE_DATE")]
+
+        [Column("UPDATED_DATE")]
         public string? UpdatedDate { get; set; }
        
     }

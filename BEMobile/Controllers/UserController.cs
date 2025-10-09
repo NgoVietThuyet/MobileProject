@@ -1,7 +1,8 @@
 ﻿using BEMobile.Models.DTOs;
-using Microsoft.AspNetCore.Mvc;
-
+using BEMobile.Models.RequestResponse.Login;
+using BEMobile.Models.RequestResponse.SignUp;
 using BEMobile.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 
 
@@ -18,12 +19,13 @@ namespace BEMobile.Controllers
             _userService = userService;
         }
 
+
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
+                 var users = await _userService.GetAllUsersAsync();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -35,12 +37,41 @@ namespace BEMobile.Controllers
 
         
         [HttpPost("Create")]
-        public async Task<ActionResult<UserDto>> CreateUser(UserDto userDto)
+        public async Task<ActionResult<UserDto>> CreateUser([FromBody] SignUpRequest request)
         {
             try
             {
-                var user = await _userService.CreateUserAsync(userDto);
-                return Ok(user);
+                var user = await _userService.CreateUserAsync(request.userDto);
+                if (user == null)
+                {
+                    return Unauthorized(new SignUpResponse
+                    {
+                        Success = false,
+                        Message = "Đăng ký thất bại"
+                    });
+                }
+                else
+                {
+                    var response = new SignUpResponse
+                    {
+                        Success = true,
+                        Message = "Đăng ký thành công",
+                        User = new UserDto
+                        {
+                            UserId = user.UserId,
+                            Name = user.Name,
+                            Email = user.Email,
+                            PhoneNumber = user.PhoneNumber,
+                            Facebook = user.Facebook,
+                            Twitter = user.Twitter,
+                            CreatedDate = user.CreatedDate,
+                            UpdatedDate = user.UpdatedDate
+                        }
+                        // Có thể thêm Token nếu triển khai JWT
+                    };
+
+                    return Ok(response);
+                }
             }
             catch (InvalidOperationException ex)
             {
@@ -65,19 +96,77 @@ namespace BEMobile.Controllers
         [HttpDelete("DeleteById{id}")]
         public async Task<ActionResult> DeleteUser(string id)
         {
-            var result = await _userService.DeleteUserAsync(id);
-            if (!result)
+            try
             {
-                return NotFound();
+                var result = await _userService.DeleteUserAsync(id);
+                if (!result)
+                { return NotFound("Xóa thất bại"); }
+                return Ok("Xóa thành công");
             }
-            return NoContent();
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<UserDto>>> SearchUsers([FromQuery] string? name, [FromQuery] string? email, [FromQuery] string? phoneNumber)
         {
+
             var users = await _userService.SearchUsersAsync(name, email, phoneNumber);
             return Ok(users);
         }
+        [HttpPost("login")]
+        [ProducesResponseType(typeof(LoginResponse), 200)]
+        [ProducesResponseType(typeof(LoginResponse), 400)]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            try
+            {
+
+                // Gọi service để xác thực
+                var user = await _userService.IsLogin(request.Email, request.Password);
+                
+                if (user == null)
+                {
+                    return Unauthorized(new LoginResponse
+                    {
+                        Success = false,
+                        Message = "Email hoặc mật khẩu không đúng"
+                    });
+                }
+
+                // Tạo response
+                var response = new LoginResponse
+                {
+                    Success = true,
+                    Message = "Đăng nhập thành công",
+                    User = new UserDto
+                    {
+                        UserId = user.UserId,
+                        Name = user.Name,
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber,
+                        Facebook = user.Facebook,
+                        Twitter = user.Twitter,
+                        CreatedDate = user.CreatedDate,
+                        UpdatedDate = user.UpdatedDate
+                    }
+                    // Có thể thêm Token nếu triển khai JWT
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new LoginResponse
+                {
+                    Success = false,
+                    Message = "Đã xảy ra lỗi trong quá trình đăng nhập"
+                });
+            }
+        }
+
+
     }
 }

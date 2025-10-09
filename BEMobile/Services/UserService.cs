@@ -11,6 +11,8 @@ namespace BEMobile.Services
         Task UpdateUserAsync( UserDto userDto);
         Task<bool> DeleteUserAsync(string id);
         Task<IEnumerable<UserDto>> SearchUsersAsync(string? name, string? email, string? phoneNumber);
+        Task<UserDto> IsLogin(string email, string password);
+
     }
 
     public class UserService : IUserService
@@ -43,11 +45,8 @@ namespace BEMobile.Services
         }
 
         
-
-
         public async Task<UserDto> CreateUserAsync(UserDto userDto)
         {
-           
 
             var user = new User
             {
@@ -137,9 +136,29 @@ namespace BEMobile.Services
                     Twitter = u.Twitter,
                     Email = u.Email
                 })
+
                 .ToListAsync();
 
             return users;
+        }
+        public async Task<UserDto> IsLogin(string email, string password)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email && u.Password ==  password);
+            if(user == null) return null;
+            return  new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber,
+                Password = user.Password,
+                Facebook = user.Facebook,
+                Twitter = user.Twitter,
+                Email = user.Email,
+                CreatedDate = user.CreatedDate,
+                UpdatedDate = user.UpdatedDate
+                // Lưu ý: Password không được map vì DTO có [JsonIgnore] nhưng nếu muốn có thể bỏ qua
+            };
         }
     }
 }

@@ -1,5 +1,26 @@
 [
   {
+    "ContainingType": "BEMobile.Controllers.ImageController",
+    "Method": "UploadImage",
+    "RelativePath": "api/Image/imageUpload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "embedBase64",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BEMobile.Controllers.UsersController",
     "Method": "CreateUser",
     "RelativePath": "api/Users/Create",
@@ -8,8 +29,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userDto",
-        "Type": "BEMobile.Models.DTOs.UserDto",
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.SignUp.SignUpRequest",
         "IsRequired": true
       }
     ],
@@ -58,6 +79,41 @@
           "text/json"
         ],
         "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.UsersController",
+    "Method": "Login",
+    "RelativePath": "api/Users/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.Login.LoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BEMobile.Models.RequestResponse.Login.LoginResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "BEMobile.Models.RequestResponse.Login.LoginResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
       }
     ]
   },
