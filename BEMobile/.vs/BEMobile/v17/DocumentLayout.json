@@ -106,12 +106,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -124,7 +120,7 @@
               "RelativeDocumentMoniker": "Services\\ImageService.cs",
               "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Services\\ImageService.cs",
               "RelativeToolTip": "Services\\ImageService.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-09T13:53:47.408Z",
               "EditorCaption": ""
@@ -139,8 +135,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAABIAAAAAAAAAAAAAADcAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-07T08:52:53.592Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-07T08:52:53.592Z"
             },
             {
               "$type": "Document",
