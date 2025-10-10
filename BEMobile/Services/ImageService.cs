@@ -14,7 +14,7 @@ namespace BEMobile.Services
 {
     public class GeminiOptions
     {
-        public string ApiKey { get; set; } = "AIzaSyDyw1u50r63sGclNIY7a3ySbDNXtG2lZbY";
+        public string ApiKey { get; set; } = "AIzaSyBxmDliAe5YVazzLlGweLmCLM5-HKzDSWQ";
         public string Model { get; set; } = "gemini-2.0-flash";
         public string BaseUrl { get; set; } = "https://generativelanguage.googleapis.com/v1beta/models";
         public bool UseBearerToken { get; set; } = false; // Sửa thành false để dùng API Key
@@ -166,10 +166,10 @@ Chỉ trả về mảng JSON, không thêm bất kỳ văn bản nào khác. Ph�
                 },
                 generationConfig = new
                 {
-                    temperature = 0.1,
-                    topK = 32,
-                    topP = 1,
-                    maxOutputTokens = 2048
+                    temperature = 0,
+                    topK = 10,
+                    topP = 0.3,
+                    maxOutputTokens = 256
                 }
             };
 
