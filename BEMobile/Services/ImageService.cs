@@ -14,7 +14,7 @@ namespace BEMobile.Services
 {
     public class GeminiOptions
     {
-        public string ApiKey { get; set; } = "AIzaSyBxmDliAe5YVazzLlGweLmCLM5-HKzDSWQ";
+        public string ApiKey { get; set; } = "";
         public string Model { get; set; } = "gemini-2.0-flash";
         public string BaseUrl { get; set; } = "https://generativelanguage.googleapis.com/v1beta/models";
         public bool UseBearerToken { get; set; } = false; // Sửa thành false để dùng API Key

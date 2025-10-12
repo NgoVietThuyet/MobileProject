@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "BEMobile.Controllers.ChatbotController",
+    "Method": "ExtractGraph",
+    "RelativePath": "api/Chatbot/extract",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Controllers.ChatRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BEMobile.Controllers.ImageController",
     "Method": "UploadImage",
     "RelativePath": "api/Image/imageUpload",

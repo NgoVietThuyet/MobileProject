@@ -1,7 +1,8 @@
-﻿using BEMobile.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using BEMobile;
+using BEMobile.Connectors;
 using BEMobile.Services;
-using BEMobile;
+using BEMobile.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,9 @@ builder.Services.AddHttpClient("gemini");
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 
-
+// graph
+builder.Services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
+builder.Services.AddSingleton<INeo4jConnector, Neo4jConnector>();
 
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();

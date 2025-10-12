@@ -1076,6 +1076,22 @@
           "buildTransitive/Mono.TextTemplating.targets": {}
         }
       },
+      "Neo4j.Driver/5.28.3": {
+        "type": "package",
+        "dependencies": {
+          "System.IO.Pipelines": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Neo4j.Driver.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Neo4j.Driver.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.4": {
         "type": "package",
         "compile": {
@@ -4123,6 +4139,24 @@
         "readme.md"
       ]
     },
+    "Neo4j.Driver/5.28.3": {
+      "sha512": "nGfPRmx11Ma/dWcy54swbP+5tu++KrvR5DZgSWi/zAgFEPoObubGaO540i0flTleH0sZQkO8X9lAg4H2Y05ffg==",
+      "type": "package",
+      "path": "neo4j.driver/5.28.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Neo4j-icon-color.png",
+        "lib/net6.0/Neo4j.Driver.dll",
+        "lib/net6.0/Neo4j.Driver.xml",
+        "lib/net8.0/Neo4j.Driver.dll",
+        "lib/net8.0/Neo4j.Driver.xml",
+        "lib/netstandard2.0/Neo4j.Driver.dll",
+        "lib/netstandard2.0/Neo4j.Driver.xml",
+        "neo4j.driver.5.28.3.nupkg.sha512",
+        "neo4j.driver.nuspec"
+      ]
+    },
     "Newtonsoft.Json/13.0.4": {
       "sha512": "pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A==",
       "type": "package",
@@ -5580,6 +5614,7 @@
       "Microsoft.EntityFrameworkCore.Relational >= 9.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.9",
+      "Neo4j.Driver >= 5.28.3",
       "Newtonsoft.Json >= 13.0.4",
       "OpenCvSharp4 >= 4.11.0.20250507",
       "OpenCvSharp4.runtime.win >= 4.11.0.20250507",
@@ -5664,6 +5699,10 @@
           "Microsoft.EntityFrameworkCore.Tools": {
             "target": "Package",
             "version": "[9.0.9, )"
+          },
+          "Neo4j.Driver": {
+            "target": "Package",
+            "version": "[5.28.3, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
