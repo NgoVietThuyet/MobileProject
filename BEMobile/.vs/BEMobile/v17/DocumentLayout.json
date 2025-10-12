@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|c:\\h\u1ECDc li\u1EC7u\\mobile\\branch\\mobileproject\\bemobile\\models\\dtos\\transactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:models\\dtos\\transactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|c:\\h\u1ECDc li\u1EC7u\\mobile\\branch\\mobileproject\\bemobile\\models\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:models\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|c:\\h\u1ECDc li\u1EC7u\\mobile\\branch\\mobileproject\\bemobile\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -25,14 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|c:\\h\u1ECDc li\u1EC7u\\mobile\\branch\\mobileproject\\bemobile\\models\\requestresponse\\login\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:models\\requestresponse\\login\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|c:\\h\u1ECDc li\u1EC7u\\mobile\\branch\\mobileproject\\bemobile\\models\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:models\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|c:\\h\u1ECDc li\u1EC7u\\mobile\\branch\\mobileproject\\bemobile\\models\\dtos\\transactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:models\\dtos\\transactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|c:\\h\u1ECDc li\u1EC7u\\mobile\\branch\\mobileproject\\bemobile\\models\\dtos\\savinggoaldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -146,7 +146,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -154,20 +154,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "KnowledgeGraph.cs",
-              "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\KnowledgeGraph.cs",
-              "RelativeDocumentMoniker": "Models\\KnowledgeGraph.cs",
-              "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\KnowledgeGraph.cs",
-              "RelativeToolTip": "Models\\KnowledgeGraph.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T10:19:11.229Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "LoginRequest.cs",
               "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Login\\LoginRequest.cs",
               "RelativeDocumentMoniker": "Models\\RequestResponse\\Login\\LoginRequest.cs",
@@ -175,12 +162,11 @@
               "RelativeToolTip": "Models\\RequestResponse\\Login\\LoginRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T10:18:04.987Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T10:18:04.987Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "KnowledgeGraphService.cs",
               "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Services\\KnowledgeGraphService.cs",
               "RelativeDocumentMoniker": "Services\\KnowledgeGraphService.cs",
@@ -188,12 +174,11 @@
               "RelativeToolTip": "Services\\KnowledgeGraphService.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAADAAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T09:55:04.17Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T09:55:04.17Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "ImageService.cs",
               "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Services\\ImageService.cs",
               "RelativeDocumentMoniker": "Services\\ImageService.cs",
@@ -201,12 +186,11 @@
               "RelativeToolTip": "Services\\ImageService.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T13:53:47.408Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-09T13:53:47.408Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "TransactionDto.cs",
               "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\TransactionDto.cs",
               "RelativeDocumentMoniker": "Models\\DTOs\\TransactionDto.cs",
@@ -219,7 +203,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "WeatherForecast.cs",
               "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\WeatherForecast.cs",
               "RelativeDocumentMoniker": "Models\\WeatherForecast.cs",
@@ -227,12 +211,11 @@
               "RelativeToolTip": "Models\\WeatherForecast.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-26T03:53:51.927Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-26T03:53:51.927Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -245,46 +228,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ChatbotController.cs",
-              "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Controllers\\ChatbotController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ChatbotController.cs",
-              "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Controllers\\ChatbotController.cs",
-              "RelativeToolTip": "Controllers\\ChatbotController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T08:29:49.474Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-07T08:52:53.592Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "SavingGoalDto.cs",
-              "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\SavingGoalDto.cs",
-              "RelativeDocumentMoniker": "Models\\DTOs\\SavingGoalDto.cs",
-              "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\SavingGoalDto.cs",
-              "RelativeToolTip": "Models\\DTOs\\SavingGoalDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T07:59:17.732Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "UserDto.cs",
               "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\UserDto.cs",
               "RelativeDocumentMoniker": "Models\\DTOs\\UserDto.cs",
@@ -297,6 +241,54 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "KnowledgeGraph.cs",
+              "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\KnowledgeGraph.cs",
+              "RelativeDocumentMoniker": "Models\\KnowledgeGraph.cs",
+              "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\KnowledgeGraph.cs",
+              "RelativeToolTip": "Models\\KnowledgeGraph.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-12T10:19:11.229Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ChatbotController.cs",
+              "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Controllers\\ChatbotController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChatbotController.cs",
+              "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Controllers\\ChatbotController.cs",
+              "RelativeToolTip": "Controllers\\ChatbotController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-12T08:29:49.474Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T08:52:53.592Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "SavingGoalDto.cs",
+              "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\SavingGoalDto.cs",
+              "RelativeDocumentMoniker": "Models\\DTOs\\SavingGoalDto.cs",
+              "ToolTip": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\SavingGoalDto.cs",
+              "RelativeToolTip": "Models\\DTOs\\SavingGoalDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-12T07:59:17.732Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 11,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\H\u1ECDc li\u1EC7u\\Mobile\\branch\\MobileProject\\BEMobile\\Services\\UserService.cs",
@@ -305,8 +297,7 @@
               "RelativeToolTip": "Services\\UserService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-24T07:57:22.256Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-24T07:57:22.256Z"
             },
             {
               "$type": "Document",
@@ -318,8 +309,7 @@
               "RelativeToolTip": "Connectors\\Neo4jConnector.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T09:54:10.979Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T09:54:10.979Z"
             },
             {
               "$type": "Document",
@@ -331,8 +321,7 @@
               "RelativeToolTip": "Controllers\\ImageController.cs",
               "ViewState": "AgIAAAEAAAAAAAAAAAAQwBoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:06:17.206Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-09T15:06:17.206Z"
             },
             {
               "$type": "Document",
@@ -344,8 +333,7 @@
               "RelativeToolTip": "global.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-12T08:38:30.038Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T08:38:30.038Z"
             },
             {
               "$type": "Document",
@@ -357,8 +345,7 @@
               "RelativeToolTip": "Models\\DTOs\\NotificationDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T07:59:06.676Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T07:59:06.676Z"
             },
             {
               "$type": "Document",
@@ -370,8 +357,7 @@
               "RelativeToolTip": "Models\\DTOs\\AccountDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T07:58:53.979Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T07:58:53.979Z"
             },
             {
               "$type": "Document",
@@ -383,8 +369,7 @@
               "RelativeToolTip": "Controllers\\UserController.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAIBZwBEAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-30T14:39:46.274Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-30T14:39:46.274Z"
             },
             {
               "$type": "Document",
@@ -396,8 +381,7 @@
               "RelativeToolTip": "Controllers\\WeatherForecastController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:06:53.215Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-09T15:06:53.215Z"
             },
             {
               "$type": "Document",
@@ -409,8 +393,7 @@
               "RelativeToolTip": "BEMobile.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-09-27T03:50:46.671Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-27T03:50:46.671Z"
             },
             {
               "$type": "Document",
@@ -422,8 +405,7 @@
               "RelativeToolTip": "Data\\Entities\\SavingGoal.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAQwCEAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-30T14:43:17.538Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-30T14:43:17.538Z"
             },
             {
               "$type": "Document",
@@ -435,8 +417,7 @@
               "RelativeToolTip": "Data\\Entities\\Notification.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-30T14:43:07.744Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-30T14:43:07.744Z"
             },
             {
               "$type": "Document",
@@ -448,8 +429,7 @@
               "RelativeToolTip": "Data\\Entities\\Account.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAIBZwBgAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-30T14:43:01.566Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-30T14:43:01.566Z"
             },
             {
               "$type": "Document",
@@ -461,8 +441,7 @@
               "RelativeToolTip": "Models\\RequestResponse\\Login\\LoginResponse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-27T09:39:30.746Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-27T09:39:30.746Z"
             },
             {
               "$type": "Document",
@@ -474,8 +453,7 @@
               "RelativeToolTip": "Models\\RequestResponse\\SignUp\\SignUpRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-27T10:04:58.121Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-27T10:04:58.121Z"
             },
             {
               "$type": "Document",
@@ -487,8 +465,7 @@
               "RelativeToolTip": "Models\\RequestResponse\\SignUp\\SignUpResponse.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-27T10:05:21.205Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-27T10:05:21.205Z"
             },
             {
               "$type": "Document",
@@ -500,8 +477,7 @@
               "RelativeToolTip": "Extensions\\ServiceExtensions.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-26T07:41:45.224Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-26T07:41:45.224Z"
             },
             {
               "$type": "Document",
@@ -513,8 +489,7 @@
               "RelativeToolTip": "Common\\IReferenceEntity.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T05:00:37.017Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-25T05:00:37.017Z"
             },
             {
               "$type": "Document",
@@ -526,8 +501,7 @@
               "RelativeToolTip": "Common\\ISoftDeleteEntity.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T05:00:42.386Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-25T05:00:42.386Z"
             },
             {
               "$type": "Document",
@@ -539,8 +513,7 @@
               "RelativeToolTip": "Common\\ReferenceEntity.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T05:00:46.917Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-25T05:00:46.917Z"
             },
             {
               "$type": "Document",
@@ -552,8 +525,7 @@
               "RelativeToolTip": "Common\\SoftDeleteEntity.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T05:00:51.262Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-25T05:00:51.262Z"
             },
             {
               "$type": "Document",
@@ -565,8 +537,7 @@
               "RelativeToolTip": "Common\\EFFilterExtensions.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T05:00:30.199Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-25T05:00:30.199Z"
             },
             {
               "$type": "Document",
@@ -578,8 +549,7 @@
               "RelativeToolTip": "Common\\IBaseEntity.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-25T05:00:21.74Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-25T05:00:21.74Z"
             },
             {
               "$type": "Document",
@@ -591,8 +561,7 @@
               "RelativeToolTip": "BEMobile.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-09-24T09:23:14.643Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-24T09:23:14.643Z"
             }
           ]
         }
