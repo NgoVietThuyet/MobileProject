@@ -23,6 +23,10 @@
 	<ItemGroup>
 	  <Folder Include="Models\RequestResponse\Account\CreateAccount\" />
 	  <Folder Include="Models\RequestResponse\Account\DetailAccount\" />
+	  <Folder Include="Models\RequestResponse\Notification\GetAllNotification\" />
+	  <Folder Include="Models\RequestResponse\Notification\DeleteNotification\" />
+	  <Folder Include="Models\RequestResponse\Notification\PushNotification\" />
+	  <Folder Include="Models\RequestResponse\Notification\ReadNotification\" />
 	  <Folder Include="Models\RequestResponse\Transaction\GetAllTransaction\" />
 	  <Folder Include="Models\RequestResponse\Transaction\CreateTransaction\" />
 	  <Folder Include="Models\RequestResponse\Transaction\DeleteTransaction\" />
