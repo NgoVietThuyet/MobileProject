@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\BEMobile",
-    "\\BEMobile\\Services"
+    "\\BEMobile"
   ],
-  "SelectedNode": "\\BEMobile\\Extensions",
+  "SelectedNode": "\\BEMobile\\BEMobile.sln",
   "PreviewInSolutionExplorer": false
 }
