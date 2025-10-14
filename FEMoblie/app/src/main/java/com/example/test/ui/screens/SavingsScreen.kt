@@ -52,22 +52,11 @@ fun SavingsScreen(
 ) {
     val appBarHeight = 36.dp
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val scheme = MaterialTheme.colorScheme
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
-        topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
-            )
-        },
         bottomBar = {
             MainBottomBar(
                 selected = BottomTab.SAVING,
@@ -82,7 +71,7 @@ fun SavingsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(scheme.background)
                 .padding(
                     start = pad.calculateStartPadding(LayoutDirection.Ltr),
                     end = pad.calculateEndPadding(LayoutDirection.Ltr),
@@ -123,7 +112,7 @@ fun SavingsScreen(
                                 Spacer(Modifier.height(10.dp))
                                 Text("70.000.000 đ", color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
                                 Spacer(Modifier.height(10.dp))
-                                Text("tăng 12% so với tháng trước", color = Color(0xFFBBF7D0), fontSize = 13.sp)
+                                Text("tăng 12% so với tháng trước", color = scheme.tertiaryContainer, fontSize = 13.sp)
                             }
                         }
                     }
@@ -137,9 +126,9 @@ fun SavingsScreen(
                         .padding(horizontal = 16.dp, vertical = 14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Mục tiêu tiết kiệm", fontWeight = FontWeight.Medium, fontSize = 16.sp)
+                    Text("Mục tiêu tiết kiệm", fontWeight = FontWeight.Medium, fontSize = 16.sp, color = scheme.onBackground)
                     Spacer(Modifier.weight(1f))
-                    TextButton(onClick = onAddGoal) {
+                    TextButton(onClick = onAddGoal, colors = ButtonDefaults.textButtonColors(contentColor = scheme.primary)) {
                         Icon(Icons.Outlined.Add, contentDescription = null)
                         Spacer(Modifier.width(6.dp))
                         Text("Thêm")
@@ -157,7 +146,8 @@ fun SavingsScreen(
                 Text(
                     "Mục tiêu phổ biến",
                     modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = scheme.onBackground
                 )
             }
             item {
@@ -166,8 +156,8 @@ fun SavingsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, Color(0xFFD9D9D9))
+                    colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+                    border = BorderStroke(1.dp, scheme.outlineVariant)
                 ) {
                     Column(Modifier.padding(16.dp)) {
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = spacedBy(12.dp)) {
@@ -191,14 +181,15 @@ private fun SavingGoalItem(
     g: SavingGoalMock,
     onClick: () -> Unit = {}
 ) {
+    val scheme = MaterialTheme.colorScheme
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clickable(role = Role.Button, onClick = onClick),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFD9D9D9))
+        colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+        border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Column(Modifier.padding(14.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -212,8 +203,8 @@ private fun SavingGoalItem(
 
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(g.title, fontWeight = FontWeight.Medium)
-                    Text("${fmtM(g.savedM)} / ${fmtM(g.totalM)}", color = Color(0xFF6B7280), fontSize = 13.sp)
+                    Text(g.title, fontWeight = FontWeight.Medium, color = scheme.onSurface)
+                    Text("${fmtM(g.savedM)} / ${fmtM(g.totalM)}", color = scheme.onSurfaceVariant, fontSize = 13.sp)
                 }
             }
 
@@ -223,7 +214,7 @@ private fun SavingGoalItem(
             ContinuousLinearProgress(
                 progress = raw.coerceIn(0f, 1f),
                 color = g.color,
-                trackColor = Color(0xFFE5E7EB),
+                trackColor = scheme.surfaceVariant,
                 height = 8.dp,
                 corner = 6.dp
             )
@@ -232,11 +223,11 @@ private fun SavingGoalItem(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val pct = (raw.coerceIn(0f, 1f) * 100f).roundToInt()
-                Text("$pct% hoàn thành", color = Color(0xFF6B7280), fontSize = 12.sp)
+                Text("$pct% hoàn thành", color = scheme.onSurfaceVariant, fontSize = 12.sp)
                 Spacer(Modifier.weight(1f))
-                Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, tint = Color(0xFF6B7280))
+                Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, tint = scheme.onSurfaceVariant)
                 Spacer(Modifier.width(4.dp))
-                Text("${g.daysRemain} ngày", color = Color(0xFF6B7280), fontSize = 12.sp)
+                Text("${g.daysRemain} ngày", color = scheme.onSurfaceVariant, fontSize = 12.sp)
             }
         }
     }
@@ -250,11 +241,12 @@ fun SuggestTileView(
     danger: Boolean = false,
     modifier: Modifier = Modifier
 ) {
+    val scheme = MaterialTheme.colorScheme
     OutlinedCard(
         modifier = modifier.heightIn(min = 96.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFD9D9D9))
+        colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+        border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Column(
             modifier = Modifier
@@ -263,7 +255,7 @@ fun SuggestTileView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Surface(shape = CircleShape, color = Color(0xFFF3F4F6), modifier = Modifier.size(36.dp)) {
+            Surface(shape = CircleShape, color = scheme.surfaceVariant, modifier = Modifier.size(36.dp)) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(icon) }
             }
             Spacer(Modifier.height(10.dp))
@@ -271,11 +263,12 @@ fun SuggestTileView(
                 text = title,
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
+                color = scheme.onSurface,
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
                 text = sub,
-                color = if (danger) Color(0xFFEF4444) else Color(0xFF6B7280),
+                color = if (danger) scheme.error else scheme.onSurfaceVariant,
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()

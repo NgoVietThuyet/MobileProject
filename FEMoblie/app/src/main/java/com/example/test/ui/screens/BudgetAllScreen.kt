@@ -19,10 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.mock.MockData
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -41,45 +41,28 @@ fun BudgetAllScreen(
     val totalBudgetM = budgets.sumOf { parseTotalM(it.amount) }
     val progress = if (totalBudgetM > 0.0) (totalUsedM / totalBudgetM).toFloat().coerceIn(0f, 1f) else 0f
 
+    val cs = MaterialTheme.colorScheme
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
+            AppHeader(
+                title = "Ngân sách theo danh mục",
+                showBack = true,
+                onBack = onBack
             )
         },
-        containerColor = Color.White
-    ) { padding ->
+        containerColor = cs.background
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(
-                    start = padding.calculateStartPadding(LayoutDirection.Ltr),
-                    end = padding.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
-                    bottom = padding.calculateBottomPadding()
-                ),
+                .background(cs.background)
+                .padding(innerPadding),
             contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 20.dp)
         ) {
             item { Spacer(Modifier.height(appBarHeight + 12.dp)) }
-
-            // Header
-            item {
-                TitleRow(
-                    title = "Ngân sách theo danh mục",
-                    onBack = onBack
-                )
-                Spacer(Modifier.height(12.dp))
-            }
 
             item {
                 TotalBudgetCard(
@@ -112,7 +95,7 @@ fun BudgetAllScreen(
                         .fillMaxWidth()
                         .height(120.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .border(1.dp, Color(0xFF111111), RoundedCornerShape(16.dp))
+                        .border(1.dp, cs.outline, RoundedCornerShape(16.dp))
                         .clickable { onAdd() },
                     contentAlignment = Alignment.Center
                 ) {
@@ -121,11 +104,11 @@ fun BudgetAllScreen(
                             Modifier
                                 .size(36.dp)
                                 .clip(CircleShape)
-                                .background(Color(0xFFF5F5F5)),
+                                .background(cs.surfaceVariant),
                             contentAlignment = Alignment.Center
-                        ) { Text("+", fontSize = 18.sp) }
+                        ) { Text("+", fontSize = 18.sp, color = cs.onSurfaceVariant) }
                         Spacer(Modifier.height(8.dp))
-                        Text("Thêm danh mục mới", fontSize = 16.sp)
+                        Text("Thêm danh mục mới", fontSize = 16.sp, color = cs.onSurface)
                     }
                 }
                 Spacer(Modifier.height(20.dp))
@@ -140,39 +123,40 @@ private fun TotalBudgetCard(
     totalLabel: String,
     percent: Float
 ) {
+    val cs = MaterialTheme.colorScheme
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFE5E7EB)),
+        colors = CardDefaults.cardColors(containerColor = cs.surface),
+        border = BorderStroke(1.dp, cs.outline),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Tổng chi tiêu tháng này", color = Color(0xFF7B8090), fontSize = 14.sp)
+            Text("Tổng chi tiêu tháng này", color = cs.onSurfaceVariant, fontSize = 14.sp)
             Spacer(Modifier.height(8.dp))
-            Text(usedLabel, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color(0xFF3D73F5))
+            Text(usedLabel, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = cs.primary)
             Spacer(Modifier.height(12.dp))
             Box(
                 Modifier
                     .fillMaxWidth()
                     .height(8.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(Color(0xFFE5E7EB))
+                    .background(cs.surfaceVariant)
             ) {
                 Box(
                     Modifier
                         .fillMaxWidth(percent.coerceIn(0f, 1f))
                         .fillMaxHeight()
                         .clip(RoundedCornerShape(4.dp))
-                        .background(Color(0xFF3D73F5))
+                        .background(cs.primary)
                 )
             }
             Spacer(Modifier.height(6.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("Đã chi: ${(percent * 100).toInt()}%", color = Color(0xFF7B8090), fontSize = 12.sp)
-                Text("Ngân sách: $totalLabel", color = Color(0xFF7B8090), fontSize = 12.sp)
+                Text("Đã chi: ${(percent * 100).toInt()}%", color = cs.onSurfaceVariant, fontSize = 12.sp)
+                Text("Ngân sách: $totalLabel", color = cs.onSurfaceVariant, fontSize = 12.sp)
             }
         }
     }
@@ -180,15 +164,19 @@ private fun TotalBudgetCard(
 
 @Composable
 private fun TitleRow(title: String, onBack: () -> Unit) {
+    val cs = MaterialTheme.colorScheme
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
-            Icon(painter = painterResource(R.drawable.ic_back), contentDescription = "Quay lại", tint = Color.Black)
+            Icon(
+                painter = painterResource(R.drawable.ic_back),
+                contentDescription = "Quay lại",
+                tint = cs.onSurface
+            )
         }
         Spacer(Modifier.width(6.dp))
-        Text(title, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = Color.Black)
+        Text(title, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = cs.onSurface)
     }
 }
-
 
 @Composable
 private fun BudgetRow(
@@ -199,10 +187,11 @@ private fun BudgetRow(
     color: Color,
     onClick: () -> Unit = {}
 ) {
+    val cs = MaterialTheme.colorScheme
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFE5E7EB)),
+        colors = CardDefaults.cardColors(containerColor = cs.surface),
+        border = BorderStroke(1.dp, cs.outline),
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
@@ -222,9 +211,9 @@ private fun BudgetRow(
                         contentAlignment = Alignment.Center
                     ) { Text(icon, fontSize = 16.sp) }
                     Spacer(Modifier.width(12.dp))
-                    Text(title, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    Text(title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = cs.onSurface)
                 }
-                Text(amount, color = Color(0xFF7B8090), fontSize = 14.sp)
+                Text(amount, color = cs.onSurfaceVariant, fontSize = 14.sp)
             }
             Spacer(Modifier.height(12.dp))
             Box(
@@ -232,7 +221,7 @@ private fun BudgetRow(
                     .fillMaxWidth()
                     .height(8.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(Color(0xFFE5E7EB))
+                    .background(cs.surfaceVariant)
             ) {
                 Box(
                     Modifier
@@ -243,7 +232,7 @@ private fun BudgetRow(
                 )
             }
             Spacer(Modifier.height(8.dp))
-            Text("${(progress * 100).toInt()}% đã sử dụng", color = Color(0xFF7B8090), fontSize = 12.sp)
+            Text("${(progress * 100).toInt()}% đã sử dụng", color = cs.onSurfaceVariant, fontSize = 12.sp)
         }
     }
 }
@@ -258,7 +247,6 @@ private fun parseTotalM(amount: String): Double {
     return parseM(second)
 }
 
-// "2.1M" hoặc "2,1M" -> 2.1
 private fun parseM(text: String): Double {
     if (text.isEmpty()) return 0.0
     val cleaned = text.lowercase()
@@ -267,7 +255,6 @@ private fun parseM(text: String): Double {
     return cleaned.toDoubleOrNull() ?: 0.0
 }
 
-// 7.0 -> "7.0M"
 private fun formatM(v: Double): String {
     val r = kotlin.math.round(v * 10.0) / 10.0
     return if (r % 1.0 == 0.0) "${r.toInt()}M" else String.format(java.util.Locale.US, "%.1fM", r)

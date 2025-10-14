@@ -1,38 +1,62 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+package com.example.test.ui.components
 
-package com.example.test.ui.components.header
-
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontWeight
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TranslucentHeader(
+fun AppHeader(
+    title: String? = null,
+    showBack: Boolean = true,
+    onBack: () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
+    containerColor: Color = MaterialTheme.colorScheme.surface,
+    containerBrush: Brush? = null,
+    containerAlpha: Float = 1f,
+    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     modifier: Modifier = Modifier,
-    height: Dp = 36.dp,
-    containerColor: Color = Color(0xFFD9D9D9).copy(alpha = 0.6f),
+    showDivider: Boolean = false,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    windowInsets: WindowInsets = WindowInsets(0),
-    navigationIcon: @Composable () -> Unit = {},
-    title: @Composable () -> Unit = {},
-    actions: @Composable RowScope.() -> Unit = {}
+    backContentDescription: String = "Quay lại",
 ) {
-    TopAppBar(
-        modifier = modifier.then(Modifier.height(height)),
-        navigationIcon = navigationIcon,
-        title = title,
-        actions = actions,
-        scrollBehavior = scrollBehavior,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = containerColor,
-            scrolledContainerColor = containerColor
-        ),
-        windowInsets = windowInsets
-    )
+    Column(modifier) {
+        Box {
+            Box(
+                Modifier
+                    .matchParentSize()
+                    .graphicsLayer { alpha = containerAlpha }
+                    .background(containerBrush ?: SolidColor(containerColor))
+            )
+            CenterAlignedTopAppBar(
+                title = { title?.let { Text(it, fontWeight = FontWeight.SemiBold) } },
+                navigationIcon = {
+                    if (showBack) {
+                        IconButton(onClick = onBack) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                contentDescription = backContentDescription
+                            )
+                        }
+                    }
+                },
+                actions = actions,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.Transparent
+                ),
+                windowInsets = windowInsets,
+                scrollBehavior = scrollBehavior
+            )
+        }
+        if (showDivider) Divider()
+    }
 }

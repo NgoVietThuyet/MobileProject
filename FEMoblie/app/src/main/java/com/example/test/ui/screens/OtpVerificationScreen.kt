@@ -2,7 +2,6 @@ package com.example.test.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +10,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
 import com.example.test.ui.components.AuthContainer
+import com.example.test.ui.theme.AppGradient
 import kotlinx.coroutines.delay
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
+
 @Composable
 fun OtpVerificationScreen(
     phoneNumber: String = "+84090808080",
@@ -31,9 +31,9 @@ fun OtpVerificationScreen(
     onVerify: (String) -> Unit = {},
     onResend: () -> Unit = {}
 ) {
+    val scheme = MaterialTheme.colorScheme
     var otp by remember { mutableStateOf(List(6) { "" }) }
     var counter by remember { mutableStateOf(60) }
-
     val focusRequesters = List(6) { FocusRequester() }
 
     LaunchedEffect(counter) {
@@ -47,14 +47,13 @@ fun OtpVerificationScreen(
         iconRes = R.drawable.ic_shield,
         title = "Xác thực OTP",
         subtitle = "Nhập mã xác thực",
-        onBack = onBack,
-        gradientColors = listOf(Color(0xFF4C80FF), Color(0xFF3DDC84))
+        onBack = onBack
     ) {
-
         Surface(
             shape = RoundedCornerShape(20.dp),
-            border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
-            color = Color.White,
+            border = BorderStroke(1.dp, scheme.outlineVariant),
+            color = scheme.surface,
+            tonalElevation = 2.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
@@ -62,9 +61,16 @@ fun OtpVerificationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text("Mã đã được gửi đến $phoneNumber", color = Color.Gray, fontSize = 14.sp)
-
-                Text("Mã xác thực 6 số", color = Color.Gray, fontSize = 14.sp)
+                Text(
+                    "Mã đã được gửi đến $phoneNumber",
+                    color = scheme.onSurfaceVariant,
+                    fontSize = 14.sp
+                )
+                Text(
+                    "Mã xác thực 6 số",
+                    color = scheme.onSurfaceVariant,
+                    fontSize = 14.sp
+                )
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -78,40 +84,31 @@ fun OtpVerificationScreen(
                                     val newOtp = otp.toMutableList()
                                     newOtp[index] = it
                                     otp = newOtp
-
-                                    if (it.isNotEmpty() && index < 5) {
-                                        focusRequesters[index + 1].requestFocus()
-                                    }
+                                    if (it.isNotEmpty() && index < 5) focusRequesters[index + 1].requestFocus()
                                 }
-                                if (it.isEmpty() && index > 0) {
-                                    focusRequesters[index - 1].requestFocus()
-                                }
+                                if (it.isEmpty() && index > 0) focusRequesters[index - 1].requestFocus()
                             },
                             modifier = Modifier
                                 .width(48.dp)
                                 .height(56.dp)
-                                .focusRequester(focusRequesters[index])
-                                .border(
-                                    width = 1.dp,
-                                    color = Color(0xFFD9D9D9),
-                                    shape = RoundedCornerShape(8.dp)
-                                ),
+                                .focusRequester(focusRequesters[index]),
                             singleLine = true,
                             textStyle = TextStyle(
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.Black
+                                color = scheme.onSurface
                             ),
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = scheme.surfaceVariant,
+                                unfocusedContainerColor = scheme.surfaceVariant,
+                                disabledContainerColor = scheme.surfaceVariant,
+                                focusedBorderColor = scheme.primary,
+                                unfocusedBorderColor = scheme.outlineVariant,
+                                disabledBorderColor = scheme.outlineVariant,
+                                cursorColor = scheme.primary
                             ),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color(0xFFF5F5F5),
-                                unfocusedContainerColor = Color(0xFFF5F5F5),
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = Color.Black
-                            )
+                            shape = RoundedCornerShape(8.dp)
                         )
                     }
                 }
@@ -122,30 +119,29 @@ fun OtpVerificationScreen(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    contentPadding = PaddingValues()
+                    contentPadding = PaddingValues(0.dp),
+                    shape = RoundedCornerShape(24.dp)
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(
-                                brush = Brush.horizontalGradient(
-                                    listOf(Color(0xFF4C80FF), Color(0xFF3DDC84))
-                                ),
+                                brush = AppGradient.BluePurple,
                                 shape = RoundedCornerShape(24.dp)
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Xác thực", color = Color.White, fontSize = 16.sp)
+                        Text("Xác thực", color = scheme.onPrimary, fontSize = 16.sp)
                     }
                 }
 
                 if (counter > 0) {
-                    Text("Không nhận được mã?", color = Color.Gray, fontSize = 14.sp)
-                    Text("Gửi lại sau ${counter}s", color = Color.Black, fontSize = 14.sp)
+                    Text("Không nhận được mã?", color = scheme.onSurfaceVariant, fontSize = 14.sp)
+                    Text("Gửi lại sau ${counter}s", color = scheme.onSurface, fontSize = 14.sp)
                 } else {
                     Text(
                         "Gửi lại mã",
-                        color = Color(0xFF1877F2),
+                        color = scheme.primary,
                         fontSize = 14.sp,
                         modifier = Modifier.clickable {
                             counter = 60
@@ -156,7 +152,8 @@ fun OtpVerificationScreen(
 
                 Surface(
                     shape = RoundedCornerShape(12.dp),
-                    color = Color(0xFFE6F0FF),
+                    color = scheme.secondaryContainer,
+                    tonalElevation = 1.dp,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -166,13 +163,13 @@ fun OtpVerificationScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_shield),
                             contentDescription = "Warning",
-                            tint = Color(0xFF1877F2)
+                            tint = scheme.onSecondaryContainer
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(
                             "Mã OTP có hiệu lực trong 5 phút\nVui lòng không chia sẻ mã này với bất kỳ ai",
                             fontSize = 13.sp,
-                            color = Color(0xFF1877F2)
+                            color = scheme.onSecondaryContainer
                         )
                     }
                 }

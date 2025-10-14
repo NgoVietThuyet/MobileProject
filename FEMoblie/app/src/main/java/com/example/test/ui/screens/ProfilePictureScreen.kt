@@ -8,6 +8,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -30,13 +31,14 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.test.R
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.theme.AppGradient
 import java.util.Locale
 
@@ -47,8 +49,8 @@ fun ProfilePictureScreen(
     initialInitials: String = "NA",
     initialGradientIndex: Int = 0
 ) {
+    val scheme = MaterialTheme.colorScheme
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val appBarHeight = 36.dp
 
     var selectedUri by remember { mutableStateOf<Uri?>(null) }
     var initials by remember { mutableStateOf(initialInitials) }
@@ -72,76 +74,36 @@ fun ProfilePictureScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
+            AppHeader(
+                title = "Thay ảnh đại diện",
+                showBack = true,
+                onBack = onBack,
+                actions = {
+                    SaveButton(
+                        onClick = {
+                            onSave(
+                                selectedUri,
+                                initials.take(2).uppercase(Locale.getDefault()).ifBlank { "NA" },
+                                selectedBrush
+                            )
+                        }
+                    )
+                }
             )
-        }
-    ) { pad ->
+        },
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF7F7F7))
-                .padding(
-                    start = pad.calculateStartPadding(LayoutDirection.Ltr),
-                    end = pad.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
-                    bottom = pad.calculateBottomPadding()
-                )
+                .background(scheme.background)
+                .padding(innerPadding)
         ) {
             Spacer(Modifier.height(52.dp))
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_back),
-                        contentDescription = "Quay lại",
-                        tint = Color.Unspecified
-                    )
-                }
-                Text(
-                    "Thay ảnh đại diện",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.weight(1f)
-                )
-
-                GradientButton(
-                    onClick = {
-                        onSave(
-                            selectedUri,
-                            initials.trim().uppercase(Locale.getDefault()),
-                            selectedBrush
-                        )
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_save),
-                        contentDescription = "Lưu",
-                        tint = Color.White
-                    )
-                    Spacer(Modifier.width(6.dp))
-                    Text("Lưu", color = Color.White)
-                }
-            }
-
-            Spacer(Modifier.height(16.dp))
-
             Surface(
                 shape = RoundedCornerShape(20.dp),
-                border = BorderStroke(1.dp, Color(0xFFE5E7EB)),
-                color = Color.White,
+                border = BorderStroke(1.dp, scheme.outlineVariant),
+                color = scheme.surface,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
@@ -175,7 +137,7 @@ fun ProfilePictureScreen(
                                 )
                                 Text(
                                     initials.take(2).uppercase(Locale.getDefault()).ifBlank { "NA" },
-                                    color = Color.White,
+                                    color = scheme.onPrimary,
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -188,8 +150,8 @@ fun ProfilePictureScreen(
                             Surface(
                                 onClick = { menuExpanded = true },
                                 shape = CircleShape,
-                                color = Color(0xFFD9D9D9),
-                                border = BorderStroke(1.dp, Color(0xFFE5E7EB)),
+                                color = scheme.surfaceVariant,
+                                border = BorderStroke(1.dp, scheme.outlineVariant),
                                 shadowElevation = 0.dp,
                                 modifier = Modifier.size(28.dp)
                             ) {
@@ -197,7 +159,7 @@ fun ProfilePictureScreen(
                                     Icon(
                                         painter = painterResource(R.drawable.ic_camera),
                                         contentDescription = "Sửa ảnh",
-                                        tint = Color(0xFF111827),
+                                        tint = scheme.onSurface,
                                         modifier = Modifier.size(16.dp)
                                     )
                                 }
@@ -228,7 +190,7 @@ fun ProfilePictureScreen(
                     }
 
                     Spacer(Modifier.height(12.dp))
-                    Text("Chọn ảnh đại diện mới", color = Color(0xFF6B7280))
+                    Text("Chọn ảnh đại diện mới", color = scheme.onSurfaceVariant)
                 }
             }
 
@@ -250,7 +212,7 @@ fun ProfilePictureScreen(
             Spacer(Modifier.height(12.dp))
 
             SectionCard(title = "Chọn 2 chữ") {
-                Text("Nhập chữ cái (tối đa 2 ký tự)", color = Color(0xFF6B7280), fontSize = 12.sp)
+                Text("Nhập chữ cái (tối đa 2 ký tự)", color = scheme.onSurfaceVariant, fontSize = 12.sp)
                 Spacer(Modifier.height(8.dp))
                 OutlinedTextField(
                     value = initials,
@@ -258,7 +220,16 @@ fun ProfilePictureScreen(
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = scheme.surface,
+                        unfocusedContainerColor = scheme.surface,
+                        disabledContainerColor = scheme.surface,
+                        focusedBorderColor = scheme.primary,
+                        unfocusedBorderColor = scheme.outlineVariant,
+                        disabledBorderColor = scheme.outlineVariant,
+                        cursorColor = scheme.primary
+                    )
                 )
             }
 
@@ -296,46 +267,54 @@ fun ProfilePictureScreen(
     }
 }
 
-// helpers //
-
 @Composable
-private fun GradientButton(
+private fun SaveButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RowScope.() -> Unit
+    modifier: Modifier = Modifier
 ) {
+    val scheme = MaterialTheme.colorScheme
     val shape = RoundedCornerShape(999.dp)
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        shape = shape,
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-        contentPadding = PaddingValues(),
-        elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp)
+    Box(
+        modifier = modifier
+            .height(30.dp)
+            .clip(shape)
+            .background(brush = AppGradient.BluePurple, shape = shape)
+            .border(0.75.dp, scheme.outlineVariant.copy(alpha = 0.6f), shape)
+            .clickable(role = Role.Button, onClick = onClick)
+            .padding(horizontal = 8.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Row(
-            modifier = Modifier
-                .clip(shape)
-                .background(brush = AppGradient.BluePurple)
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            content = content
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painterResource(R.drawable.ic_save),
+                contentDescription = "Lưu",
+                tint = scheme.onPrimary,
+                modifier = Modifier.size(12.dp)
+            )
+            Spacer(Modifier.width(4.dp))
+            Text(
+                "Lưu",
+                color = scheme.onPrimary,
+                style = MaterialTheme.typography.labelSmall,
+                lineHeight = 12.sp
+            )
+        }
     }
 }
 
 @Composable
 private fun SectionCard(title: String, content: @Composable ColumnScope.() -> Unit) {
+    val scheme = MaterialTheme.colorScheme
     Surface(
         shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(1.dp, Color(0xFFE5E7EB)),
-        color = Color.White,
+        border = BorderStroke(1.dp, scheme.outlineVariant),
+        color = scheme.surface,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(title, fontWeight = FontWeight.SemiBold)
+            Text(title, fontWeight = FontWeight.SemiBold, color = scheme.onSurface)
             Spacer(Modifier.height(12.dp))
             content()
         }
@@ -344,6 +323,7 @@ private fun SectionCard(title: String, content: @Composable ColumnScope.() -> Un
 
 @Composable
 private fun DashedUploadBox(modifier: Modifier = Modifier) {
+    val scheme = MaterialTheme.colorScheme
     Box(
         modifier = modifier
             .padding(horizontal = 8.dp)
@@ -354,7 +334,7 @@ private fun DashedUploadBox(modifier: Modifier = Modifier) {
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(16f, 12f), 0f)
                 )
                 drawRoundRect(
-                    color = Color(0xFFCBD5E1),
+                    color = scheme.outlineVariant,
                     style = stroke,
                     cornerRadius = androidx.compose.ui.geometry.CornerRadius(16.dp.toPx(), 16.dp.toPx())
                 )
@@ -362,16 +342,17 @@ private fun DashedUploadBox(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(Icons.Outlined.CloudUpload, contentDescription = null, tint = Color(0xFF64748B))
+            Icon(Icons.Outlined.CloudUpload, contentDescription = null, tint = scheme.onSurfaceVariant)
             Spacer(Modifier.height(6.dp))
-            Text("Nhấn để chọn ảnh", color = Color(0xFF64748B), fontSize = 13.sp)
+            Text("Nhấn để chọn ảnh", color = scheme.onSurfaceVariant, fontSize = 13.sp)
         }
     }
 }
 
 @Composable
 private fun GradientDot(brush: Brush, selected: Boolean, onClick: () -> Unit) {
-    val border = if (selected) BorderStroke(2.dp, Color(0xFF111827)) else BorderStroke(1.dp, Color(0xFFE5E7EB))
+    val scheme = MaterialTheme.colorScheme
+    val border = if (selected) BorderStroke(2.dp, scheme.onSurface) else BorderStroke(1.dp, scheme.outlineVariant)
     Surface(
         onClick = onClick,
         shape = CircleShape,

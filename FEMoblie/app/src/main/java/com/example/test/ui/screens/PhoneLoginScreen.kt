@@ -21,6 +21,7 @@ fun PhoneLoginScreen(
     onBack: () -> Unit = {},
     onRequestOtp: (String) -> Unit = {}
 ) {
+    val scheme = MaterialTheme.colorScheme
     var phone by remember { mutableStateOf("") }
 
     AuthContainer(
@@ -29,18 +30,17 @@ fun PhoneLoginScreen(
         subtitle = "Nhập số điện thoại",
         onBack = onBack
     ) {
-        // Container form
         Surface(
             shape = RoundedCornerShape(20.dp),
-            border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
-            color = Color.White,
+            border = BorderStroke(1.dp, scheme.outlineVariant),
+            color = scheme.surface,
+            tonalElevation = 2.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // TextField nhập SĐT
                 OutlinedTextField(
                     value = phone,
                     onValueChange = { phone = it },
@@ -48,32 +48,35 @@ fun PhoneLoginScreen(
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 56.dp),
                     shape = RoundedCornerShape(12.dp),
-                    placeholder = { Text("Số điện thoại", color = Color.DarkGray, fontSize = 14.sp) },
+                    placeholder = {
+                        Text("Số điện thoại", color = scheme.onSurfaceVariant, fontSize = 14.sp)
+                    },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_phone),
-                            contentDescription = "Phone"
+                            contentDescription = "Phone",
+                            tint = scheme.onSurfaceVariant
                         )
                     },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFFD9D9D9),
-                        unfocusedContainerColor = Color(0xFFD9D9D9),
-                        disabledContainerColor = Color(0xFFD9D9D9),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        cursorColor = Color.Black
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = scheme.surfaceVariant,
+                        unfocusedContainerColor = scheme.surfaceVariant,
+                        disabledContainerColor = scheme.surfaceVariant,
+                        focusedBorderColor = scheme.primary,
+                        unfocusedBorderColor = scheme.outlineVariant,
+                        disabledBorderColor = scheme.outlineVariant,
+                        cursorColor = scheme.primary
                     )
                 )
 
-                // Button nhận mã xác thực
                 Button(
-                    onClick = { onRequestOtp(phone) },
+                    onClick = { onRequestOtp(phone.trim()) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    contentPadding = PaddingValues()
+                    contentPadding = PaddingValues(0.dp),
+                    shape = RoundedCornerShape(24.dp)
                 ) {
                     Box(
                         modifier = Modifier
@@ -84,7 +87,7 @@ fun PhoneLoginScreen(
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Nhận mã xác thực", color = Color.White, fontSize = 16.sp)
+                        Text("Nhận mã xác thực", color = scheme.onPrimary, fontSize = 16.sp)
                     }
                 }
             }

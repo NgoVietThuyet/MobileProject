@@ -7,6 +7,7 @@ import java.util.Date
 import java.util.Locale
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,12 +30,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.theme.AppGradient
 
 data class PersonalInfo(
@@ -62,8 +65,8 @@ fun PersonalInfoScreen(
     totalTx: Int = 127,
     activeDays: Int = 45
 ) {
+    val scheme = MaterialTheme.colorScheme
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val appBarHeight = 36.dp
 
     var fullName by rememberSaveable { mutableStateOf(initial.fullName) }
     var email by rememberSaveable { mutableStateOf(initial.email) }
@@ -79,51 +82,12 @@ fun PersonalInfoScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
-            )
-        }
-    ) { pad ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFFF7F7F7))
-                .padding(
-                    start = pad.calculateStartPadding(LayoutDirection.Ltr),
-                    end = pad.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
-                    bottom = pad.calculateBottomPadding()
-                ),
-            contentPadding = PaddingValues(20.dp)
-        ) {
-            item { Spacer(Modifier.height(52.dp)) }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back),
-                            contentDescription = "Quay lại",
-                            tint = Color.Unspecified
-                        )
-                    }
-                    Text(
-                        "Thay đổi thông tin cá nhân",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.weight(1f)
-                    )
-                    GradientButton(
+            AppHeader(
+                title = "Chỉnh sửa thông tin cá nhân",
+                showBack = true,
+                onBack = onBack,
+                actions = {
+                    SaveButton(
                         onClick = {
                             onSave(
                                 PersonalInfo(
@@ -131,19 +95,22 @@ fun PersonalInfoScreen(
                                 )
                             )
                         }
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_save),
-                            contentDescription = "Lưu",
-                            tint = Color.Unspecified
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        Text("Lưu", color = Color.White)
-                    }
+                    )
                 }
-                Spacer(Modifier.height(12.dp))
-            }
-
+            )
+        },
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(scheme.background),
+            contentPadding = PaddingValues(
+                start = innerPadding.calculateStartPadding(LayoutDirection.Ltr) + 20.dp,
+                end = innerPadding.calculateEndPadding(LayoutDirection.Ltr) + 20.dp,
+                top = innerPadding.calculateTopPadding() + 20.dp,
+                bottom = innerPadding.calculateBottomPadding() + 20.dp
+            )
+        ) {
             item {
                 ProfileCard(
                     initials = initialsFromName(fullName),
@@ -156,7 +123,7 @@ fun PersonalInfoScreen(
             }
 
             item {
-                Text("Thông tin chi tiết", fontWeight = FontWeight.SemiBold)
+                Text("Thông tin chi tiết", fontWeight = FontWeight.SemiBold, color = scheme.onSurface)
                 Spacer(Modifier.height(12.dp))
             }
 
@@ -164,8 +131,8 @@ fun PersonalInfoScreen(
                 OutlinedCard(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                    colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+                    border = BorderStroke(1.dp, scheme.outlineVariant)
                 ) {
                     Column(Modifier.padding(vertical = 6.dp)) {
                         InfoFieldRow(
@@ -174,7 +141,7 @@ fun PersonalInfoScreen(
                             value = fullName,
                             onValueChange = { fullName = it }
                         )
-                        Divider(color = Color(0xFFE5E7EB))
+                        HorizontalDivider(color = scheme.outlineVariant)
                         InfoFieldRow(
                             icon = Icons.Outlined.Email,
                             placeholder = "Email",
@@ -182,7 +149,7 @@ fun PersonalInfoScreen(
                             onValueChange = { email = it },
                             keyboard = KeyboardOptions(keyboardType = KeyboardType.Email)
                         )
-                        Divider(color = Color(0xFFE5E7EB))
+                        HorizontalDivider(color = scheme.outlineVariant)
                         InfoFieldRow(
                             icon = Icons.Outlined.Phone,
                             placeholder = "Số điện thoại",
@@ -190,14 +157,14 @@ fun PersonalInfoScreen(
                             onValueChange = { phone = it.filter(Char::isDigit) },
                             keyboard = KeyboardOptions(keyboardType = KeyboardType.Phone)
                         )
-                        Divider(color = Color(0xFFE5E7EB))
+                        HorizontalDivider(color = scheme.outlineVariant)
                         InfoFieldRow(
                             icon = Icons.Outlined.Place,
                             placeholder = "Địa chỉ",
                             value = address,
                             onValueChange = { address = it }
                         )
-                        Divider(color = Color(0xFFE5E7EB))
+                        HorizontalDivider(color = scheme.outlineVariant)
                         InfoFieldRow(
                             icon = Icons.Outlined.CalendarMonth,
                             placeholder = "Ngày sinh",
@@ -206,7 +173,7 @@ fun PersonalInfoScreen(
                             readOnly = true,
                             onClick = { showDatePicker = true }
                         )
-                        Divider(color = Color(0xFFE5E7EB))
+                        HorizontalDivider(color = scheme.outlineVariant)
                         InfoFieldRow(
                             icon = Icons.Outlined.Work,
                             placeholder = "Nghề nghiệp",
@@ -233,33 +200,41 @@ fun PersonalInfoScreen(
     }
 }
 
-// helpers //
-
 @Composable
-private fun GradientButton(
+private fun SaveButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RowScope.() -> Unit
+    modifier: Modifier = Modifier
 ) {
     val shape = RoundedCornerShape(999.dp)
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        shape = shape,
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-        contentPadding = PaddingValues(),
-        elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp, 0.dp)
+    Box(
+        modifier = modifier
+            .height(30.dp)
+            .clip(shape)
+            .background(brush = AppGradient.BluePurple, shape = shape)
+            .border(0.75.dp, Color.White.copy(alpha = 0.6f), shape)
+            .clickable(role = Role.Button, onClick = onClick)
+            .padding(horizontal = 8.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Row(
-            modifier = Modifier
-                .clip(shape)
-                .background(brush = AppGradient.BluePurple)
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            content = content
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painterResource(R.drawable.ic_save),
+                contentDescription = "Lưu",
+                tint = Color.White,
+                modifier = Modifier.size(12.dp)
+            )
+            Spacer(Modifier.width(4.dp))
+            Text(
+                "Lưu",
+                color = Color.White,
+                style = MaterialTheme.typography.labelSmall,
+                lineHeight = 12.sp
+            )
+        }
     }
 }
+
+// helpers
 
 @Composable
 private fun ProfileCard(
@@ -269,11 +244,12 @@ private fun ProfileCard(
     totalTx: Int,
     activeDays: Int
 ) {
+    val scheme = MaterialTheme.colorScheme
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+        colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+        border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
@@ -283,11 +259,11 @@ private fun ProfileCard(
                     .background(brush = AppGradient.BluePurple),
                 contentAlignment = Alignment.Center
             ) {
-                Text(initials, color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Text("".plus(initials), color = scheme.onPrimary, fontSize = 22.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(12.dp))
-            Text(name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-            Text(job, color = Color(0xFF6B7280), fontSize = 14.sp)
+            Text(name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = scheme.onSurface)
+            Text(job, color = scheme.onSurfaceVariant, fontSize = 14.sp)
             Spacer(Modifier.height(14.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 StatItem(value = totalTx.toString(), label = "Giao dịch")
@@ -299,9 +275,10 @@ private fun ProfileCard(
 
 @Composable
 private fun StatItem(value: String, label: String) {
+    val scheme = MaterialTheme.colorScheme
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF2563EB))
-        Text(label, color = Color(0xFF6B7280), fontSize = 12.sp)
+        Text(value, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = scheme.primary)
+        Text(label, color = scheme.onSurfaceVariant, fontSize = 12.sp)
     }
 }
 
@@ -315,6 +292,7 @@ private fun InfoFieldRow(
     readOnly: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
+    val scheme = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -325,10 +303,10 @@ private fun InfoFieldRow(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFFF3F4F6)),
+                .background(scheme.surfaceVariant),
             contentAlignment = Alignment.Center
         ) {
-            Icon(icon, contentDescription = null, tint = Color(0xFF6B7280))
+            Icon(icon, contentDescription = null, tint = scheme.onSurfaceVariant)
         }
         Spacer(Modifier.width(12.dp))
         OutlinedTextField(
@@ -337,11 +315,20 @@ private fun InfoFieldRow(
             modifier = Modifier
                 .weight(1f)
                 .let { m -> if (onClick != null) m.clickable { onClick() } else m },
-            placeholder = { Text(placeholder) },
+            placeholder = { Text(placeholder, color = scheme.onSurfaceVariant) },
             singleLine = true,
             readOnly = readOnly,
             keyboardOptions = keyboard,
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = scheme.surface,
+                unfocusedContainerColor = scheme.surface,
+                disabledContainerColor = scheme.surface,
+                focusedBorderColor = scheme.primary,
+                unfocusedBorderColor = scheme.outlineVariant,
+                disabledBorderColor = scheme.outlineVariant,
+                cursorColor = scheme.primary
+            )
         )
     }
 }

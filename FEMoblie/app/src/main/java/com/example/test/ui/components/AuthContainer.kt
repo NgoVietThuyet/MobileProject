@@ -5,17 +5,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.statusBarsPadding
 import com.example.test.R
+import com.example.test.ui.theme.AppGradient
 
 @Composable
 fun AuthContainer(
@@ -24,44 +26,51 @@ fun AuthContainer(
     subtitle: String,
     functionTitle: String? = null,
     onBack: (() -> Unit)? = null,
-    gradientColors: List<Color> = listOf(Color(0xFF4C80FF), Color(0xFFA847FF)),
+    gradientColors: List<Color>? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    val scheme = MaterialTheme.colorScheme
+    val topBarHeight = 64.dp
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(scheme.background)
+            .statusBarsPadding()
     ) {
-        // Header
+
+        // Top bar luôn chiếm chỗ
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(36.dp)
-                .background(Color(0xFFD9D9D9))
-        )
-
-        // Title chức năng
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp, top = 16.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .height(topBarHeight)
         ) {
-            if (onBack != null) {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
-                        contentDescription = "Back"
-                    )
+            if (onBack != null || functionTitle != null) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (onBack != null) {
+                        IconButton(onClick = onBack) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_back),
+                                contentDescription = "Back",
+                                tint = scheme.onBackground
+                            )
+                        }
+                    }
+                    if (functionTitle != null) {
+                        Spacer(Modifier.width(4.dp))
+                        Text(
+                            functionTitle,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = scheme.onBackground
+                        )
+                    }
                 }
-            }
-            if (functionTitle != null) {
-                Spacer(Modifier.width(4.dp))
-                Text(
-                    functionTitle,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
             }
         }
 
@@ -72,16 +81,13 @@ fun AuthContainer(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .size(100.dp)
-                .background(
-                    brush = Brush.verticalGradient(gradientColors),
-                    shape = CircleShape
-                ),
+                .background(AppGradient.BluePurple, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 painter = painterResource(id = iconRes),
                 contentDescription = "Icon",
-                tint = Color.White,
+                tint = scheme.onPrimary,
                 modifier = Modifier.size(50.dp)
             )
         }
@@ -89,9 +95,20 @@ fun AuthContainer(
         Spacer(Modifier.height(48.dp))
 
         // Title & subtitle
-        Text(title, fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterHorizontally))
+        Text(
+            title,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = scheme.onBackground,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
         Spacer(Modifier.height(4.dp))
-        Text(subtitle, fontSize = 16.sp, color = Color.Gray, modifier = Modifier.align(Alignment.CenterHorizontally))
+        Text(
+            subtitle,
+            fontSize = 16.sp,
+            color = scheme.onSurfaceVariant,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
 
         Spacer(Modifier.height(80.dp))
 

@@ -24,9 +24,9 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
 import com.example.test.ui.mock.MockData
@@ -49,7 +49,6 @@ fun ReportScreen(
     onSetting: () -> Unit = {},
     onCamera: () -> Unit = {}
 ) {
-    val appBarHeight = 36.dp
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     var period by remember { mutableStateOf(1) }
@@ -78,18 +77,23 @@ fun ReportScreen(
         barsExpense = days.map { sumFor(it, false) }
     }
 
-    val pie: List<ReportSlice> = remember {
+    val scheme = MaterialTheme.colorScheme
+    val pie: List<ReportSlice> = remember(
+        scheme.primary, scheme.secondary, scheme.tertiary,
+        scheme.inversePrimary, scheme.error, scheme.outline
+    ) {
+        val palette = listOf(
+            scheme.primary, scheme.secondary, scheme.tertiary,
+            scheme.inversePrimary, scheme.error, scheme.outline
+        )
         val byCat = MockData.recentTransactions
             .filter { !it.isPositive }
             .groupBy { it.subtitle.substringBefore(" • ").trim() }
             .mapValues { e -> e.value.sumOf { it.amount.filter(Char::isDigit).toLongOrNull() ?: 0L } }
-        val colors = listOf(
-            Color(0xFF22C55E), Color(0xFF60A5FA), Color(0xFFF59E0B),
-            Color(0xFFFB7185), Color(0xFFA78BFA), Color(0xFF94A3B8)
-        )
-        byCat.entries.sortedByDescending { it.value }.mapIndexed { i, (k, v) ->
-            ReportSlice(k, v / 1_000_000f, colors[i % colors.size])
-        }
+        byCat.entries.sortedByDescending { it.value }
+            .mapIndexed { i, (k, v) ->
+                ReportSlice(k, v / 1_000_000f, palette[i % palette.size])
+            }
     }
 
     val weekLabels: List<String>
@@ -111,15 +115,9 @@ fun ReportScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
+            AppHeader(
+                title = "Báo cáo",
+                showBack = false,
             )
         },
         bottomBar = {
@@ -132,67 +130,76 @@ fun ReportScreen(
                 onSetting = onSetting
             )
         }
-    ) { pad ->
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(
-                    start = pad.calculateStartPadding(LayoutDirection.Ltr),
-                    end = pad.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
-                    bottom = pad.calculateBottomPadding()
-                ),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 20.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
+            contentPadding = PaddingValues(top = 24.dp, bottom = 40.dp)
         ) {
-            item { Spacer(Modifier.height(appBarHeight + 12.dp)) }
-
             item {
-                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Text("Báo cáo tài chính", fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
-                    Spacer(Modifier.weight(1f))
-                    IconButton(onClick = { /* filter */ }) { Icon(Icons.Outlined.FilterList, null) }
-                    IconButton(onClick = { /* export */ }) { Icon(Icons.Outlined.IosShare, null) }
-                }
-                Spacer(Modifier.height(8.dp))
-            }
-
-            item {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SegTab("Tuần", period == 0) { period = 0 }
-                    SegTab("Tháng", period == 1) { period = 1 }
-                    SegTab("Năm", period == 2) { period = 2 }
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    SegTab(
+                        "Tuần",
+                        period == 0,
+                        selectedColor = scheme.secondary,
+                        selectedLabel = scheme.onSecondary
+                    ) { period = 0 }
+                    SegTab(
+                        "Tháng",
+                        period == 1,
+                        selectedColor = scheme.secondary,
+                        selectedLabel = scheme.onSecondary
+                    ) { period = 1 }
+                    SegTab(
+                        "Năm",
+                        period == 2,
+                        selectedColor = scheme.secondary,
+                        selectedLabel = scheme.onSecondary
+                    ) { period = 2 }
                 }
                 Spacer(Modifier.height(12.dp))
             }
 
             item {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     KpiCard(
                         title = "Thu nhập",
                         value = "+30M đ",
-                        valueColor = Color(0xFF16A34A),
+                        valueColor = scheme.tertiary,
                         icon = Icons.Outlined.TrendingUp,
-                        iconTint = Color(0xFF16A34A),
-                        iconBg = Color(0xFF16A34A).copy(alpha = 0.12f),
+                        iconTint = scheme.tertiary,
+                        iconBg = scheme.tertiary.copy(alpha = 0.12f),
                         modifier = Modifier.weight(1f)
                     )
                     KpiCard(
                         title = "Chi tiêu",
                         value = "-25M đ",
-                        valueColor = Color(0xFFDC2626),
+                        valueColor = scheme.error,
                         icon = Icons.Outlined.TrendingDown,
-                        iconTint = Color(0xFFDC2626),
-                        iconBg = Color(0xFFDC2626).copy(alpha = 0.12f),
+                        iconTint = scheme.error,
+                        iconBg = scheme.error.copy(alpha = 0.12f),
                         modifier = Modifier.weight(1f)
                     )
                     KpiCard(
                         title = "Tiết kiệm",
                         value = "+5M đ",
-                        valueColor = Color(0xFF2563EB),
+                        valueColor = scheme.primary,
                         icon = Icons.Outlined.Savings,
-                        iconTint = Color(0xFF2563EB),
-                        iconBg = Color(0xFF2563EB).copy(alpha = 0.12f),
+                        iconTint = scheme.primary,
+                        iconBg = scheme.primary.copy(alpha = 0.12f),
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -200,7 +207,12 @@ fun ReportScreen(
             }
 
             item {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     SegTab("Tổng quan", tab == 0) { tab = 0 }
                     SegTab("Danh mục", tab == 1) { tab = 1 }
                     SegTab("Xu hướng", tab == 2) { tab = 2 }
@@ -212,12 +224,17 @@ fun ReportScreen(
                 OutlinedCard(
                     shape = RoundedCornerShape(16.dp),
                     border = CardDefaults.outlinedCardBorder(),
-                    colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-                    modifier = Modifier.fillMaxWidth()
+                    colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
                 ) {
                     when (tab) {
                         0 -> {
-                            val maxV = max(barsIncome.maxOrNull() ?: 0f, barsExpense.maxOrNull() ?: 0f)
+                            val maxV = max(
+                                barsIncome.maxOrNull() ?: 0f,
+                                barsExpense.maxOrNull() ?: 0f
+                            )
                             val ticks = yTicks(maxV)
                             ChartWithAxes(
                                 yTicks = ticks,
@@ -252,13 +269,33 @@ fun ReportScreen(
                 OutlinedCard(
                     shape = RoundedCornerShape(16.dp),
                     border = CardDefaults.outlinedCardBorder(),
-                    colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-                    modifier = Modifier.fillMaxWidth()
+                    colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
                 ) {
-                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        InfoChip(Icons.Outlined.TrendingUp, "Bạn đã tiết kiệm được 18% so với tháng trước", Color(0xFFEFFDF4), Color(0xFF16A34A))
-                        InfoChip(Icons.Outlined.Event, "Chi tiêu nhiều nhất vào thứ 6 và chủ nhật", Color(0xFFF2F6FF), Color(0xFF2563EB))
-                        InfoChip(Icons.Outlined.Paid, "Danh mục “Ăn uống” chiếm 35% tổng chi tiêu", Color(0xFFFFF7ED), Color(0xFFF59E0B))
+                    Column(
+                        Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        InfoChip(
+                            Icons.Outlined.TrendingUp,
+                            "Bạn đã tiết kiệm được 18% so với tháng trước",
+                            scheme.primaryContainer,
+                            scheme.primary
+                        )
+                        InfoChip(
+                            Icons.Outlined.Event,
+                            "Chi tiêu nhiều nhất vào thứ 6 và chủ nhật",
+                            scheme.secondaryContainer,
+                            scheme.secondary
+                        )
+                        InfoChip(
+                            Icons.Outlined.Paid,
+                            "Danh mục “Ăn uống” chiếm 35% tổng chi tiêu",
+                            scheme.tertiaryContainer,
+                            scheme.tertiary
+                        )
                     }
                 }
                 Spacer(Modifier.height(16.dp))
@@ -268,17 +305,25 @@ fun ReportScreen(
                 OutlinedCard(
                     shape = RoundedCornerShape(16.dp),
                     border = CardDefaults.outlinedCardBorder(),
-                    colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-                    modifier = Modifier.fillMaxWidth()
+                    colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
                 ) {
                     Column(Modifier.padding(16.dp)) {
-                        Text("Xuất báo cáo", fontWeight = FontWeight.Medium)
+                        Text("Xuất báo cáo", fontWeight = FontWeight.Medium, color = scheme.onSurface)
                         Spacer(Modifier.height(12.dp))
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
                             OutlinedButton(
                                 onClick = onExportPdf,
-                                modifier = Modifier.weight(1f).height(48.dp),
-                                shape = RoundedCornerShape(12.dp)
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                border = BorderStroke(1.dp, scheme.outlineVariant)
                             ) {
                                 Icon(Icons.Outlined.FileDownload, null)
                                 Spacer(Modifier.width(8.dp))
@@ -286,8 +331,11 @@ fun ReportScreen(
                             }
                             OutlinedButton(
                                 onClick = onExportExcel,
-                                modifier = Modifier.weight(1f).height(48.dp),
-                                shape = RoundedCornerShape(12.dp)
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                border = BorderStroke(1.dp, scheme.outlineVariant)
                             ) {
                                 Icon(Icons.Outlined.FileDownload, null)
                                 Spacer(Modifier.width(8.dp))
@@ -324,22 +372,24 @@ private fun ChartWithAxes(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 yTicks.reversed().forEach { v ->
-                    Text("${v}M", fontSize = 10.sp, color = Color(0xFF6B7280))
+                    Text("${v}M", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
             Box(Modifier.height(h).weight(1f)) { chart() }
         }
         Spacer(Modifier.height(8.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            xLabels.forEach { Text(it, fontSize = 10.sp, color = Color(0xFF6B7280)) }
+            xLabels.forEach { Text(it, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant) }
         }
     }
 }
 
 @Composable
 private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Float) {
-    val green = Color(0xFF16A34A)
-    val red = Color(0xFFDC2626)
+    val scheme = MaterialTheme.colorScheme
+    val pos = scheme.tertiary
+    val neg = scheme.error
+    val grid = scheme.outlineVariant
     Canvas(Modifier.fillMaxSize()) {
         val n = max(income.size, expense.size).coerceAtLeast(1)
         val w = size.width
@@ -352,7 +402,7 @@ private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Flo
 
         for (i in 1 until 4) {
             val y = pad + plotH * i / 4f
-            drawLine(Color(0xFFE5E7EB), Offset(pad, y), Offset(pad + plotW, y), 1f)
+            drawLine(grid, Offset(pad, y), Offset(pad + plotW, y), 1f)
         }
 
         for (i in 0 until n) {
@@ -361,14 +411,18 @@ private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Flo
             val h1 = if (yMax > 0) (inc / yMax) * plotH else 0f
             val h2 = if (yMax > 0) (exp / yMax) * plotH else 0f
             val gx = pad + groupW * i
-            drawRect(green, topLeft = Offset(gx + barW * 0.8f, pad + plotH - h1), size = Size(barW, h1))
-            drawRect(red,   topLeft = Offset(gx + barW * 1.9f, pad + plotH - h2), size = Size(barW, h2))
+            drawRect(pos, topLeft = Offset(gx + barW * 0.8f, pad + plotH - h1), size = Size(barW, h1))
+            drawRect(neg, topLeft = Offset(gx + barW * 1.9f, pad + plotH - h2), size = Size(barW, h2))
         }
     }
 }
 
 @Composable
 private fun LineChart(pointsM: List<Float>, yMax: Float) {
+    val scheme = MaterialTheme.colorScheme
+    val line = scheme.secondary
+    val grid = scheme.outlineVariant
+    val inner = scheme.surface
     Canvas(Modifier.fillMaxSize()) {
         if (pointsM.isEmpty()) return@Canvas
         val pad = 8f
@@ -378,7 +432,7 @@ private fun LineChart(pointsM: List<Float>, yMax: Float) {
 
         for (i in 1 until 4) {
             val y = pad + h * i / 4f
-            drawLine(Color(0xFFE5E7EB), Offset(pad, y), Offset(pad + w, y), 1f)
+            drawLine(grid, Offset(pad, y), Offset(pad + w, y), 1f)
         }
 
         val path = Path()
@@ -387,12 +441,12 @@ private fun LineChart(pointsM: List<Float>, yMax: Float) {
             val y = pad + h - if (yMax > 0) (v / yMax) * h else 0f
             if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
         }
-        drawPath(path, Color(0xFF2563EB), style = Stroke(width = 4f))
-        pointsM.forEachIndexed { i, v ->
+        drawPath(path, line, style = Stroke(width = 4f))
+        pointsM.forEachIndexed { i, _ ->
             val x = pad + stepX * i
-            val y = pad + h - if (yMax > 0) (v / yMax) * h else 0f
-            drawCircle(Color(0xFF2563EB), radius = 6f, center = Offset(x, y))
-            drawCircle(Color.White, radius = 3f, center = Offset(x, y))
+            val y = pad + h - if (yMax > 0) (pointsM[i] / yMax) * h else 0f
+            drawCircle(line, radius = 6f, center = Offset(x, y))
+            drawCircle(inner, radius = 3f, center = Offset(x, y))
         }
     }
 }
@@ -400,7 +454,7 @@ private fun LineChart(pointsM: List<Float>, yMax: Float) {
 @Composable
 private fun PieChartDynamic(data: List<ReportSlice>) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Canvas(Modifier.size(140.dp)) {
@@ -424,8 +478,8 @@ private fun PieChartDynamic(data: List<ReportSlice>) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(10.dp).background(it.color, CircleShape))
                     Spacer(Modifier.width(8.dp))
-                    Text(it.label, Modifier.weight(1f))
-                    Text("${"%.1f".format(it.value)}M", color = Color(0xFF6B7280))
+                    Text(it.label, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
+                    Text("${"%.1f".format(it.value)}M", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
@@ -433,22 +487,28 @@ private fun PieChartDynamic(data: List<ReportSlice>) {
 }
 
 @Composable
-private fun SegTab(text: String, selected: Boolean, onClick: () -> Unit) {
+private fun SegTab(
+    text: String,
+    selected: Boolean,
+    selectedColor: Color = MaterialTheme.colorScheme.primary,
+    selectedLabel: Color = MaterialTheme.colorScheme.onPrimary,
+    onClick: () -> Unit
+) {
     FilterChip(
         selected = selected,
         onClick = onClick,
         label = { Text(text, fontWeight = FontWeight.Medium) },
         shape = RoundedCornerShape(12.dp),
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = Color.White,
-            labelColor = Color(0xFF111827),
-            selectedContainerColor = Color.Black,
-            selectedLabelColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface,
+            labelColor = MaterialTheme.colorScheme.onSurface,
+            selectedContainerColor = selectedColor,
+            selectedLabelColor = selectedLabel
         ),
         border = FilterChipDefaults.filterChipBorder(
             enabled = true,
             selected = selected,
-            borderColor = if (selected) Color.Transparent else Color(0xFF9CA3AF),
+            borderColor = if (selected) Color.Transparent else MaterialTheme.colorScheme.outlineVariant,
             borderWidth = if (selected) 0.dp else 1.dp
         )
     )
@@ -467,8 +527,8 @@ private fun KpiCard(
     OutlinedCard(
         modifier = modifier.height(112.dp),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFD9D9D9))
+        colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(
             modifier = Modifier
@@ -483,7 +543,7 @@ private fun KpiCard(
                     }
                 }
                 Spacer(Modifier.width(10.dp))
-                Text(title, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, maxLines = 2)
+                Text(title, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, maxLines = 2, color = MaterialTheme.colorScheme.onSurface)
             }
             Text(value, color = valueColor, fontWeight = FontWeight.Bold, fontSize = 18.sp)
         }
@@ -496,7 +556,7 @@ private fun InfoChip(icon: androidx.compose.ui.graphics.vector.ImageVector, text
         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(icon, null, tint = tint)
             Spacer(Modifier.width(8.dp))
-            Text(text, color = Color(0xFF111827))
+            Text(text, color = MaterialTheme.colorScheme.onSurface)
         }
     }
 }

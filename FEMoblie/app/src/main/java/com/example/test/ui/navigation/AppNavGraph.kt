@@ -1,36 +1,70 @@
 package com.example.test.ui.navigation
 
+import UploadResult
 import android.annotation.SuppressLint
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.*
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.example.test.ui.api.LoginReq
 import com.example.test.ui.api.SignUpRequest
 import com.example.test.ui.api.UserDto
 import com.example.test.ui.mock.TxType
 import com.example.test.ui.mock.TxUi
 import com.example.test.ui.screens.*
-import kotlinx.coroutines.launch
+import com.example.test.vm.SettingsViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.UUID
 import com.example.test.ui.mock.MockData as HomeMock
+import org.json.JSONArray
+import org.json.JSONObject
+
+private fun extractServerMessage(raw: String): String? = try {
+    val obj = JSONObject(raw)
+    obj.optString("message").takeIf { it.isNotBlank() }
+        ?: obj.optString("detail").takeIf { it.isNotBlank() }
+        ?: obj.optString("title").takeIf { it.isNotBlank() }
+        ?: run {
+            if (obj.has("errors")) {
+                val errs = obj.get("errors")
+                when (errs) {
+                    is JSONArray -> (0 until errs.length()).joinToString("; ") { errs.getString(it) }
+                    is JSONObject -> errs.keys().asSequence().joinToString("; ") { key ->
+                        val arr = errs.optJSONArray(key)
+                        if (arr != null) "$key: " + (0 until arr.length()).joinToString(", ") { arr.getString(it) }
+                        else "$key: ${errs.optString(key)}"
+                    }
+                    else -> errs.toString()
+                }
+            } else null
+        }
+} catch (_: Exception) {
+    raw.ifBlank { null }
+}
 
 sealed class Screen(val route: String) {
     data object Login : Screen("login")
@@ -70,14 +104,11 @@ sealed class Screen(val route: String) {
     }
     data object SavingAdd : Screen("saving_add")
     data object Setting : Screen("setting")
-
     data object PersonalInfo : Screen("personal_info")
-
     data object ProfilePicture : Screen("profile_picture")
-
     data object CurrentUnit : Screen("current_unit")
-
     data object Scan : Screen("scan")
+    data object ScanResult : Screen("scan_result")
 }
 
 private data class TxNav(
@@ -115,7 +146,7 @@ private data class TxNav(
         )
 }
 
-private fun NavController.switchTo(route: String) {
+private fun androidx.navigation.NavController.switchTo(route: String) {
     navigate(route) {
         popUpTo(graph.findStartDestination().id) { saveState = true }
         launchSingleTop = true
@@ -128,6 +159,9 @@ private fun NavController.switchTo(route: String) {
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppNavGraph(navController: NavHostController) {
+    val settingsVm: SettingsViewModel = viewModel()
+    val dark by settingsVm.darkMode.collectAsStateWithLifecycle()
+
     NavHost(navController = navController, startDestination = "auth") {
         navigation(startDestination = Screen.Login.route, route = "auth") {
             composable(Screen.Login.route) {
@@ -135,7 +169,7 @@ fun AppNavGraph(navController: NavHostController) {
                     onNavigateToEmail = { navController.navigate(Screen.EmailLogin.route) },
                     onNavigateToPhone = { navController.navigate(Screen.PhoneLogin.route) },
                     onNavigateToRegister = { navController.navigate(Screen.Register.route) },
-                    onFb = {navController.navigate(Screen.Home.route)}
+                    onFb = { navController.navigate(Screen.Home.route) }
                 )
             }
 
@@ -158,15 +192,17 @@ fun AppNavGraph(navController: NavHostController) {
                                         launchSingleTop = true
                                     }
                                 } else {
-                                    Toast.makeText(ctx, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show()
+                                    val msg = res.errorBody()?.string()?.let(::extractServerMessage)
+                                        ?: "Đăng nhập thất bại"
+                                    Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show()
                                 }
                             } catch (e: kotlinx.coroutines.CancellationException) {
                                 throw e
                             } catch (e: Exception) {
                                 val isConnErr = e is java.net.UnknownHostException ||
                                         e is java.net.ConnectException || e is java.net.SocketTimeoutException
-                                val msg = if (isConnErr) "Mất kết nối máy chủ" else "Đăng nhập thất bại"
-                                Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
+                                val msg = if (isConnErr) "Mất kết nối máy chủ" else (e.localizedMessage ?: "Đăng nhập thất bại")
+                                Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show()
                             }
                         }
                     },
@@ -207,44 +243,63 @@ fun AppNavGraph(navController: NavHostController) {
                 val ctx = LocalContext.current
                 val scope = rememberCoroutineScope()
                 val api = remember { Api.service }
-                val snackbar = remember { SnackbarHostState() }
 
-                Scaffold(snackbarHost = { SnackbarHost(hostState = snackbar) }) {
-                    RegisterScreen(
-                        onBack = { navController.popBackStack() },
-                        onRegister = { fullName, email, phone, password ->
-                            val now = Instant.now().toString()
-                            val id = UUID.randomUUID().toString()
-                            scope.launch {
-                                try {
-                                    val res = api.register(
-                                        SignUpRequest(
-                                            UserDto(
-                                                userId = id,
-                                                name = fullName.trim(),
-                                                phoneNumber = phone.trim(),
-                                                email = email.trim(),
-                                                password = password,
-                                                createdDate = now,
-                                                updatedDate = now
-                                            )
+                RegisterScreen(
+                    onBack = { navController.popBackStack() },
+                    onRegister = { fullName, email, phone, password ->
+                        val now = Instant.now().toString()
+                        val id = UUID.randomUUID().toString()
+                        scope.launch {
+                            try {
+                                val res = api.register(
+                                    SignUpRequest(
+                                        UserDto(
+                                            userId = id,
+                                            name = fullName.trim(),
+                                            phoneNumber = phone.trim(),
+                                            email = email.trim(),
+                                            password = password,
+                                            createdDate = now,
+                                            updatedDate = now
                                         )
                                     )
-                                    if (res.isSuccessful) {
-                                        Toast.makeText(ctx, "Đăng ký thành công", Toast.LENGTH_SHORT).show()
-                                        navController.popBackStack(Screen.Login.route, false)
-                                    } else {
-                                        snackbar.showSnackbar("Mất kết nối máy chủ")
+                                )
+
+                                if (res.isSuccessful) {
+                                    Toast.makeText(ctx, "Đăng ký thành công", Toast.LENGTH_LONG).show()
+                                    navController.popBackStack(Screen.Login.route, false)
+                                } else {
+                                    val code = res.code()
+                                    val serverMsg = res.errorBody()?.string()?.let(::extractServerMessage)
+                                    val msg = serverMsg ?: when (code) {
+                                        400 -> "Thông tin không hợp lệ. Kiểm tra họ tên, email, số điện thoại, mật khẩu."
+                                        401 -> "Bạn chưa được xác thực."
+                                        403 -> "Bạn không có quyền thực hiện thao tác này."
+                                        404 -> "Không tìm thấy endpoint đăng ký."
+                                        409 -> "Email hoặc số điện thoại đã tồn tại."
+                                        422 -> "Dữ liệu không hợp lệ."
+                                        429 -> "Quá nhiều yêu cầu. Thử lại sau."
+                                        in 500..599 -> "Máy chủ lỗi ($code). Thử lại sau."
+                                        else -> "Đăng ký thất bại ($code)."
                                     }
-                                } catch (e: kotlinx.coroutines.CancellationException) {
-                                    throw e
-                                } catch (_: Exception) {
-                                    snackbar.showSnackbar("Mất kết nối máy chủ")
+                                    Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show()
                                 }
+                            } catch (e: kotlinx.coroutines.CancellationException) {
+                                throw e
+                            } catch (_: java.net.UnknownHostException) {
+                                Toast.makeText(ctx, "Không có internet hoặc tên miền máy chủ không hợp lệ", Toast.LENGTH_LONG).show()
+                            } catch (_: java.net.SocketTimeoutException) {
+                                Toast.makeText(ctx, "Hết thời gian chờ. Kiểm tra kết nối mạng", Toast.LENGTH_LONG).show()
+                            } catch (_: java.net.ConnectException) {
+                                Toast.makeText(ctx, "Không thể kết nối máy chủ", Toast.LENGTH_LONG).show()
+                            } catch (_: java.io.IOException) {
+                                Toast.makeText(ctx, "Lỗi mạng. Vui lòng thử lại", Toast.LENGTH_LONG).show()
+                            } catch (e: Exception) {
+                                Toast.makeText(ctx, "Lỗi không xác định: ${e.localizedMessage ?: e.javaClass.simpleName}", Toast.LENGTH_LONG).show()
                             }
                         }
-                    )
-                }
+                    }
+                )
             }
         }
 
@@ -293,14 +348,14 @@ fun AppNavGraph(navController: NavHostController) {
 
             composable(Screen.IncomeCreate.route) {
                 AddIncomeScreen(
-                    onBack = { navController.popBackStack() },
+                    onBack = { navController.navigate(Screen.Home.route) },
                     onSave = { _ -> navController.popBackStack() }
                 )
             }
 
             composable(Screen.ExpenseCreate.route) {
                 AddExpenseScreen(
-                    onBack = { navController.popBackStack() },
+                    onBack = { navController.navigate(Screen.Home.route) },
                     onSave = { _ -> navController.popBackStack() }
                 )
             }
@@ -351,7 +406,7 @@ fun AppNavGraph(navController: NavHostController) {
                     onHome = { navController.navigate(Screen.Home.route) },
                     onSaving = { navController.navigate(Screen.Saving.route) },
                     onSetting = { navController.navigate(Screen.Setting.route) },
-                    onCamera = {navController.navigate(Screen.Scan.route)}
+                    onCamera = { navController.navigate(Screen.Scan.route) }
                 )
             }
 
@@ -390,34 +445,36 @@ fun AppNavGraph(navController: NavHostController) {
 
             composable(Screen.Setting.route) {
                 SettingScreen(
+                    dark = dark,
+                    onToggleDark = settingsVm::setDarkMode,
                     onHome = { navController.navigate(Screen.Home.route) },
                     onReport = { navController.navigate(Screen.Report.route) },
                     onSaving = { navController.navigate(Screen.Saving.route) },
                     onPersonalInfo = { navController.navigate(Screen.PersonalInfo.route) },
                     onProfilePicture = { navController.navigate(Screen.ProfilePicture.route) },
-                    onLanguages = { navController.navigate(Screen.CurrentUnit.route) },
-                    onLogout = { /* TODO logout */ },
+                    onLanguages = { },
+                    onCurrency = { navController.navigate(Screen.CurrentUnit.route) },
+                    onLogout = { navController.navigate(Screen.Login.route) },
                     onSetting = { },
-                    onCamera = {navController.navigate(Screen.Scan.route)}
+                    onCamera = { navController.navigate(Screen.Scan.route) }
                 )
             }
 
             composable(Screen.PersonalInfo.route) {
                 PersonalInfoScreen(
-                    onBack = {navController.switchTo(Screen.Setting.route)},
+                    onBack = { navController.switchTo(Screen.Setting.route) },
                     onSave = {},
                 )
             }
 
             composable(Screen.ProfilePicture.route) {
                 ProfilePictureScreen(
-                    onSave = {_,_,_,->},
+                    onSave = { _, _, _, -> },
                     onBack = { navController.switchTo(Screen.Setting.route) },
                 )
             }
 
             composable(Screen.CurrentUnit.route) {
-
                 CurrencyUnitScreen(
                     onBack = { navController.switchTo(Screen.Setting.route) },
                     onSelect = { item ->
@@ -428,11 +485,49 @@ fun AppNavGraph(navController: NavHostController) {
                 )
             }
 
-            composable ( Screen.Scan.route ) {
-                ReceiptScanScreen (
-                    onBack = {navController.popBackStack()},
+            composable(Screen.ScanResult.route) {
+                ScanResultScreen(
+                    navController = navController,
+                    onDone = {  },
+                    onBack = { navController.popBackStack() }
                 )
             }
+
+            composable(Screen.Scan.route) {
+                val api = remember { Api.service }
+                val nav = navController
+                val ctx = LocalContext.current
+
+                ReceiptScanScreen(
+                    usersApi = api,
+                    userId = null,
+                    categoryId = null,
+                    onBack = { nav.popBackStack() },
+
+                    onUploaded = { body ->
+                        val json = Gson().toJson(body)
+                        nav.popBackStack()
+                        nav.navigate(Screen.ScanResult.route)
+                        nav.currentBackStackEntry?.savedStateHandle?.apply {
+                            set("upload_result", UploadResult(true, null, body.message ?: "OK"))
+                            set("scan_payload", json)
+                        }
+                    },
+
+                    onUploadError = { raw ->
+                        val msg = extractServerMessage(raw) ?: raw
+                        Toast.makeText(ctx, msg.ifBlank { "Upload thất bại" }, Toast.LENGTH_LONG).show()
+                        nav.popBackStack()
+                        nav.navigate(Screen.ScanResult.route)
+                        nav.currentBackStackEntry?.savedStateHandle
+                            ?.set("upload_result", UploadResult(false, null, msg))
+                    },
+                    showScanTips = true,
+                    showPermissionTexts = false
+                )
+            }
+
+
         }
     }
 }
@@ -451,3 +546,14 @@ private fun com.example.test.ui.mock.TransactionMock.toTxUi(id: Int): TxUi =
         type = if (isPositive) TxType.INCOME else TxType.EXPENSE,
         emoji = icon
     )
+
+private fun Uri.toImagePart(
+    ctx: Context,
+    fieldName: String,
+    fileName: String
+): MultipartBody.Part {
+    val bytes = ctx.contentResolver.openInputStream(this)!!.use { it.readBytes() }
+    val mime = ctx.contentResolver.getType(this) ?: "image/jpeg"
+    val body = bytes.toRequestBody(mime.toMediaType())
+    return MultipartBody.Part.createFormData(fieldName, fileName, body)
+}

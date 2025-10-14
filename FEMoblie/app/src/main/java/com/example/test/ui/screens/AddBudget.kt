@@ -19,19 +19,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.test.R
 import com.example.test.ui.components.AmountStyleChips
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.mock.MockData
 import com.example.test.ui.util.AmountStyle
 import com.example.test.ui.util.MoneyUiConfig
 import com.example.test.ui.util.NumberFmt
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AddBudgetScreen(
@@ -42,20 +43,26 @@ fun AddBudgetScreen(
     var name by rememberSaveable { mutableStateOf("") }
     var amountRaw by rememberSaveable { mutableStateOf("") }
     var selectedIcon by rememberSaveable { mutableStateOf<String?>(null) }
-    var selectedColor by rememberSaveable { mutableStateOf<Color?>(null) }
+
+    // Lưu ARGB primitive để saveable an toàn
+    var selectedColorArgb by rememberSaveable { mutableStateOf<Int?>(null) }
+    val selectedColor: Color? = selectedColorArgb?.let { Color(it) }
+
     var style by rememberSaveable { mutableStateOf(MoneyUiConfig.DEFAULT_STYLE) }
 
     val icons = remember {
         listOf("🥗","🎮","❄️","🍜","📱","💍","⚠️","🧾","💰","🛒","🍗","🍕","🥤","🎵","🚗")
     }
+
+    val scheme = MaterialTheme.colorScheme
     val colors = remember {
         listOf(
-            Color(0xFF4C6FFF),
-            Color(0xFF7C4DFF),
-            Color(0xFFFF8A00),
-            Color(0xFFFF2D2D),
-            Color(0xFFFFC107),
-            Color(0xFF34C759),
+            Color(0xFFF44336),
+            Color(0xFFFF9800),
+            Color(0xFFFFEB3B),
+            Color(0xFF4CAF50),
+            Color(0xFF2196F3),
+            Color(0xFF9C27B0)
         )
     }
 
@@ -69,16 +76,15 @@ fun AddBudgetScreen(
 
     Scaffold(
         topBar = {
-            Surface(
-                color = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(headerHeight)
-            ) {}
+            AppHeader(
+                title = "Thêm ngân sách",
+                showBack = true,
+                onBack = onBack
+            )
         },
         contentWindowInsets = WindowInsets(0),
         bottomBar = {
-            Surface(color = Color(0xFFF6F6F7)) {
+            Surface(color = scheme.surface) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -89,18 +95,21 @@ fun AddBudgetScreen(
                         onClick = onCancel,
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(14.dp),
-                        border = BorderStroke(1.dp, Color(0xFFE3E3E7))
+                        border = BorderStroke(1.dp, scheme.outlineVariant),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = scheme.onSurface)
                     ) { Text("Huỷ") }
 
                     Button(
                         onClick = {
+                            val icon = selectedIcon!!
+                            val color = selectedColor!!
                             MockData.addBudgetVnd(
                                 name = name.trim(),
                                 totalVnd = amountLong,
-                                icon = selectedIcon!!,
-                                color = selectedColor!!
+                                icon = icon,
+                                color = color
                             )
-                            onCreate(name.trim(), amountLong, selectedIcon!!, selectedColor!!)
+                            onCreate(name.trim(), amountLong, icon, color)
                             onBack()
                         },
                         enabled = isValid,
@@ -115,41 +124,29 @@ fun AddBudgetScreen(
                                 .height(48.dp)
                                 .clip(RoundedCornerShape(14.dp))
                                 .background(
-                                    Brush.horizontalGradient(
-                                        listOf(Color(0xFF34C759), Color(0xFF4C6FFF))
-                                    )
+                                    Brush.horizontalGradient(listOf(scheme.tertiary, scheme.primary))
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("Tạo ngân sách", color = Color.White, fontWeight = FontWeight.SemiBold)
+                            Text("Tạo ngân sách", color = scheme.onPrimary, fontWeight = FontWeight.SemiBold)
                         }
                     }
                 }
             }
         }
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(top = statusTop + headerHeight)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_back),
-                        contentDescription = "Quay lại",
-                        tint = Color.Black
-                    )
-                }
-                Spacer(Modifier.width(6.dp))
-                Text("Thêm ngân sách", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-            }
+    ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(scheme.background)
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding)
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Spacer(Modifier.height(24.dp))
 
-            Spacer(Modifier.height(12.dp))
-
-            Text("Tên ngân sách", fontSize = 14.sp, color = Color(0xFF5F6167))
+                Text("Tên ngân sách", fontSize = 14.sp, color = scheme.onSurfaceVariant)
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -160,14 +157,15 @@ fun AddBudgetScreen(
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF1F2F4),
-                    focusedContainerColor = Color(0xFFF1F2F4),
+                    unfocusedContainerColor = scheme.surfaceVariant,
+                    focusedContainerColor = scheme.surfaceVariant,
                     unfocusedBorderColor = Color.Transparent,
-                    focusedBorderColor = Color(0xFF4C6FFF)
+                    focusedBorderColor = scheme.primary,
+                    cursorColor = scheme.primary
                 )
             )
 
-            Text("Số tiền cho ngân sách", fontSize = 14.sp, color = Color(0xFF5F6167))
+            Text("Số tiền cho ngân sách", fontSize = 14.sp, color = scheme.onSurfaceVariant)
             OutlinedTextField(
                 value = amountRaw,
                 onValueChange = { input -> amountRaw = sanitizeDigits(input) },
@@ -179,10 +177,11 @@ fun AddBudgetScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF1F2F4),
-                    focusedContainerColor = Color(0xFFF1F2F4),
+                    unfocusedContainerColor = scheme.surfaceVariant,
+                    focusedContainerColor = scheme.surfaceVariant,
                     unfocusedBorderColor = Color.Transparent,
-                    focusedBorderColor = Color(0xFF4C6FFF)
+                    focusedBorderColor = scheme.primary,
+                    cursorColor = scheme.primary
                 )
             )
 
@@ -193,7 +192,7 @@ fun AddBudgetScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Xem trước:", color = Color(0xFF84868B), fontSize = 12.sp)
+                    Text("Xem trước:", color = scheme.onSurfaceVariant, fontSize = 12.sp)
                     AmountStyleChips(style = style, onChange = { style = it })
                 }
                 Spacer(Modifier.height(6.dp))
@@ -204,17 +203,12 @@ fun AddBudgetScreen(
                     AmountStyle.MILLION_1DP -> NumberFmt.millionLabel(NumberFmt.toM(amountLong), 1)
                     AmountStyle.MILLION_0DP -> NumberFmt.millionLabel(NumberFmt.toM(amountLong), 0)
                 }
-                Text(
-                    text = "≈ $preview",
-                    color = Color(0xFF84868B),
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(bottom = 14.dp)
-                )
+                Text("≈ $preview", color = scheme.onSurfaceVariant, fontSize = 12.sp, modifier = Modifier.padding(bottom = 14.dp))
             } else {
                 Spacer(Modifier.height(14.dp))
             }
 
-            Text("Chọn biểu tượng", fontSize = 14.sp, color = Color(0xFF5F6167))
+            Text("Chọn biểu tượng", fontSize = 14.sp, color = scheme.onSurfaceVariant)
             Spacer(Modifier.height(8.dp))
             IconGrid(
                 icons = icons,
@@ -224,19 +218,19 @@ fun AddBudgetScreen(
 
             Spacer(Modifier.height(16.dp))
 
-            Text("Chọn màu sắc", fontSize = 14.sp, color = Color(0xFF5F6167))
+            Text("Chọn màu sắc", fontSize = 14.sp, color = scheme.onSurfaceVariant)
             Spacer(Modifier.height(8.dp))
             Surface(
                 shape = RoundedCornerShape(16.dp),
-                color = Color.White,
-                border = BorderStroke(1.dp, Color(0xFFE3E3E7)),
+                color = scheme.surface,
+                border = BorderStroke(1.dp, scheme.outlineVariant),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(Modifier.padding(16.dp)) {
                     ColorGrid(
                         colors = colors,
                         selected = selectedColor,
-                        onSelect = { selectedColor = it }
+                        onSelect = { c -> selectedColorArgb = c.toArgb() }
                     )
                 }
             }
@@ -252,6 +246,7 @@ private fun IconGrid(
     selected: String?,
     onSelect: (String) -> Unit
 ) {
+    val scheme = MaterialTheme.colorScheme
     val chunked = icons.chunked(5)
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         chunked.forEach { row ->
@@ -263,15 +258,15 @@ private fun IconGrid(
                     val isSelected = selected == icon
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = Color.White,
-                        border = BorderStroke(1.dp, if (isSelected) Color(0xFF4C6FFF) else Color(0xFFE3E3E7)),
+                        color = scheme.surface,
+                        border = BorderStroke(1.dp, if (isSelected) scheme.primary else scheme.outlineVariant),
                         modifier = Modifier
                             .weight(1f)
                             .height(48.dp)
                             .clickable { onSelect(icon) }
                     ) {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text(icon, fontSize = 18.sp, textAlign = TextAlign.Center)
+                            Text(icon, fontSize = 18.sp, textAlign = TextAlign.Center, color = scheme.onSurface)
                         }
                     }
                 }
@@ -289,6 +284,7 @@ private fun ColorGrid(
     selected: Color?,
     onSelect: (Color) -> Unit
 ) {
+    val scheme = MaterialTheme.colorScheme
     val rows = colors.chunked(3)
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         rows.forEach { line ->
@@ -302,7 +298,7 @@ private fun ColorGrid(
                         modifier = Modifier
                             .size(56.dp)
                             .clip(RoundedCornerShape(28.dp))
-                            .background(Color(0xFFF7F7F9))
+                            .background(scheme.surfaceVariant)
                             .padding(8.dp),
                         contentAlignment = Alignment.Center
                     ) {
@@ -318,7 +314,7 @@ private fun ColorGrid(
                                 modifier = Modifier
                                     .matchParentSize()
                                     .clip(RoundedCornerShape(28.dp))
-                                    .border(BorderStroke(2.dp, Color(0xFF4C6FFF)), RoundedCornerShape(28.dp))
+                                    .border(BorderStroke(2.dp, scheme.primary), RoundedCornerShape(28.dp))
                             )
                         }
                     }

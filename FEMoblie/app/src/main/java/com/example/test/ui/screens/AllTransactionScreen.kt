@@ -21,33 +21,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
-import com.example.test.ui.mock.MockData
-import com.example.test.ui.mock.TransactionMock
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.mock.TxType
 import com.example.test.ui.mock.TxUi
+import com.example.test.ui.theme.extendedColors
 import java.text.NumberFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun AllTransactionsScreen(
-    onBack: () -> Unit = {},
-    onEditIncome: (TxUi) -> Unit = {},
-    onEditExpense: (TxUi) -> Unit = {}
-) {
-    AllTransactionsScreen(
-        transactions = mockTxFromRecent(),
-        onBack = onBack,
-        onEditIncome = onEditIncome,
-        onEditExpense = onEditExpense
-    )
-}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -81,47 +65,35 @@ fun AllTransactionsScreen(
     val sumIncome = remember(filtered) { filtered.filter { it.type == TxType.INCOME }.sumOf { it.amount } }
     val sumExpense = remember(filtered) { filtered.filter { it.type == TxType.EXPENSE }.sumOf { it.amount } }
 
+    val cs = MaterialTheme.colorScheme
+    val ex = MaterialTheme.extendedColors
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
+            AppHeader(
+                title = "Tất cả giao dịch",
+                showBack = true,
+                onBack = onBack
             )
-        }
-    ) { padding ->
+        },
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(
-                    start = padding.calculateStartPadding(LayoutDirection.Ltr),
-                    end = padding.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
-                    bottom = padding.calculateBottomPadding()
-                ),
+                .background(cs.background)
+                .padding(innerPadding),
             contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 20.dp)
         ) {
             item { Spacer(Modifier.height(appBarHeight + 12.dp)) }
-
-            item {
-                TitleRow(title = "Tất cả giao dịch", onBack = onBack)
-                Spacer(Modifier.height(12.dp))
-            }
 
             item {
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },
                     modifier = Modifier.fillMaxWidth(),
-                    leadingIcon = { Icon(Icons.Default.Search, null) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                     placeholder = { Text("tìm kiếm giao dịch...") },
                     singleLine = true
                 )
@@ -164,10 +136,11 @@ private fun DayGroupCard(
     onEditIncome: (TxUi) -> Unit,
     onEditExpense: (TxUi) -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     OutlinedCard(
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, cs.outline),
+        colors = CardDefaults.outlinedCardColors(containerColor = cs.surface),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column {
@@ -176,7 +149,7 @@ private fun DayGroupCard(
                     tx = tx,
                     onClick = { if (tx.type == TxType.INCOME) onEditIncome(tx) else onEditExpense(tx) }
                 )
-                if (i != txs.lastIndex) Divider()
+                if (i != txs.lastIndex) Divider(color = cs.outlineVariant)
             }
         }
     }
@@ -188,6 +161,8 @@ private fun TxRowLine(
     tx: TxUi,
     onClick: () -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
+    val ex = MaterialTheme.extendedColors
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -195,27 +170,32 @@ private fun TxRowLine(
             .padding(horizontal = 12.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .background(Color(0xFFF5F5F5), shape = MaterialTheme.shapes.small),
-            contentAlignment = Alignment.Center
+        Surface(
+            shape = MaterialTheme.shapes.small,
+            color = cs.surfaceVariant,
+            modifier = Modifier.size(40.dp),
+            contentColor = cs.onSurfaceVariant
         ) {
-            if (tx.emoji != null) Text(tx.emoji, fontSize = 18.sp)
-            else tx.iconRes?.let { Icon(painter = painterResource(it), contentDescription = null) }
+            Box(contentAlignment = Alignment.Center) {
+                when {
+                    tx.emoji != null -> Text(tx.emoji, fontSize = 18.sp)
+                    tx.iconRes != null -> Icon(painter = painterResource(tx.iconRes), contentDescription = null)
+                }
+            }
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(tx.title, fontWeight = FontWeight.Medium, fontSize = 16.sp)
+            Text(tx.title, fontWeight = FontWeight.Medium, fontSize = 16.sp, color = cs.onSurface)
             Text(
                 "${tx.category} • ${tx.dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))}",
                 fontSize = 12.sp,
-                color = Color(0xFF6B7280)
+                color = cs.onSurfaceVariant
             )
         }
+        val amtColor = if (tx.type == TxType.INCOME) ex.success else cs.error
         Text(
             text = (if (tx.type == TxType.INCOME) "+" else "-") + vn(tx.amount),
-            color = if (tx.type == TxType.INCOME) Color(0xFF16A34A) else Color(0xFFDC2626),
+            color = amtColor,
             fontWeight = FontWeight.Bold
         )
     }
@@ -223,48 +203,35 @@ private fun TxRowLine(
 
 @Composable
 private fun SegmentTab(text: String, selected: Boolean, onClick: () -> Unit) {
+    val cs = MaterialTheme.colorScheme
     FilterChip(
         selected = selected,
         onClick = onClick,
         label = { Text(text, fontWeight = FontWeight.Medium) },
         shape = RoundedCornerShape(12.dp),
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = Color.White,
-            labelColor = Color(0xFF111827),
-            selectedContainerColor = Color.Black,
-            selectedLabelColor = Color.White
+            containerColor = cs.surface,
+            labelColor = cs.onSurface,
+            selectedContainerColor = cs.primary,
+            selectedLabelColor = cs.onPrimary
         ),
         border = FilterChipDefaults.filterChipBorder(
             enabled = true,
             selected = selected,
-            borderColor = if (selected) Color.Transparent else Color(0xFF9CA3AF),
+            borderColor = if (selected) Color.Transparent else cs.outline,
             borderWidth = if (selected) 0.dp else 1.dp
         )
     )
 }
 
 @Composable
-private fun TitleRow(title: String, onBack: () -> Unit) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back),
-                contentDescription = "Quay lại",
-                tint = Color.Black,
-                modifier = Modifier.size(40.dp)
-            )
-        }
-        Spacer(Modifier.width(6.dp))
-        Text(title, fontSize = 24.sp, fontWeight = FontWeight.SemiBold, color = Color.Black)
-    }
-}
-
-@Composable
 private fun SummaryCard(allIncome: Long, allExpense: Long) {
+    val cs = MaterialTheme.colorScheme
+    val ex = MaterialTheme.extendedColors
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = CardDefaults.outlinedCardBorder(),
+        colors = CardDefaults.cardColors(containerColor = cs.surface),
+        border = BorderStroke(1.dp, cs.outline),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(Modifier.padding(16.dp)) {
@@ -275,9 +242,9 @@ private fun SummaryCard(allIncome: Long, allExpense: Long) {
                         .wrapContentWidth(Alignment.CenterHorizontally),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(painterResource(R.drawable.inc), null, tint = Color(0xFF16A34A))
+                    Icon(painterResource(R.drawable.inc), null, tint = ex.success)
                     Spacer(Modifier.width(6.dp))
-                    Text("Thu nhập", fontWeight = FontWeight.Medium)
+                    Text("Thu nhập", fontWeight = FontWeight.Medium, color = cs.onSurface)
                 }
                 Row(
                     modifier = Modifier
@@ -285,16 +252,16 @@ private fun SummaryCard(allIncome: Long, allExpense: Long) {
                         .wrapContentWidth(Alignment.CenterHorizontally),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(painterResource(R.drawable.dec), null, tint = Color(0xFFDC2626))
+                    Icon(painterResource(R.drawable.dec), null, tint = cs.error)
                     Spacer(Modifier.width(6.dp))
-                    Text("Chi tiêu", fontWeight = FontWeight.Medium)
+                    Text("Chi tiêu", fontWeight = FontWeight.Medium, color = cs.onSurface)
                 }
             }
             Spacer(Modifier.height(8.dp))
             Row(Modifier.fillMaxWidth()) {
                 Text(
                     "+${vn(allIncome)}",
-                    color = Color(0xFF16A34A),
+                    color = ex.success,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .weight(1f)
@@ -302,7 +269,7 @@ private fun SummaryCard(allIncome: Long, allExpense: Long) {
                 )
                 Text(
                     "-${vn(allExpense)}",
-                    color = Color(0xFFDC2626),
+                    color = cs.error,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .weight(1f)
@@ -316,6 +283,7 @@ private fun SummaryCard(allIncome: Long, allExpense: Long) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun DateHeaderRow(date: LocalDate) {
+    val cs = MaterialTheme.colorScheme
     val label = when (date) {
         LocalDate.now() -> "Hôm nay"
         LocalDate.now().minusDays(1) -> "Hôm qua"
@@ -324,51 +292,21 @@ private fun DateHeaderRow(date: LocalDate) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(cs.background)
             .padding(top = 12.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(painter = painterResource(R.drawable.ic_calendar), contentDescription = null)
+        Icon(painter = painterResource(R.drawable.ic_calendar), contentDescription = null, tint = cs.onSurfaceVariant)
         Spacer(Modifier.width(8.dp))
-        Text(label, fontSize = 13.sp, color = Color(0xFF6B7280))
-        Divider(Modifier.weight(1f).padding(start = 12.dp))
+        Text(label, fontSize = 13.sp, color = cs.onSurfaceVariant)
+        Divider(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 12.dp),
+            color = cs.outlineVariant
+        )
     }
 }
 
 private fun vn(value: Long): String =
     NumberFormat.getCurrencyInstance(Locale("vi", "VN")).format(value).replace(" ", "")
-
-@RequiresApi(Build.VERSION_CODES.O)
-private fun mockTxFromRecent(): List<TxUi> {
-    val zone = ZoneId.systemDefault()
-    return MockData.recentTransactions.mapIndexed { idx, m ->
-        val dt = LocalDateTime.ofInstant(Instant.ofEpochMilli(m.createdAt), zone)
-        val category = m.subtitle.substringBefore(" • ").trim()
-        val amountAbs = m.amount.filter { it.isDigit() }.toLongOrNull() ?: 0L
-        TxUi(
-            id = "mock-$idx",
-            title = m.title,
-            category = category,
-            dateTime = dt,
-            amount = amountAbs,
-            type = if (m.isPositive) TxType.INCOME else TxType.EXPENSE,
-            emoji = m.icon
-        )
-    }.sortedByDescending { it.dateTime }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun TransactionMock.toTxUi(i: Int): TxUi {
-    val dt = LocalDateTime.ofInstant(Instant.ofEpochMilli(createdAt), ZoneId.systemDefault())
-    val category = subtitle.substringBefore(" • ").trim()
-    val amountAbs = amount.filter { it.isDigit() }.toLongOrNull() ?: 0L
-    return TxUi(
-        id = "mock-$i",
-        title = title,
-        category = category,
-        dateTime = dt,
-        amount = amountAbs,
-        type = if (isPositive) TxType.INCOME else TxType.EXPENSE,
-        emoji = icon
-    )
-}

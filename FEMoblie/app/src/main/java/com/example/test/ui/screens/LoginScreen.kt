@@ -26,6 +26,8 @@ fun LoginScreen(
     onNavigateToRegister: () -> Unit = {},
     onFb: () -> Unit = {}
 ) {
+    val scheme = MaterialTheme.colorScheme
+
     AuthContainer(
         iconRes = R.drawable.piggy,
         title = "Chào mừng",
@@ -34,22 +36,24 @@ fun LoginScreen(
         // Login email + phone
         Surface(
             shape = RoundedCornerShape(20.dp),
-            border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
-            color = Color.White,
+            border = BorderStroke(1.dp, scheme.outlineVariant),
+            color = scheme.surface,
+            tonalElevation = 2.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Email button
+                // Email button (gradient)
                 Button(
                     onClick = { onNavigateToEmail() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    contentPadding = PaddingValues()
+                    contentPadding = PaddingValues(0.dp),
+                    shape = RoundedCornerShape(24.dp)
                 ) {
                     Box(
                         modifier = Modifier
@@ -64,11 +68,11 @@ fun LoginScreen(
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_email),
                                 contentDescription = "Email",
-                                tint = Color.White,
+                                tint = scheme.onPrimary,
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(Modifier.width(8.dp))
-                            Text("Đăng nhập bằng email", color = Color.White, fontSize = 16.sp)
+                            Text("Đăng nhập bằng email", color = scheme.onPrimary, fontSize = 16.sp)
                         }
                     }
                 }
@@ -80,7 +84,8 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .height(48.dp),
                     shape = RoundedCornerShape(24.dp),
-                    border = BorderStroke(1.dp, Color(0xFFD9D9D9))
+                    border = BorderStroke(1.dp, scheme.outlineVariant),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = scheme.onSurface)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -89,11 +94,11 @@ fun LoginScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_phone),
                             contentDescription = "Phone",
-                            tint = Color.Black,
+                            tint = scheme.onSurface,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(Modifier.width(8.dp))
-                        Text("Đăng nhập bằng SĐT", color = Color.Black, fontSize = 16.sp)
+                        Text("Đăng nhập bằng SĐT", color = scheme.onSurface, fontSize = 16.sp)
                     }
                 }
             }
@@ -104,8 +109,9 @@ fun LoginScreen(
         // Social login
         Surface(
             shape = RoundedCornerShape(20.dp),
-            border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
-            color = Color.White,
+            border = BorderStroke(1.dp, scheme.outlineVariant),
+            color = scheme.surface,
+            tonalElevation = 2.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
@@ -113,7 +119,7 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text("Hoặc đăng nhập với", fontSize = 14.sp, color = Color.Gray)
+                Text("Hoặc đăng nhập với", fontSize = 14.sp, color = scheme.onSurfaceVariant)
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
@@ -130,11 +136,11 @@ fun LoginScreen(
 
         // Footer
         Row {
-            Text("Chưa có tài khoản?", color = Color.Gray, fontSize = 14.sp)
+            Text("Chưa có tài khoản?", color = scheme.onSurfaceVariant, fontSize = 14.sp)
             Spacer(Modifier.width(4.dp))
             Text(
                 "Đăng ký ngay",
-                color = Color(0xFF1877F2),
+                color = scheme.primary,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 modifier = Modifier.clickable { onNavigateToRegister() }
@@ -145,18 +151,23 @@ fun LoginScreen(
 
 @Composable
 fun SocialButton(iconRes: Int, desc: String, onClick: () -> Unit = {}) {
-    Button(
+    val scheme = MaterialTheme.colorScheme
+    OutlinedIconButton(
         onClick = onClick,
+        modifier = Modifier.size(50.dp),
         shape = CircleShape,
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-        contentPadding = PaddingValues(0.dp),
-        modifier = Modifier.size(50.dp)
+        colors = IconButtonDefaults.outlinedIconButtonColors(
+            containerColor = scheme.surfaceVariant
+        ),
+        border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = desc,
             tint = Color.Unspecified,
-            modifier = Modifier.size(36.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
         )
     }
 }

@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,8 +28,8 @@ fun MainBottomBar(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.White,
-        border = BorderStroke(1.dp, Color(0xffe5e7eb))
+        color = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
             modifier = Modifier
@@ -53,15 +52,15 @@ fun MainBottomBar(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(RoundedCornerShape(25.dp))
-                    .background(Color(0xfff5f5f5))
+                    .background(MaterialTheme.colorScheme.primaryContainer)
                     .clickable { onCamera() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_camera),
                     contentDescription = "Camera",
-                    modifier = Modifier.size(24.dp)
-
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
 
@@ -87,11 +86,15 @@ private fun BottomItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val selectedBg = MaterialTheme.colorScheme.secondaryContainer
+    val selectedContent = MaterialTheme.colorScheme.onSecondaryContainer
+    val unselectedContent = MaterialTheme.colorScheme.onSurfaceVariant
+
     Box(modifier = modifier.clickable(onClick = onClick), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(if (selected) Color(0xffe5e7eb) else Color.Transparent)
+                .background(if (selected) selectedBg else androidx.compose.ui.graphics.Color.Transparent)
                 .padding(horizontal = 12.dp, vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -99,13 +102,13 @@ private fun BottomItem(
                 painter = painterResource(icon),
                 contentDescription = label,
                 modifier = Modifier.size(24.dp),
-                tint = if (selected) Color.Black else Color(0xff7b8090)
+                tint = if (selected) selectedContent else unselectedContent
             )
             Spacer(Modifier.height(4.dp))
             Text(
                 text = label,
                 fontSize = 11.sp,
-                color = if (selected) Color.Black else Color(0xff7b8090)
+                color = if (selected) selectedContent else unselectedContent
             )
         }
     }

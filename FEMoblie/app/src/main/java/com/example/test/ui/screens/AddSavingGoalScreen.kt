@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,10 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.theme.AppGradient
 import java.time.Instant
 import java.time.LocalDate
@@ -42,28 +43,29 @@ fun AddSavingGoalScreen(
     onCancel: () -> Unit,
     onCreate: (SavingGoalDraft) -> Unit
 ) {
-    val appBarHeight = 36.dp
+    val scheme = MaterialTheme.colorScheme
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val gap = 16.dp
+    val gap = 24.dp
+    val zone = ZoneId.systemDefault()
 
-    var name by remember { mutableStateOf("") }
-    var amount by remember { mutableStateOf("") }
+    var name by rememberSaveable { mutableStateOf("") }
+    var amount by rememberSaveable { mutableStateOf("") }
 
     var showDatePicker by remember { mutableStateOf(false) }
-    val dateState = rememberDatePickerState()
-    var dateText by remember { mutableStateOf("") }
-    val dateFmt = remember {
-        DateTimeFormatter.ofPattern("d/M/uuuu")
-            .withResolverStyle(ResolverStyle.STRICT)
-    }
+    var dateMillis by rememberSaveable { mutableStateOf<Long?>(null) }
+    val dateState = rememberDatePickerState(initialSelectedDateMillis = dateMillis)
+    var dateText by rememberSaveable { mutableStateOf("") }
+    val dateFmt = remember { DateTimeFormatter.ofPattern("d/M/uuuu").withResolverStyle(ResolverStyle.STRICT) }
+
     fun millisToText(ms: Long?): String =
         ms?.let {
-            val d = LocalDate.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
+            val d = Instant.ofEpochMilli(it).atZone(zone).toLocalDate()
             "${d.dayOfMonth}/${d.monthValue}/${d.year}"
         } ?: ""
 
-    var selectedIcon by remember { mutableStateOf<String?>(null) }
-    var selectedColor by remember { mutableStateOf<Color?>(null) }
+    var selectedIcon by rememberSaveable { mutableStateOf<String?>(null) }
+    var selectedColorArgb by rememberSaveable { mutableStateOf<Int?>(null) }
+    val selectedColor = selectedColorArgb?.let { Color(it) }
 
     val suggestions = remember {
         listOf(
@@ -77,12 +79,9 @@ fun AddSavingGoalScreen(
     }
     val suggestionRows = remember { suggestions.chunked(2) }
 
-    val icons = remember {
-        listOf("🏠","🚗","✈️","🍜","📅","💻","💍","😊","🆘","🌮","☕","💰","🎮","🐶","🍕","📷","🎵","🎯")
-    }
+    val icons = remember { listOf("🏠","🚗","✈️","🍜","📅","💻","💍","😊","🆘","🌮","☕","💰","🎮","🐶","🍕","📷","🎵","🎯") }
     val iconRows = remember { icons.chunked(6) }
 
-    // pastel palette
     val colors = remember {
         listOf(
             Color(0xFFE8F0FE), Color(0xFFF3E8FF), Color(0xFFFFEDD5),
@@ -93,32 +92,19 @@ fun AddSavingGoalScreen(
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
+            AppHeader(
+                title = "Thêm mục tiêu tiết kiệm",
+                showBack = true,
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         },
         bottomBar = {
-            Surface(color = Color.White) {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .navigationBarsPadding()
-                ) {
-                    Divider(color = Color(0xFFCBD5E1), thickness = 1.dp)
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(64.dp)
-                    ) {
+            Surface(color = scheme.surface) {
+                Column(Modifier.fillMaxWidth().navigationBarsPadding()) {
+                    Divider(color = scheme.outlineVariant, thickness = 1.dp)
+                    Box(Modifier.fillMaxWidth().height(64.dp)) {
                         Row(
                             modifier = Modifier
                                 .align(Alignment.Center)
@@ -128,10 +114,9 @@ fun AddSavingGoalScreen(
                         ) {
                             OutlinedButton(
                                 onClick = onCancel,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(40.dp),
-                                shape = RoundedCornerShape(12.dp)
+                                modifier = Modifier.weight(1f).height(40.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = scheme.onSurface)
                             ) { Text("Hủy") }
 
                             Button(
@@ -143,7 +128,7 @@ fun AddSavingGoalScreen(
                                             targetVnd = money,
                                             targetDateMillis = dateState.selectedDateMillis,
                                             emoji = selectedIcon,
-                                            color = selectedColor ?: Color(0xFF5B7BFF)
+                                            color = selectedColor ?: scheme.primary
                                         )
                                     )
                                 },
@@ -153,52 +138,26 @@ fun AddSavingGoalScreen(
                                     .background(AppGradient.BluePurple, RoundedCornerShape(12.dp))
                                     .clip(RoundedCornerShape(12.dp)),
                                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-                            ) { Text("Tạo mục tiêu") }
+                            ) { Text("Tạo mục tiêu", color = scheme.onPrimary) }
                         }
                     }
                 }
             }
         }
-    ) { pad ->
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(
-                    start = pad.calculateStartPadding(LayoutDirection.Ltr),
-                    end = pad.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
-                    bottom = pad.calculateBottomPadding()
-                ),
-            contentPadding = PaddingValues(vertical = gap)
+                .background(scheme.background)
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
+            contentPadding = PaddingValues(top = gap, bottom = gap)
         ) {
-            item { Spacer(Modifier.height(36.dp)) }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back),
-                            contentDescription = "Back",
-                            modifier = Modifier.size(28.dp),
-                            tint = Color.Unspecified
-                        )
-                    }
-                    Spacer(Modifier.width(12.dp))
-                    Text("Thêm mục tiêu tiết kiệm", fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
-                }
-            }
 
-            item { SectionLabel("Mục tiêu phổ biến") }
+            item { SectionLabel("Mục tiêu phổ biến", scheme) }
             items(suggestionRows) { row ->
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 6.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     row.forEach { (emoji, pair) ->
@@ -206,7 +165,8 @@ fun AddSavingGoalScreen(
                             emoji = emoji,
                             title = pair.first,
                             sub = pair.second,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            scheme = scheme
                         ) { name = pair.first }
                     }
                     if (row.size == 1) Spacer(Modifier.weight(1f))
@@ -215,7 +175,7 @@ fun AddSavingGoalScreen(
 
             item {
                 Column {
-                    SectionLabel("Tên mục tiêu")
+                    SectionLabel("Tên mục tiêu", scheme)
                     Box(Modifier.padding(horizontal = 16.dp)) {
                         OutlinedTextField(
                             value = name,
@@ -227,7 +187,7 @@ fun AddSavingGoalScreen(
                         )
                     }
 
-                    SectionLabel("Số tiền mục tiêu")
+                    SectionLabel("Số tiền mục tiêu", scheme)
                     Box(Modifier.padding(horizontal = 16.dp)) {
                         OutlinedTextField(
                             value = amount,
@@ -240,18 +200,18 @@ fun AddSavingGoalScreen(
                         )
                     }
 
-                    SectionLabel("Chọn ngày hoàn thành")
+                    SectionLabel("Chọn ngày hoàn thành", scheme)
                     Box(Modifier.padding(horizontal = 16.dp)) {
                         OutlinedTextField(
                             value = dateText,
                             onValueChange = { t ->
                                 dateText = t
                                 runCatching {
-                                    val parts = t.trim()
-                                    if (parts.isNotEmpty()) {
-                                        val d = LocalDate.parse(parts.replace('-', '/'), dateFmt)
-                                        dateState.selectedDateMillis =
-                                            d.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                                    if (t.isNotBlank()) {
+                                        val d = LocalDate.parse(t.trim().replace('-', '/'), dateFmt)
+                                        val ms = d.atStartOfDay(zone).toInstant().toEpochMilli()
+                                        dateMillis = ms
+                                        dateState.selectedDateMillis = ms
                                     }
                                 }
                             },
@@ -264,7 +224,7 @@ fun AddSavingGoalScreen(
                                     Icon(
                                         painter = painterResource(R.drawable.ic_calendar),
                                         contentDescription = "Chọn ngày",
-                                        tint = Color(0xFF111827)
+                                        tint = scheme.onSurface
                                     )
                                 }
                             },
@@ -274,37 +234,35 @@ fun AddSavingGoalScreen(
                 }
             }
 
-            item { SectionLabel("Chọn biểu tượng") }
+            item { SectionLabel("Chọn biểu tượng", scheme) }
             items(iconRows) { row ->
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 6.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     row.forEach { e ->
                         SelectableIcon(
                             emoji = e,
                             selected = selectedIcon == e,
-                            onClick = { selectedIcon = e }
+                            onClick = { selectedIcon = e },
+                            scheme = scheme
                         )
                     }
                 }
             }
 
-            item { SectionLabel("Chọn màu sắc") }
+            item { SectionLabel("Chọn màu sắc", scheme) }
             items(colorRows) { row ->
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     row.forEach { c ->
                         SelectableColor(
                             color = c,
                             selected = selectedColor == c,
-                            onClick = { selectedColor = c }
+                            onClick = { selectedColorArgb = c.value.toInt() },
+                            scheme = scheme
                         )
                     }
                 }
@@ -319,7 +277,8 @@ fun AddSavingGoalScreen(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
                 TextButton(onClick = {
-                    dateText = millisToText(dateState.selectedDateMillis)
+                    dateMillis = dateState.selectedDateMillis
+                    dateText = millisToText(dateMillis)
                     showDatePicker = false
                 }) { Text("OK") }
             },
@@ -327,13 +286,10 @@ fun AddSavingGoalScreen(
         ) { DatePicker(state = dateState) }
     }
 }
+
 @Composable
-private fun SectionLabel(text: String) {
-    Text(
-        text,
-        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 10.dp),
-        color = Color(0xFF6B7280)
-    )
+private fun SectionLabel(text: String, scheme: ColorScheme) {
+    Text(text, modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 10.dp), color = scheme.onSurfaceVariant)
 }
 
 @Composable
@@ -342,27 +298,24 @@ private fun SuggestCard(
     title: String,
     sub: String,
     modifier: Modifier = Modifier,
+    scheme: ColorScheme,
     onClick: () -> Unit
 ) {
     OutlinedCard(
-        modifier = modifier
-            .height(96.dp)
-            .clickable { onClick() },
+        modifier = modifier.height(96.dp).clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, Color(0xFFE5E7EB)),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White)
+        border = BorderStroke(1.dp, scheme.outlineVariant),
+        colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface)
     ) {
         Column(
-            Modifier
-                .fillMaxSize()
-                .padding(12.dp),
+            Modifier.fillMaxSize().padding(12.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(emoji, fontSize = 18.sp)
             Spacer(Modifier.height(8.dp))
-            Text(title, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center)
-            if (sub.isNotBlank()) Text(sub, fontSize = 12.sp, color = Color(0xFF6B7280))
+            Text(title, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center, color = scheme.onSurface)
+            if (sub.isNotBlank()) Text(sub, fontSize = 12.sp, color = scheme.onSurfaceVariant)
         }
     }
 }
@@ -371,20 +324,16 @@ private fun SuggestCard(
 private fun SelectableIcon(
     emoji: String,
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    scheme: ColorScheme
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = if (selected) Color(0xFFEFF6FF) else Color.White,
-        border = BorderStroke(if (selected) 2.dp else 1.dp,
-            if (selected) Color(0xFF3B82F6) else Color(0xFFE5E7EB)),
-        modifier = Modifier
-            .size(48.dp)
-            .clickable { onClick() }
+        color = if (selected) scheme.primaryContainer else scheme.surface,
+        border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) scheme.primary else scheme.outlineVariant),
+        modifier = Modifier.size(48.dp).clickable { onClick() }
     ) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(emoji, fontSize = 18.sp)
-        }
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(emoji, fontSize = 18.sp) }
     }
 }
 
@@ -392,24 +341,17 @@ private fun SelectableIcon(
 private fun SelectableColor(
     color: Color,
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    scheme: ColorScheme
 ) {
     Surface(
         shape = CircleShape,
-        color = Color.White,
-        border = BorderStroke(if (selected) 2.dp else 1.dp,
-            if (selected) Color(0xFF3B82F6) else Color(0xFFE5E7EB)),
-        modifier = Modifier
-            .size(56.dp)
-            .clickable { onClick() }
+        color = scheme.surface,
+        border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) scheme.primary else scheme.outlineVariant),
+        modifier = Modifier.size(56.dp).clickable { onClick() }
     ) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(color)
-            )
+            Box(Modifier.size(40.dp).clip(CircleShape).background(color))
         }
     }
 }

@@ -9,9 +9,9 @@ data class LoginResp(
 )
 
 data class RegisterReq(
-    val fullName: String,
+    val name: String,
     val email: String,
-    val phone: String,
+    val phoneNumber: String,
     val password: String
 )
 
@@ -33,4 +33,21 @@ data class SignUpResponse(
     @SerializedName("success") val success: Boolean,
     @SerializedName("message") val message: String,
     @SerializedName("user") val user: UserDto? = null
+)
+
+data class ImageUploadResp(
+    val success: Boolean,
+    val message: String?,
+    val transactions: List<ImageUploadTx>?
+)
+
+data class ImageUploadTx(
+    val transactionId: String?,
+    val userId: String?,
+    val categoryId: String?,
+    val type: String?,
+    val amount: Long?,
+    val note: String?,
+    val createdDate: String?,
+    val updatedDate: String?
 )

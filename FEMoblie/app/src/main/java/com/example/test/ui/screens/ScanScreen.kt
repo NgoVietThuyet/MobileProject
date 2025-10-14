@@ -2,9 +2,14 @@
 
 package com.example.test.ui.screens
 
+import UsersApi
 import android.Manifest
+import android.content.ContentResolver
+import android.content.Context
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -36,32 +41,53 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.test.R
+import com.example.test.ui.api.ImageUploadResp
 import com.example.test.ui.theme.AppGradient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okio.BufferedSink
+import okio.source
 import java.io.File
+import java.io.IOException
 
 @Composable
 fun ReceiptScanScreen(
+    usersApi: UsersApi,
+    userId: String? = null,
+    categoryId: String? = null,
     onBack: () -> Unit = {},
-    onCaptured: (Uri) -> Unit = {},
-    onCaptureError: (String) -> Unit = {},
+    onUploaded: (ImageUploadResp) -> Unit = {},
+    onUploadError: (String) -> Unit = {},
     showScanTips: Boolean = true,
     showPermissionTexts: Boolean = false
 ) {
     val appBarHeight = 36.dp
     val scroll = TopAppBarDefaults.pinnedScrollBehavior()
     val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
 
-    // launcher mở thư viện, không cần quyền
+    var cameraController by remember { mutableStateOf<LifecycleCameraController?>(null) }
+    var shooting by remember { mutableStateOf(false) }
+    var uploading by remember { mutableStateOf(false) }
+
     val pickImage = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
-    ) { uri: Uri? -> uri?.let(onCaptured) }
-
-    val imageCapture = remember {
-        ImageCapture.Builder()
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .build()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            scope.launch {
+                uploading = true
+                val r = safeUpload(ctx, usersApi, uri, userId, categoryId)
+                uploading = false
+                r.onSuccess(onUploaded)
+                    .onFailure { onUploadError(it.message ?: "Upload thất bại") }
+            }
+        }
     }
-    var cameraController by remember { mutableStateOf<LifecycleCameraController?>(null) }
+
+    val canShoot = cameraController != null && !shooting && !uploading
 
     Scaffold(
         modifier = Modifier.nestedScroll(scroll.nestedScrollConnection),
@@ -95,7 +121,6 @@ fun ReceiptScanScreen(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                // TOP 60%
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -126,7 +151,6 @@ fun ReceiptScanScreen(
                     )
                 }
 
-                // BOTTOM 40%
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -161,19 +185,27 @@ fun ReceiptScanScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
+                    enabled = canShoot,
                     onClick = {
-                        cameraController?.let { ctrl ->
-                            takePhoto(
-                                context = ctx,
-                                controller = ctrl,
-                                onSaved = onCaptured,
-                                onError = { onCaptureError(it.message ?: "Lỗi chụp ảnh") }
-                            )
-                        } ?: takePhoto(
+                        val ctrl = cameraController ?: return@Button
+                        shooting = true
+                        takePhoto(
                             context = ctx,
-                            imageCapture = imageCapture,
-                            onSaved = onCaptured,
-                            onError = { onCaptureError(it.message ?: "Lỗi chụp ảnh") }
+                            controller = ctrl,
+                            onSaved = { uri ->
+                                shooting = false
+                                scope.launch {
+                                    uploading = true
+                                    val r = safeUpload(ctx, usersApi, uri, userId, categoryId)
+                                    uploading = false
+                                    r.onSuccess(onUploaded)
+                                        .onFailure { onUploadError(it.message ?: "Upload thất bại") }
+                                }
+                            },
+                            onError = { e ->
+                                shooting = false
+                                onUploadError(e.message ?: "Lỗi chụp ảnh")
+                            }
                         )
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
@@ -196,12 +228,18 @@ fun ReceiptScanScreen(
                                 tint = Color.White
                             )
                             Spacer(Modifier.width(8.dp))
-                            Text("Chụp & quét", color = Color.White, fontWeight = FontWeight.Medium)
+                            val label = when {
+                                shooting -> "Đang chụp..."
+                                uploading -> "Đang tải..."
+                                else -> "Chụp & quét"
+                            }
+                            Text(label, color = Color.White, fontWeight = FontWeight.Medium)
                         }
                     }
                 }
                 Spacer(Modifier.width(12.dp))
                 OutlinedButton(
+                    enabled = !uploading && !shooting,
                     onClick = { pickImage.launch("image/*") },
                     shape = RoundedCornerShape(16.dp),
                     border = BorderStroke(1.dp, Color(0xFFCBD5E1)),
@@ -274,7 +312,6 @@ private fun CameraCard(
                     bindToLifecycle(lifecycleOwner)
                 }
             }
-
             LaunchedEffect(controller) { onControllerReady(controller) }
 
             AndroidView(
@@ -295,7 +332,7 @@ private fun CameraCard(
 }
 
 private fun takePhoto(
-    context: android.content.Context,
+    context: Context,
     controller: LifecycleCameraController,
     onSaved: (Uri) -> Unit,
     onError: (ImageCaptureException) -> Unit
@@ -313,25 +350,49 @@ private fun takePhoto(
         }
     )
 }
+private suspend fun safeUpload(
+    ctx: Context,
+    api: UsersApi,
+    uri: Uri,
+    @Suppress("UNUSED_PARAMETER") userId: String?,
+    @Suppress("UNUSED_PARAMETER") categoryId: String?
+): Result<ImageUploadResp> = withContext(Dispatchers.IO) {
+    runCatching {
+        val part = uriToStreamingPart(ctx, uri, "file")
+        val resp = api.uploadImage(part, embedBase64 = false)
+        if (!resp.isSuccessful) error(resp.errorBody()?.string().orEmpty().ifBlank { "HTTP ${resp.code()}" })
+        resp.body() ?: error("Response rỗng")
+    }
+}
 
-private fun takePhoto(
-    context: android.content.Context,
-    imageCapture: ImageCapture,
-    onSaved: (Uri) -> Unit,
-    onError: (ImageCaptureException) -> Unit
-) {
-    val file = File.createTempFile("scan_", ".jpg", context.cacheDir)
-    val output = ImageCapture.OutputFileOptions.Builder(file).build()
-    imageCapture.takePicture(
-        output,
-        ContextCompat.getMainExecutor(context),
-        object : ImageCapture.OnImageSavedCallback {
-            override fun onError(exc: ImageCaptureException) = onError(exc)
-            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                onSaved(outputFileResults.savedUri ?: Uri.fromFile(file))
-            }
+private fun uriToStreamingPart(ctx: Context, uri: Uri, formName: String): MultipartBody.Part {
+    val cr = ctx.contentResolver
+    val mime = cr.getType(uri) ?: "image/jpeg"
+    val fileName = queryDisplayName(cr, uri) ?: "receipt_${System.currentTimeMillis()}.jpg"
+
+    val body = object : okhttp3.RequestBody() {
+        override fun contentType() = mime.toMediaType()
+        override fun contentLength(): Long =
+            try { cr.openAssetFileDescriptor(uri, "r")?.use { it.length } ?: -1L }
+            catch (_: Exception) { -1L }
+
+        override fun writeTo(sink: BufferedSink) {
+            val input = cr.openInputStream(uri) ?: throw IOException("Không mở được InputStream")
+            input.source().use { source -> sink.writeAll(source) }
         }
-    )
+    }
+    return MultipartBody.Part.createFormData(formName, fileName, body)
+}
+
+private fun queryDisplayName(cr: ContentResolver, uri: Uri): String? {
+    if (uri.scheme == "file") return File(uri.path!!).name
+    var name: String? = null
+    val cursor: Cursor? = cr.query(uri, null, null, null, null)
+    cursor?.use {
+        val idx = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        if (idx >= 0 && it.moveToFirst()) name = it.getString(idx)
+    }
+    return name
 }
 
 @Composable

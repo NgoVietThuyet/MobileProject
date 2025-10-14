@@ -26,6 +26,8 @@ fun EmailLoginScreen(
     onLogin: (email: String, password: String) -> Unit,
     onRegister: () -> Unit = {}
 ) {
+    val scheme = MaterialTheme.colorScheme
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var rememberMe by remember { mutableStateOf(false) }
@@ -37,18 +39,17 @@ fun EmailLoginScreen(
         subtitle = "Nhập email và mật khẩu",
         onBack = onBack
     ) {
-        // container
         Surface(
             shape = RoundedCornerShape(20.dp),
-            border = BorderStroke(1.dp, Color(0xFFD9D9D9)),
-            color = Color.White,
+            border = BorderStroke(1.dp, scheme.outlineVariant),
+            color = scheme.surface,
+            tonalElevation = 2.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // textfield email
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
@@ -56,22 +57,23 @@ fun EmailLoginScreen(
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 56.dp),
                     shape = RoundedCornerShape(12.dp),
-                    placeholder = { Text("Email", color = Color.DarkGray, fontSize = 14.sp) },
+                    placeholder = { Text("Email", color = scheme.onSurfaceVariant, fontSize = 14.sp) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_email),
-                            contentDescription = "Email"
+                            contentDescription = "Email",
+                            tint = scheme.onSurfaceVariant
                         )
                     },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFFD9D9D9),
-                        unfocusedContainerColor = Color(0xFFD9D9D9),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        cursorColor = Color.Black
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = scheme.surfaceVariant,
+                        unfocusedContainerColor = scheme.surfaceVariant,
+                        focusedBorderColor = scheme.primary,
+                        unfocusedBorderColor = scheme.outlineVariant,
+                        cursorColor = scheme.primary
                     )
                 )
-                //textfield password
+
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -79,29 +81,31 @@ fun EmailLoginScreen(
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 56.dp),
                     shape = RoundedCornerShape(12.dp),
-                    placeholder = { Text("Mật khẩu", color = Color.DarkGray, fontSize = 14.sp) },
+                    placeholder = { Text("Mật khẩu", color = scheme.onSurfaceVariant, fontSize = 14.sp) },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
                         val icon = if (passwordVisible) R.drawable.ic_eye else R.drawable.ic_eye_off
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(
                                 painter = painterResource(id = icon),
-                                contentDescription = "Toggle Password"
+                                contentDescription = "Toggle Password",
+                                tint = scheme.onSurfaceVariant
                             )
                         }
                     },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_lock),
-                            contentDescription = "Password"
+                            contentDescription = "Password",
+                            tint = scheme.onSurfaceVariant
                         )
                     },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFFD9D9D9),
-                        unfocusedContainerColor = Color(0xFFD9D9D9),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        cursorColor = Color.Black
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = scheme.surfaceVariant,
+                        unfocusedContainerColor = scheme.surfaceVariant,
+                        focusedBorderColor = scheme.primary,
+                        unfocusedBorderColor = scheme.outlineVariant,
+                        cursorColor = scheme.primary
                     )
                 )
 
@@ -113,40 +117,45 @@ fun EmailLoginScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(
                             checked = rememberMe,
-                            onCheckedChange = { rememberMe = it }
+                            onCheckedChange = { rememberMe = it },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = scheme.primary,
+                                checkmarkColor = scheme.onPrimary,
+                                uncheckedColor = scheme.outline,
+                                disabledUncheckedColor = scheme.outlineVariant
+                            )
                         )
-                        Text("Ghi nhớ", fontSize = 14.sp)
+                        Text("Ghi nhớ", fontSize = 14.sp, color = scheme.onSurface)
                     }
                     Text(
                         "Quên mật khẩu?",
-                        color = Color(0xFF1877F2),
+                        color = scheme.primary,
                         fontSize = 14.sp,
                         modifier = Modifier.clickable { }
                     )
                 }
-                // button login
+
                 Button(
-                    onClick = {
-                        val e = email.trim()
-                        val p = password
-                        onLogin(e, p)
-                    },
+                    onClick = { onLogin(email.trim(), password) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
+                    shape = RoundedCornerShape(24.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    contentPadding = PaddingValues()
+                    contentPadding = PaddingValues(0.dp)
                 ) {
                     Box(
-                        modifier = Modifier
+                        Modifier
                             .fillMaxSize()
-                            .background(
-                                brush = AppGradient.BluePurple,
-                                shape = RoundedCornerShape(24.dp)
-                            ),
+                            .background(AppGradient.BluePurple, RoundedCornerShape(24.dp)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Đăng nhập", color = Color.White, fontSize = 16.sp)
+                        Text(
+                            "Đăng nhập",
+                            color = scheme.onPrimary,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     }
                 }
 
@@ -154,11 +163,11 @@ fun EmailLoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text("Chưa có tài khoản?", color = Color.Gray, fontSize = 14.sp)
+                    Text("Chưa có tài khoản?", color = scheme.onSurfaceVariant, fontSize = 14.sp)
                     Spacer(Modifier.width(4.dp))
                     Text(
                         "Đăng ký ngay",
-                        color = Color(0xFF1877F2),
+                        color = scheme.primary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         modifier = Modifier.clickable { onRegister() }
@@ -167,5 +176,4 @@ fun EmailLoginScreen(
             }
         }
     }
-
 }

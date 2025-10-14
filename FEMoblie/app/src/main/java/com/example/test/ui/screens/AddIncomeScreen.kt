@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
+import com.example.test.ui.components.AppHeader
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.Instant
@@ -55,13 +56,9 @@ fun AddIncomeScreen(
     onBack: () -> Unit,
     onSave: (IncomeInput) -> Unit
 ) {
-    // State
+    val scheme = MaterialTheme.colorScheme
+
     var amountRaw by rememberSaveable { mutableStateOf("") }
-    var selectedCategory by rememberSaveable { mutableStateOf<IncomeCategory?>(null) }
-    var note by rememberSaveable { mutableStateOf("") }
-    val today = LocalDate.now()
-    var date by rememberSaveable { mutableStateOf(today) }
-    var showDatePicker by remember { mutableStateOf(false) }
 
     val categories = remember {
         listOf(
@@ -73,6 +70,15 @@ fun AddIncomeScreen(
             IncomeCategory("💵", "Thu nhập khác")
         )
     }
+    var selectedCategoryIndex by rememberSaveable { mutableStateOf<Int?>(null) }
+    val selectedCategory = selectedCategoryIndex?.let { categories[it] }
+
+    var note by rememberSaveable { mutableStateOf("") }
+
+    val zone = ZoneId.systemDefault()
+    val todayMillis = LocalDate.now().atStartOfDay(zone).toInstant().toEpochMilli()
+    var dateMillis by rememberSaveable { mutableStateOf(todayMillis) }
+    var showDatePicker by remember { mutableStateOf(false) }
 
     fun digitsOnly(s: String) = s.filter { it.isDigit() }
     val amountLong = amountRaw.toLongOrNull() ?: 0L
@@ -83,21 +89,25 @@ fun AddIncomeScreen(
     val df = remember { DecimalFormat("#,##0", sym) }
     val moneyPreview = if (amountLong > 0) df.format(amountLong) + " ₫" else ""
 
-    val dateLabel = remember(date) { date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) }
+    val dateLabel = remember(dateMillis) {
+        Instant.ofEpochMilli(dateMillis).atZone(zone).toLocalDate()
+            .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+    }
 
     val statusTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val headerHeight = 36.dp
 
     Scaffold(
         topBar = {
-            Surface(
-                color = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                modifier = Modifier.fillMaxWidth().height(headerHeight)
-            ) {}
+            AppHeader(
+                title = "Thêm khoản thu",
+                showBack = true,
+                onBack = onBack
+            )
         },
         contentWindowInsets = WindowInsets(0),
         bottomBar = {
-            Surface(color = Color(0xFFF6F6F7)) {
+            Surface(color = scheme.surface) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -106,7 +116,14 @@ fun AddIncomeScreen(
                 ) {
                     Button(
                         onClick = {
-                            onSave
+                            val input = IncomeInput(
+                                amountVnd = amountLong,
+                                category = selectedCategory!!.label,
+                                note = note.trim(),
+                                dateMillis = dateMillis
+                            )
+                            onSave(input)
+                            onBack()
                         },
                         enabled = isValid,
                         modifier = Modifier
@@ -114,10 +131,10 @@ fun AddIncomeScreen(
                             .height(48.dp),
                         shape = RoundedCornerShape(24.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF34C759),
-                            contentColor = Color.White,
-                            disabledContainerColor = Color(0xFF34C759).copy(alpha = 0.4f),
-                            disabledContentColor = Color.White.copy(alpha = 0.9f)
+                            containerColor = scheme.tertiary,
+                            contentColor = scheme.onTertiary,
+                            disabledContainerColor = scheme.tertiary.copy(alpha = 0.4f),
+                            disabledContentColor = scheme.onTertiary.copy(alpha = 0.9f)
                         )
                     ) {
                         Text("Lưu", fontWeight = FontWeight.SemiBold)
@@ -125,37 +142,26 @@ fun AddIncomeScreen(
                 }
             }
         }
-
-    ) {
+    ) { innerPadding ->
         Column(
             modifier = Modifier
-                .padding(top = statusTop + headerHeight)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
                 .fillMaxSize()
+                .background(scheme.background)
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        painter = androidx.compose.ui.res.painterResource(R.drawable.ic_back),
-                        contentDescription = "Quay lại",
-                        tint = Color.Black
-                    )
-                }
-                Spacer(Modifier.width(6.dp))
-                Text("Thêm khoản thu", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-            }
-
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(24.dp))
 
             Surface(
                 shape = RoundedCornerShape(16.dp),
-                color = Color.White,
-                border = BorderStroke(1.dp, Color(0xFFE3E3E7)),
+                color = scheme.surface,
+                border = BorderStroke(1.dp, scheme.outlineVariant),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Số tiền", color = Color(0xFF7B8090), fontSize = 14.sp)
+                    Text("Số tiền", color = scheme.onSurfaceVariant, fontSize = 14.sp)
                     Spacer(Modifier.height(10.dp))
 
                     OutlinedTextField(
@@ -168,15 +174,10 @@ fun AddIncomeScreen(
                             .fillMaxWidth()
                             .height(56.dp)
                             .clip(RoundedCornerShape(12.dp))
-                            .border(1.dp, Color(0xFFD7D7DB), RoundedCornerShape(12.dp))
-                            .background(Color(0xFFF9FAFB)),
+                            .border(1.dp, scheme.outlineVariant, RoundedCornerShape(12.dp))
+                            .background(scheme.surfaceVariant),
                         trailingIcon = {
-                            Text(
-                                "đ",
-                                color = Color(0xFF9CA3AF),
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
+                            Text("đ", color = scheme.onSurfaceVariant, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
                         },
                         colors = OutlinedTextFieldDefaults.colors(
                             unfocusedContainerColor = Color.Transparent,
@@ -184,31 +185,31 @@ fun AddIncomeScreen(
                             disabledContainerColor = Color.Transparent,
                             unfocusedBorderColor = Color.Transparent,
                             focusedBorderColor = Color.Transparent,
-                            cursorColor = Color(0xFF111827)
+                            cursorColor = scheme.onSurface
                         )
                     )
 
                     if (moneyPreview.isNotEmpty()) {
                         Spacer(Modifier.height(8.dp))
-                        Text("≈ $moneyPreview", color = Color(0xFF9CA3AF), fontSize = 12.sp)
+                        Text("≈ $moneyPreview", color = scheme.onSurfaceVariant, fontSize = 12.sp)
                     }
                 }
             }
 
             Spacer(Modifier.height(24.dp))
 
-            Text("Chọn danh mục", fontSize = 14.sp, color = Color(0xFF5F6167))
+            Text("Chọn danh mục", fontSize = 14.sp, color = scheme.onSurfaceVariant)
             Spacer(Modifier.height(10.dp))
-            CategoryGrid(
+            CategoryGridIncome(
                 categories = categories,
-                selected = selectedCategory,
-                onSelect = { selectedCategory = it }
+                selectedIndex = selectedCategoryIndex,
+                onSelect = { selectedCategoryIndex = it },
+                scheme = scheme
             )
 
             Spacer(Modifier.height(20.dp))
 
-            // Ghi chú
-            Text("Ghi chú", fontSize = 14.sp, color = Color(0xFF5F6167))
+            Text("Ghi chú", fontSize = 14.sp, color = scheme.onSurfaceVariant)
             OutlinedTextField(
                 value = note,
                 onValueChange = { note = it },
@@ -219,33 +220,32 @@ fun AddIncomeScreen(
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedContainerColor = Color(0xFFF1F2F4),
-                    focusedContainerColor = Color(0xFFF1F2F4),
+                    unfocusedContainerColor = scheme.surfaceVariant,
+                    focusedContainerColor = scheme.surfaceVariant,
                     unfocusedBorderColor = Color.Transparent,
-                    focusedBorderColor = Color(0xFF4C6FFF)
+                    focusedBorderColor = scheme.primary
                 )
             )
 
             Spacer(Modifier.height(16.dp))
 
-            // Ngày giao dịch
-            Text("Ngày giao dịch:", fontSize = 14.sp, color = Color(0xFF5F6167))
+            Text("Ngày giao dịch:", fontSize = 14.sp, color = scheme.onSurfaceVariant)
             Spacer(Modifier.height(6.dp))
             Row(
                 modifier = Modifier
                     .height(48.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .border(1.dp, Color(0xFFD7D7DB), RoundedCornerShape(12.dp))
-                    .background(Color(0xFFF9FAFB))
+                    .border(1.dp, scheme.outlineVariant, RoundedCornerShape(12.dp))
+                    .background(scheme.surfaceVariant)
                     .padding(horizontal = 12.dp)
                     .clickable { showDatePicker = true },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(dateLabel, modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color(0xFF111827))
+                Text(dateLabel, modifier = Modifier.weight(1f), fontSize = 14.sp, color = scheme.onSurface)
                 Icon(
                     painter = androidx.compose.ui.res.painterResource(R.drawable.ic_calendar),
                     contentDescription = null,
-                    tint = Color(0xFF6B7280)
+                    tint = scheme.onSurfaceVariant
                 )
             }
 
@@ -254,46 +254,46 @@ fun AddIncomeScreen(
     }
 
     if (showDatePicker) {
-        val initial = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = { TextButton(onClick = { showDatePicker = false }) { Text("Chọn") } },
             dismissButton = { TextButton(onClick = { showDatePicker = false }) { Text("Huỷ") } }
         ) {
-            val state = rememberDatePickerState(initialSelectedDateMillis = initial)
+            val state = rememberDatePickerState(initialSelectedDateMillis = dateMillis)
             DatePicker(state = state)
             LaunchedEffect(state.selectedDateMillis) {
-                state.selectedDateMillis?.let {
-                    date = Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
-                }
+                state.selectedDateMillis?.let { sel -> dateMillis = sel }
             }
         }
     }
 }
+
 @Composable
-private fun CategoryGrid(
+private fun CategoryGridIncome(
     categories: List<IncomeCategory>,
-    selected: IncomeCategory?,
-    onSelect: (IncomeCategory) -> Unit
+    selectedIndex: Int?,
+    onSelect: (Int) -> Unit,
+    scheme: ColorScheme
 ) {
     val rows = categories.chunked(3)
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        rows.forEach { row ->
+        rows.forEachIndexed { rowIdx, row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                row.forEach { cat ->
-                    val isSelected = selected == cat
+                row.forEachIndexed { colIdx, cat ->
+                    val idx = rowIdx * 3 + colIdx
+                    val isSelected = selectedIndex == idx
                     Surface(
                         shape = RoundedCornerShape(14.dp),
-                        color = Color.White,
-                        border = BorderStroke(1.dp, if (isSelected) Color(0xFF4C6FFF) else Color(0xFFE3E3E7)),
+                        color = scheme.surface,
+                        border = BorderStroke(1.dp, if (isSelected) scheme.primary else scheme.outlineVariant),
                         tonalElevation = 0.dp,
                         modifier = Modifier
                             .weight(1f)
                             .height(80.dp)
-                            .clickable { onSelect(cat) }
+                            .clickable { onSelect(idx) }
                     ) {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -301,11 +301,11 @@ private fun CategoryGrid(
                                     modifier = Modifier
                                         .size(36.dp)
                                         .clip(CircleShape)
-                                        .background(if (isSelected) Color(0xFFEEF2FF) else Color(0xFFF5F7FB)),
+                                        .background(if (isSelected) scheme.primaryContainer else scheme.surfaceVariant),
                                     contentAlignment = Alignment.Center
                                 ) { Text(cat.emoji, fontSize = 18.sp, textAlign = TextAlign.Center) }
                                 Spacer(Modifier.height(6.dp))
-                                Text(cat.label, fontSize = 13.sp, color = Color(0xFF111827))
+                                Text(cat.label, fontSize = 13.sp, color = scheme.onSurface)
                             }
                         }
                     }

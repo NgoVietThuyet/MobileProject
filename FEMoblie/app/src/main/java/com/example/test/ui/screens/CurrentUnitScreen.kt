@@ -7,12 +7,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.test.R
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.theme.AppGradient
 
 data class CurrencyItem(
@@ -40,118 +39,58 @@ fun CurrencyUnitScreen(
     current: CurrencyItem = vn,
     onSelect: (CurrencyItem) -> Unit = {}
 ) {
+    val scheme = MaterialTheme.colorScheme
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val appBarHeight = 36.dp
     var selected by remember { mutableStateOf(current) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("") },
-                navigationIcon = {},
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
+            AppHeader(
+                title = "Chọn đơn vị tiền tệ",
+                showBack = true,
+                onBack = onBack
             )
-        }
-    ) { pad ->
+        },
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(
-                    start = pad.calculateStartPadding(LayoutDirection.Ltr),
-                    end = pad.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
-                    bottom = pad.calculateBottomPadding()
-                ),
-            contentPadding = PaddingValues(bottom = 16.dp)
+                .background(scheme.background),
+            contentPadding = PaddingValues(
+                start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+                end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+                top = innerPadding.calculateTopPadding(),
+                bottom = innerPadding.calculateBottomPadding() + 16.dp
+            )
         ) {
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(280.dp)
-                        .background(brush = AppGradient.BluePurple)
-                ) {
-                    Column(
-                        Modifier
-                            .statusBarsPadding()
-                            .padding(horizontal = 20.dp)
-                    ) {
-                        Spacer(Modifier.height(appBarHeight + 8.dp))
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .heightIn(min = 56.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            IconButton(onClick = onBack) {
-                                Icon(
-                                    painter = painterResource(com.example.test.R.drawable.ic_back),
-                                    contentDescription = "Quay lại",
-                                    tint = Color.White
-                                )
-                            }
-                            Spacer(Modifier.width(8.dp))
-                            Text(
-                                "Đơn vị tiền tệ",
-                                color = Color.White,
-                                fontSize = 26.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-
-                        Spacer(Modifier.height(18.dp))
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Outlined.Public, null, tint = Color.White)
-                            Spacer(Modifier.width(12.dp))
-                            Column {
-                                Text(
-                                    "Tiền tệ hiện tại",
-                                    color = Color.White.copy(alpha = 0.75f),
-                                    fontSize = 14.sp
-                                )
-                                Text(
-                                    selected.name,
-                                    color = Color.White,
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            }
-                        }
-
-                        Spacer(Modifier.height(20.dp))
-                    }
-                }
-            }
 
             item {
                 Spacer(Modifier.height(12.dp))
+                Text(
+                    "Đơn vị tiền tệ hiện tại",
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = scheme.onSurface
+                )
+                Spacer(Modifier.height(8.dp))
                 CurrentCurrencyCard(selected)
                 Spacer(Modifier.height(16.dp))
             }
+
             item {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(com.example.test.R.drawable.ic_star),
+                        painter = painterResource(R.drawable.ic_star),
                         contentDescription = "Phổ biến",
                         tint = Color.Unspecified,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(Modifier.width(6.dp))
-                    Text("Phổ biến")
+                    Text("Phổ biến", color = scheme.onSurface)
                 }
                 Spacer(Modifier.height(8.dp))
             }
@@ -165,7 +104,9 @@ fun CurrencyUnitScreen(
                 Spacer(Modifier.height(16.dp))
             }
 
-            item { Text("Khác", modifier = Modifier.padding(horizontal = 16.dp)) }
+            item {
+                Text("Khác", modifier = Modifier.padding(horizontal = 16.dp), color = scheme.onSurface)
+            }
             item {
                 Spacer(Modifier.height(8.dp))
                 CurrencyListCard(
@@ -180,10 +121,11 @@ fun CurrencyUnitScreen(
 
 @Composable
 private fun CurrentCurrencyCard(item: CurrencyItem) {
+    val scheme = MaterialTheme.colorScheme
     OutlinedCard(
         shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(1.dp, Color(0xFFE5E7EB)),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, scheme.outlineVariant),
+        colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
@@ -206,16 +148,14 @@ private fun CurrentCurrencyCard(item: CurrencyItem) {
                     ) { Text("đ", color = Color.White, fontSize = 22.sp) }
 
                     Spacer(Modifier.height(12.dp))
-                    Text(c.name, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+                    Text(c.name, fontSize = 24.sp, fontWeight = FontWeight.SemiBold, color = scheme.onSurface)
                     Spacer(Modifier.height(6.dp))
-                    Text("Ví dụ: 42.000 ${c.code}", fontSize = 16.sp, color = Color.Black.copy(alpha = 0.75f))
+                    Text("Ví dụ: 42.000 ${c.code}", fontSize = 16.sp, color = scheme.onSurfaceVariant)
                 }
             }
         }
     }
 }
-
-
 
 @Composable
 private fun CurrencyListCard(
@@ -223,10 +163,11 @@ private fun CurrencyListCard(
     selectedCode: String,
     onSelect: (CurrencyItem) -> Unit
 ) {
+    val scheme = MaterialTheme.colorScheme
     OutlinedCard(
         shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(1.dp, Color(0xFFE5E7EB)),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, scheme.outlineVariant),
+        colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
@@ -238,7 +179,7 @@ private fun CurrencyListCard(
                     selected = it.code == selectedCode,
                     onClick = { onSelect(it) }
                 )
-                if (i != items.lastIndex) Divider(color = Color(0xFFE5E7EB))
+                if (i != items.lastIndex) Divider(color = scheme.outlineVariant)
             }
         }
     }
@@ -250,6 +191,7 @@ private fun CurrencyRow(
     selected: Boolean,
     onClick: () -> Unit
 ) {
+    val scheme = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -258,15 +200,15 @@ private fun CurrencyRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(modifier = Modifier.width(44.dp), verticalAlignment = Alignment.CenterVertically) {
-            if (selected) { Text("•", fontSize = 18.sp); Spacer(Modifier.width(6.dp)) }
-            Text(item.countryCode, fontSize = 16.sp)
+            if (selected) { Text("•", fontSize = 18.sp, color = scheme.primary); Spacer(Modifier.width(6.dp)) }
+            Text(item.countryCode, fontSize = 16.sp, color = scheme.onSurface)
         }
         Spacer(Modifier.width(8.dp))
         Column(Modifier.weight(1f)) {
-            Text(item.name, fontSize = 16.sp)
-            Text(item.code, color = Color(0xFF6B7280), fontSize = 12.sp)
+            Text(item.name, fontSize = 16.sp, color = scheme.onSurface)
+            Text(item.code, color = scheme.onSurfaceVariant, fontSize = 12.sp)
         }
-        Text(item.symbol, fontSize = 20.sp)
+        Text(item.symbol, fontSize = 20.sp, color = scheme.onSurface)
     }
 }
 

@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
 package com.example.test.ui.screens
 
@@ -40,12 +40,7 @@ import com.example.test.ui.mock.BudgetCategoryMock
 import com.example.test.ui.mock.MockData as HomeMock
 import com.example.test.ui.mock.TransactionMock
 import com.example.test.ui.theme.AppGradient
-private val IncomeBg   = Color(0xFFDFF3E6)
-private val IncomeMain = Color(0xFF2E7D32)
-private val ExpenseBg  = Color(0xFFFFE4E6)
-private val ExpenseMain= Color(0xFFD32F2F)
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -60,25 +55,11 @@ fun HomeScreen(
     onCamera: () -> Unit = {}
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val appBarHeight = 36.dp
-
     var chatOpen by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
-        topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
-            )
-        },
         bottomBar = {
             MainBottomBar(
                 selected = BottomTab.HOME,
@@ -99,10 +80,12 @@ fun HomeScreen(
         },
         floatingActionButtonPosition = FabPosition.End
     ) { padding ->
+        val scheme = MaterialTheme.colorScheme
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .background(scheme.background)
                 .padding(
                     start = padding.calculateStartPadding(LayoutDirection.Ltr),
                     end = padding.calculateEndPadding(LayoutDirection.Ltr),
@@ -111,9 +94,14 @@ fun HomeScreen(
                 ),
             contentPadding = PaddingValues(bottom = 48.dp)
         ) {
-            item { HeaderSection(onOpenNotifications = onOpenNotifications) }
-            item { Spacer(Modifier.height(16.dp)) }
-            item { QuickActionButtons(onAddIncome = onAddIncome, onAddExpense = onAddExpense) }
+            item {
+                HeaderSection(
+                    onOpenNotifications = onOpenNotifications,
+                    onAddIncome = onAddIncome,
+                    onAddExpense = onAddExpense
+                )
+            }
+
             item { Spacer(Modifier.height(24.dp)) }
             item { MonthlySummaryCard() }
             item { Spacer(Modifier.height(24.dp)) }
@@ -130,8 +118,11 @@ fun HomeScreen(
 
 @Composable
 private fun HeaderSection(
-    onOpenNotifications: () -> Unit = {}
+    onOpenNotifications: () -> Unit = {},
+    onAddIncome: () -> Unit = {},
+    onAddExpense: () -> Unit = {}
 ) {
+    val scheme = MaterialTheme.colorScheme
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -148,7 +139,7 @@ private fun HeaderSection(
             ) {
                 Text(
                     text = "Xin chào\n${HomeMock.greetingName}",
-                    color = Color.White,
+                    color = scheme.onPrimary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
                     lineHeight = 24.sp
@@ -159,15 +150,14 @@ private fun HeaderSection(
                         .size(40.dp)
                         .clickable(onClick = onOpenNotifications),
                     shape = CircleShape,
-                    color = Color.White.copy(alpha = 0.18f),
-                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.35f))
+                    color = scheme.onPrimary.copy(alpha = 0.18f),
+                    border = BorderStroke(1.dp, scheme.onPrimary.copy(alpha = 0.35f))
                 ) {
                     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                         Icon(
                             painter = painterResource(R.drawable.ic_bell),
                             contentDescription = "Notifications",
-                            tint = Color.White,
-                            modifier = Modifier.size(28.dp)
+                            tint = scheme.onPrimary
                         )
                     }
                 }
@@ -175,101 +165,38 @@ private fun HeaderSection(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            Card(
+            OutlinedCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
+                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.45f)),
+                colors = CardDefaults.outlinedCardColors(
+                    containerColor = Color.White.copy(alpha = 0.15f)
+                )
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        text = "Số dư hiện tại",
-                        color = Color.Black,
+                        "Số dư hiện tại",
+                        color = Color.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = HomeMock.balance,
-                        color = Color.Black,
+                        HomeMock.balance,
+                        color = Color.White,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                StatCard(
-                    modifier = Modifier.weight(1f),
-                    bg = IncomeBg,
-                    main = IncomeMain,
-                    iconRes = R.drawable.inc,
-                    title = "Thu nhập",
-                    value = HomeMock.monthlyIncome
-                )
-                StatCard(
-                    modifier = Modifier.weight(1f),
-                    bg = ExpenseBg,
-                    main = ExpenseMain,
-                    iconRes = R.drawable.dec,
-                    title = "Chi tiêu",
-                    value = HomeMock.monthlyExpense
-                )
-            }
-        }
-    }
-}
-
-/* =============== StatCard =============== */
-
-@Composable
-private fun StatCard(
-    modifier: Modifier = Modifier,
-    bg: Color,
-    main: Color,
-    iconRes: Int,
-    title: String,
-    value: String
-) {
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = bg),
-        border = BorderStroke(1.dp, main.copy(alpha = 0.35f)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(28.dp)
-                        .background(main, RoundedCornerShape(8.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(iconRes),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(title, color = main, fontSize = 12.sp)
-                    Text(value, color = main, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                }
-            }
+            QuickActionButtons(
+                onAddIncome = onAddIncome,
+                onAddExpense = onAddExpense,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
@@ -279,12 +206,17 @@ private fun StatCard(
 @Composable
 private fun QuickActionButtons(
     onAddIncome: () -> Unit,
-    onAddExpense: () -> Unit
+    onAddExpense: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
+
+    val incomeBg = Color(0xFFE0FCE6)
+    val incomeFg = Color(0xFF268233)
+    val expenseBg = Color(0xFFFBE2E2)
+    val expenseFg = Color(0xFFB40000)
+
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Button(
@@ -294,8 +226,10 @@ private fun QuickActionButtons(
                 .height(75.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xffe0fce6),
-                contentColor = Color(0xff268233)
+                containerColor = incomeBg,
+                contentColor = incomeFg,
+                disabledContainerColor = incomeBg.copy(alpha = 0.6f),
+                disabledContentColor = incomeFg.copy(alpha = 0.6f)
             ),
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
@@ -313,8 +247,10 @@ private fun QuickActionButtons(
                 .height(75.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xfffbe2e2),
-                contentColor = Color(0xffb40000)
+                containerColor = expenseBg,
+                contentColor = expenseFg,
+                disabledContainerColor = expenseBg.copy(alpha = 0.6f),
+                disabledContentColor = expenseFg.copy(alpha = 0.6f)
             ),
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
@@ -331,13 +267,14 @@ private fun QuickActionButtons(
 
 @Composable
 private fun MonthlySummaryCard() {
+    val scheme = MaterialTheme.colorScheme
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xffe5e7eb))
+        colors = CardDefaults.cardColors(containerColor = scheme.surface),
+        border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -345,8 +282,8 @@ private fun MonthlySummaryCard() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Tháng này", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.Black)
-                Icon(painter = painterResource(R.drawable.increase), contentDescription = null, modifier = Modifier.size(20.dp))
+                Text("Tháng này", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
+                Icon(painter = painterResource(R.drawable.increase), contentDescription = null, tint = scheme.primary)
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -355,9 +292,9 @@ private fun MonthlySummaryCard() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                SummaryCol("Thu nhập", HomeMock.monthlyIncome, Color(0xff2ba63a))
-                SummaryCol("Chi tiêu", HomeMock.monthlyExpense, Color(0xffd80000))
-                SummaryCol("Tiết kiệm", HomeMock.monthlySaving, Color(0xff5372fe))
+                SummaryCol("Thu nhập", HomeMock.monthlyIncome, MaterialTheme.colorScheme.tertiary)
+                SummaryCol("Chi tiêu", HomeMock.monthlyExpense, MaterialTheme.colorScheme.error)
+                SummaryCol("Tiết kiệm", HomeMock.monthlySaving, MaterialTheme.colorScheme.primary)
             }
         }
     }
@@ -366,7 +303,7 @@ private fun MonthlySummaryCard() {
 @Composable
 private fun SummaryCol(label: String, value: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(label, color = Color(0xff7b8090), fontSize = 14.sp)
+        Text(label, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 14.sp)
         Spacer(Modifier.height(8.dp))
         Text(value, color = color, fontSize = 20.sp, fontWeight = FontWeight.Bold)
     }
@@ -376,13 +313,14 @@ private fun SummaryCol(label: String, value: String, color: Color) {
 
 @Composable
 private fun BudgetCategoriesCard(onSeeAll: () -> Unit = {}) {
+    val scheme = MaterialTheme.colorScheme
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xffe5e7eb))
+        colors = CardDefaults.cardColors(containerColor = scheme.surface),
+        border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -390,11 +328,11 @@ private fun BudgetCategoriesCard(onSeeAll: () -> Unit = {}) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Ngân sách theo danh mục", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.Black)
+                Text("Ngân sách theo danh mục", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
                 TextButton(
                     onClick = onSeeAll,
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    colors = ButtonDefaults.textButtonColors(contentColor = Color.Black)
+                    colors = ButtonDefaults.textButtonColors(contentColor = scheme.primary)
                 ) {
                     Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold)
                 }
@@ -414,6 +352,7 @@ private fun BudgetCategoriesCard(onSeeAll: () -> Unit = {}) {
 
 @Composable
 private fun BudgetCategoryItem(data: BudgetCategoryMock) {
+    val scheme = MaterialTheme.colorScheme
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -424,9 +363,7 @@ private fun BudgetCategoryItem(data: BudgetCategoryMock) {
                 .clip(RoundedCornerShape(8.dp))
                 .background(data.color),
             contentAlignment = Alignment.Center
-        ) {
-            Text(data.icon, fontSize = 18.sp)
-        }
+        ) { Text(data.icon, fontSize = 18.sp) }
 
         Spacer(modifier = Modifier.width(16.dp))
 
@@ -435,8 +372,8 @@ private fun BudgetCategoryItem(data: BudgetCategoryMock) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(data.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.Black)
-                Text(data.amount, fontSize = 14.sp, color = Color(0xff7b8090))
+                Text(data.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
+                Text(data.amount, fontSize = 14.sp, color = scheme.onSurfaceVariant)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -446,7 +383,7 @@ private fun BudgetCategoryItem(data: BudgetCategoryMock) {
                     .fillMaxWidth()
                     .height(6.dp)
                     .clip(RoundedCornerShape(3.dp))
-                    .background(Color(0xffe5e7eb))
+                    .background(scheme.outlineVariant)
             ) {
                 Box(
                     modifier = Modifier
@@ -469,14 +406,15 @@ private fun RecentTransactionsCard(onSeeAll: () -> Unit = {}) {
             .sortedByDescending { it.createdAt }
             .take(4)
     }
+    val scheme = MaterialTheme.colorScheme
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xffe5e7eb))
+        colors = CardDefaults.cardColors(containerColor = scheme.surface),
+        border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -484,23 +422,22 @@ private fun RecentTransactionsCard(onSeeAll: () -> Unit = {}) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Giao dịch gần đây", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.Black)
-                TextButton(onClick = onSeeAll) {
-                    Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                Text("Giao dịch gần đây", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
+                TextButton(onClick = onSeeAll, colors = ButtonDefaults.textButtonColors(contentColor = scheme.primary)) {
+                    Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold)
                 }
             }
 
             Spacer(Modifier.height(20.dp))
 
-            items.forEach { tx ->
-                TransactionItem(tx)
-            }
+            items.forEach { tx -> TransactionItem(tx) }
         }
     }
 }
 
 @Composable
 private fun TransactionItem(tx: TransactionMock) {
+    val scheme = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -511,24 +448,22 @@ private fun TransactionItem(tx: TransactionMock) {
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xfff5f5f5)),
+                .background(scheme.surfaceVariant),
             contentAlignment = Alignment.Center
-        ) {
-            Text(tx.icon, fontSize = 18.sp)
-        }
+        ) { Text(tx.icon, fontSize = 18.sp) }
 
         Spacer(modifier = Modifier.width(16.dp))
 
         Column(modifier = Modifier.weight(1f)) {
-            Text(tx.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.Black)
-            Text(tx.subtitle, fontSize = 12.sp, color = Color(0xff7b8090))
+            Text(tx.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
+            Text(tx.subtitle, fontSize = 12.sp, color = scheme.onSurfaceVariant)
         }
 
         Text(
             text = tx.amount,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = if (tx.isPositive) Color(0xff39c94c) else Color(0xffd80000)
+            color = if (tx.isPositive) scheme.tertiary else scheme.error
         )
     }
 }
@@ -540,17 +475,16 @@ private fun ChatAssistButton(
     unread: Int,
     onClick: () -> Unit
 ) {
+    val scheme = MaterialTheme.colorScheme
     Box {
         FloatingActionButton(
             onClick = onClick,
             shape = CircleShape,
-            containerColor = Color(0xFF5372FE),
-            contentColor = Color.White,
+            containerColor = scheme.primary,
+            contentColor = scheme.onPrimary,
             elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 6.dp),
             modifier = Modifier.size(56.dp)
-        ) {
-            Icon(painter = painterResource(R.drawable.message), contentDescription = "Chat trợ lý")
-        }
+        ) { Icon(painter = painterResource(R.drawable.message), contentDescription = "Chat trợ lý") }
 
         if (unread > 0) {
             Box(
@@ -558,12 +492,12 @@ private fun ChatAssistButton(
                     .align(Alignment.TopEnd)
                     .offset(x = 6.dp, y = (-6).dp)
                     .size(18.dp)
-                    .background(Color(0xFFFF3B30), CircleShape),
+                    .background(scheme.error, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = unread.coerceAtMost(9).toString(),
-                    color = Color.White,
+                    color = scheme.onError,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -577,13 +511,14 @@ private fun ChatOverlay(
     open: Boolean,
     onDismiss: () -> Unit
 ) {
+    val scheme = MaterialTheme.colorScheme
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
 
         AnimatedVisibility(visible = open, enter = fadeIn(), exit = fadeOut()) {
             Box(
                 Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.35f))
+                    .background(scheme.scrim.copy(alpha = 0.35f))
                     .noRippleClickable { onDismiss() }
                     .zIndex(1f)
             )
@@ -599,7 +534,7 @@ private fun ChatOverlay(
                     .fillMaxWidth()
                     .fillMaxHeight(0.92f)
                     .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
-                    .background(Color.White)
+                    .background(scheme.surface)
                     .zIndex(2f)
             ) {
                 Column(Modifier.fillMaxSize()) {
@@ -607,17 +542,13 @@ private fun ChatOverlay(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp)
-                            .background(Color(0xFF3D73F5))
+                            .background(scheme.primary)
                             .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            painter = painterResource(R.drawable.message),
-                            contentDescription = null,
-                            tint = Color.White
-                        )
+                        Icon(painter = painterResource(R.drawable.message), contentDescription = null, tint = scheme.onPrimary)
                         Spacer(Modifier.width(12.dp))
-                        Text("Chat bot", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                        Text("Chat bot", color = scheme.onPrimary, fontSize = 18.sp, fontWeight = FontWeight.Medium)
                     }
 
                     LazyColumn(
@@ -638,19 +569,12 @@ private fun ChatOverlay(
                             .fillMaxWidth()
                             .padding(12.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color(0xFFF3F4F6))
+                            .background(scheme.surfaceVariant)
                             .padding(horizontal = 12.dp, vertical = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            "Nhập tin nhắn...",
-                            color = Color(0xFF9CA3AF),
-                            fontSize = 14.sp,
-                            modifier = Modifier.weight(1f)
-                        )
-                        TextButton(onClick = { }) {
-                            Text("Gửi", color = Color(0xFF3D73F5), fontSize = 14.sp)
-                        }
+                        Text("Nhập tin nhắn...", color = scheme.onSurfaceVariant, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                        TextButton(onClick = { }) { Text("Gửi", color = scheme.primary, fontSize = 14.sp) }
                     }
                 }
             }
@@ -660,38 +584,32 @@ private fun ChatOverlay(
 
 @Composable
 private fun BotBubble(text: String) {
+    val scheme = MaterialTheme.colorScheme
     Row(Modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFFEEF2FF))
+                .background(scheme.primaryContainer)
                 .padding(horizontal = 12.dp, vertical = 8.dp)
-        ) {
-            Text(text, color = Color(0xFF111827), fontSize = 14.sp)
-        }
+        ) { Text(text, color = scheme.onPrimaryContainer, fontSize = 14.sp) }
     }
 }
 
 @Composable
 private fun MeBubble(text: String) {
+    val scheme = MaterialTheme.colorScheme
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFFDCFCE7))
+                .background(scheme.tertiaryContainer)
                 .padding(horizontal = 12.dp, vertical = 8.dp)
-        ) {
-            Text(text, color = Color(0xFF064E3B), fontSize = 14.sp)
-        }
+        ) { Text(text, color = scheme.onTertiaryContainer, fontSize = 14.sp) }
     }
 }
 
 private fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
-    composed {
-        pointerInput(Unit) {
-            detectTapGestures(onTap = { onClick() })
-        }
-    }
+    composed { pointerInput(Unit) { detectTapGestures(onTap = { onClick() }) } }
 
 @Preview(widthDp = 412, heightDp = 900, showBackground = true)
 @Composable

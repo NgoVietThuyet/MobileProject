@@ -3,15 +3,19 @@ package com.example.test.ui.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,53 +23,52 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.example.test.R
+import com.example.test.ui.components.AppHeader
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
 import com.example.test.ui.theme.AppGradient
 
+private val BrandGreen = Color(0xFF16A34A)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
+    dark: Boolean,
+    onToggleDark: (Boolean) -> Unit,
     onHome: () -> Unit = {},
     onReport: () -> Unit = {},
     onSaving: () -> Unit = {},
     onPersonalInfo: () -> Unit = {},
     onProfilePicture: () -> Unit = {},
     onLanguages: () -> Unit = {},
+    onCurrency: () -> Unit = {},
     onLogout: () -> Unit = {},
     onSetting: () -> Unit = {},
     onCamera: () -> Unit = {}
 ) {
-    val appBarHeight = 36.dp
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    var notif by rememberSaveable { mutableStateOf(false) }
+    var sounds by rememberSaveable { mutableStateOf(true) }
+    var isVi by rememberSaveable { mutableStateOf(true) }
 
-    var notif by remember { mutableStateOf(false) }
-    var darkMode by remember { mutableStateOf(false) }
-    var sounds by remember { mutableStateOf(true) }
-    var isVi by remember { mutableStateOf(true) }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("") },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f),
-                    scrolledContainerColor = Color(0xFFD9D9D9).copy(alpha = 0.6f)
-                ),
-                windowInsets = WindowInsets(0),
-                modifier = Modifier.height(appBarHeight)
+            AppHeader(
+                title = "Cài đặt",
+                showBack = false,
             )
         },
         bottomBar = {
@@ -78,40 +81,25 @@ fun SettingScreen(
                 onSetting = onSetting
             )
         }
-    ) { pad ->
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF7F7F7))
-                .padding(
-                    start = pad.calculateStartPadding(LayoutDirection.Ltr),
-                    end = pad.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
-                    bottom = pad.calculateBottomPadding()
-                ),
-            contentPadding = PaddingValues(bottom = 40.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
+            contentPadding = PaddingValues(top = 24.dp, bottom = 40.dp)
         ) {
-            item { Spacer(Modifier.height(52.dp)) }
-
-            item {
-                Text(
-                    "Cài đặt",
-                    color = Color.Black,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
-                Spacer(Modifier.height(12.dp))
-            }
-
             item {
                 OutlinedCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                    colors = CardDefaults.outlinedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
                     Row(
                         modifier = Modifier
@@ -125,24 +113,47 @@ fun SettingScreen(
                                 .clip(RoundedCornerShape(20.dp))
                                 .background(brush = AppGradient.BluePurple),
                             contentAlignment = Alignment.Center
-                        ) { Text("NA", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                        ) {
+                            Text("NA", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        }
 
                         Spacer(Modifier.width(12.dp))
 
                         Column(Modifier.weight(1f)) {
-                            Text("Nguyễn Văn A", fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-                            Text("nguyenvana@email.com", color = Color(0xFF6B7280), maxLines = 1, overflow = TextOverflow.Ellipsis)
-                            Text("Người dùng", color = Color(0xFF16A34A), fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                            Text(
+                                "Nguyễn Văn A",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontWeight = FontWeight.SemiBold, fontSize = 18.sp
+                            )
+                            Text(
+                                "nguyenvana@email.com",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 1, overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                "Người dùng",
+                                color = BrandGreen,
+                                fontSize = 12.sp, fontWeight = FontWeight.Medium
+                            )
                         }
 
-                        Icon(Icons.Outlined.Info, contentDescription = null, tint = Color(0xFF9CA3AF))
+                        Icon(
+                            Icons.Outlined.Info,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
                 Spacer(Modifier.height(24.dp))
             }
 
             item {
-                Text("Tài khoản", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 20.dp))
+                Text(
+                    "Tài khoản",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(horizontal = 20.dp)
+                )
                 Spacer(Modifier.height(8.dp))
                 SectionCard {
                     NavRow(
@@ -151,7 +162,7 @@ fun SettingScreen(
                         sub = "Họ tên, email, số điện thoại",
                         onMoreClick = onPersonalInfo
                     )
-                    Divider(color = Color(0xFFE5E7EB))
+                    Divider(color = DividerDefaults.color)
                     NavRow(
                         icon = painterResource(R.drawable.ic_camera),
                         title = "Ảnh đại diện",
@@ -163,7 +174,12 @@ fun SettingScreen(
             }
 
             item {
-                Text("Ứng dụng", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 20.dp))
+                Text(
+                    "Ứng dụng",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(horizontal = 20.dp)
+                )
                 Spacer(Modifier.height(8.dp))
                 SectionCard {
                     ToggleRow(
@@ -173,35 +189,38 @@ fun SettingScreen(
                         checked = notif,
                         onChecked = { notif = it }
                     )
-                    Divider(color = Color(0xFFE5E7EB))
+                    Divider(color = DividerDefaults.color)
                     ToggleRow(
                         icon = painterResource(R.drawable.ic_moon),
                         title = "Chế độ tối",
                         sub = "Tăng bảo mật và thoải mái mắt",
-                        checked = darkMode,
-                        onChecked = { darkMode = it }
+                        checked = dark,
+                        onChecked = onToggleDark
                     )
-                    Divider(color = Color(0xFFE5E7EB))
+                    Divider(color = DividerDefaults.color)
                     ToggleRow(
-                        icon = painterResource(R.drawable.ic_volumn),
+                        icon = painterResource(R.drawable.ic_volume),
                         title = "Âm thanh",
                         sub = "Âm thanh ứng dụng",
                         checked = sounds,
                         onChecked = { sounds = it }
                     )
-                    Divider(color = Color(0xFFE5E7EB))
+                    Divider(color = DividerDefaults.color)
                     NavRow(
                         icon = painterResource(R.drawable.ic_language),
                         title = "Ngôn ngữ",
                         sub = if (isVi) "Hiện tại: Tiếng Việt" else "Current: English",
-                        onMoreClick = { isVi = !isVi }
+                        onMoreClick = {
+                            isVi = !isVi
+                            onLanguages()
+                        }
                     )
-                    Divider(color = Color(0xFFE5E7EB))
+                    Divider(color = DividerDefaults.color)
                     NavRow(
                         icon = rememberVectorPainter(Icons.Outlined.Language),
                         title = "Thay đổi đơn vị tiền tệ",
                         sub = "Chọn đơn vị tiền tệ mà bạn muốn",
-                        onMoreClick = onLanguages
+                        onMoreClick = onCurrency
                     )
                 }
                 Spacer(Modifier.height(24.dp))
@@ -213,8 +232,10 @@ fun SettingScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+                    colors = CardDefaults.outlinedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
                     Column(
                         modifier = Modifier
@@ -224,10 +245,10 @@ fun SettingScreen(
                     ) {
                         AppLogoCircle(size = 64.dp)
                         Spacer(Modifier.height(10.dp))
-                        Text("Quản lý thu chi", fontWeight = FontWeight.SemiBold)
-                        Text("Phiên bản 0.0.1", color = Color(0xFF6B7280), fontSize = 12.sp)
+                        Text("Quản lý thu chi", color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.SemiBold)
+                        Text("Phiên bản 0.0.1", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
                         Spacer(Modifier.height(6.dp))
-                        Text("Ứng dụng quản lý tài chính cá nhân", color = Color(0xFF9CA3AF), fontSize = 12.sp)
+                        Text("Ứng dụng quản lý tài chính cá nhân", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
                     }
                 }
                 Spacer(Modifier.height(16.dp))
@@ -240,20 +261,16 @@ fun SettingScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
                     shape = RoundedCornerShape(14.dp),
-                    border = BorderStroke(2.dp, Color(0xFFEF4444)),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFEF4444))
+                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.error),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_logout),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    )
+                    Icon(painter = painterResource(R.drawable.ic_logout), contentDescription = null, tint = Color.Unspecified)
                     Spacer(Modifier.width(10.dp))
                     Text("Đăng xuất", fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.height(8.dp))
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Text("© 2025", color = Color(0xFF9CA3AF), fontSize = 12.sp)
+                    Text("© 2025", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
                 }
                 Spacer(Modifier.height(8.dp))
             }
@@ -288,8 +305,10 @@ private fun SectionCard(content: @Composable ColumnScope.() -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFE5E7EB))
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) { Column(content = content) }
 }
 
@@ -303,6 +322,7 @@ private fun NavRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(role = Role.Button, onClick = onMoreClick)
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -310,17 +330,15 @@ private fun NavRow(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFFF3F4F6)),
+                .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
-        ) { Icon(painter = icon, contentDescription = null, tint = Color(0xFF6B7280)) }
+        ) { Icon(painter = icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, fontWeight = FontWeight.Medium)
-            if (sub.isNotBlank()) Text(sub, color = Color(0xFF9CA3AF), fontSize = 12.sp)
+            Text(title, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Medium)
+            if (sub.isNotBlank()) Text(sub, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
         }
-        IconButton(onClick = onMoreClick) {
-            Icon(Icons.Outlined.Info, contentDescription = "More", tint = Color(0xFF9CA3AF))
-        }
+        Icon(Icons.Outlined.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
@@ -342,22 +360,23 @@ private fun ToggleRow(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFFF3F4F6)),
+                .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
-        ) { Icon(painter = icon, contentDescription = null, tint = Color(0xFF6B7280)) }
+        ) { Icon(painter = icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, fontWeight = FontWeight.Medium)
-            if (sub.isNotBlank()) Text(sub, color = Color(0xFF9CA3AF), fontSize = 12.sp)
+            Text(title, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Medium)
+            if (sub.isNotBlank()) Text(sub, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
         }
-        GradientSwitch(checked = checked, onCheckedChange = onChecked)
+        GradientSwitch(checked = checked, onCheckedChange = onChecked, label = title)
     }
 }
 
 @Composable
 private fun GradientSwitch(
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    label: String
 ) {
     val trackWidth = 52.dp
     val trackHeight = 32.dp
@@ -371,11 +390,11 @@ private fun GradientSwitch(
                 .clip(RoundedCornerShape(trackHeight / 2))
                 .background(
                     brush = if (checked) AppGradient.BluePurple
-                    else SolidColor(Color(0xFFE5E7EB))
+                    else SolidColor(MaterialTheme.colorScheme.surfaceVariant)
                 )
                 .then(
                     if (!checked) Modifier.border(
-                        2.dp, Color(0xFF9CA3AF), RoundedCornerShape(trackHeight / 2)
+                        2.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(trackHeight / 2)
                     ) else Modifier
                 )
         )
@@ -390,7 +409,9 @@ private fun GradientSwitch(
                 uncheckedTrackColor = Color.Transparent,
                 uncheckedBorderColor = Color.Transparent
             ),
-            modifier = Modifier.matchParentSize()
+            modifier = Modifier
+                .matchParentSize()
+                .semantics { contentDescription = "Công tắc $label" }
         )
     }
 }

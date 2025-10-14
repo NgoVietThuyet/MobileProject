@@ -135,7 +135,6 @@ object MockData {
         name = greetingName,
         email = ALLOWED_EMAIL
     )
-
     private fun looksLikeEmail(e: String): Boolean {
         val s = e.trim()
         if (s.isEmpty()) return false
