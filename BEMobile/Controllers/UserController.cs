@@ -158,10 +158,13 @@ namespace BEMobile.Controllers
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("Login error: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+
                 return StatusCode(500, new LoginResponse
                 {
                     Success = false,
-                    Message = "Đã xảy ra lỗi trong quá trình đăng nhập"
+                    Message = "Đã xảy ra lỗi trong quá trình đăng nhậpppp" + ex.Message
                 });
             }
         }

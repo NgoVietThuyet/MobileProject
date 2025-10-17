@@ -1,4 +1,5 @@
-﻿using BEMobile.Data.Entities;
+﻿using Azure.Core;
+using BEMobile.Data.Entities;
 using BEMobile.Models.RequestResponse.Account.CreateAccount;
 using BEMobile.Models.RequestResponse.Account.DeleteAccount;
 using BEMobile.Models.RequestResponse.Account.DetailAccount;
@@ -20,23 +21,23 @@ namespace BEMobile.Services
 
         public async Task<CreateAccountResponse> CreateAccountAsync(CreateAccountRequest req)
         {
+            var dto = req.Account;
             var acc = new Account
             {
                 AccountId = Guid.NewGuid().ToString(),
-                UserId = req.UserId,
-                Balance = req.Balance
+                UserId = dto.UserId,
+                Balance = dto.Balance
             };
 
             _db.Accounts.Add(acc);
             await _db.SaveChangesAsync();
 
+
             return new CreateAccountResponse
             {
                 Success = true,
                 Message = "Tạo tài khoản thành công",
-                AccountId = acc.AccountId,
-                UserId = acc.UserId,
-                Balance = acc.Balance
+                Account = dto
             };
         }
 

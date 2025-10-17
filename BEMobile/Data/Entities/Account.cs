@@ -17,10 +17,7 @@ namespace BEMobile.Data.Entities
 
         [Required]
         [Column("BALANCE")]
-        public decimal Balance { get; set; }
-
-        [Column("LIST_TRANSACTIONS")]
-        public string? ListTransactions { get; set; }
+        public string Balance { get; set; }
 
 
     }

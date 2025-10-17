@@ -1,6 +1,8 @@
 ﻿using BEMobile.Data.Entities;
-using Microsoft.EntityFrameworkCore;
 using BEMobile.Models.DTOs;
+using BEMobile.Models.RequestResponse.Account.CreateAccount;
+using BEMobile.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace BEMobile.Services
 {
@@ -18,7 +20,9 @@ namespace BEMobile.Services
     public class UserService : IUserService
     {
         private readonly AppDbContext _context;
-        
+
+        private readonly IAccountService _accountService;
+
         public UserService(AppDbContext context)
         {
             _context = context;
@@ -66,6 +70,16 @@ namespace BEMobile.Services
             // Return the created user without password
             userDto.UserId = user.UserId;
             userDto.Password = null; // Ensure password is not returned
+
+            await _accountService.CreateAccountAsync(new CreateAccountRequest
+            {
+                Account = new AccountDto
+                {
+                    UserId = user.UserId,
+                    Balance = "0"
+                }
+            });
+
             return userDto;
         }
 
@@ -108,7 +122,7 @@ namespace BEMobile.Services
 
             if (user == null) return false;
 
-            _context.Users.Remove(user); // Xóa vật lý khỏi database
+            _context.Users.Remove(user); 
             await _context.SaveChangesAsync();
             return true;
         }
@@ -157,7 +171,6 @@ namespace BEMobile.Services
                 Email = user.Email,
                 CreatedDate = user.CreatedDate,
                 UpdatedDate = user.UpdatedDate
-                // Lưu ý: Password không được map vì DTO có [JsonIgnore] nhưng nếu muốn có thể bỏ qua
             };
         }
     }
