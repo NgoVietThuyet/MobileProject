@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using BEMobile.Common;
 using BEMobile.Data.Entities;
+using System.Collections.Generic;
 namespace BEMobile
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor) : DbContext(options)
@@ -106,6 +107,8 @@ namespace BEMobile
         }
         public DbSet<User>Users { get; set; }
         public DbSet<Budget> Budgets { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<SavingGoal> SavingGoals { get; set; }
     }
     
 }

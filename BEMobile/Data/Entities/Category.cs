@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BEMobile.Data.Entities
 {
     [Table("CATEGORIES")]
-    public class Categories
+    public class Category
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,12 +13,11 @@ namespace BEMobile.Data.Entities
 
         [Required]
         [Column("NAME")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        
-
-        
-
+        [Column("ICON")]
+        public string? Icon { get; set; }
+       
         [Column("CREATE_DATE")]
         public string CreatedDate { get; set; }
         [Column("UPDATE_DATE")]
