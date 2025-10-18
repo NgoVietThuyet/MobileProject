@@ -1,5 +1,5 @@
 
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,6 +12,7 @@ namespace BEMobile.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("GOAL_ID")]
         public string GoalId { get; set; }
+
         [Column("USER_ID")]
         public string? UserId { get; set; }
         [Column("CATEGORY_ID")]

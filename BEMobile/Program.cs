@@ -1,4 +1,5 @@
 
+
 ﻿using BEMobile.Services;
 using Microsoft.EntityFrameworkCore;
 using BEMobile.Services;
@@ -21,9 +22,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add Services
 builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISavingGoalService, SavingGoalService>();
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
+
 
 
 builder.Services.AddHttpContextAccessor();

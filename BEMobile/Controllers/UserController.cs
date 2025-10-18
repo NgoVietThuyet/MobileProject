@@ -2,7 +2,9 @@
 using BEMobile.Models.RequestResponse.Login;
 using BEMobile.Models.RequestResponse.SignUp;
 
+
 using BEMobile.Models.RequestResponse.User.Login;
+
 
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +17,14 @@ namespace BEMobile.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
+
         private readonly IUserService _UserService;
 
         public UsersController(IUserService UserService)
         {
             _UserService = UserService;
         }
+
 
 
         [HttpGet("GetAllUsers")]
@@ -30,8 +34,10 @@ namespace BEMobile.Controllers
             {
 
 
+
                  var Users = await _UserService.GetAllUsersAsync();
                 return Ok(Users);
+
 
             }
             catch (Exception ex)
@@ -48,8 +54,10 @@ namespace BEMobile.Controllers
             try
             {
 
+
                 var User = await _UserService.CreateUserAsync(request.UserDto);
                 if (User == null)
+
 
                 {
                     return Unauthorized(new SignUpResponse
@@ -67,6 +75,7 @@ namespace BEMobile.Controllers
                         User = new UserDto
                         {
 
+
                             UserId = User.UserId,
                             Name = User.Name,
                             Email = User.Email,
@@ -75,6 +84,7 @@ namespace BEMobile.Controllers
                             Twitter = User.Twitter,
                             CreatedDate = User.CreatedDate,
                             UpdatedDate = User.UpdatedDate
+
 
                         }
                         // Có thể thêm Token nếu triển khai JWT
@@ -90,11 +100,13 @@ namespace BEMobile.Controllers
         }
 
         [HttpPut("Update")]
+
         public async Task<ActionResult<UserDto>> UpdateUser(UserDto UserDto)
         {
             try
             {
                 await _UserService.UpdateUserAsync(UserDto);
+
                 return Ok();
             }
             catch (InvalidOperationException ex)
@@ -109,7 +121,9 @@ namespace BEMobile.Controllers
             try
             {
 
+
                 var result = await _UserService.DeleteUserAsync(id);
+
 
                 if (!result)
                 { return NotFound("Xóa thất bại"); }
@@ -124,6 +138,7 @@ namespace BEMobile.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<UserDto>>> SearchUsers([FromQuery] string? name, [FromQuery] string? email, [FromQuery] string? phoneNumber)
         {
+
 
 
             var Users = await _UserService.SearchUsersAsync(name, email, phoneNumber);
@@ -179,6 +194,7 @@ namespace BEMobile.Controllers
                 });
             }
 
+
         }
         [HttpPost("login")]
         [ProducesResponseType(typeof(LoginResponse), 200)]
@@ -223,6 +239,7 @@ namespace BEMobile.Controllers
             }
             catch (Exception ex)
             {
+
                 return StatusCode(500, new LoginResponse
                 {
                     Success = false,
@@ -230,6 +247,7 @@ namespace BEMobile.Controllers
                 });
             }
         }
+
 
 
     }
