@@ -5,41 +5,146 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Image/imageUpload": {
-      "post": {
-        "tags": [
-          "Image"
-        ],
-        "parameters": [
-          {
-            "name": "embedBase64",
-            "in": "query",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
+    "/api/Budgets/GetAllBudgets": {
+      "get": {
+        "tags": ["Budgets"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BudgetDto"
                   }
                 }
               },
-              "encoding": {
-                "file": {
-                  "style": "form"
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BudgetDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BudgetDto"
+                  }
                 }
               }
             }
           }
+        }
+      }
+    },
+    "/api/Budgets/Create": {
+      "post": {
+        "tags": ["Budgets"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          }
         },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Budget"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Budget"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Budget"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Budgets/Update": {
+      "put": {
+        "tags": ["Budgets"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAmountRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAmountRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAmountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Budget"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Budget"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Budget"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Budgets/DeleteById": {
+      "delete": {
+        "tags": ["Budgets"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -49,9 +154,7 @@
     },
     "/api/Users/GetAllUsers": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "responses": {
           "200": {
             "description": "Success",
@@ -87,9 +190,7 @@
     },
     "/api/Users/Create": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -135,9 +236,7 @@
     },
     "/api/Users/Update": {
       "put": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -183,9 +282,7 @@
     },
     "/api/Users/DeleteById{id}": {
       "delete": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "parameters": [
           {
             "name": "id",
@@ -205,9 +302,7 @@
     },
     "/api/Users/search": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "parameters": [
           {
             "name": "name",
@@ -266,9 +361,7 @@
     },
     "/api/Users/login": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -334,9 +427,7 @@
     },
     "/WeatherForecast": {
       "get": {
-        "tags": [
-          "WeatherForecast"
-        ],
+        "tags": ["WeatherForecast"],
         "operationId": "GetWeatherForecast",
         "responses": {
           "200": {
@@ -374,6 +465,84 @@
   },
   "components": {
     "schemas": {
+      "Budget": {
+        "required": ["categoryId", "userId"],
+        "type": "object",
+        "properties": {
+          "budgetId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "categoryId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "initial_Amount": {
+            "type": "string",
+            "nullable": true
+          },
+          "current_Amount": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedDate": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BudgetDto": {
+        "required": ["userId"],
+        "type": "object",
+        "properties": {
+          "budgetId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "initial_Amount": {
+            "type": "string",
+            "nullable": true
+          },
+          "current_Amount": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedDate": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DateOnly": {
         "type": "object",
         "properties": {
@@ -406,23 +575,12 @@
         "additionalProperties": false
       },
       "DayOfWeek": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ],
+        "enum": [0, 1, 2, 3, 4, 5, 6],
         "type": "integer",
         "format": "int32"
       },
       "LoginRequest": {
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "type": "object",
         "properties": {
           "email": {
@@ -453,6 +611,39 @@
         },
         "additionalProperties": false
       },
+
+      "Request": {
+        "required": ["userId"],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "initial_Amount": {
+            "type": "string",
+            "nullable": true
+          },
+          "current_Amount": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+
       "SignUpRequest": {
         "type": "object",
         "properties": {
@@ -462,6 +653,26 @@
         },
         "additionalProperties": false
       },
+
+      "UpdateAmountRequest": {
+        "required": ["budgetId"],
+        "type": "object",
+        "properties": {
+          "budgetId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "updateAmount": {
+            "type": "string",
+            "nullable": true
+          },
+          "isAddAmount": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+
       "UserDto": {
         "type": "object",
         "properties": {

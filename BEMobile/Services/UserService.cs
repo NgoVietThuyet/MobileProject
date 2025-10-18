@@ -7,8 +7,8 @@ namespace BEMobile.Services
     public interface IUserService
     {
         Task<IEnumerable<UserDto>> GetAllUsersAsync();
-        Task<UserDto> CreateUserAsync(UserDto userDto);
-        Task UpdateUserAsync( UserDto userDto);
+        Task<UserDto> CreateUserAsync(UserDto UserDto);
+        Task UpdateUserAsync( UserDto UserDto);
         Task<bool> DeleteUserAsync(string id);
         Task<IEnumerable<UserDto>> SearchUsersAsync(string? name, string? email, string? phoneNumber);
         Task<UserDto> IsLogin(string email, string password);
@@ -26,7 +26,7 @@ namespace BEMobile.Services
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
-            var users = await _context.Users
+            var Users = await _context.Users
                 .Select(u => new UserDto
                 {
                     UserId = u.UserId,
@@ -41,54 +41,56 @@ namespace BEMobile.Services
                 })
                 .ToListAsync();
 
-            return users;
+            return Users;
         }
 
         
-        public async Task<UserDto> CreateUserAsync(UserDto userDto)
+
+        public async Task<UserDto> CreateUserAsync(UserDto UserDto)
+
         {
 
-            var user = new User
+            var User = new User
             {
                 UserId = Guid.NewGuid().ToString(),
-                Name = userDto.Name,
-                PhoneNumber = userDto.PhoneNumber,
-                Facebook = userDto.Facebook,
-                Twitter = userDto.Twitter,
-                Email = userDto.Email,
-                Password = userDto.Password,
+                Name = UserDto.Name,
+                PhoneNumber = UserDto.PhoneNumber,
+                Facebook = UserDto.Facebook,
+                Twitter = UserDto.Twitter,
+                Email = UserDto.Email,
+                Password = UserDto.Password,
                 CreatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss")
             };
 
-            _context.Users.Add(user);
+            _context.Users.Add(User);
             await _context.SaveChangesAsync();
 
-            // Return the created user without password
-            userDto.UserId = user.UserId;
-            userDto.Password = null; // Ensure password is not returned
-            return userDto;
+            // Return the created User without password
+            UserDto.UserId = User.UserId;
+            UserDto.Password = null; // Ensure password is not returned
+            return UserDto;
         }
 
-        public async Task UpdateUserAsync(UserDto userDto)
+        public async Task UpdateUserAsync(UserDto UserDto)
         {
             try
             {
                 // 1. Kiểm tra đầu vào
-                if (userDto == null || string.IsNullOrEmpty(userDto.UserId))
+                if (UserDto == null || string.IsNullOrEmpty(UserDto.UserId))
                     throw new ArgumentException("UserDto cannot be null.");
 
-                // 2. Tìm user hiện có trong database
+                // 2. Tìm User hiện có trong database
                 var existingUser = await _context.Users
-                    .FirstOrDefaultAsync(u => u.UserId == userDto.UserId);
+                    .FirstOrDefaultAsync(u => u.UserId == UserDto.UserId);
 
-                if (existingUser == null) throw new KeyNotFoundException($"User with ID {userDto.UserId} not found.");
+                if (existingUser == null) throw new KeyNotFoundException($"User with ID {UserDto.UserId} not found.");
 
                 // 3. Cập nhật thông tin (chỉ các trường cho phép)
-                existingUser.Name = userDto.Name;
-                existingUser.PhoneNumber = userDto.PhoneNumber;
-                existingUser.Facebook = userDto.Facebook;
-                existingUser.Twitter = userDto.Twitter;
-                existingUser.Email = userDto.Email;
+                existingUser.Name = UserDto.Name;
+                existingUser.PhoneNumber = UserDto.PhoneNumber;
+                existingUser.Facebook = UserDto.Facebook;
+                existingUser.Twitter = UserDto.Twitter;
+                existingUser.Email = UserDto.Email;
                 existingUser.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
 
                 // 5. Lưu thay đổi
@@ -97,18 +99,18 @@ namespace BEMobile.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error updating user {userDto?.UserId}", ex);
+                throw new Exception($"Error updating User {UserDto?.UserId}", ex);
             }
         }
 
         public async Task<bool> DeleteUserAsync(string id)
         {
-            var user = await _context.Users
+            var User = await _context.Users
                 .FirstOrDefaultAsync(u => u.UserId == id);
 
-            if (user == null) return false;
+            if (User == null) return false;
 
-            _context.Users.Remove(user); // Xóa vật lý khỏi database
+            _context.Users.Remove(User); // Xóa vật lý khỏi database
             await _context.SaveChangesAsync();
             return true;
         }
@@ -126,7 +128,7 @@ namespace BEMobile.Services
             if (!string.IsNullOrEmpty(phoneNumber))
                 query = query.Where(u => u.PhoneNumber.Contains(phoneNumber));
 
-            var users = await query
+            var Users = await query
                 .Select(u => new UserDto
                 {
                     UserId = u.UserId,
@@ -139,7 +141,26 @@ namespace BEMobile.Services
 
                 .ToListAsync();
 
-            return users;
+            return Users;
+        }
+        public async Task<UserDto> IsLogin(string email, string password)
+        {
+            var User = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email && u.Password ==  password);
+            if(User == null) return null;
+            return  new UserDto
+            {
+                UserId = User.UserId,
+                Name = User.Name,
+                PhoneNumber = User.PhoneNumber,
+                Password = User.Password,
+                Facebook = User.Facebook,
+                Twitter = User.Twitter,
+                Email = User.Email,
+                CreatedDate = User.CreatedDate,
+                UpdatedDate = User.UpdatedDate
+                // Lưu ý: Password không được map vì DTO có [JsonIgnore] nhưng nếu muốn có thể bỏ qua
+            };
         }
         public async Task<UserDto> IsLogin(string email, string password)
         {

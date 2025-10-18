@@ -1,24 +1,79 @@
 [
   {
-    "ContainingType": "BEMobile.Controllers.ImageController",
-    "Method": "UploadImage",
-    "RelativePath": "api/Image/imageUpload",
+    "ContainingType": "BEMobile.Controllers.BudgetsController",
+    "Method": "CreateUser",
+    "RelativePath": "api/Budgets/Create",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "file",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.Budget.CreateBudget.Request",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
       {
-        "Name": "embedBase64",
-        "Type": "System.Boolean",
+        "Type": "BEMobile.Data.Entities.Budget",
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.BudgetsController",
+    "Method": "DeleteBudget",
+    "RelativePath": "api/Budgets/DeleteById",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.BudgetsController",
+    "Method": "GetAllBudgets",
+    "RelativePath": "api/Budgets/GetAllBudgets",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.DTOs.BudgetDto, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.BudgetsController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/Budgets/Update",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.Budget.UpdateAmount.UpdateAmountRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BEMobile.Data.Entities.Budget",
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "BEMobile.Controllers.UsersController",
@@ -37,11 +92,7 @@
     "ReturnTypes": [
       {
         "Type": "BEMobile.Models.DTOs.UserDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -73,11 +124,7 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.DTOs.UserDto, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -92,27 +139,19 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "BEMobile.Models.RequestResponse.Login.LoginRequest",
+        "Type": "BEMobile.Models.RequestResponse.User.Login.LoginRequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
         "Type": "BEMobile.Models.RequestResponse.Login.LoginResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       },
       {
         "Type": "BEMobile.Models.RequestResponse.Login.LoginResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 400
       }
     ]
@@ -144,11 +183,7 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.DTOs.UserDto, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -162,7 +197,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userDto",
+        "Name": "UserDto",
         "Type": "BEMobile.Models.DTOs.UserDto",
         "IsRequired": true
       }
@@ -170,11 +205,7 @@
     "ReturnTypes": [
       {
         "Type": "BEMobile.Models.DTOs.UserDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ]
@@ -190,11 +221,7 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.WeatherForecast, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
+        "MediaTypes": ["text/plain", "application/json", "text/json"],
         "StatusCode": 200
       }
     ],

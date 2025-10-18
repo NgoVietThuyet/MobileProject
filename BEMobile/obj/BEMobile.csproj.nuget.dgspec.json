@@ -1,31 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Học liệu\\Mobile\\branch\\MobileProject\\BEMobile\\BEMobile.csproj": {}
+    "D:\\Period5\\BE\\MobileProject\\BEMobile\\BEMobile.csproj": {}
   },
   "projects": {
-    "C:\\Học liệu\\Mobile\\branch\\MobileProject\\BEMobile\\BEMobile.csproj": {
+    "D:\\Period5\\BE\\MobileProject\\BEMobile\\BEMobile.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Học liệu\\Mobile\\branch\\MobileProject\\BEMobile\\BEMobile.csproj",
+        "projectUniqueName": "D:\\Period5\\BE\\MobileProject\\BEMobile\\BEMobile.csproj",
         "projectName": "BEMobile",
-        "projectPath": "C:\\Học liệu\\Mobile\\branch\\MobileProject\\BEMobile\\BEMobile.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Học liệu\\Mobile\\branch\\MobileProject\\BEMobile\\obj\\",
+        "projectPath": "D:\\Period5\\BE\\MobileProject\\BEMobile\\BEMobile.csproj",
+        "packagesPath": "C:\\Users\\ngoth\\.nuget\\packages\\",
+        "outputPath": "D:\\Period5\\BE\\MobileProject\\BEMobile\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ngoth\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
+        "originalTargetFrameworks": ["net8.0"],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -35,16 +34,13 @@
           }
         },
         "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
+          "warnAsError": ["NU1605"]
         },
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.300"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -53,10 +49,6 @@
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
-            },
-            "Google.Apis.Auth": {
-              "target": "Package",
-              "version": "[1.72.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -78,25 +70,9 @@
               "target": "Package",
               "version": "[9.0.9, )"
             },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.4, )"
-            },
-            "OpenCvSharp4": {
-              "target": "Package",
-              "version": "[4.11.0.20250507, )"
-            },
-            "OpenCvSharp4.runtime.win": {
-              "target": "Package",
-              "version": "[4.11.0.20250507, )"
-            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
-            },
-            "Tesseract": {
-              "target": "Package",
-              "version": "[5.2.0, )"
             }
           },
           "imports": [
@@ -118,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.412/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
