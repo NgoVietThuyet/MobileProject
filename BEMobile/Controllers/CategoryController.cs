@@ -4,8 +4,7 @@ using BEMobile.Models.RequestResponse.Budget.CreateBudget;
 using BEMobile.Models.RequestResponse.Budget.DeleteBudget;
 using BEMobile.Models.RequestResponse.Budget.UpdateAmount;
 using BEMobile.Models.RequestResponse.Category;
-using BEMobile.Models.RequestResponse.Login;
-using BEMobile.Models.RequestResponse.SignUp;
+
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -64,6 +63,7 @@ namespace BEMobile.Controllers
                         {
                             Id = category.Id,
                             Icon = category.Icon,
+                            Name = category.Name,
                             CreatedDate = category.CreatedDate,
                             UpdatedDate = category.UpdatedDate
                         }

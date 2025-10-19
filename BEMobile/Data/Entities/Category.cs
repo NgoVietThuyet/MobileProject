@@ -11,16 +11,15 @@ namespace BEMobile.Data.Entities
         [Column("CATEGORY_ID")]
         public string Id { get; set; }
 
-        [Required]
         [Column("NAME")]
         public string? Name { get; set; }
 
         [Column("ICON")]
         public string? Icon { get; set; }
        
-        [Column("CREATE_DATE")]
-        public string CreatedDate { get; set; }
-        [Column("UPDATE_DATE")]
+        [Column("CREATED_DATE")]
+        public string? CreatedDate { get; set; }
+        [Column("UPDATED_DATE")]
         public string? UpdatedDate { get; set; }
 
     }

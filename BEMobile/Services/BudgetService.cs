@@ -36,6 +36,8 @@ namespace BEMobile.Services
                     CategoryId = u.CategoryId,
                     Initial_Amount = u.Initial_Amount,
                     Current_Amount = u.Current_Amount,
+                    StartDate = u.StartDate,
+                    EndDate = u.EndDate,
                     CreatedDate = u.CreatedDate,
                     UpdatedDate = u.UpdatedDate,
 
@@ -55,6 +57,8 @@ namespace BEMobile.Services
                 Initial_Amount = request.Initial_Amount,
                 Current_Amount = "0",
                 CategoryId = request.CategoryId,
+                EndDate = request.EndDate,
+                
                 CreatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss"),
                 StartDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss")
             };

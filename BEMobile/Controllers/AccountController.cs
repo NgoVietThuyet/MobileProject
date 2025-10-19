@@ -14,7 +14,7 @@ namespace BEMobile.Controllers
         public AccountsController(IAccountService svc) => _svc = svc;
 
         // POST /api/accounts
-        [HttpPost]
+        [HttpPost("CreateAccount")]
         public async Task<ActionResult<CreateAccountResponse>> Create([FromBody] CreateAccountRequest req)
         {
             var res = await _svc.CreateAccountAsync(req);
@@ -22,7 +22,7 @@ namespace BEMobile.Controllers
         }
 
         // GET /api/accounts/{id}
-        [HttpGet("{id}")]
+        [HttpGet("GetAccountById")]
         public async Task<ActionResult<DetailAccountResponse>> GetById(string id)
         {
             var res = await _svc.GetAccountByIdAsync(new DetailAccountRequest { AccountId = id });
@@ -31,7 +31,7 @@ namespace BEMobile.Controllers
         }
 
         // DELETE /api/accounts/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteAccountById")]
         public async Task<ActionResult<DeleteAccountResponse>> Delete(string id, [FromQuery] string userId)
         {
             var res = await _svc.DeleteAccountAsync(new DeleteAccountRequest { AccountId = id, UserId = userId });

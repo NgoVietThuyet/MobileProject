@@ -11,6 +11,8 @@ namespace BEMobile.Models.DTOs
         public string? CategoryId { get; set; }
         public string? Initial_Amount { get; set; }
         public string? Current_Amount { get; set; }
+        public string? StartDate { get; set; }
+        public string? EndDate { get; set; }
         public string? CreatedDate { get; set; }
         public string? UpdatedDate { get; set; }
     }

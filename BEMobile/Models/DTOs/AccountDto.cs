@@ -9,10 +9,6 @@ namespace BEMobile.Models.DTOs
         public string AccountId { get; set; }
         public string UserId { get; set; }
 
-
-        // Có thể giữ dưới dạng JSON string hoặc tách ra List<TransactionDto>
-        public string? ListTransactions { get; set; }
-
         public string Balance { get; set; }
 
 

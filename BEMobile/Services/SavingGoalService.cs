@@ -34,6 +34,7 @@ namespace BEMobile.Services
                 {
                     UserId = u.UserId,
                     GoalId = u.GoalId,
+                    Title = u.Title,
                     CategoryId = u.CategoryId,
                     TargetAmount = u.TargetAmount,
                     CurrentAmount = u.CurrentAmount,
@@ -56,7 +57,7 @@ namespace BEMobile.Services
                 UserId = request.savingGoalDto.UserId,
                 CategoryId = request.savingGoalDto.CategoryId,
                 Deadline = request.savingGoalDto.Deadline,
-                Titile = request.savingGoalDto.Titile,
+                Title = request.savingGoalDto.Title,
                 TargetAmount = request.savingGoalDto.TargetAmount,
                 CurrentAmount = request.savingGoalDto.CurrentAmount,
                 CreatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss"),

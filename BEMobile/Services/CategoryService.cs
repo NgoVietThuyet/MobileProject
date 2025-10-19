@@ -12,7 +12,6 @@ namespace BEMobile.Services
         Task<IEnumerable<CategoryDto>> GetAllCategorysAsync();
         Task<Category> CreateCategoryAsync(CategoryRequest request);
         Task UpdateCategoryAsync(CategoryRequest request);
-        
     }
     public class CategoryService : ICategoryService
     {
@@ -71,6 +70,7 @@ namespace BEMobile.Services
                     throw new Exception("Không tìm thấy Category");
                 }
                 Category.Icon = request.categoryDto.Icon;
+                Category.Name = request.categoryDto.Name;
 
 
                 Category.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");

@@ -11,7 +11,7 @@ namespace BEMobile.Models.DTOs
         public string CategoryId { get; set; }
         public string Type { get; set; }
 
-        public string Amount { get; set; }
+        public float Amount { get; set; }
 
         public string? Note { get; set; }
         public string CreatedDate { get; set; }

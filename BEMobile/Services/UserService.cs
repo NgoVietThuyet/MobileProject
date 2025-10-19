@@ -1,6 +1,6 @@
 ﻿using BEMobile.Data.Entities;
-;
 using BEMobile.Models.DTOs;
+
 
 using BEMobile.Models.RequestResponse.Account.CreateAccount;
 using BEMobile.Services;

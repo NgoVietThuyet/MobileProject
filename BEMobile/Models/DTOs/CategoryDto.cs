@@ -9,11 +9,10 @@ namespace BEMobile.Models.DTOs
        
         public string? Name { get; set; }
 
-       
         public string? Icon { get; set; }
        
 
-        public string CreatedDate { get; set; }
+        public string? CreatedDate { get; set; }
 
         public string? UpdatedDate { get; set; }
     }

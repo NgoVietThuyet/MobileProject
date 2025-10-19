@@ -119,6 +119,7 @@ namespace BEMobile
             await result.ReadAsync();
             return result.GetInt32(0);
         }
+
         public DbSet<User>Users { get; set; }
 
         public DbSet<Budget> Budgets { get; set; }

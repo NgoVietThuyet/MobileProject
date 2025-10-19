@@ -1,11 +1,11 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
 
-using BEMobile.Models.RequestResponse.Login;
+
 using BEMobile.Models.RequestResponse.SavingGoal;
 using BEMobile.Models.RequestResponse.SavingGoal.Create;
 using BEMobile.Models.RequestResponse.SavingGoal.UpdateAmount;
-using BEMobile.Models.RequestResponse.SignUp;
+
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -65,7 +65,7 @@ namespace BEMobile.Controllers
                         {
                             GoalId = SavingGoal.GoalId,
                             CurrentAmount = SavingGoal.CurrentAmount,
-                            Titile = SavingGoal.Titile,
+                            Title = SavingGoal.Title,
                             TargetAmount = SavingGoal.TargetAmount,
                             Deadline = SavingGoal.Deadline,
                             UserId = SavingGoal.UserId,

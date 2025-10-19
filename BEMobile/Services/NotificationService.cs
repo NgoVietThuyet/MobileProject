@@ -28,6 +28,7 @@ namespace BEMobile.Services
                 .OrderByDescending(notification => notification.CreatedDate)
                 .Select(notification => new NotificationDto
                 {
+
                     NotificationId = notification.NotificationId,
                     UserId = notification.UserId,
                     Content = notification.Content,

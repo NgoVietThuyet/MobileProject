@@ -31,9 +31,9 @@ namespace BEMobile.Data.Entities
         [Column("END_DATE")]
         public string? EndDate { get; set; }
 
-        [Column("CREATE_DATE")]
+        [Column("CREATED_DATE")]
         public string? CreatedDate { get; set; }
-        [Column("UPDATE_DATE")]
+        [Column("UPDATED_DATE")]
         public string? UpdatedDate { get; set; }
 
     }

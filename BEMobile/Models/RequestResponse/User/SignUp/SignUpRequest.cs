@@ -1,7 +1,7 @@
 ﻿using BEMobile.Models.DTOs;
 using System.ComponentModel.DataAnnotations;
 
-namespace BEMobile.Models.RequestResponse.SignUp
+namespace BEMobile.Models.RequestResponse.User.SignUp
 {
     public class SignUpRequest
     {

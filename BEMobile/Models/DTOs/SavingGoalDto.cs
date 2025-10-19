@@ -17,7 +17,7 @@ namespace BEMobile.Models.DTOs
         
         public string? CategoryId { get; set; }
        
-        public string? Titile { get; set; }
+        public string? Title { get; set; }
        
         public string? TargetAmount { get; set; }
     
@@ -25,6 +25,7 @@ namespace BEMobile.Models.DTOs
       
         public string? Deadline { get; set; }
         public string? CreatedDate { get; set; }
+        public string? UpdatedDate { get; set; }
 
 
     }

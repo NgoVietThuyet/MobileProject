@@ -1,6 +1,6 @@
 ﻿using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.SignUp
+namespace BEMobile.Models.RequestResponse.User.SignUp
 {
     public class SignUpResponse
     {

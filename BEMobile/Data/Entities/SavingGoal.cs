@@ -18,16 +18,16 @@ namespace BEMobile.Data.Entities
         [Column("CATEGORY_ID")]
         public string? CategoryId { get; set; }
         [Column("TITLE")]
-        public string? Titile { get; set; }
+        public string? Title { get; set; }
         [Column("TARGET_AMOUNT")]
         public string? TargetAmount { get; set; }
         [Column("CURRENT_AMOUNT")]
         public string? CurrentAmount { get; set; }
         [Column("DEADLINE")]
         public string? Deadline { get; set; }
-        [Column("CREATE_DATE")]
+        [Column("CREATED_DATE")]
         public string? CreatedDate { get; set; }
-        [Column("UPDATE_DATE")]
+        [Column("UPDATED_DATE")]
         public string? UpdatedDate { get; set; }
     }
 }

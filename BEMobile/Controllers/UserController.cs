@@ -1,14 +1,12 @@
 ﻿using BEMobile.Models.DTOs;
-using BEMobile.Models.RequestResponse.Login;
-using BEMobile.Models.RequestResponse.SignUp;
 
 
 using BEMobile.Models.RequestResponse.User.Login;
-
-
+using BEMobile.Models.RequestResponse.User.SignUp;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
+
 
 
 namespace BEMobile.Controllers
@@ -144,68 +142,17 @@ namespace BEMobile.Controllers
             var Users = await _UserService.SearchUsersAsync(name, email, phoneNumber);
             return Ok(Users);
         }
+        
         [HttpPost("login")]
         [ProducesResponseType(typeof(LoginResponse), 200)]
         [ProducesResponseType(typeof(LoginResponse), 400)]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> LogIn([FromBody] LoginRequest request)
         {
             try
             {
 
                 // Gọi service để xác thực
-                var User = await _UserService.IsLogin(request.Email, request.Password);
-                
-                if (User == null)
-                {
-                    return Unauthorized(new LoginResponse
-                    {
-                        Success = false,
-                        Message = "Email hoặc mật khẩu không đúng"
-                    });
-                }
-
-                // Tạo response
-                var response = new LoginResponse
-                {
-                    Success = true,
-                    Message = "Đăng nhập thành công",
-                    User = new UserDto
-                    {
-                        UserId = User.UserId,
-                        Name = User.Name,
-                        Email = User.Email,
-                        PhoneNumber = User.PhoneNumber,
-                        Facebook = User.Facebook,
-                        Twitter = User.Twitter,
-                        CreatedDate = User.CreatedDate,
-                        UpdatedDate = User.UpdatedDate
-                    }
-                    // Có thể thêm Token nếu triển khai JWT
-                };
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new LoginResponse
-                {
-                    Success = false,
-                    Message = "Đã xảy ra lỗi trong quá trình đăng nhập"
-                });
-            }
-
-
-        }
-        [HttpPost("login")]
-        [ProducesResponseType(typeof(LoginResponse), 200)]
-        [ProducesResponseType(typeof(LoginResponse), 400)]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
-        {
-            try
-            {
-
-                // Gọi service để xác thực
-                var user = await _userService.IsLogin(request.Email, request.Password);
+                var user = await _UserService.IsLogin(request.Email, request.Password);
                 
                 if (user == null)
                 {
