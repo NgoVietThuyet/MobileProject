@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BEMobile.Models.RequestResponse.Account.DeleteAccount
+namespace BEMobile.Models.RequestResponse.AccountRR.DeleteAccount
 {
     // Dùng cho DELETE /api/accounts/{id}?userId=...
     public class DeleteAccountRequest

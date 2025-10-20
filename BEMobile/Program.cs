@@ -1,9 +1,8 @@
-
-﻿using BEMobile;
-using BEMobile.Connectors;
-using BEMobile.Services;
 using BEMobile.Services;
 using Microsoft.EntityFrameworkCore;
+using BEMobile.Services;
+using BEMobile;
+using BEMobile.Connectors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +17,18 @@ builder.Services.AddSwaggerGen();
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+
+
+
+
+builder.Services.AddScoped<IBudgetService, BudgetService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISavingGoalService, SavingGoalService>();
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
 
 // gemini
 builder.Services.Configure<GeminiOptions>(builder.Configuration.GetSection("Gemini"));

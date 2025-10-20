@@ -1,4 +1,4 @@
-namespace BEMobile.Models.RequestResponse.Account.DeleteAccount
+namespace BEMobile.Models.RequestResponse.AccountRR.DeleteAccount
 {
     public class DeleteAccountResponse
     {

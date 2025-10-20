@@ -1257,6 +1257,36 @@
   },
   "components": {
     "schemas": {
+      "Account": {
+        "required": [
+          "balance",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "balance": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "updatedDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AccountDto": {
         "type": "object",
         "properties": {
@@ -1269,6 +1299,14 @@
             "nullable": true
           },
           "balance": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedDate": {
             "type": "string",
             "nullable": true
           }
@@ -1457,7 +1495,7 @@
             "nullable": true
           },
           "account": {
-            "$ref": "#/components/schemas/AccountDto"
+            "$ref": "#/components/schemas/Account"
           }
         },
         "additionalProperties": false

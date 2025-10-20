@@ -59,6 +59,7 @@ namespace BEMobile.Services
                 CategoryId = request.CategoryId,
                 EndDate = request.EndDate,
                 
+                
                 CreatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss"),
                 StartDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss")
             };
