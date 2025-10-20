@@ -29,10 +29,23 @@ namespace BEMobile.Controllers
                 return BadRequest("Đầu vào không hợp lệ!");
             }
 
-            var extractedData = await _kgService.ExtractGraphFromTextAsync(request.Text);
+            var extractedData = await _kgService.Classify_prompt(request.Text);
+            var cleanedData = extractedData.Trim().ToUpperInvariant();
 
-            // Trả về kết quả dạng text thô từ Gemini
-            return Ok(extractedData);
+            switch(cleanedData)
+            {
+                case "OFF_TOPIC":
+                    return Ok("Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!");
+                case "ADD_TRANSACTION":
+                    var responseAdd = await _kgService.Rep_add_transaction(request.Text);
+                    return Ok(responseAdd);
+                case "SINGLE_QUERY":
+                    var responseSing = await _kgService.Rep_single_query(request.Text, "1");
+                    return Ok(responseSing);
+                case null:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Lỗi khi xử lý yêu cầu.");
+            }
+            return Ok( cleanedData);
         }
 
     }

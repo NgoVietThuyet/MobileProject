@@ -13,6 +13,7 @@ namespace BEMobile.Connectors
     public interface INeo4jConnector : IDisposable
     {
         Task<IResultCursor> ExecuteWriteAsync(string query, object parameters = null);
+        Task<List<IRecord>> ExecuteReadAsync(string query, object parameters = null);
     }
 
     public class Neo4jConnector : INeo4jConnector
@@ -33,6 +34,16 @@ namespace BEMobile.Connectors
         {
             await using var session = _driver.AsyncSession();
             return await session.RunAsync(query, parameters);
+        }
+
+        public async Task<List<IRecord>> ExecuteReadAsync(string query, object parameters = null)
+        {
+            await using var session = _driver.AsyncSession();
+            return await session.ExecuteReadAsync(async tx =>
+            {
+                var cursor = await tx.RunAsync(query, parameters);
+                return await cursor.ToListAsync();
+            });
         }
 
         public void Dispose()

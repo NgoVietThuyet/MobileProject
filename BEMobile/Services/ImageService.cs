@@ -14,7 +14,7 @@ namespace BEMobile.Services
 {
     public class GeminiOptions
     {
-        public string ApiKey { get; set; } = "";
+        public string ApiKey { get; set; } = "AIzaSyC2R9aILsvNeEripP7Wcy6E6Pt5UQYmwTE";
         public string Model { get; set; } = "gemini-2.0-flash";
         public string BaseUrl { get; set; } = "https://generativelanguage.googleapis.com/v1beta/models";
         public bool UseBearerToken { get; set; } = false; // Sửa thành false để dùng API Key
@@ -120,7 +120,7 @@ Hãy phân tích hình ảnh hóa đơn và trả về mảng JSON các đối t
 
 Yêu cầu:
 1. Xác định các mặt hàng và giá tiền (đọc giá tiền cho mỗi món nhưng lưu ý thêm nếu có thuế hoặc giảm giá)
-2. Gán mỗi mặt hàng vào một danh mục phù hợp(Tính tổng tiền các mặt hàng cùng danh mục, phần note sẽ thêm dấu phẩy vào giữa các mặt hàng cùng loại)
+2. Gán mỗi mặt hàng vào một danh mục phù hợp
 3. Tính tổng số tiền cho từng danh mục
 4. Nếu danh mục không có mặt hàng, hãy bỏ qua
 
