@@ -1,4 +1,4 @@
-namespace BEMobile.Models.RequestResponse.Account.DetailAccount
+namespace BEMobile.Models.RequestResponse.AccountRR.DetailAccount
 {
     public class DetailAccountResponse
     {

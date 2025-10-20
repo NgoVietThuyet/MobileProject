@@ -39,6 +39,7 @@ namespace BEMobile.Controllers
                 Notifications = notifications
             });
         }
+        
 
         // PUT /api/notifications/{id}/read
         [HttpPut("{id}/read")]
@@ -76,7 +77,7 @@ namespace BEMobile.Controllers
         public async Task<IActionResult> Push([FromBody] PushNotificationRequest request)
         {
             var result = await _service.PushNotificationAsync(request.UserId, request.Content);
-
+                
             return Ok(new PushNotificationResponse
             {
                 Success = result,

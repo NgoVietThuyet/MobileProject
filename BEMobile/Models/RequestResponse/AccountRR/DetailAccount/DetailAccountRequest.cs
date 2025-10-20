@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BEMobile.Models.RequestResponse.Account.DetailAccount
+namespace BEMobile.Models.RequestResponse.AccountRR.DetailAccount
 {
     // GET /api/accounts/{id}
     public class DetailAccountRequest

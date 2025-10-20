@@ -2,7 +2,7 @@
 using BEMobile.Models.DTOs;
 
 
-using BEMobile.Models.RequestResponse.Account.CreateAccount;
+using BEMobile.Models.RequestResponse.AccountRR.CreateAccount;
 using BEMobile.Services;
 using Microsoft.EntityFrameworkCore;
 

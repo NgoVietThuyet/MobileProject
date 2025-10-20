@@ -1,8 +1,10 @@
 ﻿using Azure.Core;
 using BEMobile.Data.Entities;
-using BEMobile.Models.RequestResponse.Account.CreateAccount;
-using BEMobile.Models.RequestResponse.Account.DeleteAccount;
-using BEMobile.Models.RequestResponse.Account.DetailAccount;
+using BEMobile.Models.DTOs;
+using BEMobile.Models.RequestResponse.AccountRR.CreateAccount;
+using BEMobile.Models.RequestResponse.AccountRR.DeleteAccount;
+using BEMobile.Models.RequestResponse.AccountRR.DetailAccount;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace BEMobile.Services
@@ -26,7 +28,8 @@ namespace BEMobile.Services
             {
                 AccountId = Guid.NewGuid().ToString(),
                 UserId = dto.UserId,
-                Balance = dto.Balance
+                Balance = dto.Balance,
+
             };
 
             _db.Accounts.Add(acc);
@@ -37,7 +40,7 @@ namespace BEMobile.Services
             {
                 Success = true,
                 Message = "Tạo tài khoản thành công",
-                Account = dto
+                Account = acc
             };
         }
 
