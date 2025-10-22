@@ -1,4 +1,5 @@
-﻿using BEMobile.Services;
+﻿using BEMobile.Models.RequestResponse.ReportRR;
+using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BEMobile.Controllers
@@ -15,18 +16,15 @@ namespace BEMobile.Controllers
         }
 
         [HttpGet("export-template")]
-        public async Task<IActionResult> ExportReportByTemplate(
-            string userId,
-            DateTime startDate,
-            DateTime endDate)
+        public async Task<IActionResult> ExportReportByTemplate([FromQuery] GenerateExcelReportRequest reportRequest)
         {
             try
             {
-                var excelBytes = await _reportService.GenerateExcelReportByTemplateAsync(userId, startDate, endDate);
+                var excelBytes = await _reportService.GenerateExcelReportByTemplateAsync(reportRequest);
 
                 return File(excelBytes,
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    $"BaoCaoTaiChinh_{startDate:ddMMyyyy}_{endDate:ddMMyyyy}.xlsx");
+                    $"BaoCaoTaiChinh_{reportRequest.StartDate:ddMMyyyy}_{reportRequest.EndDate:ddMMyyyy}.xlsx");
             }
             catch (Exception ex)
             {

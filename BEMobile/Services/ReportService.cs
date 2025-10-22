@@ -1,4 +1,5 @@
 ﻿using BEMobile.Data.Entities;
+using BEMobile.Models.RequestResponse.ReportRR;
 using Google;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -10,7 +11,7 @@ namespace BEMobile.Services
 {
     public interface IReportService
     {
-        Task<byte[]> GenerateExcelReportByTemplateAsync(string userId, DateTime startDate, DateTime endDate);
+        Task<byte[]> GenerateExcelReportByTemplateAsync(GenerateExcelReportRequest reportRequest);
     }
 
     public class ReportService : IReportService
@@ -24,11 +25,11 @@ namespace BEMobile.Services
             _categoryService = categoryService;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
-        public async Task<byte[]> GenerateExcelReportByTemplateAsync(string userId, DateTime startDate, DateTime endDate)
+        public async Task<byte[]> GenerateExcelReportByTemplateAsync(GenerateExcelReportRequest reportRequest)
         {
-            //Lấy toàn bộ transactions của user
+            //Lấy toàn bộ transactions của user 
                 var allTransactions = await _context.Transactions
-                    .Where(t => t.UserId == userId)
+                    .Where(t => t.UserId == reportRequest.UserId)
                     .AsNoTracking()
                     .ToListAsync();
             DateTime? ParseDate(string dateString)
@@ -58,8 +59,8 @@ namespace BEMobile.Services
                 {
                     var createdDate = ParseDate(t.CreatedDate);
                     return createdDate.HasValue &&
-                           createdDate.Value.Date >= startDate.Date &&
-                           createdDate.Value.Date <= endDate.Date;
+                           createdDate.Value.Date >= reportRequest.StartDate.Date &&
+                           createdDate.Value.Date <= reportRequest.EndDate.Date;
                 })
                 .OrderBy(t =>
                 {
