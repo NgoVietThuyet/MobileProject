@@ -111,6 +111,7 @@ namespace BEMobile.Services
             var headerCells = new[] { "A1:D1", "A2", "B2", "C2", "D2" };
             foreach (var cell in headerCells)
             {
+                worksheet.Cells[cell].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[cell].Style.Font.Bold = true;
                 worksheet.Cells[cell].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells[cell].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
@@ -174,6 +175,7 @@ namespace BEMobile.Services
             var expenseHeaderCells = new[] { $"A{startRow - 1}:D{startRow-1}", $"A{startRow}", $"B{startRow}", $"C{startRow}", $"D{startRow}" };
             foreach (var cell in expenseHeaderCells)
             {
+                worksheet.Cells[cell].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[cell].Style.Font.Bold = true;
                 worksheet.Cells[cell].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells[cell].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
@@ -264,9 +266,9 @@ namespace BEMobile.Services
                 worksheet.Cells[$"A{expenseDataStartRow}:D{expenseDataEndRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 // ... [các định dạng border khác cho chi tiêu] ...
 
-                // Border cho header chi tiêu
-                worksheet.Cells[$"A{expenseDataStartRow - 1}:D{expenseDataStartRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                worksheet.Cells[$"A{expenseDataStartRow}:D{expenseDataStartRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                //// Border cho header chi tiêu
+                //worksheet.Cells[$"A{expenseDataStartRow - 1}:D{expenseDataStartRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                //worksheet.Cells[$"A{expenseDataStartRow}:D{expenseDataStartRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
             }
 
             // Căn giữa các cột STT
