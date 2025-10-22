@@ -64,6 +64,7 @@ namespace BEMobile.Controllers
                             Initial_Amount = Budget.Initial_Amount,
                             Current_Amount = Budget.Current_Amount,
                             UserId = Budget.UserId,
+                            StartDate = Budget.StartDate,
                             CategoryId = Budget.CategoryId,
                             CreatedDate = Budget.CreatedDate,
                             UpdatedDate = Budget.UpdatedDate

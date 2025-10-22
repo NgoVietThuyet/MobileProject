@@ -1,6 +1,8 @@
-using BEMobile.Models.RequestResponse.Account.CreateAccount;
-using BEMobile.Models.RequestResponse.Account.DeleteAccount;
-using BEMobile.Models.RequestResponse.Account.DetailAccount;
+using BEMobile.Models.RequestResponse.AccountRR.CreateAccount;
+using BEMobile.Models.RequestResponse.AccountRR.DeleteAccount;
+using BEMobile.Models.RequestResponse.AccountRR.DetailAccount;
+using BEMobile.Models.RequestResponse.AccountRR.CreateAccount;
+using BEMobile.Models.RequestResponse.AccountRR.DetailAccount;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 

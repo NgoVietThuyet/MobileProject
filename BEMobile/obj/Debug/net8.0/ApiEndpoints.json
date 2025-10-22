@@ -9,13 +9,13 @@
     "Parameters": [
       {
         "Name": "req",
-        "Type": "BEMobile.Models.RequestResponse.Account.CreateAccount.CreateAccountRequest",
+        "Type": "BEMobile.Models.RequestResponse.AccountRR.CreateAccount.CreateAccountRequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "BEMobile.Models.RequestResponse.Account.CreateAccount.CreateAccountResponse",
+        "Type": "BEMobile.Models.RequestResponse.AccountRR.CreateAccount.CreateAccountResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -46,7 +46,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "BEMobile.Models.RequestResponse.Account.DeleteAccount.DeleteAccountResponse",
+        "Type": "BEMobile.Models.RequestResponse.AccountRR.DeleteAccount.DeleteAccountResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -72,7 +72,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "BEMobile.Models.RequestResponse.Account.DetailAccount.DetailAccountResponse",
+        "Type": "BEMobile.Models.RequestResponse.AccountRR.DetailAccount.DetailAccountResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -358,6 +358,32 @@
     ]
   },
   {
+    "ContainingType": "BEMobile.Controllers.ReportsController",
+    "Method": "ExportReportByTemplate",
+    "RelativePath": "api/Reports/export-template",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "startDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "endDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BEMobile.Controllers.SavingGoalController",
     "Method": "CreateSavingGoal",
     "RelativePath": "api/SavingGoal/Create",
@@ -367,7 +393,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "BEMobile.Models.RequestResponse.SavingGoal.CreateSavingGoalRequest",
+        "Type": "BEMobile.Models.RequestResponse.SavingGoalRR.CreateSavingGoalRequest",
         "IsRequired": true
       }
     ],
@@ -390,7 +416,13 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.DTOs.SavingGoalDto, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -413,7 +445,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "BEMobile.Models.RequestResponse.SavingGoal.UpdateAmount.UpdateAmountGoalRequest",
+        "Type": "BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount.UpdateAmountGoalRequest",
         "IsRequired": true
       }
     ],

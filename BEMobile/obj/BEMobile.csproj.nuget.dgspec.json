@@ -54,6 +54,14 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "DocumentFormat.OpenXml": {
+              "target": "Package",
+              "version": "[3.3.0, )"
+            },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[8.2.1, )"
+            },
             "Google.Apis.Auth": {
               "target": "Package",
               "version": "[1.72.0, )"

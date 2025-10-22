@@ -2,14 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using BEMobile.Models.DTOs;
 
-using BEMobile.Models.RequestResponse.SavingGoal.UpdateAmount;
-using BEMobile.Models.RequestResponse.SavingGoal;
+using BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount;
+using BEMobile.Models.RequestResponse.SavingGoalRR;
 
 namespace BEMobile.Services
 {
     public interface ISavingGoalService
     {
-        Task<IEnumerable<SavingGoalDto>> GetAllSavingGoalAsync();
+        Task<IEnumerable<SavingGoalDto>> GetAllSavingGoalAsync(string userId);
         Task<SavingGoal> CreateSavingGoalAsync(CreateSavingGoalRequest request);
         Task UpdateAmountAsync(UpdateAmountGoalRequest request);
         ////Task UpdateBudgetAsync(BudgetDto BudgetDto);
@@ -25,11 +25,12 @@ namespace BEMobile.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<SavingGoalDto>> GetAllSavingGoalAsync()
+        public async Task<IEnumerable<SavingGoalDto>> GetAllSavingGoalAsync(string userId)
         {
             if (_context.SavingGoals == null)
                 throw new Exception("SavingGoal DbSet is null in AppDbContext");
             var SavingGoal = await _context.SavingGoals
+                .Where(x => x.UserId == userId)
                 .Select(u => new SavingGoalDto
                 {
                     UserId = u.UserId,

@@ -614,10 +614,56 @@
         }
       }
     },
+    "/api/Reports/export-template": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/SavingGoal/GetAllSavingGoals": {
       "get": {
         "tags": [
           "SavingGoal"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1257,6 +1303,36 @@
   },
   "components": {
     "schemas": {
+      "Account": {
+        "required": [
+          "balance",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "balance": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "updatedDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AccountDto": {
         "type": "object",
         "properties": {
@@ -1269,6 +1345,14 @@
             "nullable": true
           },
           "balance": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedDate": {
             "type": "string",
             "nullable": true
           }
@@ -1457,7 +1541,7 @@
             "nullable": true
           },
           "account": {
-            "$ref": "#/components/schemas/AccountDto"
+            "$ref": "#/components/schemas/Account"
           }
         },
         "additionalProperties": false
@@ -1877,8 +1961,8 @@
             "nullable": true
           },
           "amount": {
-            "type": "number",
-            "format": "float"
+            "type": "string",
+            "nullable": true
           },
           "note": {
             "type": "string",

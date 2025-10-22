@@ -10,6 +10,8 @@ namespace BEMobile.Models.DTOs
         public string UserId { get; set; }
 
         public string Balance { get; set; }
+        public string CreatedDate { get; set; }
+        public string UpdatedDate { get; set; }
 
 
     }
