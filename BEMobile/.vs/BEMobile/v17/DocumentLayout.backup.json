@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\connectors\\neo4jconnector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:connectors\\neo4jconnector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\knowledgegraphservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\knowledgegraphservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,14 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\connectors\\neo4jconnector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:connectors\\neo4jconnector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\imageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -188,7 +188,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -200,19 +200,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Neo4jConnector.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Connectors\\Neo4jConnector.cs",
               "RelativeDocumentMoniker": "Connectors\\Neo4jConnector.cs",
               "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Connectors\\Neo4jConnector.cs",
               "RelativeToolTip": "Connectors\\Neo4jConnector.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAA7wBUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:07:47.907Z"
+              "WhenOpened": "2025-10-19T18:07:47.907Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -220,8 +221,7 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-19T17:34:29.805Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-19T17:34:29.805Z"
             },
             {
               "$type": "Document",
@@ -249,7 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -261,28 +261,27 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "ChatbotController.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ChatbotController.cs",
               "RelativeDocumentMoniker": "Controllers\\ChatbotController.cs",
               "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ChatbotController.cs",
               "RelativeToolTip": "Controllers\\ChatbotController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAANAAAAAAAAAA==",
+              "ViewState": "AgIAACIAAAAAAAAAAAAkwB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T18:19:23.037Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "KnowledgeGraphService.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\KnowledgeGraphService.cs",
               "RelativeDocumentMoniker": "Services\\KnowledgeGraphService.cs",
               "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\KnowledgeGraphService.cs",
               "RelativeToolTip": "Services\\KnowledgeGraphService.cs",
-              "ViewState": "AgIAAN4AAAAAAAAAAAAuwKUBAABCAAAAAAAAAA==",
+              "ViewState": "AgIAAFUAAAAAAAAAAADwv2MBAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:17:17.387Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-19T18:17:17.387Z"
             },
             {
               "$type": "Document",

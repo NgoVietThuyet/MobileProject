@@ -206,7 +206,7 @@
               "RelativeDocumentMoniker": "Connectors\\Neo4jConnector.cs",
               "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Connectors\\Neo4jConnector.cs",
               "RelativeToolTip": "Connectors\\Neo4jConnector.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAowBUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T18:07:47.907Z",
               "EditorCaption": ""
@@ -221,8 +221,7 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-19T17:34:29.805Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-19T17:34:29.805Z"
             },
             {
               "$type": "Document",
@@ -270,8 +269,7 @@
               "RelativeToolTip": "Controllers\\ChatbotController.cs",
               "ViewState": "AgIAACIAAAAAAAAAAAAkwB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:19:23.037Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-19T18:19:23.037Z"
             },
             {
               "$type": "Document",
@@ -283,8 +281,7 @@
               "RelativeToolTip": "Services\\KnowledgeGraphService.cs",
               "ViewState": "AgIAAFUAAAAAAAAAAADwv2MBAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:17:17.387Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-19T18:17:17.387Z"
             },
             {
               "$type": "Document",
