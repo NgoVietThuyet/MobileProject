@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,7 +21,7 @@ fun AppHeader(
     showBack: Boolean = true,
     onBack: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    containerColor: Color = MaterialTheme.colorScheme.surface,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp),
     containerBrush: Brush? = null,
     containerAlpha: Float = 1f,
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,

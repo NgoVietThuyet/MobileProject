@@ -1,6 +1,5 @@
 package com.example.test.ui.navigation
 
-import UploadResult
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
@@ -10,10 +9,12 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -23,9 +24,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.test.ui.api.LoginReq
-import com.example.test.ui.api.SignUpRequest
-import com.example.test.ui.api.UserDto
+import com.example.test.ui.models.LoginReq
+import com.example.test.ui.models.SignUpRequest
+import com.example.test.ui.models.UserDto
 import com.example.test.ui.mock.TxType
 import com.example.test.ui.mock.TxUi
 import com.example.test.ui.screens.*
@@ -42,6 +43,10 @@ import java.util.UUID
 import com.example.test.ui.mock.MockData as HomeMock
 import org.json.JSONArray
 import org.json.JSONObject
+import com.example.test.ui.api.Api
+import com.example.test.ui.api.AuthStore
+import com.example.test.ui.scan.UploadResult
+import com.example.test.vm.AllTransactionViewModel
 
 private fun extractServerMessage(raw: String): String? = try {
     val obj = JSONObject(raw)
@@ -115,7 +120,7 @@ private data class TxNav(
     val id: String,
     val title: String,
     val category: String,
-    val amount: Long,
+    val amount: String,
     val type: String,
     val emoji: String?,
     val epochMillis: Long
@@ -154,6 +159,7 @@ private fun androidx.navigation.NavController.switchTo(route: String) {
     }
 }
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalAnimationApi::class)
@@ -176,17 +182,23 @@ fun AppNavGraph(navController: NavHostController) {
             composable(Screen.EmailLogin.route) {
                 val ctx = LocalContext.current
                 val scope = rememberCoroutineScope()
-                val api = remember { Api.service }
+                val usersApi = remember { Api.usersService }
 
                 EmailLoginScreen(
                     onBack = { navController.popBackStack() },
                     onLogin = { email, password ->
                         scope.launch {
                             try {
-                                val res = api.login(LoginReq(email, password))
+                                val res = usersApi.login(LoginReq(email, password))
                                 val body = res.body()
                                 if (res.isSuccessful && body != null) {
-                                    AuthStore.token = body.token
+                                    AuthStore.userId = body.user.userId
+                                    AuthStore.userName = body.user.name
+                                    AuthStore.userEmail = body.user.email
+                                    AuthStore.userPhone = body.user.phoneNumber
+                                    AuthStore.userCreationDate = body.user.createdDate
+
+
                                     navController.navigate("main") {
                                         popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
                                         launchSingleTop = true
@@ -242,7 +254,7 @@ fun AppNavGraph(navController: NavHostController) {
             composable(Screen.Register.route) {
                 val ctx = LocalContext.current
                 val scope = rememberCoroutineScope()
-                val api = remember { Api.service }
+                val usersApi = remember { Api.usersService }
 
                 RegisterScreen(
                     onBack = { navController.popBackStack() },
@@ -251,7 +263,7 @@ fun AppNavGraph(navController: NavHostController) {
                         val id = UUID.randomUUID().toString()
                         scope.launch {
                             try {
-                                val res = api.register(
+                                val res = usersApi.register(
                                     SignUpRequest(
                                         UserDto(
                                             userId = id,
@@ -304,6 +316,7 @@ fun AppNavGraph(navController: NavHostController) {
         }
 
         navigation(startDestination = Screen.Home.route, route = "main") {
+
             composable(Screen.Home.route) {
                 HomeScreen(
                     onOpenBudgetAll = { navController.navigate(Screen.BudgetAll.route) },
@@ -349,29 +362,29 @@ fun AppNavGraph(navController: NavHostController) {
             composable(Screen.IncomeCreate.route) {
                 AddIncomeScreen(
                     onBack = { navController.navigate(Screen.Home.route) },
-                    onSave = { _ -> navController.popBackStack() }
                 )
             }
 
             composable(Screen.ExpenseCreate.route) {
                 AddExpenseScreen(
                     onBack = { navController.navigate(Screen.Home.route) },
-                    onSave = { _ -> navController.popBackStack() }
                 )
             }
 
             composable(Screen.TransactionsAll.route) {
-                val list = remember {
-                    HomeMock.recentTransactions.sortedByDescending { it.createdAt }
-                        .mapIndexed { i, m -> m.toTxUi(i) }
-                }
+                val vm: AllTransactionViewModel = hiltViewModel()
+                val state by vm.uiState.collectAsStateWithLifecycle()
+                LaunchedEffect(Unit) { vm.fetchTransactions() }
+
                 AllTransactionsScreen(
-                    transactions = list,
-                    onBack = { navController.popBackStack() },
+                    transactions = state.transactions,
                     onEditIncome = { tx -> navController.navigate(Screen.EditIncome.create(tx)) },
-                    onEditExpense = { tx -> navController.navigate(Screen.EditExpense.create(tx)) }
+                    onEditExpense = { tx -> navController.navigate(Screen.EditExpense.create(tx)) },
+                    onBack = { navController.popBackStack() }
                 )
             }
+
+
 
             composable(
                 route = Screen.EditIncome.route,
@@ -382,8 +395,6 @@ fun AppNavGraph(navController: NavHostController) {
                 EditIncomeScreen(
                     tx = nav.toTxUi(),
                     onBack = { navController.popBackStack() },
-                    onSave = { _ -> navController.popBackStack() },
-                    onDelete = { _ -> navController.popBackStack() }
                 )
             }
 
@@ -396,8 +407,6 @@ fun AppNavGraph(navController: NavHostController) {
                 EditExpenseScreen(
                     tx = nav.toTxUi(),
                     onBack = { navController.popBackStack() },
-                    onSave = { _ -> navController.popBackStack() },
-                    onDelete = { _ -> navController.popBackStack() }
                 )
             }
 
@@ -454,7 +463,14 @@ fun AppNavGraph(navController: NavHostController) {
                     onProfilePicture = { navController.navigate(Screen.ProfilePicture.route) },
                     onLanguages = { },
                     onCurrency = { navController.navigate(Screen.CurrentUnit.route) },
-                    onLogout = { navController.navigate(Screen.Login.route) },
+                    onLogout = {
+                        AuthStore.clear()
+                        navController.navigate("auth") {
+                            popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
+                            launchSingleTop = true
+                            restoreState = false
+                        }
+                    },
                     onSetting = { },
                     onCamera = { navController.navigate(Screen.Scan.route) }
                 )
@@ -463,7 +479,6 @@ fun AppNavGraph(navController: NavHostController) {
             composable(Screen.PersonalInfo.route) {
                 PersonalInfoScreen(
                     onBack = { navController.switchTo(Screen.Setting.route) },
-                    onSave = {},
                 )
             }
 
@@ -488,18 +503,17 @@ fun AppNavGraph(navController: NavHostController) {
             composable(Screen.ScanResult.route) {
                 ScanResultScreen(
                     navController = navController,
-                    onDone = {  },
                     onBack = { navController.popBackStack() }
                 )
             }
 
             composable(Screen.Scan.route) {
-                val api = remember { Api.service }
+                val imageApi = remember { Api.imageService }
                 val nav = navController
                 val ctx = LocalContext.current
 
                 ReceiptScanScreen(
-                    usersApi = api,
+                    imageApi = imageApi,
                     userId = null,
                     categoryId = null,
                     onBack = { nav.popBackStack() },
@@ -526,12 +540,9 @@ fun AppNavGraph(navController: NavHostController) {
                     showPermissionTexts = false
                 )
             }
-
-
         }
     }
 }
-
 private fun parseAmountVnd(text: String): Long =
     text.filter { it.isDigit() }.toLongOrNull() ?: 0L
 
@@ -542,7 +553,7 @@ private fun com.example.test.ui.mock.TransactionMock.toTxUi(id: Int): TxUi =
         title = title,
         category = subtitle.substringBefore(" • "),
         dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(createdAt), ZoneId.systemDefault()),
-        amount = parseAmountVnd(amount),
+        amount = amount,
         type = if (isPositive) TxType.INCOME else TxType.EXPENSE,
         emoji = icon
     )

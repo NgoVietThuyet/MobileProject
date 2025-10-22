@@ -4,6 +4,7 @@ package com.example.test.ui.screens
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -22,13 +23,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
 import com.example.test.ui.components.AppHeader
+import com.example.test.ui.models.CategoryDto
+import com.example.test.vm.AddTransactionViewModel
+import com.example.test.vm.SaveStatus
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.Instant
@@ -37,70 +45,63 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-data class ExpenseInput(
-    val amountVnd: Long,
-    val category: String,
-    val note: String,
-    val dateMillis: Long
-)
-
-private data class ExpenseCategory(
-    val emoji: String,
-    val label: String
-)
-
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AddExpenseScreen(
     onBack: () -> Unit,
-    onSave: (ExpenseInput) -> Unit
+    viewModel: AddTransactionViewModel = hiltViewModel()
 ) {
     val scheme = MaterialTheme.colorScheme
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     var amountRaw by rememberSaveable { mutableStateOf("") }
-    // lưu danh mục bằng chỉ số Int? để saveable
-    val categories = remember {
-        listOf(
-            ExpenseCategory("🍜", "Ăn uống"),
-            ExpenseCategory("🚗", "Đi lại"),
-            ExpenseCategory("🛍️", "Mua sắm"),
-            ExpenseCategory("🎬", "Giải trí"),
-            ExpenseCategory("📚", "Giáo dục"),
-            ExpenseCategory("🩺", "Y tế"),
-            ExpenseCategory("🏠", "Nhà ở"),
-            ExpenseCategory("💧", "Điện nước"),
-            ExpenseCategory("📦", "Khác")
-        )
-    }
+
+    val categories = uiState.expenseCategories
+
     var selectedCategoryIndex by rememberSaveable { mutableStateOf<Int?>(null) }
     val selectedCategory = selectedCategoryIndex?.let { categories[it] }
 
     var note by rememberSaveable { mutableStateOf("") }
 
-    // lưu ngày bằng millis Long để saveable
     val zone = ZoneId.systemDefault()
     val todayMillis = LocalDate.now().atStartOfDay(zone).toInstant().toEpochMilli()
     var dateMillis by rememberSaveable { mutableStateOf(todayMillis) }
-    val date = Instant.ofEpochMilli(dateMillis).atZone(zone).toLocalDate()
     var showDatePicker by remember { mutableStateOf(false) }
 
-    fun digitsOnly(s: String) = s.filter { it.isDigit() }
-    val amountLong = amountRaw.toLongOrNull() ?: 0L
-    val isValid = amountLong > 0 && selectedCategory != null
+    val amountString = amountRaw.filter { it.isDigit() }
+    val isValid = amountString.toLongOrNull()?.let { it > 0 } == true &&
+            selectedCategory != null &&
+            uiState.saveStatus != SaveStatus.LOADING
 
     val vi = Locale("vi", "VN")
     val sym = DecimalFormatSymbols(vi).apply { groupingSeparator = '.'; decimalSeparator = ',' }
     val df = remember { DecimalFormat("#,##0", sym) }
-    val moneyPreview = if (amountLong > 0) df.format(amountLong) + " ₫" else ""
+
+    val moneyPreview = amountString.toLongOrNull()?.let {
+        if (it > 0) df.format(it) + " ₫" else ""
+    } ?: ""
 
     val dateLabel = remember(dateMillis) {
         Instant.ofEpochMilli(dateMillis).atZone(zone).toLocalDate()
             .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
     }
 
-    val statusTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-    val headerHeight = 36.dp
+    LaunchedEffect(uiState.saveStatus) {
+        when (uiState.saveStatus) {
+            SaveStatus.SUCCESS -> {
+                Toast.makeText(context, "Lưu thành công!", Toast.LENGTH_SHORT).show()
+                viewModel.resetStatus()
+                onBack()
+            }
+            SaveStatus.ERROR -> {
+                Toast.makeText(context, "Lỗi: ${uiState.errorMessage}", Toast.LENGTH_LONG).show()
+                viewModel.resetStatus()
+            }
+            else -> {}
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -121,14 +122,13 @@ fun AddExpenseScreen(
                 ) {
                     Button(
                         onClick = {
-                            val input = ExpenseInput(
-                                amountVnd = amountLong,
-                                category = selectedCategory!!.label,
+                            viewModel.saveTransaction(
+                                amount = amountString,
+                                categoryId = selectedCategory!!.categoryId,
                                 note = note.trim(),
-                                dateMillis = dateMillis
+                                dateMillis = dateMillis,
+                                type = "Expense"
                             )
-                            onSave(input)
-                            onBack()
                         },
                         enabled = isValid,
                         modifier = Modifier
@@ -142,7 +142,15 @@ fun AddExpenseScreen(
                             disabledContentColor = scheme.onPrimary.copy(alpha = 0.9f)
                         )
                     ) {
-                        Text("Lưu", fontWeight = FontWeight.SemiBold)
+                        if (uiState.saveStatus == SaveStatus.LOADING) {
+                            CircularProgressIndicator(
+                                color = scheme.onPrimary,
+                                strokeWidth = 2.dp,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        } else {
+                            Text("Lưu", fontWeight = FontWeight.SemiBold)
+                        }
                     }
                 }
             }
@@ -157,127 +165,128 @@ fun AddExpenseScreen(
                 .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Spacer(Modifier.height(24.dp))
+            if (uiState.isLoading) {
+                Box(modifier = Modifier.fillMaxWidth().padding(top = 24.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                Spacer(Modifier.height(24.dp))
+                // ... (Các UI component còn lại)
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    color = scheme.surface,
+                    border = BorderStroke(1.dp, scheme.outlineVariant),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Số tiền", color = scheme.onSurfaceVariant, fontSize = 14.sp)
+                        Spacer(Modifier.height(10.dp))
 
-            Surface(
-                shape = RoundedCornerShape(16.dp),
-                color = scheme.surface,
-                border = BorderStroke(1.dp, scheme.outlineVariant),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Số tiền", color = scheme.onSurfaceVariant, fontSize = 14.sp)
-                    Spacer(Modifier.height(10.dp))
-
-                    OutlinedTextField(
-                        value = amountRaw,
-                        onValueChange = { amountRaw = digitsOnly(it) },
-                        placeholder = { Text("Nhập số tiền…") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .border(1.dp, scheme.outlineVariant, RoundedCornerShape(12.dp))
-                            .background(scheme.surfaceVariant),
-                        trailingIcon = {
-                            Text("đ", color = scheme.onSurfaceVariant, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedContainerColor = Color.Transparent,
-                            focusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedBorderColor = Color.Transparent,
-                            cursorColor = scheme.onSurface
+                        OutlinedTextField(
+                            value = amountRaw,
+                            onValueChange = { amountRaw = it.filter { c -> c.isDigit() } },
+                            placeholder = { Text("Nhập số tiền…") },
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            trailingIcon = {
+                                Text("đ", color = scheme.onSurfaceVariant, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
+                            },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                unfocusedContainerColor = scheme.surfaceVariant,
+                                focusedContainerColor = scheme.surfaceVariant,
+                                unfocusedBorderColor = Color.Transparent,
+                                focusedBorderColor = Color.Transparent,
+                                cursorColor = scheme.onSurface
+                            )
                         )
-                    )
 
-                    if (moneyPreview.isNotEmpty()) {
-                        Spacer(Modifier.height(8.dp))
-                        Text("≈ $moneyPreview", color = scheme.onSurfaceVariant, fontSize = 12.sp)
+                        if (moneyPreview.isNotEmpty()) {
+                            Spacer(Modifier.height(8.dp))
+                            Text("≈ $moneyPreview", color = scheme.onSurfaceVariant, fontSize = 12.sp)
+                        }
                     }
                 }
-            }
 
-            Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(24.dp))
 
-            Text("Chọn danh mục", fontSize = 14.sp, color = scheme.onSurfaceVariant)
-            Spacer(Modifier.height(10.dp))
-            CategoryGridExpense(
-                categories = categories,
-                selectedIndex = selectedCategoryIndex,
-                onSelect = { idx -> selectedCategoryIndex = idx },
-                scheme = scheme
-            )
-
-            Spacer(Modifier.height(20.dp))
-
-            Text("Ghi chú", fontSize = 14.sp, color = scheme.onSurfaceVariant)
-            OutlinedTextField(
-                value = note,
-                onValueChange = { note = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 6.dp),
-                placeholder = { Text("Nhập ghi chú…") },
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedContainerColor = scheme.surfaceVariant,
-                    focusedContainerColor = scheme.surfaceVariant,
-                    unfocusedBorderColor = Color.Transparent,
-                    focusedBorderColor = scheme.primary
+                Text("Chọn danh mục", fontSize = 14.sp, color = scheme.onSurfaceVariant)
+                Spacer(Modifier.height(10.dp))
+                CategoryGrid(
+                    categories = categories,
+                    selectedIndex = selectedCategoryIndex,
+                    onSelect = { idx -> selectedCategoryIndex = idx },
+                    scheme = scheme
                 )
-            )
 
-            Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(20.dp))
 
-            Text("Ngày giao dịch:", fontSize = 14.sp, color = scheme.onSurfaceVariant)
-            Spacer(Modifier.height(6.dp))
-            Row(
-                modifier = Modifier
-                    .height(48.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .border(1.dp, scheme.outlineVariant, RoundedCornerShape(12.dp))
-                    .background(scheme.surfaceVariant)
-                    .padding(horizontal = 12.dp)
-                    .clickable { showDatePicker = true },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(dateLabel, modifier = Modifier.weight(1f), fontSize = 14.sp, color = scheme.onSurface)
-                Icon(
-                    painter = androidx.compose.ui.res.painterResource(R.drawable.ic_calendar),
-                    contentDescription = null,
-                    tint = scheme.onSurfaceVariant
+                Text("Ghi chú", fontSize = 14.sp, color = scheme.onSurfaceVariant)
+                OutlinedTextField(
+                    value = note,
+                    onValueChange = { note = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 6.dp),
+                    placeholder = { Text("Nhập ghi chú…") },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = scheme.surfaceVariant,
+                        focusedContainerColor = scheme.surfaceVariant,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = scheme.primary
+                    )
                 )
-            }
 
-            Spacer(Modifier.height(80.dp))
+                Spacer(Modifier.height(16.dp))
+
+                Text("Ngày giao dịch:", fontSize = 14.sp, color = scheme.onSurfaceVariant)
+                Spacer(Modifier.height(6.dp))
+                Row(
+                    modifier = Modifier
+                        .height(48.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .border(1.dp, scheme.outlineVariant, RoundedCornerShape(12.dp))
+                        .background(scheme.surfaceVariant)
+                        .padding(horizontal = 12.dp)
+                        .clickable { showDatePicker = true },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(dateLabel, modifier = Modifier.weight(1f), fontSize = 14.sp, color = scheme.onSurface)
+                    Icon(
+                        painter = painterResource(R.drawable.ic_calendar),
+                        contentDescription = null,
+                        tint = scheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(Modifier.height(80.dp))
+            }
         }
     }
 
     if (showDatePicker) {
+        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = dateMillis)
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
-            confirmButton = { TextButton(onClick = { showDatePicker = false }) { Text("Chọn") } },
+            confirmButton = {
+                TextButton(onClick = {
+                    datePickerState.selectedDateMillis?.let { dateMillis = it }
+                    showDatePicker = false
+                }) { Text("Chọn") }
+            },
             dismissButton = { TextButton(onClick = { showDatePicker = false }) { Text("Huỷ") } }
         ) {
-            val state = rememberDatePickerState(initialSelectedDateMillis = dateMillis)
-            DatePicker(state = state)
-            LaunchedEffect(state.selectedDateMillis) {
-                state.selectedDateMillis?.let { sel ->
-                    dateMillis = sel
-                }
-            }
+            DatePicker(state = datePickerState)
         }
     }
 }
 
 @Composable
-private fun CategoryGridExpense(
-    categories: List<ExpenseCategory>,
+private fun CategoryGrid(
+    categories: List<CategoryDto>,
     selectedIndex: Int?,
     onSelect: (Int) -> Unit,
     scheme: ColorScheme
@@ -310,9 +319,9 @@ private fun CategoryGridExpense(
                                         .clip(CircleShape)
                                         .background(if (isSelected) scheme.primaryContainer else scheme.surfaceVariant),
                                     contentAlignment = Alignment.Center
-                                ) { Text(cat.emoji, fontSize = 18.sp, textAlign = TextAlign.Center) }
+                                ) { Text(cat.icon, fontSize = 18.sp, textAlign = TextAlign.Center) }
                                 Spacer(Modifier.height(6.dp))
-                                Text(cat.label, fontSize = 13.sp, color = scheme.onSurface)
+                                Text(cat.name, fontSize = 13.sp, color = scheme.onSurface)
                             }
                         }
                     }

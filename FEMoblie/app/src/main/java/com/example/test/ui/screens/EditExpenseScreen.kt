@@ -1,8 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.example.test.ui.screens
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -17,65 +16,88 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
 import com.example.test.ui.components.AppHeader
 import com.example.test.ui.mock.TxUi
+import com.example.test.ui.models.CategoryDto
+import com.example.test.vm.EditTransactionViewModel
+import com.example.test.vm.SaveStatus
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EditExpenseScreen(
     tx: TxUi,
     onBack: () -> Unit = {},
-    onSave: (TxUi) -> Unit,
-    onDelete: (TxUi) -> Unit
-) {
-    EditExpenseContent(tx, onBack, onSave, onDelete)
-}
-
-private data class ExpCategoryOption(val key: String, val label: String, val emoji: String)
-
-private val expenseOptions = listOf(
-    ExpCategoryOption("food", "Ăn uống", "🍽️"),
-    ExpCategoryOption("transport", "Đi lại", "🚌"),
-    ExpCategoryOption("shopping", "Mua sắm", "🛍️"),
-    ExpCategoryOption("entertain", "Giải trí", "🎮"),
-    ExpCategoryOption("education", "Giáo dục", "📚"),
-    ExpCategoryOption("health", "Y tế", "🩺"),
-    ExpCategoryOption("housing", "Nhà ở", "🏠"),
-    ExpCategoryOption("utilities", "Điện nước", "💧"),
-    ExpCategoryOption("other_exp", "Khác", "📦"),
-)
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-private fun EditExpenseContent(
-    tx: TxUi,
-    onBack: () -> Unit,
-    onSave: (TxUi) -> Unit,
-    onDelete: (TxUi) -> Unit
+    viewModel: EditTransactionViewModel = hiltViewModel()
 ) {
     val scheme = MaterialTheme.colorScheme
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var amountText by remember(tx.id) { mutableStateOf(tx.amount.toString()) }
-    var note by remember(tx.id) { mutableStateOf("") }
-    var date by remember(tx.id) { mutableStateOf(tx.dateTime.toLocalDate()) }
-    var selected by remember(tx.id) {
-        mutableStateOf(expenseOptions.firstOrNull { it.label.equals(tx.category, true) } ?: expenseOptions.first())
+    var amountText by remember(tx.id) { mutableStateOf(tx.amount) }
+
+    val initialNote = remember(tx.id) {
+        val parts = tx.category.split(" • ")
+        if (parts.size > 1 && parts.first() != "Không có ghi chú") parts.first() else ""
     }
+    var note by remember(tx.id) { mutableStateOf(initialNote) }
+
+    var date by remember(tx.id) { mutableStateOf(tx.dateTime.toLocalDate()) }
+
+    val expenseCategories = uiState.expenseCategories
+
+    val initialSelectedCategory = remember(tx.id, expenseCategories) {
+        expenseCategories.firstOrNull { it.name.equals(tx.title, true) }
+    }
+    var selected by remember(tx.id, initialSelectedCategory) { mutableStateOf(initialSelectedCategory) }
 
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
     )
+
+    LaunchedEffect(uiState.saveStatus) {
+        when (uiState.saveStatus) {
+            SaveStatus.SUCCESS -> {
+                Toast.makeText(context, "Cập nhật thành công!", Toast.LENGTH_SHORT).show()
+                viewModel.resetSaveStatus()
+                onBack()
+            }
+            SaveStatus.ERROR -> {
+                Toast.makeText(context, "Lỗi cập nhật: ${uiState.errorMessage}", Toast.LENGTH_LONG).show()
+                viewModel.resetSaveStatus()
+            }
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(uiState.deleteStatus) {
+        when (uiState.deleteStatus) {
+            SaveStatus.SUCCESS -> {
+                Toast.makeText(context, "Xóa thành công!", Toast.LENGTH_SHORT).show()
+                viewModel.resetDeleteStatus()
+                onBack()
+            }
+            SaveStatus.ERROR -> {
+                Toast.makeText(context, "Lỗi xóa: ${uiState.errorMessage}", Toast.LENGTH_LONG).show()
+                viewModel.resetDeleteStatus()
+            }
+            else -> {}
+        }
+    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -97,19 +119,19 @@ private fun EditExpenseContent(
             ) {
                 Button(
                     onClick = {
-                        val newAmount = amountText.toLongOrNull() ?: tx.amount
-                        val newDateTime = tx.dateTime
-                            .withYear(date.year)
-                            .withMonth(date.monthValue)
-                            .withDayOfMonth(date.dayOfMonth)
-                        onSave(
-                            tx.copy(
-                                amount = newAmount,
-                                category = selected.label,
-                                dateTime = newDateTime
+                        if (selected != null) {
+                            viewModel.saveTransaction(
+                                transactionId = tx.id,
+                                amount = amountText,
+                                categoryId = selected!!.categoryId,
+                                note = note,
+                                date = date,
+                                originalDateTime = tx.dateTime,
+                                type = "Expense"
                             )
-                        )
+                        }
                     },
+                    enabled = uiState.saveStatus != SaveStatus.LOADING && selected != null,
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
@@ -118,10 +140,17 @@ private fun EditExpenseContent(
                         containerColor = scheme.primary,
                         contentColor = scheme.onPrimary
                     )
-                ) { Text("Lưu", fontSize = 16.sp, fontWeight = FontWeight.SemiBold) }
+                ) {
+                    if (uiState.saveStatus == SaveStatus.LOADING) {
+                        CircularProgressIndicator(Modifier.size(24.dp), color = scheme.onPrimary, strokeWidth = 2.dp)
+                    } else {
+                        Text("Lưu", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                    }
+                }
 
                 OutlinedButton(
-                    onClick = { onDelete(tx) },
+                    onClick = { viewModel.deleteTransaction(tx.id) },
+                    enabled = uiState.deleteStatus != SaveStatus.LOADING,
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
@@ -129,12 +158,16 @@ private fun EditExpenseContent(
                     border = BorderStroke(1.dp, scheme.error),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = scheme.error)
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_trash),
-                        contentDescription = "Xoá",
-                        modifier = Modifier.size(18.dp),
-                        tint = scheme.error
-                    )
+                    if (uiState.deleteStatus == SaveStatus.LOADING) {
+                        CircularProgressIndicator(Modifier.size(18.dp), color = scheme.error, strokeWidth = 2.dp)
+                    } else {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_trash),
+                            contentDescription = "Xoá",
+                            modifier = Modifier.size(18.dp),
+                            tint = scheme.error
+                        )
+                    }
                     Spacer(Modifier.width(6.dp))
                     Text("Xoá", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 }
@@ -181,8 +214,8 @@ private fun EditExpenseContent(
             )
             Spacer(Modifier.height(10.dp))
 
-            CategoryGridExpense(
-                options = expenseOptions,
+            CategoryGrid(
+                options = expenseCategories,
                 selected = selected,
                 onSelect = { selected = it }
             )
@@ -255,10 +288,10 @@ private fun EditExpenseContent(
 }
 
 @Composable
-private fun CategoryGridExpense(
-    options: List<ExpCategoryOption>,
-    selected: ExpCategoryOption,
-    onSelect: (ExpCategoryOption) -> Unit
+private fun CategoryGrid(
+    options: List<CategoryDto>,
+    selected: CategoryDto?,
+    onSelect: (CategoryDto) -> Unit
 ) {
     val scheme = MaterialTheme.colorScheme
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -284,10 +317,10 @@ private fun CategoryGridExpense(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(opt.emoji, fontSize = 18.sp)
+                            Text(opt.icon, fontSize = 18.sp)
                             Spacer(Modifier.height(6.dp))
                             Text(
-                                opt.label,
+                                opt.name,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = if (isSel) scheme.onPrimaryContainer else scheme.onSurface

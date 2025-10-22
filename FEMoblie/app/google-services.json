@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "865793974357",
+    "project_id": "femoblie",
+    "storage_bucket": "femoblie.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865793974357:android:958dd5d6aac24bac04b4dc",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKGxNSOK34k8cVgjXX1ZSn4CzSQSWKRIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

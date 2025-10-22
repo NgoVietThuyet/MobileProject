@@ -2,9 +2,9 @@
 
 package com.example.test.ui.screens
 
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,12 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Phone
-import androidx.compose.material.icons.outlined.Place
-import androidx.compose.material.icons.outlined.Work
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -36,47 +32,57 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
 import com.example.test.ui.components.AppHeader
 import com.example.test.ui.theme.AppGradient
+import com.example.test.vm.ProfileViewModel
+import com.example.test.vm.SaveStatus
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Date
+import java.util.Locale
 
-data class PersonalInfo(
-    val fullName: String,
-    val email: String,
-    val phone: String,
-    val address: String,
-    val birthdayMillis: Long?,
-    val jobTitle: String
-)
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PersonalInfoScreen(
     onBack: () -> Unit = {},
-    onSave: (PersonalInfo) -> Unit = {},
-    initial: PersonalInfo = PersonalInfo(
-        fullName = "Nguyễn Văn A",
-        email = "nguyenvana@email.com",
-        phone = "0987654321",
-        address = "144, Xuân Thuỷ",
-        birthdayMillis = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            .parse("29/03/2002")?.time,
-        jobTitle = "Kỹ sư phần mềm"
-    ),
-    totalTx: Int = 127,
-    activeDays: Int = 45
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val scheme = MaterialTheme.colorScheme
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var fullName by rememberSaveable { mutableStateOf(initial.fullName) }
-    var email by rememberSaveable { mutableStateOf(initial.email) }
-    var phone by rememberSaveable { mutableStateOf(initial.phone) }
-    var address by rememberSaveable { mutableStateOf(initial.address) }
-    var birthdayMillis by rememberSaveable { mutableStateOf(initial.birthdayMillis) }
-    var jobTitle by rememberSaveable { mutableStateOf(initial.jobTitle) }
+    var fullName by remember(uiState.currentName) { mutableStateOf(uiState.currentName) }
+    var phone by remember(uiState.currentPhone) { mutableStateOf(uiState.currentPhone) }
+    val email = uiState.currentEmail
+
+    var address by rememberSaveable { mutableStateOf("") }
+    var birthdayMillis by rememberSaveable { mutableStateOf<Long?>(null) }
+    var jobTitle by rememberSaveable { mutableStateOf("Kỹ sư phần mềm") }
 
     var showDatePicker by remember { mutableStateOf(false) }
     val dateState = rememberDatePickerState(initialSelectedDateMillis = birthdayMillis)
+
+    val canSave = uiState.saveStatus != SaveStatus.LOADING
+
+    LaunchedEffect(uiState.saveStatus) {
+        when (uiState.saveStatus) {
+            SaveStatus.SUCCESS -> {
+                Toast.makeText(context, "Cập nhật thành công!", Toast.LENGTH_SHORT).show()
+                viewModel.resetStatus()
+                onBack()
+            }
+            SaveStatus.ERROR -> {
+                Toast.makeText(context, "Lỗi: ${uiState.errorMessage}", Toast.LENGTH_LONG).show()
+                viewModel.resetStatus()
+            }
+            else -> {}
+        }
+    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -89,11 +95,7 @@ fun PersonalInfoScreen(
                 actions = {
                     SaveButton(
                         onClick = {
-                            onSave(
-                                PersonalInfo(
-                                    fullName, email, phone, address, birthdayMillis, jobTitle
-                                )
-                            )
+                            viewModel.updateUser(fullName, phone)
                         }
                     )
                 }
@@ -116,8 +118,8 @@ fun PersonalInfoScreen(
                     initials = initialsFromName(fullName),
                     name = fullName,
                     job = jobTitle,
-                    totalTx = totalTx,
-                    activeDays = activeDays
+                    totalTx = uiState.transactionCount,
+                    activeDays = uiState.activeDays.toInt()
                 )
                 Spacer(Modifier.height(24.dp))
             }
@@ -146,7 +148,8 @@ fun PersonalInfoScreen(
                             icon = Icons.Outlined.Email,
                             placeholder = "Email",
                             value = email,
-                            onValueChange = { email = it },
+                            onValueChange = { /* Email không được thay đổi */ },
+                            readOnly = true,
                             keyboard = KeyboardOptions(keyboardType = KeyboardType.Email)
                         )
                         HorizontalDivider(color = scheme.outlineVariant)
@@ -160,14 +163,14 @@ fun PersonalInfoScreen(
                         HorizontalDivider(color = scheme.outlineVariant)
                         InfoFieldRow(
                             icon = Icons.Outlined.Place,
-                            placeholder = "Địa chỉ",
+                            placeholder = "Địa chỉ (chưa hỗ trợ)",
                             value = address,
                             onValueChange = { address = it }
                         )
                         HorizontalDivider(color = scheme.outlineVariant)
                         InfoFieldRow(
                             icon = Icons.Outlined.CalendarMonth,
-                            placeholder = "Ngày sinh",
+                            placeholder = "Ngày sinh (chưa hỗ trợ)",
                             value = birthdayMillis.formatDate(),
                             onValueChange = {},
                             readOnly = true,
@@ -176,7 +179,7 @@ fun PersonalInfoScreen(
                         HorizontalDivider(color = scheme.outlineVariant)
                         InfoFieldRow(
                             icon = Icons.Outlined.Work,
-                            placeholder = "Nghề nghiệp",
+                            placeholder = "Nghề nghiệp (chưa hỗ trợ)",
                             value = jobTitle,
                             onValueChange = { jobTitle = it }
                         )
@@ -234,8 +237,6 @@ private fun SaveButton(
     }
 }
 
-// helpers
-
 @Composable
 private fun ProfileCard(
     initials: String,
@@ -259,7 +260,7 @@ private fun ProfileCard(
                     .background(brush = AppGradient.BluePurple),
                 contentAlignment = Alignment.Center
             ) {
-                Text("".plus(initials), color = scheme.onPrimary, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Text(initials, color = scheme.onPrimary, fontSize = 22.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(12.dp))
             Text(name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = scheme.onSurface)
@@ -282,6 +283,7 @@ private fun StatItem(value: String, label: String) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InfoFieldRow(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
@@ -296,7 +298,8 @@ private fun InfoFieldRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 14.dp, vertical = 8.dp),
+            .padding(horizontal = 14.dp, vertical = 8.dp)
+            .let { if (onClick != null && !readOnly) it.clickable { onClick() } else it },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -312,22 +315,21 @@ private fun InfoFieldRow(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier
-                .weight(1f)
-                .let { m -> if (onClick != null) m.clickable { onClick() } else m },
+            modifier = Modifier.weight(1f),
             placeholder = { Text(placeholder, color = scheme.onSurfaceVariant) },
             singleLine = true,
             readOnly = readOnly,
             keyboardOptions = keyboard,
-            shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = scheme.surface,
-                unfocusedContainerColor = scheme.surface,
-                disabledContainerColor = scheme.surface,
-                focusedBorderColor = scheme.primary,
-                unfocusedBorderColor = scheme.outlineVariant,
-                disabledBorderColor = scheme.outlineVariant,
-                cursorColor = scheme.primary
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                cursorColor = scheme.primary,
+                unfocusedTextColor = scheme.onSurface,
+                focusedTextColor = scheme.onSurface,
             )
         )
     }
@@ -336,7 +338,7 @@ private fun InfoFieldRow(
 private fun initialsFromName(name: String): String {
     val parts = name.trim().split(" ").filter { it.isNotBlank() }
     return when {
-        parts.isEmpty() -> "NA"
+        parts.isEmpty() -> ""
         parts.size == 1 -> parts.first().take(2).uppercase(Locale.getDefault())
         else -> (parts.first().take(1) + parts.last().take(1)).uppercase(Locale.getDefault())
     }
@@ -346,3 +348,4 @@ private fun Long?.formatDate(): String {
     if (this == null) return ""
     return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date(this))
 }
+

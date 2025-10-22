@@ -1,14 +1,15 @@
 package com.example.test.data
 
-import UploadResult
-import UsersApi
-import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.test.ui.api.ImageApi
+import com.example.test.ui.scan.UploadResult
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -18,7 +19,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okio.BufferedSink
 import okio.source
-import javax.inject.Inject
 
 val Context.settingsDataStore by preferencesDataStore("settings")
 private object Keys { val DARK = booleanPreferencesKey("dark_mode") }
@@ -29,23 +29,28 @@ class SettingsRepository(private val context: Context) {
 }
 
 class ImageRepo @Inject constructor(
-    private val usersApi: UsersApi,
-    private val app: Application
+    private val api: ImageApi,
+    @ApplicationContext private val context: Context
 ) {
     suspend fun upload(uri: Uri): UploadResult = withContext(Dispatchers.IO) {
         try {
-            val part = buildStreamingImagePartFromUri(app, uri, fieldName = "file", fileName = "receipt.jpg")
-            val resp = usersApi.uploadImage(part, embedBase64 = false)
-            if (resp.isSuccessful) {
-                val body = resp.body()
-                UploadResult(body?.let { true } == true, null, body?.let { it.javaClass.getMethod("getMessage").invoke(it) as? String } ?: "OK")
+            val part = buildStreamingImagePartFromUri(
+                context = context,
+                uri = uri,
+                fieldName = "file"
+            )
+
+            val response = api.uploadImage(part)
+
+            if (response.isSuccessful) {
+                response.body() ?: UploadResult(success = false, url = null, message = "Body rỗng")
             } else {
-                val err = runCatching { resp.errorBody()?.string() }.getOrNull()
-                UploadResult(false, null, err?.ifBlank { "HTTP ${resp.code()}" } ?: "HTTP ${resp.code()}")
+                val msg = response.errorBody()?.string() ?: "HTTP ${response.code()}"
+                UploadResult(success = false, url = null, message = msg)
             }
         } catch (e: Exception) {
-            UploadResult(false, null, e.message ?: "Upload thất bại")
-        }
+            UploadResult(success = false, url = null, message = e.message ?: "Lỗi không xác định")
+        } as UploadResult
     }
 }
 

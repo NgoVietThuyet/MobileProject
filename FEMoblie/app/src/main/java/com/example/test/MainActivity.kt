@@ -12,7 +12,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.test.ui.navigation.AppNavGraph
 import com.example.test.ui.theme.AppTheme
 import com.example.test.vm.SettingsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {

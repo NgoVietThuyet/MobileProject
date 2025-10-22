@@ -25,23 +25,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
-import com.example.test.ui.mock.MockData
 import com.example.test.ui.mock.NotificationItem
+import com.example.test.vm.NotificationViewModel
 
 @Composable
 fun NotificationScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit = {},
-    bottomBar: @Composable () -> Unit = {}
+    bottomBar: @Composable () -> Unit = {},
+    viewModel: NotificationViewModel = hiltViewModel()
 ) {
-    var all by rememberSaveable { mutableStateOf(MockData.items) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val all = uiState.notifications
     var tab by rememberSaveable { mutableStateOf(NotifTab.ALL) }
 
     val filtered = remember(all, tab) { if (tab == NotifTab.UNREAD) all.filter { it.unread } else all }
     val totalCount = all.size
     val unreadCount = all.count { it.unread }
     val scheme = MaterialTheme.colorScheme
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchNotifications()
+    }
 
     Scaffold(
         modifier = modifier,
@@ -66,24 +74,38 @@ fun NotificationScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            if (filtered.isEmpty()) {
-                EmptyUnread()
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp),
-                    contentPadding = PaddingValues(bottom = 16.dp)
-                ) {
-                    items(filtered, key = { it.id }) { item ->
-                        NotificationCard(
-                            data = item,
-                            onClick = {
-                                all = all.map { if (it.id == item.id) it.copy(unread = false) else it }
-                            },
-                            onDelete = { all = all.filterNot { it.id == item.id } }
-                        )
-                        Spacer(Modifier.height(12.dp))
+            when {
+                uiState.isLoading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+                uiState.error != null -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Lỗi: ${uiState.error}", color = MaterialTheme.colorScheme.error)
+                    }
+                }
+                filtered.isEmpty() && tab == NotifTab.UNREAD -> {
+                    EmptyState(message = "Bạn không có thông báo chưa đọc nào.")
+                }
+                filtered.isEmpty() && tab == NotifTab.ALL -> {
+                    EmptyState(message = "Bạn chưa có thông báo nào.")
+                }
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        contentPadding = PaddingValues(bottom = 16.dp)
+                    ) {
+                        items(filtered, key = { it.id }) { item ->
+                            NotificationCard(
+                                data = item,
+                                onClick = { viewModel.markAsRead(item.id) },
+                                onDelete = { viewModel.deleteNotification(item.id) }
+                            )
+                            Spacer(Modifier.height(12.dp))
+                        }
                     }
                 }
             }
@@ -154,7 +176,6 @@ private fun SegmentedTabs(
     selected: NotifTab,
     onSelect: (NotifTab) -> Unit
 ) {
-    val scheme = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -197,7 +218,7 @@ private fun FilterChipPill(
             contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
         ) {
             Text(text, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            if (trailingCount != null) {
+            if (trailingCount != null && trailingCount > 0) {
                 Spacer(Modifier.width(6.dp))
                 CountBadge(trailingCount, bg = scheme.onPrimary, fg = scheme.primary)
             }
@@ -211,7 +232,7 @@ private fun FilterChipPill(
             contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
         ) {
             Text(text, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            if (trailingCount != null) {
+            if (trailingCount != null && trailingCount > 0) {
                 Spacer(Modifier.width(6.dp))
                 CountBadge(trailingCount, bg = scheme.surfaceVariant, fg = scheme.onSurface)
             }
@@ -293,7 +314,7 @@ private fun NotificationCard(
 }
 
 @Composable
-private fun EmptyUnread() {
+private fun EmptyState(message: String) {
     val scheme = MaterialTheme.colorScheme
     Column(
         modifier = Modifier
@@ -317,7 +338,7 @@ private fun EmptyUnread() {
             )
         }
         Spacer(Modifier.height(12.dp))
-        Text("Không có thông báo chưa đọc", color = scheme.onSurfaceVariant, fontSize = 14.sp)
+        Text(message, color = scheme.onSurfaceVariant, fontSize = 14.sp)
     }
 }
 

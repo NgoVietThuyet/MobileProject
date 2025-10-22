@@ -1,5 +1,9 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.test.ui.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,14 +37,19 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
 import com.example.test.ui.components.AppHeader
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
 import com.example.test.ui.theme.AppGradient
+import com.example.test.vm.ProfileViewModel
+import java.util.*
 
 private val BrandGreen = Color(0xFF16A34A)
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
@@ -55,13 +64,24 @@ fun SettingScreen(
     onCurrency: () -> Unit = {},
     onLogout: () -> Unit = {},
     onSetting: () -> Unit = {},
-    onCamera: () -> Unit = {}
+    onCamera: () -> Unit = {},
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     var notif by rememberSaveable { mutableStateOf(false) }
     var sounds by rememberSaveable { mutableStateOf(true) }
     var isVi by rememberSaveable { mutableStateOf(true) }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    fun initialsFromName(name: String): String {
+        val parts = name.trim().split(" ").filter { it.isNotBlank() }
+        return when {
+            parts.isEmpty() -> ""
+            parts.size == 1 -> parts.first().take(2).uppercase(Locale.getDefault())
+            else -> (parts.first().take(1) + parts.last().take(1)).uppercase(Locale.getDefault())
+        }
+    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -114,19 +134,20 @@ fun SettingScreen(
                                 .background(brush = AppGradient.BluePurple),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("NA", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            val initials = initialsFromName(uiState.currentName)
+                            Text(initials.ifBlank { "..." }, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                         }
 
                         Spacer(Modifier.width(12.dp))
 
                         Column(Modifier.weight(1f)) {
                             Text(
-                                "Nguyễn Văn A",
+                                uiState.currentName.ifBlank { "User" },
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.SemiBold, fontSize = 18.sp
                             )
                             Text(
-                                "nguyenvana@email.com",
+                                uiState.currentEmail.ifBlank { "..." },
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 maxLines = 1, overflow = TextOverflow.Ellipsis
                             )
@@ -172,7 +193,6 @@ fun SettingScreen(
                 }
                 Spacer(Modifier.height(24.dp))
             }
-
             item {
                 Text(
                     "Ứng dụng",
@@ -277,8 +297,6 @@ fun SettingScreen(
         }
     }
 }
-
-// helpers //
 
 @Composable
 private fun AppLogoCircle(size: Dp = 72.dp) {
@@ -415,3 +433,4 @@ private fun GradientSwitch(
         )
     }
 }
+

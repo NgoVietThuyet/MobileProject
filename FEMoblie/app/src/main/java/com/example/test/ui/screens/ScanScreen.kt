@@ -2,7 +2,6 @@
 
 package com.example.test.ui.screens
 
-import UsersApi
 import android.Manifest
 import android.content.ContentResolver
 import android.content.Context
@@ -41,7 +40,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.test.R
-import com.example.test.ui.api.ImageUploadResp
+import com.example.test.ui.api.ImageApi
+import com.example.test.ui.models.ImageUploadResp
 import com.example.test.ui.theme.AppGradient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,7 +55,7 @@ import java.io.IOException
 
 @Composable
 fun ReceiptScanScreen(
-    usersApi: UsersApi,
+    imageApi: ImageApi,
     userId: String? = null,
     categoryId: String? = null,
     onBack: () -> Unit = {},
@@ -79,7 +79,7 @@ fun ReceiptScanScreen(
         if (uri != null) {
             scope.launch {
                 uploading = true
-                val r = safeUpload(ctx, usersApi, uri, userId, categoryId)
+                val r = safeUpload(ctx, imageApi, uri, userId, categoryId)
                 uploading = false
                 r.onSuccess(onUploaded)
                     .onFailure { onUploadError(it.message ?: "Upload thất bại") }
@@ -196,7 +196,7 @@ fun ReceiptScanScreen(
                                 shooting = false
                                 scope.launch {
                                     uploading = true
-                                    val r = safeUpload(ctx, usersApi, uri, userId, categoryId)
+                                    val r = safeUpload(ctx, imageApi, uri, userId, categoryId)
                                     uploading = false
                                     r.onSuccess(onUploaded)
                                         .onFailure { onUploadError(it.message ?: "Upload thất bại") }
@@ -352,13 +352,14 @@ private fun takePhoto(
 }
 private suspend fun safeUpload(
     ctx: Context,
-    api: UsersApi,
+    api: ImageApi,
     uri: Uri,
     @Suppress("UNUSED_PARAMETER") userId: String?,
     @Suppress("UNUSED_PARAMETER") categoryId: String?
 ): Result<ImageUploadResp> = withContext(Dispatchers.IO) {
     runCatching {
         val part = uriToStreamingPart(ctx, uri, "file")
+        // Giờ đây lời gọi này là hoàn toàn chính xác
         val resp = api.uploadImage(part, embedBase64 = false)
         if (!resp.isSuccessful) error(resp.errorBody()?.string().orEmpty().ifBlank { "HTTP ${resp.code()}" })
         resp.body() ?: error("Response rỗng")

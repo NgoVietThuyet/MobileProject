@@ -2,6 +2,8 @@
 
 package com.example.test.ui.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -33,14 +35,21 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
 import com.example.test.ui.mock.BudgetCategoryMock
 import com.example.test.ui.mock.MockData as HomeMock
-import com.example.test.ui.mock.TransactionMock
+import com.example.test.ui.mock.TxType
+import com.example.test.ui.mock.TxUi
 import com.example.test.ui.theme.AppGradient
+import com.example.test.vm.HomeViewModel
+import java.text.NumberFormat
+import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -52,10 +61,17 @@ fun HomeScreen(
     onReport: () -> Unit = {},
     onSaving: () -> Unit = {},
     onSetting: () -> Unit = {},
-    onCamera: () -> Unit = {}
+    onCamera: () -> Unit = {},
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var chatOpen by rememberSaveable { mutableStateOf(false) }
+
+    val homeState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchInitialData()
+    }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -96,6 +112,8 @@ fun HomeScreen(
         ) {
             item {
                 HeaderSection(
+                    userName = homeState.userName,
+                    balance = homeState.balance,
                     onOpenNotifications = onOpenNotifications,
                     onAddIncome = onAddIncome,
                     onAddExpense = onAddExpense
@@ -107,17 +125,24 @@ fun HomeScreen(
             item { Spacer(Modifier.height(24.dp)) }
             item { BudgetCategoriesCard(onSeeAll = onOpenBudgetAll) }
             item { Spacer(Modifier.height(24.dp)) }
-            item { RecentTransactionsCard(onSeeAll = onOpenAllTransactions) }
+            item {
+                RecentTransactionsCard(
+                    transactions = homeState.recentTransactions,
+                    isLoading = homeState.isLoading,
+                    onSeeAll = onOpenAllTransactions
+                )
+            }
         }
 
         ChatOverlay(open = chatOpen, onDismiss = { chatOpen = false })
     }
 }
 
-/* ===================== Header ===================== */
 
 @Composable
 private fun HeaderSection(
+    userName: String?,
+    balance: String?,
     onOpenNotifications: () -> Unit = {},
     onAddIncome: () -> Unit = {},
     onAddExpense: () -> Unit = {}
@@ -138,7 +163,7 @@ private fun HeaderSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Xin chào\n${HomeMock.greetingName}",
+                    text = "Xin chào\n${userName ?: "..."}",
                     color = scheme.onPrimary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
@@ -182,7 +207,7 @@ private fun HeaderSection(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        HomeMock.balance,
+                        balance ?: "...",
                         color = Color.White,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold
@@ -200,8 +225,6 @@ private fun HeaderSection(
         }
     }
 }
-
-/* ===================== Quick Actions ===================== */
 
 @Composable
 private fun QuickActionButtons(
@@ -263,8 +286,6 @@ private fun QuickActionButtons(
     }
 }
 
-/* ===================== Monthly Summary ===================== */
-
 @Composable
 private fun MonthlySummaryCard() {
     val scheme = MaterialTheme.colorScheme
@@ -308,8 +329,6 @@ private fun SummaryCol(label: String, value: String, color: Color) {
         Text(value, color = color, fontSize = 20.sp, fontWeight = FontWeight.Bold)
     }
 }
-
-/* ===================== Budget Card ===================== */
 
 @Composable
 private fun BudgetCategoriesCard(onSeeAll: () -> Unit = {}) {
@@ -397,15 +416,13 @@ private fun BudgetCategoryItem(data: BudgetCategoryMock) {
     }
 }
 
-/* ===================== Transactions ===================== */
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-private fun RecentTransactionsCard(onSeeAll: () -> Unit = {}) {
-    val items = remember(HomeMock.recentTransactions) {
-        HomeMock.recentTransactions
-            .sortedByDescending { it.createdAt }
-            .take(4)
-    }
+private fun RecentTransactionsCard(
+    transactions: List<TxUi>,
+    isLoading: Boolean,
+    onSeeAll: () -> Unit = {}
+) {
     val scheme = MaterialTheme.colorScheme
 
     Card(
@@ -428,15 +445,24 @@ private fun RecentTransactionsCard(onSeeAll: () -> Unit = {}) {
                 }
             }
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            items.forEach { tx -> TransactionItem(tx) }
+            if (isLoading) {
+                Box(Modifier.fillMaxWidth().padding(vertical = 24.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            } else if (transactions.isEmpty()) {
+                Text("Không có giao dịch gần đây.", color = scheme.onSurfaceVariant)
+            } else {
+                transactions.forEach { tx -> TransactionItem(tx) }
+            }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-private fun TransactionItem(tx: TransactionMock) {
+private fun TransactionItem(tx: TxUi) {
     val scheme = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
@@ -450,25 +476,34 @@ private fun TransactionItem(tx: TransactionMock) {
                 .clip(RoundedCornerShape(20.dp))
                 .background(scheme.surfaceVariant),
             contentAlignment = Alignment.Center
-        ) { Text(tx.icon, fontSize = 18.sp) }
+        ) { Text(tx.emoji ?: "💰", fontSize = 18.sp) }
 
         Spacer(modifier = Modifier.width(16.dp))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(tx.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
-            Text(tx.subtitle, fontSize = 12.sp, color = scheme.onSurfaceVariant)
+            Text(
+                text = tx.category,
+                fontSize = 12.sp,
+                color = scheme.onSurfaceVariant
+            )
         }
 
+        val isPositive = tx.type == TxType.INCOME
+        val formattedAmount = (if (isPositive) "+" else "-") + vn(tx.amount.toLongOrNull() ?: 0L)
+
         Text(
-            text = tx.amount,
+            text = formattedAmount,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = if (tx.isPositive) scheme.tertiary else scheme.error
+            color = if (isPositive) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
         )
     }
 }
 
-/* ===================== Chat Overlay ===================== */
+private fun vn(value: Long): String =
+    NumberFormat.getCurrencyInstance(Locale("vi", "VN")).format(value).replace(" ", "")
+
 
 @Composable
 private fun ChatAssistButton(
@@ -611,8 +646,10 @@ private fun MeBubble(text: String) {
 private fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
     composed { pointerInput(Unit) { detectTapGestures(onTap = { onClick() }) } }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(widthDp = 412, heightDp = 900, showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
     HomeScreen()
 }
+

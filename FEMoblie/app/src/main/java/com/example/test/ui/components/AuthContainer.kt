@@ -39,7 +39,6 @@ fun AuthContainer(
             .statusBarsPadding()
     ) {
 
-        // Top bar luôn chiếm chỗ
         Box(
             modifier = Modifier
                 .fillMaxWidth()

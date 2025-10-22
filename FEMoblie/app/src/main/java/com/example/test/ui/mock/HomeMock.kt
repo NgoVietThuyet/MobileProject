@@ -56,7 +56,7 @@ data class TxUi(
     val title: String,
     val category: String,
     val dateTime: LocalDateTime,
-    val amount: Long,
+    val amount: String,
     val type: TxType,
     val iconRes: Int? = null,
     val emoji: String? = null

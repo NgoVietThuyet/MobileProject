@@ -44,7 +44,6 @@ fun AddBudgetScreen(
     var amountRaw by rememberSaveable { mutableStateOf("") }
     var selectedIcon by rememberSaveable { mutableStateOf<String?>(null) }
 
-    // Lưu ARGB primitive để saveable an toàn
     var selectedColorArgb by rememberSaveable { mutableStateOf<Int?>(null) }
     val selectedColor: Color? = selectedColorArgb?.let { Color(it) }
 

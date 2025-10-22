@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
@@ -37,10 +38,10 @@ import java.util.*
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AllTransactionsScreen(
-    transactions: List<TxUi>,
-    onBack: () -> Unit = {},
+    transactions: List<TxUi> = emptyList(),
     onEditIncome: (TxUi) -> Unit = {},
-    onEditExpense: (TxUi) -> Unit = {}
+    onEditExpense: (TxUi) -> Unit = {},
+    onBack: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val appBarHeight = 36.dp
@@ -62,8 +63,23 @@ fun AllTransactionsScreen(
             .toList()
     }
     val groups = remember(filtered) { filtered.groupBy { it.dateTime.toLocalDate() } }
-    val sumIncome = remember(filtered) { filtered.filter { it.type == TxType.INCOME }.sumOf { it.amount } }
-    val sumExpense = remember(filtered) { filtered.filter { it.type == TxType.EXPENSE }.sumOf { it.amount } }
+
+    val sumIncome = remember(filtered) {
+        filtered
+            .filter { it.type == TxType.INCOME }
+            .sumOf { it.amount.toLongOrNull() ?: 0L }
+    }
+    val sumExpense = remember(filtered) {
+        filtered
+            .filter { it.type == TxType.EXPENSE }
+            .sumOf { it.amount.toLongOrNull() ?: 0L }
+    }
+
+    val hasUnprocessedData = remember(transactions) {
+        transactions.any { tx ->
+            tx.category.contains("-") && tx.category.length > 20
+        }
+    }
 
     val cs = MaterialTheme.colorScheme
     val ex = MaterialTheme.extendedColors
@@ -79,16 +95,9 @@ fun AllTransactionsScreen(
             )
         },
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(cs.background)
-                .padding(innerPadding),
-            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 20.dp)
-        ) {
-            item { Spacer(Modifier.height(appBarHeight + 12.dp)) }
-
-            item {
+        Column(Modifier.fillMaxSize().background(cs.background).padding(innerPadding)) {
+            Column(Modifier.padding(horizontal = 20.dp)) {
+                Spacer(Modifier.height(12.dp))
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },
@@ -98,9 +107,6 @@ fun AllTransactionsScreen(
                     singleLine = true
                 )
                 Spacer(Modifier.height(12.dp))
-            }
-
-            item {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     SegmentTab("Tất cả", selected = tab == 0) { tab = 0 }
                     SegmentTab("Thu nhập", selected = tab == 1) { tab = 1 }
@@ -109,20 +115,50 @@ fun AllTransactionsScreen(
                 Spacer(Modifier.height(12.dp))
             }
 
-            item {
-                SummaryCard(sumIncome, sumExpense)
-                Spacer(Modifier.height(8.dp))
-            }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 20.dp)
+            ) {
+                if (hasUnprocessedData) {
+                    item {
+                        Text(
+                            text = "LỖI DEBUG: Dữ liệu chưa được xử lý. ViewModel chưa kết hợp thông tin Category.",
+                            color = Color.Red,
+                            modifier = Modifier.padding(vertical = 16.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
 
-            groups.forEach { (date, list) ->
-                item { DateHeaderRow(date) }
                 item {
-                    DayGroupCard(
-                        txs = list,
-                        onEditIncome = onEditIncome,
-                        onEditExpense = onEditExpense
-                    )
+                    SummaryCard(sumIncome, sumExpense)
                     Spacer(Modifier.height(8.dp))
+                }
+
+                if (transactions.isEmpty() && !hasUnprocessedData) {
+                    item {
+                        Box(Modifier.fillParentMaxSize().padding(top = 80.dp), contentAlignment = Alignment.Center) {
+                            Text("Không có giao dịch nào.", color = cs.onSurfaceVariant)
+                        }
+                    }
+                } else if (groups.isEmpty() && query.isNotBlank()) {
+                    item {
+                        Box(Modifier.fillParentMaxSize().padding(top = 80.dp), contentAlignment = Alignment.Center) {
+                            Text("Không tìm thấy giao dịch cho '$query'.", color = cs.onSurfaceVariant)
+                        }
+                    }
+                } else {
+                    groups.forEach { (date, list) ->
+                        item { DateHeaderRow(date) }
+                        item {
+                            DayGroupCard(
+                                txs = list,
+                                onEditIncome = onEditIncome,
+                                onEditExpense = onEditExpense
+                            )
+                            Spacer(Modifier.height(8.dp))
+                        }
+                    }
                 }
             }
         }
@@ -177,24 +213,22 @@ private fun TxRowLine(
             contentColor = cs.onSurfaceVariant
         ) {
             Box(contentAlignment = Alignment.Center) {
-                when {
-                    tx.emoji != null -> Text(tx.emoji, fontSize = 18.sp)
-                    tx.iconRes != null -> Icon(painter = painterResource(tx.iconRes), contentDescription = null)
-                }
+                Text(tx.emoji ?: "💰", fontSize = 18.sp)
             }
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
             Text(tx.title, fontWeight = FontWeight.Medium, fontSize = 16.sp, color = cs.onSurface)
             Text(
-                "${tx.category} • ${tx.dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))}",
+                text = tx.category,
                 fontSize = 12.sp,
                 color = cs.onSurfaceVariant
             )
         }
         val amtColor = if (tx.type == TxType.INCOME) ex.success else cs.error
+
         Text(
-            text = (if (tx.type == TxType.INCOME) "+" else "-") + vn(tx.amount),
+            text = (if (tx.type == TxType.INCOME) "+" else "-") + vn(tx.amount.toLongOrNull() ?: 0L),
             color = amtColor,
             fontWeight = FontWeight.Bold
         )
@@ -310,3 +344,4 @@ private fun DateHeaderRow(date: LocalDate) {
 
 private fun vn(value: Long): String =
     NumberFormat.getCurrencyInstance(Locale("vi", "VN")).format(value).replace(" ", "")
+
