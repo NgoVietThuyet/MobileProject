@@ -14,17 +14,32 @@ namespace BEMobile.Services
 {
     public class GeminiOptions
     {
-        public string ApiKey { get; set; } = "AIzaSyDjEN2Bjvl4FJfaltGtRemokuB5jbcVixg";// "AIzaSyC2R9aILsvNeEripP7Wcy6E6Pt5UQYmwTE";
+        public List<string> ApiKeys { get; set; } = new List<string>
+        {
+            "AIzaSyDjEN2Bjvl4FJfaltGtRemokuB5jbcVixg",
+            "AIzaSyC2R9aILsvNeEripP7Wcy6E6Pt5UQYmwTE",
+            "AIzaSyD9Sa20gaCmORMEr3Pum1GJ-JpV_McMn2U",
+            "AIzaSyD_pTQ0sScWEp0lilhoJR3xqDDHCuK_AGU"
+        };
+
         public string Model { get; set; } = "gemini-2.0-flash";
         public string BaseUrl { get; set; } = "https://generativelanguage.googleapis.com/v1beta/models";
         public bool UseBearerToken { get; set; } = false; // Sửa thành false để dùng API Key
-        public string ServiceAccountFile { get; set; } // Thêm property này
+        public string ServiceAccountFile { get; set; }
+
+        private static readonly Random _random = new Random();
+        public string GetRandomApiKey()
+        {
+            int index = _random.Next(ApiKeys.Count);
+            return ApiKeys[index];
+        }
     }
 
     public interface IImageService
     {
         Task<IList<TransactionDto>> ProcessReceiptToTransactionsAsync(IFormFile file, CancellationToken cancellationToken, string? userId = null, bool embedBase64 = false);
     }
+
 
     public class ImageService : IImageService
     {
@@ -45,6 +60,7 @@ namespace BEMobile.Services
             [JsonProperty("note")]
             public string? Note { get; set; }
         }
+
 
         public ImageService(IHttpClientFactory httpFactory, IOptions<GeminiOptions> opts, ILogger<ImageService>? logger = null)
         {
@@ -182,9 +198,11 @@ Chỉ trả về mảng JSON, không thêm bất kỳ văn bản nào khác. Ph�
                 Content = new StringContent(json, Encoding.UTF8, "application/json")
             };
 
-            if (!_opts.UseBearerToken && !string.IsNullOrEmpty(_opts.ApiKey))
+            string api = _opts.GetRandomApiKey();
+
+            if (!_opts.UseBearerToken && !string.IsNullOrEmpty(api))
             {
-                url = $"{url}?key={_opts.ApiKey}";
+                url = $"{url}?key={api}";
                 request.RequestUri = new Uri(url);
             }
             else if (_opts.UseBearerToken) // Nếu API xu

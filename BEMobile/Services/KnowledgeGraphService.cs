@@ -250,7 +250,10 @@ Cypher Query:
             var databaseResultsJson = JsonConvert.SerializeObject(records.Select(r => r.Values));
 
             var promptForAnswer = $@"
-            Bạn là một trợ lý tài chính thân thiện. Dựa vào câu hỏi gốc của người dùng và dữ liệu JSON được cung cấp, hãy tạo ra một câu trả lời tự nhiên bằng tiếng Việt. Nội dung trả lời chi tiết nhất có thể. Nếu dữ liệu quá nhiều, hãy tóm tắt
+            Bạn là một trợ lý tài chính thân thiện và bạn đang quản lý ứng dụng, người dùng đã cập nhật dữ liệu tài chính cá nhân của họ trong một cơ sở dữ liệu và bạn được cung cấp kết quả truy vấn từ cơ sở dữ liệu đó dưới dạng JSON.
+            Dựa vào câu hỏi gốc của người dùng và dữ liệu JSON được cung cấp, hãy tạo ra một câu trả lời tự nhiên bằng tiếng Việt. Nội dung trả lời chi tiết nhất có thể. Nếu dữ liệu quá nhiều, hãy tóm tắt.
+            Câu trả lời cần chính xác nhất có thể, từ chối các yêu cầu không cung cấp như  gửi mail, tìm kiếm giúp, ...
+            Chuẩn hoá định dạng.
         
             Câu hỏi gốc: ""{userQuestion}""
         
@@ -316,13 +319,10 @@ Phân loại prompt sau: ""{text}""
         // Gọi gemini
         private async Task<string> CallGeminiWithTextAsync(string prompt)
         {
-            if (string.IsNullOrEmpty(_opts.ApiKey))
-            {
-                throw new InvalidOperationException("Gemini API Key is not configured. Please check your user secrets.");
-            }
+            string api = _opts.GetRandomApiKey();
 
             var client = _httpFactory.CreateClient("gemini");
-            var url = $"{_opts.BaseUrl}/{_opts.Model}:generateContent?key={_opts.ApiKey}";
+            var url = $"{_opts.BaseUrl}/{_opts.Model}:generateContent?key={api}";
 
             var body = new
             {
