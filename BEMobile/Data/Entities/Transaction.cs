@@ -22,10 +22,7 @@ namespace BEMobile.Data.Entities
         public string Type { get; set; }
 
         [Column("AMOUNT")]
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
         public string Amount { get; set; }
 
         [Column("NOTE")]

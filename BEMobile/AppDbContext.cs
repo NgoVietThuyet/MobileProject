@@ -5,6 +5,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using BEMobile.Common;
 using BEMobile.Data.Entities;
+
+using System.Collections.Generic;
+
 namespace BEMobile
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor) : DbContext(options)
@@ -44,7 +47,9 @@ namespace BEMobile
         public string GetUserRequest()
         {
             var tokens = _httpContextAccessor?.HttpContext?.Request?.Headers.Authorization.ToString()?.Split(" ")?.ToList();
-            string? user = null;
+
+            string? User = null;
+
             if (tokens != null)
             {
                 var token = tokens.FirstOrDefault(x => x != "Bearer");
@@ -54,15 +59,19 @@ namespace BEMobile
                     JwtSecurityToken securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
                     var claim = securityToken.Claims;
                     var result = claim.FirstOrDefault(x => x.Type == ClaimTypes.Name);
-                    user = result?.Value;
+
+                    User = result?.Value;
                 }
             }
-            return user;
+            return User;
+
         }
 
         private void TrackChanges()
         {
-            var user = GetUserRequest();
+
+            var User = GetUserRequest();
+
 
             foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
             {
@@ -70,14 +79,18 @@ namespace BEMobile
                 {
                     if (entry.State == EntityState.Added)
                     {
-                        auditable.CreateBy = user;
+
+                        auditable.CreateBy = User;
+
                         auditable.CreateDate = TimestampProvider();
                     }
                     else
                     {
                         Entry(auditable).Property(x => x.CreateBy).IsModified = false;
                         Entry(auditable).Property(x => x.CreateDate).IsModified = false;
-                        auditable.UpdateBy = user;
+
+                        auditable.UpdateBy = User;
+
                         auditable.UpdateDate = TimestampProvider();
                     }
                 }
@@ -89,7 +102,9 @@ namespace BEMobile
                 {
                     entry.State = EntityState.Unchanged;
                     deletedEntity.IsDeleted = true;
-                    deletedEntity.DeleteBy = user;
+
+                    deletedEntity.DeleteBy = User;
+
                     deletedEntity.DeleteDate = TimestampProvider();
                 }
             }
@@ -104,11 +119,17 @@ namespace BEMobile
             await result.ReadAsync();
             return result.GetInt32(0);
         }
+
         public DbSet<User>Users { get; set; }
+
+        public DbSet<Budget> Budgets { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<SavingGoal> SavingGoals { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+
     }
     
 }

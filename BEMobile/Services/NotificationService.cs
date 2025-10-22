@@ -32,16 +32,6 @@ namespace BEMobile.Services
                 .OrderByDescending(n => n.CreatedDate)
                 .Select(n => new NotificationDto
                 {
-<<<<<<< Updated upstream
-                    NotificationId = notification.NotificationId,
-                    UserId = notification.UserId,
-                    Content = notification.Content,
-                    CreatedDate = notification.CreatedDate,
-                    UpdatedDate = notification.UpdatedDate,
-                    IsRead = notification.IsRead
-                })
-                .ToListAsync();
-=======
                     NotificationId = n.NotificationId,
                     UserId = n.UserId,
                     Content = n.Content,
@@ -56,7 +46,6 @@ namespace BEMobile.Services
                 Message = "Lấy danh sách thông báo thành công",
                 Notifications = list
             };
->>>>>>> Stashed changes
         }
 
 

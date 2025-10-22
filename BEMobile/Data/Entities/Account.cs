@@ -19,6 +19,8 @@ namespace BEMobile.Data.Entities
         [Column("BALANCE")]
         public string Balance { get; set; }
 
+        [Column("UPDATED_DATE")]
+        public string? UpdatedDate { get; set; }
 
     }
 }

@@ -1,16 +1,9 @@
-<<<<<<< Updated upstream
-﻿using BEMobile.Services;
-using Microsoft.EntityFrameworkCore;
-using BEMobile.Services;
-using BEMobile;
-=======
 
 ﻿using BEMobile;
 using BEMobile.Connectors;
 using BEMobile.Services;
 using BEMobile.Services;
 using Microsoft.EntityFrameworkCore;
->>>>>>> Stashed changes
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,17 +19,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 
-<<<<<<< Updated upstream
-
-// Add Services
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<INotificationService, NotificationService>();
-
-
-
-=======
 // gemini
 builder.Services.Configure<GeminiOptions>(builder.Configuration.GetSection("Gemini"));
 builder.Services.AddHttpClient();
@@ -54,7 +36,6 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 // graph
 builder.Services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
 builder.Services.AddSingleton<INeo4jConnector, Neo4jConnector>();
->>>>>>> Stashed changes
 
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();

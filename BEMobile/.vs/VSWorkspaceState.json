@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\bin",
+    "\\bin\\Debug",
+    "\\Data",
+    "\\Data\\Entities",
+    "\\Models",
+    "\\Models\\DTOs",
+    "\\Models\\RequestResponse",
+    "\\Models\\RequestResponse\\Login",
+    "\\Models\\RequestResponse\\SignUp",
+    "\\Models\\ViewModels"
+  ],
+  "SelectedNode": "\\BEMobile.sln",
+  "PreviewInSolutionExplorer": false
+}

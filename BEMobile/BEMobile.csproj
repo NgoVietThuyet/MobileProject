@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="Google.Apis.Auth" Version="1.72.0" />
 
 		<!-- ĐỒNG BỘ TẤT CẢ EF CORE VỀ 9.0.9 -->
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
@@ -15,22 +16,18 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9" />
+		<PackageReference Include="Neo4j.Driver" Version="5.28.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
+		<PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
 
 		<!-- THÊM SWAGGER PACKAGE -->
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Tesseract" Version="5.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\RequestResponse\Account\CreateAccount\" />
-	  <Folder Include="Models\RequestResponse\Account\DetailAccount\" />
-	  <Folder Include="Models\RequestResponse\Notification\GetAllNotification\" />
-	  <Folder Include="Models\RequestResponse\Notification\DeleteNotification\" />
-	  <Folder Include="Models\RequestResponse\Notification\PushNotification\" />
-	  <Folder Include="Models\RequestResponse\Notification\ReadNotification\" />
-	  <Folder Include="Models\RequestResponse\Transaction\GetAllTransaction\" />
-	  <Folder Include="Models\RequestResponse\Transaction\CreateTransaction\" />
-	  <Folder Include="Models\RequestResponse\Transaction\DeleteTransaction\" />
-	  <Folder Include="Models\RequestResponse\Transaction\UpdateTransaction\" />
+	  <Folder Include="Models\RequestResponse\User\UpdateUser\" />
 	</ItemGroup>
 
 </Project>

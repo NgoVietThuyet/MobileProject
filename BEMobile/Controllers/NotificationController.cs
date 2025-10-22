@@ -19,7 +19,7 @@ namespace BEMobile.Controllers
         }
 
         // GET /api/notifications?userId=...
-        [HttpGet]
+        [HttpGet("GetAll")]
         [ProducesResponseType(typeof(GetAllNotificationResponse), 200)]
         public async Task<IActionResult> GetAll([FromQuery] string userId)
         {
@@ -46,11 +46,7 @@ namespace BEMobile.Controllers
         }
 
         // DELETE /api/notifications/{id}
-<<<<<<< Updated upstream
-        [HttpDelete("{id}")]
-=======
         [HttpDelete("Delete/{id}")]
->>>>>>> Stashed changes
         [ProducesResponseType(typeof(DeleteNotificationResponse), 200)]
         public async Task<IActionResult> Delete([FromRoute] string id)
         {

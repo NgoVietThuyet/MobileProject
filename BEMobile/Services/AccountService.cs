@@ -3,7 +3,6 @@ using BEMobile.Data.Entities;
 using BEMobile.Models.RequestResponse.Account.CreateAccount;
 using BEMobile.Models.RequestResponse.Account.DeleteAccount;
 using BEMobile.Models.RequestResponse.Account.DetailAccount;
-using BEMobile.Models.RequestResponse.Notification.PushNotification;
 using Microsoft.EntityFrameworkCore;
 
 namespace BEMobile.Services
@@ -18,13 +17,8 @@ namespace BEMobile.Services
     public class AccountService : IAccountService
     {
         private readonly AppDbContext _db;
-        private readonly INotificationService _notificationService;
+        public AccountService(AppDbContext db) { _db = db; }
 
-        public AccountService(AppDbContext db, INotificationService notificationService)
-        {
-            _db = db;
-            _notificationService = notificationService;
-        }
         public async Task<CreateAccountResponse> CreateAccountAsync(CreateAccountRequest req)
         {
             var dto = req.Account;
@@ -37,12 +31,6 @@ namespace BEMobile.Services
 
             _db.Accounts.Add(acc);
             await _db.SaveChangesAsync();
-
-            await _notificationService.PushNotificationAsync(new PushNotificationRequest
-            {
-                UserId = dto.UserId,
-                Content = "Bạn đã tạo tài khoản mới thành công!"
-            });
 
 
             return new CreateAccountResponse
@@ -85,12 +73,6 @@ namespace BEMobile.Services
 
             _db.Accounts.Remove(acc);
             await _db.SaveChangesAsync();
-
-            await _notificationService.PushNotificationAsync(new PushNotificationRequest
-            {
-                UserId = req.UserId,
-                Content = "Tài khoản của bạn đã được xóa thành công!"
-            });
 
             return new DeleteAccountResponse { Success = true, Message = "Xóa thành công" };
         }

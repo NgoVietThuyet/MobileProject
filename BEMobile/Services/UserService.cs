@@ -1,10 +1,12 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
+
+
 using BEMobile.Models.RequestResponse.Account.CreateAccount;
-using BEMobile.Models.RequestResponse.Notification.PushNotification;
 using BEMobile.Models.RequestResponse.User.UpdateUser;
 using BEMobile.Services;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace BEMobile.Services
 {
@@ -20,16 +22,15 @@ namespace BEMobile.Services
     public class UserService : IUserService
     {
         private readonly AppDbContext _context;
-        private readonly IAccountService _accountService;
-        private readonly INotificationService _notificationService;
 
-        public UserService(AppDbContext context, IAccountService accountService, INotificationService notificationService)
+        private readonly IAccountService _accountService;
+
+        public UserService(AppDbContext context, IAccountService accountService)
         {
             _context = context;
             _accountService = accountService;
-            _notificationService = notificationService;
         }
-
+        
         public async Task<UserDto> CreateUserAsync(UserDto userDto)
         {
 
@@ -110,12 +111,6 @@ namespace BEMobile.Services
 
                 await _context.SaveChangesAsync();
 
-                await _notificationService.PushNotificationAsync(new PushNotificationRequest
-                {
-                    UserId = existingUser.UserId,
-                    Content = "Thông tin cá nhân của bạn đã được cập nhật thành công ✅"
-                });
-
                 // Prepare response
                 response.Success = true;
                 response.Message = "User updated successfully.";
@@ -162,6 +157,7 @@ namespace BEMobile.Services
                 DateOfBirth = user.DateOfBirth,
                 CreatedDate = user.CreatedDate,
                 UpdatedDate = user.UpdatedDate
+
             };
         }
     }
