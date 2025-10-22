@@ -1,7 +1,7 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.SavingGoal.Create
+namespace BEMobile.Models.RequestResponse.SavingGoalRR.Create
 {
     public class CreateSavingGoalResponse
     {

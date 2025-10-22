@@ -1,6 +1,6 @@
 ﻿using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.SavingGoal
+namespace BEMobile.Models.RequestResponse.SavingGoalRR
 {
     public class CreateSavingGoalRequest
     {

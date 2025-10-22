@@ -1,4 +1,4 @@
-﻿namespace BEMobile.Models.RequestResponse.SavingGoal.UpdateAmount
+﻿namespace BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount
 {
     public class UpdateAmountGoalResponse
     {
