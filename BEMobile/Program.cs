@@ -28,7 +28,7 @@ builder.Services.AddScoped<ISavingGoalService, SavingGoalService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
-
+builder.Services.AddScoped<IReportService, ReportService>();
 
 // gemini
 builder.Services.Configure<GeminiOptions>(builder.Configuration.GetSection("Gemini"));

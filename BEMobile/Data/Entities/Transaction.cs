@@ -23,7 +23,7 @@ namespace BEMobile.Data.Entities
 
         [Column("AMOUNT")]
 
-        public float Amount { get; set; }
+        public string Amount { get; set; }
 
         [Column("NOTE")]
         public string Note { get; set; }

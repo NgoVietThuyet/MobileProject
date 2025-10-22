@@ -98,7 +98,7 @@ namespace BEMobile.Services
                     UserId = userId ?? string.Empty,
                     CategoryId = e.Category ?? string.Empty,
                     Type = "expense",
-                    Amount = (float)e.Amount,
+                    Amount = e.Amount.ToString(),
                     Note = string.IsNullOrWhiteSpace(e.Note) ? null : e.Note,
                     CreatedDate = DateTime.UtcNow.ToString("o"),
                     UpdatedDate = null
