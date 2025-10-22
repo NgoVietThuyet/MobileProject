@@ -1,6 +1,14 @@
 ﻿using BEMobile.Models.DTOs;
+<<<<<<< Updated upstream
 using BEMobile.Models.RequestResponse.Login;
 using BEMobile.Models.RequestResponse.SignUp;
+=======
+
+
+using BEMobile.Models.RequestResponse.User.Login;
+using BEMobile.Models.RequestResponse.User.SignUp;
+using BEMobile.Models.RequestResponse.User.UpdateUser;
+>>>>>>> Stashed changes
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -19,6 +27,7 @@ namespace BEMobile.Controllers
             _userService = userService;
         }
 
+<<<<<<< Updated upstream
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
@@ -33,6 +42,8 @@ namespace BEMobile.Controllers
 
             }
         }
+=======
+>>>>>>> Stashed changes
 
         
         [HttpPost("Create")]
@@ -79,6 +90,7 @@ namespace BEMobile.Controllers
         }
 
         [HttpPut("Update")]
+<<<<<<< Updated upstream
         public async Task<ActionResult<UserDto>> UpdateUser(UserDto userDto)
         {
             try
@@ -115,6 +127,18 @@ namespace BEMobile.Controllers
             var users = await _userService.SearchUsersAsync(name, email, phoneNumber);
             return Ok(users);
         }
+=======
+        public async Task<ActionResult<UpdateUserResponse>> UpdateUser([FromBody] UpdateUserRequest request)
+        {
+            var response = await _UserService.UpdateUserAsync(request);
+            if (!response.Success)
+                return BadRequest(response);
+            return Ok(response);
+        }
+
+
+
+>>>>>>> Stashed changes
         [HttpPost("login")]
         [ProducesResponseType(typeof(LoginResponse), 200)]
         [ProducesResponseType(typeof(LoginResponse), 400)]

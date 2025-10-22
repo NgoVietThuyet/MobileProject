@@ -1,6 +1,8 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
 using BEMobile.Models.RequestResponse.Account.CreateAccount;
+using BEMobile.Models.RequestResponse.Notification.PushNotification;
+using BEMobile.Models.RequestResponse.User.UpdateUser;
 using BEMobile.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +10,9 @@ namespace BEMobile.Services
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserDto>> GetAllUsersAsync();
         Task<UserDto> CreateUserAsync(UserDto userDto);
-        Task UpdateUserAsync( UserDto userDto);
-        Task<bool> DeleteUserAsync(string id);
-        Task<IEnumerable<UserDto>> SearchUsersAsync(string? name, string? email, string? phoneNumber);
+
+        Task<UpdateUserResponse> UpdateUserAsync(UpdateUserRequest request);
         Task<UserDto> IsLogin(string email, string password);
 
     }
@@ -20,35 +20,16 @@ namespace BEMobile.Services
     public class UserService : IUserService
     {
         private readonly AppDbContext _context;
-
         private readonly IAccountService _accountService;
+        private readonly INotificationService _notificationService;
 
-        public UserService(AppDbContext context)
+        public UserService(AppDbContext context, IAccountService accountService, INotificationService notificationService)
         {
             _context = context;
+            _accountService = accountService;
+            _notificationService = notificationService;
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
-        {
-            var users = await _context.Users
-                .Select(u => new UserDto
-                {
-                    UserId = u.UserId,
-                    Name = u.Name,
-                    PhoneNumber = u.PhoneNumber,
-                    Facebook = u.Facebook,
-                    Twitter = u.Twitter,
-                    Email = u.Email,
-                    CreatedDate = u.CreatedDate,
-                    UpdatedDate = u.UpdatedDate,
-                    
-                })
-                .ToListAsync();
-
-            return users;
-        }
-
-        
         public async Task<UserDto> CreateUserAsync(UserDto userDto)
         {
 
@@ -61,6 +42,9 @@ namespace BEMobile.Services
                 Twitter = userDto.Twitter,
                 Email = userDto.Email,
                 Password = userDto.Password,
+                Job = userDto.Job,
+                Google = userDto.Google,
+                DateOfBirth = userDto.DateOfBirth,
                 CreatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss")
             };
 
@@ -83,78 +67,82 @@ namespace BEMobile.Services
             return userDto;
         }
 
-        public async Task UpdateUserAsync(UserDto userDto)
+        public async Task<UpdateUserResponse> UpdateUserAsync(UpdateUserRequest request)
         {
+            var response = new UpdateUserResponse();
+
             try
             {
-                // 1. Kiểm tra đầu vào
-                if (userDto == null || string.IsNullOrEmpty(userDto.UserId))
-                    throw new ArgumentException("UserDto cannot be null.");
+                if (request == null)
+                {
+                    response.Success = false;
+                    response.Message = "Request body is null.";
+                    return response;
+                }
 
-                // 2. Tìm user hiện có trong database
+                if (string.IsNullOrEmpty(request.UserId))
+                {
+                    response.Success = false;
+                    response.Message = "UserId is missing or empty in request body.";
+                    return response;
+                }
+
                 var existingUser = await _context.Users
-                    .FirstOrDefaultAsync(u => u.UserId == userDto.UserId);
+                    .FirstOrDefaultAsync(u => u.UserId == request.UserId);
 
-                if (existingUser == null) throw new KeyNotFoundException($"User with ID {userDto.UserId} not found.");
+                if (existingUser == null)
+                {
+                    response.Success = false;
+                    response.Message = $"User with ID {request.UserId} not found.";
+                    return response;
+                }
 
-                // 3. Cập nhật thông tin (chỉ các trường cho phép)
-                existingUser.Name = userDto.Name;
-                existingUser.PhoneNumber = userDto.PhoneNumber;
-                existingUser.Facebook = userDto.Facebook;
-                existingUser.Twitter = userDto.Twitter;
-                existingUser.Email = userDto.Email;
+                // Update fields
+                existingUser.Name = request.Name;
+                existingUser.PhoneNumber = request.PhoneNumber;
+                existingUser.Facebook = request.Facebook;
+                existingUser.Twitter = request.Twitter;
+                existingUser.Email = request.Email;
+                existingUser.Job = request.Job;
+                existingUser.Google = request.Google;
+                existingUser.DateOfBirth = request.DateOfBirth;
                 existingUser.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
 
-                // 5. Lưu thay đổi
                 await _context.SaveChangesAsync();
 
+                await _notificationService.PushNotificationAsync(new PushNotificationRequest
+                {
+                    UserId = existingUser.UserId,
+                    Content = "Thông tin cá nhân của bạn đã được cập nhật thành công ✅"
+                });
+
+                // Prepare response
+                response.Success = true;
+                response.Message = "User updated successfully.";
+                response.User = new UserDto
+                {
+                    UserId = existingUser.UserId,
+                    Name = existingUser.Name,
+                    PhoneNumber = existingUser.PhoneNumber,
+                    Facebook = existingUser.Facebook,
+                    Twitter = existingUser.Twitter,
+                    Email = existingUser.Email,
+                    Job = existingUser.Job,
+                    Google = existingUser.Google,
+                    DateOfBirth = existingUser.DateOfBirth,
+                    CreatedDate = existingUser.CreatedDate,
+                    UpdatedDate = existingUser.UpdatedDate
+                };
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error updating user {userDto?.UserId}", ex);
+                response.Success = false;
+                response.Message = $"Error updating user: {ex.Message}";
             }
+
+            return response;
         }
 
-        public async Task<bool> DeleteUserAsync(string id)
-        {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserId == id);
-
-            if (user == null) return false;
-
-            _context.Users.Remove(user); 
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<IEnumerable<UserDto>> SearchUsersAsync(string? name, string? email, string? phoneNumber)
-        {
-            var query = _context.Users.AsQueryable();
-
-            if (!string.IsNullOrEmpty(name))
-                query = query.Where(u => u.Name.Contains(name));
-
-            if (!string.IsNullOrEmpty(email))
-                query = query.Where(u => u.Email.Contains(email));
-
-            if (!string.IsNullOrEmpty(phoneNumber))
-                query = query.Where(u => u.PhoneNumber.Contains(phoneNumber));
-
-            var users = await query
-                .Select(u => new UserDto
-                {
-                    UserId = u.UserId,
-                    Name = u.Name,
-                    PhoneNumber = u.PhoneNumber,
-                    Facebook = u.Facebook,
-                    Twitter = u.Twitter,
-                    Email = u.Email
-                })
-
-                .ToListAsync();
-
-            return users;
-        }
         public async Task<UserDto> IsLogin(string email, string password)
         {
             var user = await _context.Users
@@ -169,6 +157,9 @@ namespace BEMobile.Services
                 Facebook = user.Facebook,
                 Twitter = user.Twitter,
                 Email = user.Email,
+                Job = user.Job,
+                Google = user.Google,
+                DateOfBirth = user.DateOfBirth,
                 CreatedDate = user.CreatedDate,
                 UpdatedDate = user.UpdatedDate
             };

@@ -5,8 +5,7 @@ namespace BEMobile.Models.RequestResponse.Account.DetailAccount
     // GET /api/accounts/{id}
     public class DetailAccountRequest
     {
-        [Required(ErrorMessage = "AccountId là bắt buộc")]
-        public string AccountId { get; set; }
+        [Required(ErrorMessage = "UserId là bắt buộc")]
         public string UserId { get; set; }
     }
 }

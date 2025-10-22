@@ -30,14 +30,9 @@ namespace BEMobile.Controllers
                     Message = "UserId là bắt buộc"
                 });
 
-            var notifications = await _service.GetAllNotificationsAsync(userId);
+            var response = await _service.GetAllNotificationsAsync(userId);
 
-            return Ok(new GetAllNotificationResponse
-            {
-                Success = true,
-                Message = "Lấy danh sách thông báo thành công",
-                Notifications = notifications
-            });
+            return Ok(response);
         }
 
         // PUT /api/notifications/{id}/read
@@ -45,27 +40,23 @@ namespace BEMobile.Controllers
         [ProducesResponseType(typeof(ReadNotificationResponse), 200)]
         public async Task<IActionResult> MarkAsRead([FromRoute] string id)
         {
-            var result = await _service.MarkAsReadAsync(id);
+            var response = await _service.MarkAsReadAsync(id);
 
-            return Ok(new ReadNotificationResponse
-            {
-                Success = result,
-                Message = result ? "Đánh dấu đã đọc thành công" : "Không tìm thấy thông báo"
-            });
+            return Ok(response);
         }
 
         // DELETE /api/notifications/{id}
+<<<<<<< Updated upstream
         [HttpDelete("{id}")]
+=======
+        [HttpDelete("Delete/{id}")]
+>>>>>>> Stashed changes
         [ProducesResponseType(typeof(DeleteNotificationResponse), 200)]
         public async Task<IActionResult> Delete([FromRoute] string id)
         {
-            var result = await _service.DeleteNotificationAsync(id);
+            var response = await _service.DeleteNotificationAsync(id);
 
-            return Ok(new DeleteNotificationResponse
-            {
-                Success = result,
-                Message = result ? "Xóa thông báo thành công" : "Không tìm thấy thông báo"
-            });
+            return Ok(response);
         }
 
         // POST /api/notifications/push
@@ -75,13 +66,8 @@ namespace BEMobile.Controllers
         [ProducesResponseType(typeof(PushNotificationResponse), 200)]
         public async Task<IActionResult> Push([FromBody] PushNotificationRequest request)
         {
-            var result = await _service.PushNotificationAsync(request.UserId, request.Content);
-
-            return Ok(new PushNotificationResponse
-            {
-                Success = result,
-                Message = result ? "Gửi thông báo thành công" : "Gửi thông báo thất bại"
-            });
+            var response = await _service.PushNotificationAsync(request);
+            return Ok(response);
         }
     }
 }
