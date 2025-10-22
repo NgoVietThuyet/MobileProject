@@ -1,15 +1,17 @@
-﻿using BEMobile.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
 using BEMobile.Models.RequestResponse.Budget.CreateBudget;
 using BEMobile.Models.RequestResponse.Budget.UpdateAmount;
 using BEMobile.Models.RequestResponse.Category;
+using Microsoft.EntityFrameworkCore;
 
 namespace BEMobile.Services
 {
     public interface ICategoryService
     {
         Task<IEnumerable<CategoryDto>> GetAllCategorysAsync();
+        
         Task<Category> CreateCategoryAsync(CategoryRequest request);
         Task UpdateCategoryAsync(CategoryRequest request);
     }
@@ -40,6 +42,7 @@ namespace BEMobile.Services
 
             return Categories;
         }
+        
 
         public async Task<Category> CreateCategoryAsync(CategoryRequest request)
         {
