@@ -16,6 +16,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -31,6 +33,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,13 +49,26 @@ import com.example.test.ui.mock.TxType
 import com.example.test.ui.mock.TxUi
 import com.example.test.ui.theme.AppGradient
 import com.example.test.vm.HomeViewModel
+import com.example.test.vm.ChatViewModel
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
+import java.util.UUID
+
+enum class ChatSender { BOT, USER }
+data class ChatMessage(
+    val id: String = UUID.randomUUID().toString(),
+    val text: String,
+    val sender: ChatSender
+)
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    isLoggedIn: Boolean = true,
+    unreadChats: Int = 0,
+    messages: List<ChatMessage>? = null,
+    onSendMessage: ((String) -> Unit)? = null,
     onOpenBudgetAll: () -> Unit = {},
     onAddIncome: () -> Unit = {},
     onAddExpense: () -> Unit = {},
@@ -62,16 +78,17 @@ fun HomeScreen(
     onSaving: () -> Unit = {},
     onSetting: () -> Unit = {},
     onCamera: () -> Unit = {},
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    chatViewModel: ChatViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var chatOpen by rememberSaveable { mutableStateOf(false) }
-
+    LaunchedEffect(isLoggedIn) { if (!isLoggedIn) chatOpen = false }
     val homeState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchInitialData()
-    }
+    LaunchedEffect(Unit) { viewModel.fetchInitialData() }
+    val vmMessages by chatViewModel.messages.collectAsStateWithLifecycle()
+    val effectiveMessages = messages ?: vmMessages
+    val effectiveOnSend: (String) -> Unit = onSendMessage ?: chatViewModel::send
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -87,9 +104,9 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
-            if (!chatOpen) {
+            if (isLoggedIn && !chatOpen) {
                 ChatAssistButton(
-                    unread = HomeMock.unreadChats,
+                    unread = unreadChats,
                     onClick = { chatOpen = true }
                 )
             }
@@ -119,7 +136,6 @@ fun HomeScreen(
                     onAddExpense = onAddExpense
                 )
             }
-
             item { Spacer(Modifier.height(24.dp)) }
             item { MonthlySummaryCard() }
             item { Spacer(Modifier.height(24.dp)) }
@@ -134,10 +150,15 @@ fun HomeScreen(
             }
         }
 
-        ChatOverlay(open = chatOpen, onDismiss = { chatOpen = false })
+        ChatOverlay(
+            open = isLoggedIn && chatOpen,
+            onDismiss = { chatOpen = false },
+            bottomInset = padding.calculateBottomPadding(),
+            messages = effectiveMessages,
+            onSend = effectiveOnSend
+        )
     }
 }
-
 
 @Composable
 private fun HeaderSection(
@@ -156,7 +177,6 @@ private fun HeaderSection(
     ) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(50.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -169,7 +189,6 @@ private fun HeaderSection(
                     fontWeight = FontWeight.Medium,
                     lineHeight = 24.sp
                 )
-
                 Surface(
                     modifier = Modifier
                         .size(40.dp)
@@ -187,9 +206,7 @@ private fun HeaderSection(
                     }
                 }
             }
-
             Spacer(modifier = Modifier.height(30.dp))
-
             OutlinedCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -199,24 +216,12 @@ private fun HeaderSection(
                 )
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    Text(
-                        "Số dư hiện tại",
-                        color = Color.White,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                    Text("Số dư hiện tại", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Medium)
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        balance ?: "...",
-                        color = Color.White,
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Text(balance ?: "...", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
                 }
             }
-
             Spacer(modifier = Modifier.height(20.dp))
-
             QuickActionButtons(
                 onAddIncome = onAddIncome,
                 onAddExpense = onAddExpense,
@@ -232,7 +237,6 @@ private fun QuickActionButtons(
     onAddExpense: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val incomeBg = Color(0xFFE0FCE6)
     val incomeFg = Color(0xFF268233)
     val expenseBg = Color(0xFFFBE2E2)
@@ -306,9 +310,7 @@ private fun MonthlySummaryCard() {
                 Text("Tháng này", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
                 Icon(painter = painterResource(R.drawable.increase), contentDescription = null, tint = scheme.primary)
             }
-
             Spacer(modifier = Modifier.height(24.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -331,7 +333,7 @@ private fun SummaryCol(label: String, value: String, color: Color) {
 }
 
 @Composable
-private fun BudgetCategoriesCard(onSeeAll: () -> Unit = {}) {
+private fun BudgetCategoriesCard(onSeeAll: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     Card(
         modifier = Modifier
@@ -352,13 +354,9 @@ private fun BudgetCategoriesCard(onSeeAll: () -> Unit = {}) {
                     onClick = onSeeAll,
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     colors = ButtonDefaults.textButtonColors(contentColor = scheme.primary)
-                ) {
-                    Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                }
+                ) { Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold) }
             }
-
             Spacer(modifier = Modifier.height(24.dp))
-
             HomeMock.budgetCategories.forEachIndexed { index, item ->
                 BudgetCategoryItem(item)
                 if (index < HomeMock.budgetCategories.lastIndex) {
@@ -372,10 +370,7 @@ private fun BudgetCategoriesCard(onSeeAll: () -> Unit = {}) {
 @Composable
 private fun BudgetCategoryItem(data: BudgetCategoryMock) {
     val scheme = MaterialTheme.colorScheme
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -383,20 +378,13 @@ private fun BudgetCategoryItem(data: BudgetCategoryMock) {
                 .background(data.color),
             contentAlignment = Alignment.Center
         ) { Text(data.icon, fontSize = 18.sp) }
-
         Spacer(modifier = Modifier.width(16.dp))
-
         Column(modifier = Modifier.weight(1f)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(data.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
                 Text(data.amount, fontSize = 14.sp, color = scheme.onSurfaceVariant)
             }
-
             Spacer(modifier = Modifier.height(8.dp))
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -421,10 +409,9 @@ private fun BudgetCategoryItem(data: BudgetCategoryMock) {
 private fun RecentTransactionsCard(
     transactions: List<TxUi>,
     isLoading: Boolean,
-    onSeeAll: () -> Unit = {}
+    onSeeAll: () -> Unit
 ) {
     val scheme = MaterialTheme.colorScheme
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -444,13 +431,13 @@ private fun RecentTransactionsCard(
                     Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold)
                 }
             }
-
             Spacer(modifier = Modifier.height(20.dp))
-
             if (isLoading) {
-                Box(Modifier.fillMaxWidth().padding(vertical = 24.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp), contentAlignment = Alignment.Center
+                ) { CircularProgressIndicator() }
             } else if (transactions.isEmpty()) {
                 Text("Không có giao dịch gần đây.", color = scheme.onSurfaceVariant)
             } else {
@@ -477,21 +464,13 @@ private fun TransactionItem(tx: TxUi) {
                 .background(scheme.surfaceVariant),
             contentAlignment = Alignment.Center
         ) { Text(tx.emoji ?: "💰", fontSize = 18.sp) }
-
         Spacer(modifier = Modifier.width(16.dp))
-
         Column(modifier = Modifier.weight(1f)) {
             Text(tx.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
-            Text(
-                text = tx.category,
-                fontSize = 12.sp,
-                color = scheme.onSurfaceVariant
-            )
+            Text(tx.category, fontSize = 12.sp, color = scheme.onSurfaceVariant)
         }
-
         val isPositive = tx.type == TxType.INCOME
         val formattedAmount = (if (isPositive) "+" else "-") + vn(tx.amount.toLongOrNull() ?: 0L)
-
         Text(
             text = formattedAmount,
             fontSize = 16.sp,
@@ -503,7 +482,6 @@ private fun TransactionItem(tx: TxUi) {
 
 private fun vn(value: Long): String =
     NumberFormat.getCurrencyInstance(Locale("vi", "VN")).format(value).replace(" ", "")
-
 
 @Composable
 private fun ChatAssistButton(
@@ -520,7 +498,6 @@ private fun ChatAssistButton(
             elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 6.dp),
             modifier = Modifier.size(56.dp)
         ) { Icon(painter = painterResource(R.drawable.message), contentDescription = "Chat trợ lý") }
-
         if (unread > 0) {
             Box(
                 modifier = Modifier
@@ -544,11 +521,20 @@ private fun ChatAssistButton(
 @Composable
 private fun ChatOverlay(
     open: Boolean,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    bottomInset: Dp,
+    messages: List<ChatMessage>,
+    onSend: (String) -> Unit
 ) {
     val scheme = MaterialTheme.colorScheme
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+    val navBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val imeBottom = WindowInsets.ime.asPaddingValues().calculateBottomPadding()
+    val contentBottomPadding = remember(imeBottom, bottomInset, navBottom) {
+        if (imeBottom > (bottomInset + navBottom)) imeBottom else (bottomInset + navBottom)
+    }
+    var input by rememberSaveable(open) { mutableStateOf("") }
 
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
         AnimatedVisibility(visible = open, enter = fadeIn(), exit = fadeOut()) {
             Box(
                 Modifier
@@ -558,7 +544,6 @@ private fun ChatOverlay(
                     .zIndex(1f)
             )
         }
-
         AnimatedVisibility(
             visible = open,
             enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
@@ -567,12 +552,16 @@ private fun ChatOverlay(
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.92f)
+                    .fillMaxHeight(0.96f)
                     .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
                     .background(scheme.surface)
                     .zIndex(2f)
             ) {
-                Column(Modifier.fillMaxSize()) {
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(bottom = contentBottomPadding)
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -585,31 +574,67 @@ private fun ChatOverlay(
                         Spacer(Modifier.width(12.dp))
                         Text("Chat bot", color = scheme.onPrimary, fontSize = 18.sp, fontWeight = FontWeight.Medium)
                     }
-
+                    val listState = rememberLazyListState()
+                    LaunchedEffect(messages.size) {
+                        if (messages.isNotEmpty()) listState.animateScrollToItem(messages.lastIndex)
+                    }
                     LazyColumn(
+                        state = listState,
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp, vertical = 8.dp)
                     ) {
-                        items(8) { i ->
-                            if (i % 2 == 0) BotBubble("Chào ${HomeMock.greetingName} 👋")
-                            else MeBubble("Cho mình xem báo cáo tháng này.")
-                            Spacer(Modifier.height(8.dp))
+                        if (messages.isEmpty()) {
+                            item {
+                                Text(
+                                    "Chưa có tin nhắn.",
+                                    color = scheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(12.dp)
+                                )
+                            }
+                        } else {
+                            items(messages, key = { it.id }) { m ->
+                                if (m.sender == ChatSender.BOT) BotBubble(m.text) else MeBubble(m.text)
+                                Spacer(Modifier.height(8.dp))
+                            }
                         }
                     }
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(12.dp)
                             .clip(RoundedCornerShape(20.dp))
                             .background(scheme.surfaceVariant)
-                            .padding(horizontal = 12.dp, vertical = 10.dp),
+                            .padding(horizontal = 8.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Nhập tin nhắn...", color = scheme.onSurfaceVariant, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                        TextButton(onClick = { }) { Text("Gửi", color = scheme.primary, fontSize = 14.sp) }
+                        TextField(
+                            value = input,
+                            onValueChange = { input = it },
+                            placeholder = { Text("Nhập tin nhắn...") },
+                            modifier = Modifier.weight(1f),
+                            singleLine = true,
+                            colors = TextFieldDefaults.colors(
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                                disabledIndicatorColor = Color.Transparent,
+                                errorIndicatorColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent
+                            )
+                        )
+                        TextButton(
+                            onClick = {
+                                val text = input.trim()
+                                if (text.isNotEmpty()) {
+                                    onSend(text)
+                                    input = ""
+                                }
+                            },
+                            enabled = input.isNotBlank()
+                        ) { Text("Gửi", color = scheme.primary, fontSize = 14.sp) }
                     }
                 }
             }
@@ -650,6 +675,10 @@ private fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
 @Preview(widthDp = 412, heightDp = 900, showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(
+        isLoggedIn = true,
+        unreadChats = 0,
+        messages = null,
+        onSendMessage = null
+    )
 }
-

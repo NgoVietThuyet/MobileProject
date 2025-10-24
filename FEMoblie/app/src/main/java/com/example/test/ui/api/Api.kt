@@ -1,6 +1,8 @@
 package com.example.test.ui.api
 
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,6 +17,12 @@ object AuthStore {
     private val _userCreationDate = MutableStateFlow<String?>(null)
     private val _token = MutableStateFlow<String?>(null)
 
+    val userIdFlow: StateFlow<String?> = _userId.asStateFlow()
+    val userNameFlow: StateFlow<String?> = _userName.asStateFlow()
+    val userEmailFlow: StateFlow<String?> = _userEmail.asStateFlow()
+    val userPhoneFlow: StateFlow<String?> = _userPhone.asStateFlow()
+    val userCreationDateFlow: StateFlow<String?> = _userCreationDate.asStateFlow()
+    val tokenFlow: StateFlow<String?> = _token.asStateFlow()
 
     var userId: String?
         get() = _userId.value
@@ -43,12 +51,14 @@ object AuthStore {
             println("AuthStore: userPhone được cập nhật thành -> $value")
             _userPhone.value = value
         }
+
     var userCreationDate: String?
         get() = _userCreationDate.value
         set(value) {
             println("AuthStore: userCreationDate được cập nhật thành -> $value")
             _userCreationDate.value = value
         }
+
     var token: String?
         get() = _token.value
         set(value) { _token.value = value }
@@ -108,5 +118,8 @@ object Api {
     val accountService: AccountApi by lazy {
         retrofit.create(AccountApi::class.java)
     }
-}
 
+    val chatbotService: ChatbotApi by lazy {
+        retrofit.create(ChatbotApi::class.java)
+    }
+}
