@@ -9,7 +9,9 @@ namespace BEMobile.Models.DTOs
         public string NotificationId { get; set; }
         public string UserId { get; set; }
 
+
         public bool IsRead { get; set; }
+
         public string Content { get; set; }
         public string CreatedDate { get; set; }
         public string? UpdatedDate { get; set; }

@@ -11,6 +11,7 @@ namespace BEMobile.Services
 {
     public interface IUserService
     {
+
         Task<UserDto> CreateUserAsync(UserDto userDto);
         Task<UpdateUserResponse> UpdateUserAsync(UpdateUserRequest request);
         Task<LoginResponse> IsLoginAsync(LoginRequest request);
@@ -30,7 +31,7 @@ namespace BEMobile.Services
             _accountService = accountService;
             _notificationService = notificationService;
         }
-
+        
         public async Task<UserDto> CreateUserAsync(UserDto userDto)
         {
             var user = new User
@@ -72,12 +73,14 @@ namespace BEMobile.Services
             return userDto;
         }
 
+
         public async Task<UpdateUserResponse> UpdateUserAsync(UpdateUserRequest request)
         {
             var response = new UpdateUserResponse();
 
             try
             {
+
                 if (request == null)
                 {
                     response.Success = false;
@@ -101,6 +104,7 @@ namespace BEMobile.Services
                     return response;
                 }
 
+                // Update fields
                 existingUser.Name = request.Name;
                 existingUser.PhoneNumber = request.PhoneNumber;
                 existingUser.Facebook = request.Facebook;

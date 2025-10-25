@@ -1,9 +1,8 @@
 ﻿using BEMobile.Models.DTOs;
 
-
-using BEMobile.Models.RequestResponse.User.Login;
-using BEMobile.Models.RequestResponse.User.SignUp;
-using BEMobile.Models.RequestResponse.User.UpdateUser;
+using BEMobile.Models.RequestResponse.UserRR.Login;
+using BEMobile.Models.RequestResponse.UserRR.SignUp;
+using BEMobile.Models.RequestResponse.UserRR.UpdateUser;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -25,7 +24,7 @@ namespace BEMobile.Controllers
         }
 
 
-        
+
         [HttpPost("Create")]
         public async Task<ActionResult<UserDto>> CreateUser([FromBody] SignUpRequest request)
         {

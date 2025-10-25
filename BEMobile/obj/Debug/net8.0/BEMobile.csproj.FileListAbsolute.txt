@@ -525,199 +525,210 @@ D:\Period5\BE\MobileProject\BEMobile\obj\Debug\net8.0\refint\BEMobile.dll
 D:\Period5\BE\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.pdb
 D:\Period5\BE\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.genruntimeconfig.cache
 D:\Period5\BE\MobileProject\BEMobile\obj\Debug\net8.0\ref\BEMobile.dll
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.AssemblyReference.cache
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\rpswa.dswa.cache.json
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.GeneratedMSBuildEditorConfig.editorconfig
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.AssemblyInfoInputs.cache
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.AssemblyInfo.cs
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.CoreCompileInputs.cache
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.MvcApplicationPartsAssemblyInfo.cs
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.MvcApplicationPartsAssemblyInfo.cache
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.RazorAssemblyInfo.cache
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.RazorAssemblyInfo.cs
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.sourcelink.json
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.dll
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\refint\BEMobile.dll
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.pdb
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\appsettings.Development.json
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\x86\leptonica-1.82.0.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\x86\tesseract50.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\x64\leptonica-1.82.0.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\x64\tesseract50.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\appsettings.json
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\global.json
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.staticwebassets.runtime.json
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.staticwebassets.endpoints.json
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.exe
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.deps.json
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.runtimeconfig.json
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.pdb
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Azure.Core.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Azure.Identity.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\BCrypt.Net-Next.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.Auth.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.Core.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Humanizer.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Build.Locator.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Identity.Client.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.OpenApi.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Mono.TextTemplating.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Neo4j.Driver.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Newtonsoft.Json.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\OpenCvSharp.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.ClientModel.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.CodeDom.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.AttributedModel.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.Convention.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.Hosting.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.Runtime.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.TypedParts.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Drawing.Common.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Formats.Asn1.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.IO.Pipelines.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Management.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Memory.Data.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Runtime.Caching.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Permissions.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Text.Encodings.Web.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Text.Json.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\System.Windows.Extensions.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Tesseract.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x64\native\OpenCvSharpExtern.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x64\native\opencv_videoio_ffmpeg4110_64.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x86\native\OpenCvSharpExtern.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x86\native\opencv_videoio_ffmpeg4110.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\rjimswa.dswa.cache.json
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\scopedcss\bundle\BEMobile.styles.css
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\scopedcss\projectbundle\BEMobile.bundle.scp.css
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.build.json
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.build.json.cache
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.development.json
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.Up2Date
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.genruntimeconfig.cache
-D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\ref\BEMobile.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\appsettings.Development.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\appsettings.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\global.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.staticwebassets.runtime.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.staticwebassets.endpoints.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\x86\leptonica-1.82.0.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\x86\tesseract50.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\x64\leptonica-1.82.0.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\x64\tesseract50.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.exe
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.deps.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.runtimeconfig.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.pdb
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Azure.Core.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Azure.Identity.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\EPPlus.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\EPPlus.Interfaces.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.Auth.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.Core.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Humanizer.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Build.Locator.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Mono.TextTemplating.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Neo4j.Driver.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\OpenCvSharp.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.ClientModel.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.CodeDom.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.Convention.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.Hosting.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.Runtime.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Composition.TypedParts.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Drawing.Common.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Formats.Asn1.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.IO.Packaging.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.IO.Pipelines.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Management.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Memory.Data.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Runtime.Caching.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Permissions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Text.Json.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Windows.Extensions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Tesseract.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x64\native\OpenCvSharpExtern.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x64\native\opencv_videoio_ffmpeg4110_64.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x86\native\OpenCvSharpExtern.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x86\native\opencv_videoio_ffmpeg4110.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.AssemblyReference.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.GeneratedMSBuildEditorConfig.editorconfig
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.AssemblyInfoInputs.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.AssemblyInfo.cs
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.CoreCompileInputs.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.MvcApplicationPartsAssemblyInfo.cs
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.MvcApplicationPartsAssemblyInfo.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.RazorAssemblyInfo.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.RazorAssemblyInfo.cs
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.sourcelink.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rjimswa.dswa.cache.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\scopedcss\bundle\BEMobile.styles.css
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\scopedcss\projectbundle\BEMobile.bundle.scp.css
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.build.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.build.json.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.development.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.Up2Date
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.dll
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\refint\BEMobile.dll
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.pdb
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.genruntimeconfig.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\ref\BEMobile.dll

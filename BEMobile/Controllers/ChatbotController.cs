@@ -1,3 +1,4 @@
+
 ﻿using BEMobile.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,15 +25,27 @@ namespace BEMobile.Controllers
         [HttpPost("extract")]
         public async Task<IActionResult> ExtractGraph([FromBody] ChatRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request?.Text))
+
+            var extractedData = await _kgService.Classify_prompt(request.Text);
+            var cleanedData = extractedData.Trim().ToUpperInvariant();
+
+            switch(cleanedData)
             {
-                return BadRequest("Đầu vào không hợp lệ!");
+                case "OFF_TOPIC":
+                    return Ok("Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!");
+                case "ADD_TRANSACTION":
+                    var responseAdd = await _kgService.Rep_add_transaction(request.Text);
+                    return Ok(responseAdd);
+                case "SINGLE_QUERY":
+                    var responseSing = await _kgService.Rep_multi_query(request.Text, "1");
+                    return Ok(responseSing);
+                case "MULTI_QUERY":
+                    var responseMulti = await _kgService.Rep_multi_query(request.Text, "1");
+                    return Ok(responseMulti);
+                case null:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Lỗi khi xử lý yêu cầu.");
             }
-
-            var extractedData = await _kgService.ExtractGraphFromTextAsync(request.Text);
-
-            // Trả về kết quả dạng text thô từ Gemini
-            return Ok(extractedData);
+            return Ok( cleanedData);
         }
 
     }

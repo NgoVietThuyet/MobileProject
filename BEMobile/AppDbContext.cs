@@ -129,6 +129,8 @@ namespace BEMobile
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Reports> Reports { get; set; }
+
 
     }
     

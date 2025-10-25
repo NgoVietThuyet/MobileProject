@@ -53,7 +53,7 @@
         }
       }
     },
-    "/api/Accounts/GetAccountByUserId": {
+    "/api/Accounts/GetAccountById": {
       "get": {
         "tags": [
           "Accounts"
@@ -575,7 +575,7 @@
         }
       }
     },
-    "/api/Notifications/Delete/{id}": {
+    "/api/Notifications/Delete": {
       "delete": {
         "tags": [
           "Notifications"
@@ -614,10 +614,56 @@
         }
       }
     },
+    "/api/Reports/export-template": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/SavingGoal/GetAllSavingGoals": {
       "get": {
         "tags": [
           "SavingGoal"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -930,6 +976,44 @@
         }
       }
     },
+    "/api/Users/GetAllUsers": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Users/Create": {
       "post": {
         "tags": [
@@ -987,17 +1071,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UserDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UserDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
+                "$ref": "#/components/schemas/UserDto"
               }
             }
           }
@@ -1008,17 +1092,100 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateUserResponse"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateUserResponse"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateUserResponse"
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/DeleteById{id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Users/search": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
                 }
               }
             }
@@ -1136,6 +1303,36 @@
   },
   "components": {
     "schemas": {
+      "Account": {
+        "required": [
+          "balance",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "balance": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "updatedDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AccountDto": {
         "type": "object",
         "properties": {
@@ -1148,6 +1345,14 @@
             "nullable": true
           },
           "balance": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedDate": {
             "type": "string",
             "nullable": true
           }
@@ -1336,7 +1541,7 @@
             "nullable": true
           },
           "account": {
-            "$ref": "#/components/schemas/AccountDto"
+            "$ref": "#/components/schemas/Account"
           }
         },
         "additionalProperties": false
@@ -1839,76 +2044,6 @@
         },
         "additionalProperties": false
       },
-      "UpdateUserRequest": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "facebook": {
-            "type": "string",
-            "nullable": true
-          },
-          "twitter": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "job": {
-            "type": "string",
-            "nullable": true
-          },
-          "google": {
-            "type": "string",
-            "nullable": true
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdDate": {
-            "type": "string",
-            "nullable": true
-          },
-          "updatedDate": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateUserResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/UserDto"
-          }
-        },
-        "additionalProperties": false
-      },
       "UserDto": {
         "type": "object",
         "properties": {
@@ -1933,18 +2068,6 @@
             "nullable": true
           },
           "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "job": {
-            "type": "string",
-            "nullable": true
-          },
-          "google": {
-            "type": "string",
-            "nullable": true
-          },
-          "dateOfBirth": {
             "type": "string",
             "nullable": true
           },

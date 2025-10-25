@@ -9,13 +9,13 @@
     "Parameters": [
       {
         "Name": "req",
-        "Type": "BEMobile.Models.RequestResponse.Account.CreateAccount.CreateAccountRequest",
+        "Type": "BEMobile.Models.RequestResponse.AccountRR.CreateAccount.CreateAccountRequest",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "BEMobile.Models.RequestResponse.Account.CreateAccount.CreateAccountResponse",
+        "Type": "BEMobile.Models.RequestResponse.AccountRR.CreateAccount.CreateAccountResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -46,7 +46,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "BEMobile.Models.RequestResponse.Account.DeleteAccount.DeleteAccountResponse",
+        "Type": "BEMobile.Models.RequestResponse.AccountRR.DeleteAccount.DeleteAccountResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -59,7 +59,7 @@
   {
     "ContainingType": "BEMobile.Controllers.AccountsController",
     "Method": "GetById",
-    "RelativePath": "api/Accounts/GetAccountByUserId",
+    "RelativePath": "api/Accounts/GetAccountById",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -72,7 +72,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "BEMobile.Models.RequestResponse.Account.DetailAccount.DetailAccountResponse",
+        "Type": "BEMobile.Models.RequestResponse.AccountRR.DetailAccount.DetailAccountResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -308,7 +308,7 @@
   {
     "ContainingType": "BEMobile.Controllers.NotificationsController",
     "Method": "Delete",
-    "RelativePath": "api/Notifications/Delete/{id}",
+    "RelativePath": "api/Notifications/Delete",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -316,7 +316,7 @@
       {
         "Name": "id",
         "Type": "System.String",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -358,6 +358,32 @@
     ]
   },
   {
+    "ContainingType": "BEMobile.Controllers.ReportsController",
+    "Method": "ExportReportByTemplate",
+    "RelativePath": "api/Reports/export-template",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "startDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "endDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BEMobile.Controllers.SavingGoalController",
     "Method": "CreateSavingGoal",
     "RelativePath": "api/SavingGoal/Create",
@@ -367,7 +393,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "BEMobile.Models.RequestResponse.SavingGoal.CreateSavingGoalRequest",
+        "Type": "BEMobile.Models.RequestResponse.SavingGoalRR.CreateSavingGoalRequest",
         "IsRequired": true
       }
     ],
@@ -390,7 +416,13 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.DTOs.SavingGoalDto, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -413,7 +445,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "BEMobile.Models.RequestResponse.SavingGoal.UpdateAmount.UpdateAmountGoalRequest",
+        "Type": "BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount.UpdateAmountGoalRequest",
         "IsRequired": true
       }
     ],
@@ -561,6 +593,42 @@
   },
   {
     "ContainingType": "BEMobile.Controllers.UsersController",
+    "Method": "DeleteUser",
+    "RelativePath": "api/Users/DeleteById{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.UsersController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/Users/GetAllUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.DTOs.UserDto, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.UsersController",
     "Method": "LogIn",
     "RelativePath": "api/Users/login",
     "HttpMethod": "POST",
@@ -596,6 +664,42 @@
   },
   {
     "ContainingType": "BEMobile.Controllers.UsersController",
+    "Method": "SearchUsers",
+    "RelativePath": "api/Users/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "phoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[BEMobile.Models.DTOs.UserDto, BEMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.UsersController",
     "Method": "UpdateUser",
     "RelativePath": "api/Users/Update",
     "HttpMethod": "PUT",
@@ -603,14 +707,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "BEMobile.Models.RequestResponse.User.UpdateUser.UpdateUserRequest",
+        "Name": "UserDto",
+        "Type": "BEMobile.Models.DTOs.UserDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "BEMobile.Models.RequestResponse.User.UpdateUser.UpdateUserResponse",
+        "Type": "BEMobile.Models.DTOs.UserDto",
         "MediaTypes": [
           "text/plain",
           "application/json",

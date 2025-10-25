@@ -1,7 +1,7 @@
-﻿using BEMobile.Models.RequestResponse.Notification.GetAllNotification;
-using BEMobile.Models.RequestResponse.Notification.ReadNotification;
-using BEMobile.Models.RequestResponse.Notification.DeleteNotification;
-using BEMobile.Models.RequestResponse.Notification.PushNotification;
+﻿using BEMobile.Models.RequestResponse.NotificationRR.GetAllNotification;
+using BEMobile.Models.RequestResponse.NotificationRR.ReadNotification;
+using BEMobile.Models.RequestResponse.NotificationRR.DeleteNotification;
+using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +34,7 @@ namespace BEMobile.Controllers
 
             return Ok(response);
         }
+        
 
         // PUT /api/notifications/{id}/read
         [HttpPut("{id}/read")]
@@ -46,7 +47,7 @@ namespace BEMobile.Controllers
         }
 
         // DELETE /api/notifications/{id}
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("Delete")]
         [ProducesResponseType(typeof(DeleteNotificationResponse), 200)]
         public async Task<IActionResult> Delete([FromRoute] string id)
         {

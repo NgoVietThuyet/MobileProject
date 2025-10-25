@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,22 +15,38 @@ namespace BEMobile.Services
 {
     public class GeminiOptions
     {
-        public string ApiKey { get; set; } = "";
-        public string Model { get; set; } = "gemini-2.0-flash";
+        public List<string> ApiKeys { get; set; } = new List<string>
+        {
+            "AIzaSyDjEN2Bjvl4FJfaltGtRemokuB5jbcVixg",
+            "AIzaSyC2R9aILsvNeEripP7Wcy6E6Pt5UQYmwTE",
+            "AIzaSyD9Sa20gaCmORMEr3Pum1GJ-JpV_McMn2U",
+            "AIzaSyD_pTQ0sScWEp0lilhoJR3xqDDHCuK_AGU"
+        };
+
+        public string Model { get; set; } = "gemini-2.5-flash-lite";
         public string BaseUrl { get; set; } = "https://generativelanguage.googleapis.com/v1beta/models";
         public bool UseBearerToken { get; set; } = false; // Sửa thành false để dùng API Key
-        public string ServiceAccountFile { get; set; } // Thêm property này
+        public string ServiceAccountFile { get; set; }
+
+        private static readonly Random _random = new Random();
+        public string GetRandomApiKey()
+        {
+            int index = _random.Next(ApiKeys.Count);
+            return ApiKeys[index];
+        }
     }
 
     public interface IImageService
     {
-        Task<IList<TransactionDto>> ProcessReceiptToTransactionsAsync(IFormFile file, string? userId = null, bool embedBase64 = false);
+        Task<IList<TransactionDto>> ProcessReceiptToTransactionsAsync(IFormFile file, CancellationToken cancellationToken, string? userId = null, bool embedBase64 = false);
     }
+
 
     public class ImageService : IImageService
     {
         private readonly IHttpClientFactory _httpFactory;
         private readonly GeminiOptions _opts;
+
         private readonly ILogger<ImageService> _logger;
 
         // Temporary DTO used to parse AI response
@@ -39,11 +56,12 @@ namespace BEMobile.Services
             public string Category { get; set; } = string.Empty;
 
             [JsonProperty("amount")]
-            public String Amount { get; set; }
+            public decimal Amount { get; set; }
 
             [JsonProperty("note")]
             public string? Note { get; set; }
         }
+
 
         public ImageService(IHttpClientFactory httpFactory, IOptions<GeminiOptions> opts, ILogger<ImageService>? logger = null)
         {
@@ -52,7 +70,7 @@ namespace BEMobile.Services
             _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<ImageService>.Instance;
         }
 
-        public async Task<IList<TransactionDto>> ProcessReceiptToTransactionsAsync(IFormFile file, string? userId = null, bool embedBase64 = false)
+        public async Task<IList<TransactionDto>> ProcessReceiptToTransactionsAsync(IFormFile file, CancellationToken cancellationToken, string? userId = null, bool embedBase64 = false)
         {
             if (file == null || file.Length == 0)
                 throw new ArgumentException("file is null or empty", nameof(file));
@@ -68,8 +86,9 @@ namespace BEMobile.Services
             // 2) Build prompt
             var categories = new[]
             {
-                "Ăn uống","Đi lại","Mua sắm","Giải trí",
-                "Giáo dục","Ý tế","Nhà ở","Điện nước","Khác"
+                "1:Khác", "2: Việc tự do", "3: Điện nước", "4: Đầu tư", "5: Giáo dục", "6:Y yế",
+                "7: Lương", "8: Ăn uống", "9: Mua sắm", "10: Thưởng", "11: Đi lại", "12: Giải trí",
+                "13: Bán hàng"
             };
             string prompt = BuildPromptForImage(categories);
 
@@ -98,7 +117,7 @@ namespace BEMobile.Services
                     UserId = userId ?? string.Empty,
                     CategoryId = e.Category ?? string.Empty,
                     Type = "expense",
-                    Amount = e.Amount,
+                    Amount = e.Amount.ToString(),
                     Note = string.IsNullOrWhiteSpace(e.Note) ? null : e.Note,
                     CreatedDate = DateTime.UtcNow.ToString("o"),
                     UpdatedDate = null
@@ -120,14 +139,13 @@ Hãy phân tích hình ảnh hóa đơn và trả về mảng JSON các đối t
 
 Yêu cầu:
 1. Xác định các mặt hàng và giá tiền (đọc giá tiền cho mỗi món nhưng lưu ý thêm nếu có thuế hoặc giảm giá)
-2. Gán mỗi mặt hàng vào một danh mục phù hợp(Tính tổng tiền các mặt hàng cùng danh mục, phần note sẽ thêm dấu phẩy vào giữa các mặt hàng cùng loại)
-3. Tính tổng số tiền cho từng danh mục
-4. Nếu danh mục không có mặt hàng, hãy bỏ qua
+2. Gán mỗi mặt hàng vào một danh mục phù hợp
+3. Nếu danh mục không có mặt hàng, hãy bỏ qua
 
 Ví dụ đầu ra:
 [
-  {{""category"": ""Ăn uống"", ""amount"": 20000, ""note"": ""Bánh đa cua""}},
-  {{""category"": ""Khác"", ""amount"": 15000, ""note"": ""Túi nilon""}}
+  {{""category"": ""8"", ""amount"": 20000, ""note"": ""Bánh đa cua""}},
+  {{""category"": ""1"", ""amount"": 15000, ""note"": ""Túi nilon""}}
 ]
 
 Chỉ trả về mảng JSON, không thêm bất kỳ văn bản nào khác. Phân tích kỹ để đảm bảo tính chính xác về số liệu. Nếu ảnh không thể đọc hoặc không phải hoá đơn, trả về mảng rỗng []
@@ -181,9 +199,11 @@ Chỉ trả về mảng JSON, không thêm bất kỳ văn bản nào khác. Ph�
                 Content = new StringContent(json, Encoding.UTF8, "application/json")
             };
 
-            if (!_opts.UseBearerToken && !string.IsNullOrEmpty(_opts.ApiKey))
+            string api = _opts.GetRandomApiKey();
+
+            if (!_opts.UseBearerToken && !string.IsNullOrEmpty(api))
             {
-                url = $"{url}?key={_opts.ApiKey}";
+                url = $"{url}?key={api}";
                 request.RequestUri = new Uri(url);
             }
             else if (_opts.UseBearerToken) // Nếu API xu

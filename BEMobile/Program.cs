@@ -1,9 +1,12 @@
 
-﻿using BEMobile;
-using BEMobile.Connectors;
-using BEMobile.Services;
 using BEMobile.Services;
 using Microsoft.EntityFrameworkCore;
+using BEMobile.Services;
+using BEMobile;
+using BEMobile.Connectors;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,14 +27,27 @@ builder.Services.Configure<GeminiOptions>(builder.Configuration.GetSection("Gemi
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient("gemini");
 
+
+
+
+builder.Services.AddScoped<IBudgetService, BudgetService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISavingGoalService, SavingGoalService>();
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+
+
+// gemini
+builder.Services.Configure<GeminiOptions>(builder.Configuration.GetSection("Gemini"));
+builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("gemini");
+
 // Add Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-
-
 
 // graph
 builder.Services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
@@ -61,5 +77,6 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     context.Database.EnsureCreated();
 }
+
 
 app.Run();

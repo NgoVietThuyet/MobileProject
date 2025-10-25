@@ -32,7 +32,8 @@ namespace BEMobile.Services
             {
                 AccountId = Guid.NewGuid().ToString(),
                 UserId = dto.UserId,
-                Balance = dto.Balance
+                Balance = dto.Balance,
+
             };
 
             _db.Accounts.Add(acc);
@@ -50,7 +51,7 @@ namespace BEMobile.Services
             {
                 Success = true,
                 Message = "Tạo tài khoản thành công",
-                Account = dto
+                Account = acc
             };
         }
 
