@@ -148,11 +148,6 @@ Chỉ trả lại mảng JSON, không thêm bất kỳ văn bản nào khác. N�
             var promptForCypher = $@"
 Bạn là một chuyên gia về Neo4j, có nhiệm vụ chuyển đổi câu hỏi của người dùng thành một câu lệnh Cypher **chỉ đọc (read-only)**.
 
-Tôi chỉ dùng tên thực thể và quan hệ trong các ví dụ mẫu được cung cấp dưới đây:
----
-{schema}
----
-
 **QUY TẮC:**
 1. **Chỉ trả về DUY NHẤT** câu lệnh Cypher. Không thêm giải thích, markdown (```), hoặc bất kỳ văn bản nào khác.
 2. Chỉ sử dụng các loại node, thuộc tính và mối quan hệ có trong schema. Không được tự ý suy diễn ra các thuộc tính hoặc mối quan hệ không tồn tại.
@@ -247,6 +242,7 @@ Cypher Query:
     
             }
 
+
             var databaseResultsJson = JsonConvert.SerializeObject(records.Select(r => r.Values));
 
             var promptForAnswer = $@"
@@ -273,12 +269,12 @@ Cypher Query:
             var promptForAnswer = $@"
             Nhận câu hỏi và trả về nội dùng liên quan đến dữ liệu cần cung cấp để phục vụ cho chuyển đổi câu hỏi thành lệnh cypher. Chỉ trả về nội dung đã được chỉnh sửa, không giải thích gì thêm.    
 
-Ví dụ1: ""Tôi đã tiêu gì trong tháng 6?"" => ""Tôi đã tiêu gì từ ngày 01/06/2025 đến 30/06/2025? ""
-Ví dụ2: ""Tôi đã chi tiêu những gì trong tuần trước?"" => ""Tôi đã chi tiêu những gì từ ngày 15/10/2025 đến 22/10/2025? (Tuỳ vào ngày hiện tại)""
-Ví dụ3: "" Hôm nay tôi tiêu những gì?"" => ""Hôm nay tôi tiêu những gì vào ngày 22/10/2025? (Tuỳ vào ngày hiện tại)""
+Ví dụ1: ""Tôi đã tiêu gì trong tháng 6?"" => ""Tôi đã tiêu gì từ ngày 2025/06/01 đến 2025/06/01? ""
+Ví dụ2: ""Tôi đã chi tiêu những gì trong tuần trước?"" => ""Tôi đã chi tiêu những gì từ ngày 2025/10/25 đến 2025/10/22? (Tuỳ vào ngày hiện tại)""
+Ví dụ3: "" Hôm nay tôi tiêu những gì?"" => ""Hôm nay tôi tiêu những gì vào ngày 2025/10/22? (Tuỳ vào ngày hiện tại)""
 Ví dụ 4: ""Hãy giúp tôi tổng hợp số tiền đã tiêu trong tháng và đề xuất cách tiết kiệm cho tháng sau."" => ""Chi tiêu trong tháng hiện tại của tôi?""
-Ví dụ 5: ""Cho tôi biết khoản nào lớn nhất hôm nay và tổng chi tháng này là bao nhiêu."" => ""Tổng chi tiêu từ ngày 01/10/2025 đến 22/10/2025? (Tuỳ vào ngày hiện tại)""
-Ví dụ 6: ""Tôi chi tiêu / mua gì hôm nay"" => ""Tôi chi tiêu gì vào ngày 22/10/2025? (Tuỳ vào ngày hiện tại)""
+Ví dụ 5: ""Cho tôi biết khoản nào lớn nhất hôm nay và tổng chi tháng này là bao nhiêu."" => ""Tổng chi tiêu từ ngày 2025/10/01 đến 2025/10/22? (Tuỳ vào ngày hiện tại)""
+Ví dụ 6: ""Tôi chi tiêu / mua gì hôm nay"" => ""Tôi chi tiêu gì vào ngày 2025/10/22? (Tuỳ vào ngày hiện tại)""
 
 
 

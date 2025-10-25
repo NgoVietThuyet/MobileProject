@@ -22,7 +22,7 @@ namespace BEMobile.Services
             "AIzaSyD_pTQ0sScWEp0lilhoJR3xqDDHCuK_AGU"
         };
 
-        public string Model { get; set; } = "gemini-2.0-flash";
+        public string Model { get; set; } = "gemini-2.5-flash-lite";
         public string BaseUrl { get; set; } = "https://generativelanguage.googleapis.com/v1beta/models";
         public bool UseBearerToken { get; set; } = false; // Sửa thành false để dùng API Key
         public string ServiceAccountFile { get; set; }
