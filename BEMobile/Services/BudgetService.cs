@@ -1,12 +1,14 @@
-﻿using BEMobile.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
-
-
-using BEMobile.Models.RequestResponse.BudgetRR.GetAllBudget;
 using BEMobile.Models.RequestResponse.BudgetRR.CreateBudget;
+using BEMobile.Models.RequestResponse.BudgetRR.DeleteBudget;
+using BEMobile.Models.RequestResponse.BudgetRR.GetAllBudget;
 using BEMobile.Models.RequestResponse.BudgetRR.UpdateAmount;
+using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
+using BEMobile.Models.RequestResponse.NotificationRR.ReadNotification;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace BEMobile.Services
@@ -16,19 +18,21 @@ namespace BEMobile.Services
 
         Task<IEnumerable<BudgetDto>> GetAllBudgetsAsync(string userId);
 
-        Task<Budget> CreateBudgetByUserAsync(Request request);
+        Task<CreateBudgetResponse> CreateBudgetByUserAsync(CreatBudgetRequest request);
         Task UpdateAmountByUserIdAsync(UpdateAmountRequest request);
         //Task UpdateBudgetAsync(BudgetDto BudgetDto);
-        Task<bool> DeleteBudgetAsync(string id);
+        Task<DeleteBudgetResponse> DeleteBudgetAsync(DeleteBudgetRequest request);
         //Task<IEnumerable<BudgetDto>> SearchBudgetsAsync(string? name, string? email, string? phoneNumber);
     }
     public class BudgetService : IBudgetService
     {
         private readonly AppDbContext _context;
+        private readonly INotificationService _notificationService;
 
-        public BudgetService(AppDbContext context)
+        public BudgetService(AppDbContext context, INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
 
@@ -58,7 +62,7 @@ namespace BEMobile.Services
             return Budgets;
         }
 
-        public async Task<Budget> CreateBudgetByUserAsync(Request request)
+        public async Task<CreateBudgetResponse> CreateBudgetByUserAsync(CreatBudgetRequest request)
         {
 
             var Budget = new Budget
@@ -75,7 +79,27 @@ namespace BEMobile.Services
 
             _context.Budgets.Add(Budget);
             await _context.SaveChangesAsync();
-            return Budget;
+
+            await _notificationService.PushNotificationAsync(new PushNotificationRequest
+            {
+                UserId = request.UserId,
+                Content = "Tạo ngân sách thành công"
+            });
+
+            return new CreateBudgetResponse { 
+                Success = true, 
+                Message = "Tạo ngân sách OK", 
+                Budget = new BudgetDto { 
+                    BudgetId = Budget.BudgetId,
+                    UserId = Budget.UserId,
+                    Initial_Amount = Budget.Initial_Amount,
+                    Current_Amount = Budget.Current_Amount,
+                    CategoryId = Budget.CategoryId,
+                    EndDate = Budget.EndDate,
+                    CreatedDate = Budget.CreatedDate,
+                    StartDate = Budget.StartDate
+                }
+            };
         }
         public async Task UpdateAmountByUserIdAsync(UpdateAmountRequest request)
         {
@@ -104,41 +128,64 @@ namespace BEMobile.Services
    
                 _context.Budgets.Update(budget);
                     await _context.SaveChangesAsync();
-                
+
+                await _notificationService.PushNotificationAsync(new PushNotificationRequest
+                {
+                    UserId = request.UserId,
+                    Content = "Cập nhật số tiền mới cho ngân sách"
+                });
+
             }
             catch (Exception ex)
             {
                 throw new Exception("Bị lỗi",ex);
             }
         }
-        public async Task<bool> DeleteBudgetAsync(string id)
+        public async Task<DeleteBudgetResponse> DeleteBudgetAsync(DeleteBudgetRequest request)
         {
+            var response = new DeleteBudgetResponse();
+
             try
             {
-                // 1️⃣ Tìm Budget theo ID
-                var budget = await _context.Budgets
-                    .FirstOrDefaultAsync(b => b.BudgetId == id);
-
-                // 2️⃣ Kiểm tra nếu không tồn tại
-                if (budget == null)
+                if (string.IsNullOrEmpty(request.BudgetId))
                 {
-                    return false; // Không có budget nào trùng ID
+                    response.Success = false;
+                    response.Message = "Thiếu BudgetId trong yêu cầu.";
+                    return response;
                 }
 
-                // 3️⃣ Xóa entity
-                _context.Budgets.Remove(budget);
+                var budget = await _context.Budgets
+                    .FirstOrDefaultAsync(b => b.BudgetId == request.BudgetId);
 
-                // 4️⃣ Lưu thay đổi
+                if (budget == null)
+                {
+                    response.Success = false;
+                    response.Message = $"Không tìm thấy ngân sách có ID = {request.BudgetId}";
+                    return response;
+                }
+
+                _context.Budgets.Remove(budget);
                 await _context.SaveChangesAsync();
 
-                return true; // Xóa thành công
+                await _notificationService.PushNotificationAsync(new PushNotificationRequest
+                {
+                    UserId = request.UserId,
+                    Content = "Bạn đã xóa ngân sách"
+                });
+
+                response.Success = true;
+                response.Message = "Xóa ngân sách thành công.";
+
+                return response;
             }
             catch (Exception ex)
             {
-                // 5️⃣ Ném lỗi có thông tin chi tiết
-                throw new Exception($"Lỗi khi xóa Budget có ID = {id}", ex);
+                response.Success = false;
+                response.Message = $"Lỗi khi xóa ngân sách: {ex.Message}";
+                return response;
             }
         }
+
 
 
         //public async Task<IEnumerable<BudgetDto>> SearchBudgetsAsync(string? name, string? email, string? phoneNumber)

@@ -6,5 +6,7 @@ namespace BEMobile.Models.RequestResponse.BudgetRR.DeleteBudget
     {
         [Required]
         public string BudgetId { get; set; }
+
+        public string UserId { get; set; }
     }
 }

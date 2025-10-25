@@ -1,10 +1,9 @@
 ﻿using BEMobile.Data.Entities;
-using Microsoft.EntityFrameworkCore;
 using BEMobile.Models.DTOs;
-
-
-using BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount;
+using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
 using BEMobile.Models.RequestResponse.SavingGoalRR;
+using BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace BEMobile.Services
@@ -22,10 +21,12 @@ namespace BEMobile.Services
     public class SavingGoalService : ISavingGoalService
     {
         private readonly AppDbContext _context;
+        private readonly INotificationService _notificationService;
 
-        public SavingGoalService(AppDbContext context)
+        public SavingGoalService(AppDbContext context, INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
 
@@ -72,6 +73,12 @@ namespace BEMobile.Services
 
             _context.SavingGoals.Add(savingGoal);
             await _context.SaveChangesAsync();
+
+            await _notificationService.PushNotificationAsync(new PushNotificationRequest
+            {
+                UserId = savingGoal.UserId,
+                Content = $"Bạn đã tạo mục tiêu tiết kiệm '{savingGoal.Title}' với số tiền {savingGoal.TargetAmount}."
+            });
             return savingGoal;
         }
         public async Task UpdateAmountAsync(UpdateAmountGoalRequest request)
@@ -101,6 +108,14 @@ namespace BEMobile.Services
 
                 _context.SavingGoals.Update(savingGoal);
                 await _context.SaveChangesAsync();
+
+                await _notificationService.PushNotificationAsync(new PushNotificationRequest
+                {
+                    UserId = savingGoal.UserId,
+                    Content = $"Cập nhật số tiền trong mục tiêu '{savingGoal.Title}' thành {savingGoal.CurrentAmount}."
+                });
+
+
 
             }
             catch (Exception ex)

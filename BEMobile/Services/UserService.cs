@@ -1,10 +1,10 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
-using BEMobile.Models.RequestResponse.Account.CreateAccount;
-using BEMobile.Models.RequestResponse.Notification.PushNotification;
-using BEMobile.Models.RequestResponse.User.Login;
-using BEMobile.Models.RequestResponse.User.UpdateUser;
-using BEMobile.Models.RequestResponse.User.UploadUserImage;
+using BEMobile.Models.RequestResponse.AccountRR.CreateAccount;
+using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
+using BEMobile.Models.RequestResponse.UserRR.Login;
+using BEMobile.Models.RequestResponse.UserRR.UpdateUser;
+using BEMobile.Models.RequestResponse.UserRR.UploadUserImage;
 using Microsoft.EntityFrameworkCore;
 
 namespace BEMobile.Services

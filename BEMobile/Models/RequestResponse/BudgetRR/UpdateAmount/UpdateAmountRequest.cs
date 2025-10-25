@@ -7,6 +7,9 @@ namespace BEMobile.Models.RequestResponse.BudgetRR.UpdateAmount
     {
         [Required]
         public string BudgetId { get; set; }
+
+        public string UserId { get; set; }
+
         public string UpdateAmount { get; set; }
         public bool isAddAmount { get; set; }
     }

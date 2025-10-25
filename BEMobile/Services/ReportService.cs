@@ -1,11 +1,12 @@
-﻿using BEMobile.Data.Entities;
+﻿using System.Drawing;
+using System.Globalization;
+using BEMobile.Data.Entities;
+using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
 using BEMobile.Models.RequestResponse.ReportRR;
 using Google;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using System.Drawing;
-using System.Globalization;
 
 namespace BEMobile.Services
 {
@@ -18,13 +19,19 @@ namespace BEMobile.Services
     {
         private readonly AppDbContext _context;
         private readonly ICategoryService _categoryService;
+        private readonly INotificationService _notificationService;
 
-        public ReportService(AppDbContext context, ICategoryService categoryService)
+
+        public ReportService(AppDbContext context, ICategoryService categoryService, INotificationService notificationService)
         {
             _context = context;
             _categoryService = categoryService;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            _notificationService = notificationService;
+
         }
+
+       
         public async Task<byte[]> GenerateExcelReportByTemplateAsync(GenerateExcelReportRequest reportRequest)
         {
             //Lấy toàn bộ transactions của user 
@@ -93,6 +100,12 @@ namespace BEMobile.Services
 
             // Định dạng - TRUYỀN THÊM incomeCount
             FormatWorksheet(worksheet, incomeTransactions.Count, expenseTransactions.Count, incomeTransactions.Count);
+
+            await _notificationService.PushNotificationAsync(new PushNotificationRequest
+            {
+                UserId = reportRequest.UserId,
+                Content = "Bạn đã xuất thành công một báo cáo"
+            });
 
             return package.GetAsByteArray();
         }

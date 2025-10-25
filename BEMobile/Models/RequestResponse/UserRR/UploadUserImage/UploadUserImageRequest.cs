@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace BEMobile.Models.RequestResponse.User.UploadUserImage
+namespace BEMobile.Models.RequestResponse.UserRR.UploadUserImage
 {
     public class UploadUserImageRequest
     {

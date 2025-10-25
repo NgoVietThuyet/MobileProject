@@ -43,96 +43,80 @@ namespace BEMobile.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Budget>> CreateUser([FromBody] Request request)
+        public async Task<ActionResult<CreateBudgetResponse>> CreateBudget([FromBody] CreatBudgetRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new CreateBudgetResponse
+                {
+                    Success = false,
+                    Message = "Dữ liệu gửi lên không hợp lệ"
+                });
+
             try
             {
-                var Budget = await _BudgetService.CreateBudgetByUserAsync(request);
-                if (User == null)
-                {
-                    return Unauthorized(new Response
-                    {
-                        Success = false,
-                        Message = "Đăng ký thất bại"
-                    });
-                }
-                else
-                {
-                    var response = new Response
-                    {
-                        Success = true,
-                        Message = "Đăng ký thành công",
-                        Budget = new BudgetDto
-                        {
-                            BudgetId = Budget.BudgetId,
-                            Initial_Amount = Budget.Initial_Amount,
-                            Current_Amount = Budget.Current_Amount,
-                            UserId = Budget.UserId,
-
-                            StartDate = Budget.StartDate,
-
-                            CategoryId = Budget.CategoryId,
-                            CreatedDate = Budget.CreatedDate,
-                            UpdatedDate = Budget.UpdatedDate
-                        }
-                        // Có thể thêm Token nếu triển khai JWT
-                    };
-
-                    return Ok(response);
-                }
+                var result = await _BudgetService.CreateBudgetByUserAsync(request);
+                return Ok(result);
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, new CreateBudgetResponse
+                {
+                    Success = false,
+                    Message = $"Đã xảy ra lỗi khi tạo ngân sách: {ex.Message}"
+                });
             }
         }
 
-        [HttpPut("Update")]
-        public async Task<ActionResult<Budget>> UpdateUser(UpdateAmountRequest request)
+        public async Task<ActionResult<UpdateAmountResponse>> UpdateAmount([FromBody] UpdateAmountRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new UpdateAmountResponse
+                {
+                    Success = false,
+                    Message = "Dữ liệu gửi lên không hợp lệ"
+                });
+
             try
             {
                 await _BudgetService.UpdateAmountByUserIdAsync(request);
-
                 return Ok(new UpdateAmountResponse
                 {
                     Success = true,
                     Message = "Cập nhật số tiền thành công"
                 });
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                return Ok(new UpdateAmountResponse
+                return StatusCode(500, new UpdateAmountResponse
                 {
                     Success = false,
-                    Message = "Cập nhật số tiền không thành công"
+                    Message = $"Cập nhật thất bại: {ex.Message}"
                 });
             }
         }
 
-        [HttpDelete("DeleteById")]
-        public async Task<ActionResult> DeleteBudget(string id)
+        [HttpDelete("Delete")]
+        public async Task<ActionResult<DeleteBudgetResponse>> DeleteBudget([FromBody] DeleteBudgetRequest request)
         {
-            try
-            {
-                var result = await _BudgetService.DeleteBudgetAsync(id);
-                if (result)
-                {
-                    return Ok(new DeleteBudgetResponse
-                    {
-                        Success = true,
-                        Message = "Xóa thành công"
-                    });
-                }
-                return Ok(new DeleteBudgetResponse
+            if (!ModelState.IsValid)
+                return BadRequest(new DeleteBudgetResponse
                 {
                     Success = false,
-                    Message = "Xóa thất bại"
+                    Message = "Dữ liệu gửi lên không hợp lệ"
                 });
-            }
-            catch (InvalidOperationException ex)
+
+            try
             {
-                return BadRequest(ex.Message);
+                var result = await _BudgetService.DeleteBudgetAsync(request);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new DeleteBudgetResponse
+                {
+                    Success = false,
+                    Message = $"Lỗi khi xóa ngân sách: {ex.Message}"
+                });
             }
         }
 

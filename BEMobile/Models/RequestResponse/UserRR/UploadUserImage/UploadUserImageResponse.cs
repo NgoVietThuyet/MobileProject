@@ -1,6 +1,6 @@
 using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.User.UploadUserImage
+namespace BEMobile.Models.RequestResponse.UserRR.UploadUserImage
 {
     public class UploadUserImageResponse
     {
