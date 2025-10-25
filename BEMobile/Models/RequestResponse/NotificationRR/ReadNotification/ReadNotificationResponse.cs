@@ -1,4 +1,4 @@
-namespace BEMobile.Models.RequestResponse.Notification.ReadNotification
+namespace BEMobile.Models.RequestResponse.NotificationRR.ReadNotification
 {
     public class ReadNotificationResponse
     {

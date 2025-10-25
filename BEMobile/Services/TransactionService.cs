@@ -1,9 +1,9 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
-using BEMobile.Models.RequestResponse.Transaction.CreateTransaction;
-using BEMobile.Models.RequestResponse.Transaction.DeleteTransaction;
-using BEMobile.Models.RequestResponse.Transaction.GetAllTransaction;
-using BEMobile.Models.RequestResponse.Transaction.UpdateTransaction;
+using BEMobile.Models.RequestResponse.TransactionRR.CreateTransaction;
+using BEMobile.Models.RequestResponse.TransactionRR.DeleteTransaction;
+using BEMobile.Models.RequestResponse.TransactionRR.GetAllTransaction;
+using BEMobile.Models.RequestResponse.TransactionRR.UpdateTransaction;
 using Microsoft.EntityFrameworkCore;
 
 namespace BEMobile.Services

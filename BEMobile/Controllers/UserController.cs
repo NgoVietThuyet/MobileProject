@@ -1,8 +1,8 @@
 ﻿using BEMobile.Models.DTOs;
 
 
-using BEMobile.Models.RequestResponse.User.Login;
-using BEMobile.Models.RequestResponse.User.SignUp;
+using BEMobile.Models.RequestResponse.UserRR.Login;
+using BEMobile.Models.RequestResponse.UserRR.SignUp;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;

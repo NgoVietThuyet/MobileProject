@@ -1,4 +1,4 @@
-namespace BEMobile.Models.RequestResponse.Notification.DeleteNotification
+namespace BEMobile.Models.RequestResponse.NotificationRR.DeleteNotification
 {
     public class DeleteNotificationResponse
     {

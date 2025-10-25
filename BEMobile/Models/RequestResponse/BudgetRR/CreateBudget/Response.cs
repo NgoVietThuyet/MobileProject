@@ -1,6 +1,6 @@
 ﻿using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.Budget.CreateBudget
+namespace BEMobile.Models.RequestResponse.BudgetRR.CreateBudget
 {
     public class Response
     {

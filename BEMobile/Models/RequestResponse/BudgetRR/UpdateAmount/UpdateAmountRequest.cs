@@ -1,7 +1,7 @@
 ﻿using Microsoft.Identity.Client;
 using System.ComponentModel.DataAnnotations;
 
-namespace BEMobile.Models.RequestResponse.Budget.UpdateAmount
+namespace BEMobile.Models.RequestResponse.BudgetRR.UpdateAmount
 {
     public class UpdateAmountRequest
     {

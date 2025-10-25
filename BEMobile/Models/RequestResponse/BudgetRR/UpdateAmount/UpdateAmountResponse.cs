@@ -1,6 +1,6 @@
 ﻿using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.Budget.UpdateAmount
+namespace BEMobile.Models.RequestResponse.BudgetRR.UpdateAmount
 {
     public class UpdateAmountResponse
     {

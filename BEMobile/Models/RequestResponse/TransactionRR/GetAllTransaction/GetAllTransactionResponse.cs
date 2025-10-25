@@ -1,5 +1,5 @@
 using BEMobile.Models.DTOs;
-namespace BEMobile.Models.RequestResponse.Transaction.GetAllTransaction;
+namespace BEMobile.Models.RequestResponse.TransactionRR.GetAllTransaction;
 
 public class GetAllTransactionResponse
 {

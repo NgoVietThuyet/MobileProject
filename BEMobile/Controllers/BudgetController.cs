@@ -1,9 +1,9 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
-using BEMobile.Models.RequestResponse.Budget.CreateBudget;
-using BEMobile.Models.RequestResponse.Budget.DeleteBudget;
-using BEMobile.Models.RequestResponse.Budget.UpdateAmount;
-
+using BEMobile.Models.RequestResponse.BudgetRR.CreateBudget;
+using BEMobile.Models.RequestResponse.BudgetRR.DeleteBudget;
+using BEMobile.Models.RequestResponse.BudgetRR.UpdateAmount;
+using BEMobile.Models.RequestResponse.BudgetRR.GetAllBudget;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -23,11 +23,11 @@ namespace BEMobile.Controllers
         }
 
         [HttpGet("GetAllBudgets")]
-        public async Task<ActionResult<IEnumerable<BudgetDto>>> GetAllBudgets()
+        public async Task<ActionResult<IEnumerable<BudgetDto>>> GetAllBudgets(string userId)
         {
             try
             {
-                var Budgets = await _BudgetService.GetAllBudgetsAsync();
+                var Budgets = await _BudgetService.GetAllBudgetsAsync(userId);
                 return Ok(Budgets);
             }
             catch (Exception ex)
