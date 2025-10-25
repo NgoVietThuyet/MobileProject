@@ -16,6 +16,9 @@ namespace BEMobile.Models.DTOs
         public string? Google { get; set; }
         public string? DateOfBirth { get; set; }
         public string? Password { get; set; }
+
+        public string? UrlImage { get; set; }
+
         public string? CreatedDate { get; set; }
         public string? UpdatedDate { get; set; }
         

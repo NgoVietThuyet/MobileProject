@@ -91,53 +91,14 @@ namespace BEMobile.Controllers
         [HttpPost("login")]
         [ProducesResponseType(typeof(LoginResponse), 200)]
         [ProducesResponseType(typeof(LoginResponse), 400)]
-        public async Task<IActionResult> LogIn([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            try
-            {
+            var result = await _UserService.IsLoginAsync(request);
 
-                // Gọi service để xác thực
-                var user = await _UserService.IsLogin(request.Email, request.Password);
-                
-                if (user == null)
-                {
-                    return Unauthorized(new LoginResponse
-                    {
-                        Success = false,
-                        Message = "Email hoặc mật khẩu không đúng"
-                    });
-                }
+            if (!result.Success)
+                return BadRequest(result);
 
-                // Tạo response
-                var response = new LoginResponse
-                {
-                    Success = true,
-                    Message = "Đăng nhập thành công",
-                    User = new UserDto
-                    {
-                        UserId = user.UserId,
-                        Name = user.Name,
-                        Email = user.Email,
-                        PhoneNumber = user.PhoneNumber,
-                        Facebook = user.Facebook,
-                        Twitter = user.Twitter,
-                        CreatedDate = user.CreatedDate,
-                        UpdatedDate = user.UpdatedDate
-                    }
-                    // Có thể thêm Token nếu triển khai JWT
-                };
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, new LoginResponse
-                {
-                    Success = false,
-                    Message = "Đã xảy ra lỗi trong quá trình đăng nhập"
-                });
-            }
+            return Ok(result);
         }
 
 
