@@ -614,10 +614,56 @@
         }
       }
     },
+    "/api/Reports/export-template": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/SavingGoal/GetAllSavingGoals": {
       "get": {
         "tags": [
           "SavingGoal"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1915,8 +1961,8 @@
             "nullable": true
           },
           "amount": {
-            "type": "number",
-            "format": "float"
+            "type": "string",
+            "nullable": true
           },
           "note": {
             "type": "string",

@@ -24,10 +24,6 @@ namespace BEMobile.Controllers
         [HttpPost("extract")]
         public async Task<IActionResult> ExtractGraph([FromBody] ChatRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request?.Text))
-            {
-                return BadRequest("Đầu vào không hợp lệ!");
-            }
 
             var extractedData = await _kgService.Classify_prompt(request.Text);
             var cleanedData = extractedData.Trim().ToUpperInvariant();
@@ -40,8 +36,11 @@ namespace BEMobile.Controllers
                     var responseAdd = await _kgService.Rep_add_transaction(request.Text);
                     return Ok(responseAdd);
                 case "SINGLE_QUERY":
-                    var responseSing = await _kgService.Rep_single_query(request.Text, "1");
+                    var responseSing = await _kgService.Rep_multi_query(request.Text, "1");
                     return Ok(responseSing);
+                case "MULTI_QUERY":
+                    var responseMulti = await _kgService.Rep_multi_query(request.Text, "1");
+                    return Ok(responseMulti);
                 case null:
                     return StatusCode(StatusCodes.Status500InternalServerError, "Lỗi khi xử lý yêu cầu.");
             }

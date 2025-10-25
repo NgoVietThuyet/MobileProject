@@ -23,23 +23,31 @@ namespace BEMobile.Controllers
                 if (file == null || file.Length == 0)
                     return BadRequest("Không có tệp nào được tải lên.");
 
-                var transactions = await _imageService.ProcessReceiptToTransactionsAsync(file, userId: "omg", embedBase64: embedBase64);
-
-                if (transactions == null || !transactions.Any())
+                using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3)))
                 {
-                    return BadRequest(new
+                    var transactions = await _imageService.ProcessReceiptToTransactionsAsync(
+                        file,
+                        userId: "omg",
+                        embedBase64: embedBase64,
+                        cancellationToken: cts.Token 
+                    );
+
+                    if (transactions == null || !transactions.Any())
                     {
-                        Success = false,
-                        Message = "Không thể đọc được nội dung hoá đơn. Vui lòng thử lại hoặc chụp rõ hơn."
+                        return BadRequest(new
+                        {
+                            Success = false,
+                            Message = "Không thể đọc được nội dung hoá đơn. Vui lòng thử lại hoặc chụp rõ hơn."
+                        });
+                    }
+
+                    return Ok(new
+                    {
+                        Success = true,
+                        Message = "Xử lý hoá đơn thành công",
+                        Transactions = transactions
                     });
                 }
-
-                return Ok(new
-                {
-                    Success = true,
-                    Message = "Xử lý hoá đơn thành công",
-                    Transactions = transactions
-                });
             }
             catch (Exception ex)
             {

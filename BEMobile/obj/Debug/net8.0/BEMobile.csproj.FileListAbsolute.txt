@@ -525,29 +525,15 @@ D:\Period5\BE\MobileProject\BEMobile\obj\Debug\net8.0\refint\BEMobile.dll
 D:\Period5\BE\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.pdb
 D:\Period5\BE\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.genruntimeconfig.cache
 D:\Period5\BE\MobileProject\BEMobile\obj\Debug\net8.0\ref\BEMobile.dll
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.AssemblyReference.cache
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rpswa.dswa.cache.json
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.GeneratedMSBuildEditorConfig.editorconfig
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.AssemblyInfoInputs.cache
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.AssemblyInfo.cs
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.CoreCompileInputs.cache
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.MvcApplicationPartsAssemblyInfo.cs
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.MvcApplicationPartsAssemblyInfo.cache
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.RazorAssemblyInfo.cache
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.RazorAssemblyInfo.cs
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.sourcelink.json
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.dll
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\refint\BEMobile.dll
-D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.pdb
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\appsettings.Development.json
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\appsettings.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\global.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.staticwebassets.runtime.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.staticwebassets.endpoints.json
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\x86\leptonica-1.82.0.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\x86\tesseract50.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\x64\leptonica-1.82.0.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\x64\tesseract50.dll
-D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\global.json
-D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.staticwebassets.runtime.json
-D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.staticwebassets.endpoints.json
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.exe
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.deps.json
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.runtimeconfig.json
@@ -556,6 +542,10 @@ D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BEMobile.pdb
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Azure.Core.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Azure.Identity.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\EPPlus.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\EPPlus.Interfaces.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.Auth.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Google.Apis.Core.dll
@@ -577,6 +567,8 @@ D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.EntityF
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
@@ -592,6 +584,7 @@ D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Identit
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.OpenApi.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
@@ -614,11 +607,14 @@ D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Diagnostic
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Drawing.Common.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Formats.Asn1.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.IO.Packaging.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.IO.Pipelines.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Management.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Memory.Data.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Runtime.Caching.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Security.Permissions.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Text.Encodings.Web.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\System.Text.Json.dll
@@ -704,9 +700,21 @@ D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\unix\lib
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.AssemblyReference.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.GeneratedMSBuildEditorConfig.editorconfig
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.AssemblyInfoInputs.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.AssemblyInfo.cs
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.CoreCompileInputs.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.MvcApplicationPartsAssemblyInfo.cs
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.MvcApplicationPartsAssemblyInfo.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.RazorAssemblyInfo.cache
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.RazorAssemblyInfo.cs
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.sourcelink.json
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rjimswa.dswa.cache.json
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
@@ -719,5 +727,8 @@ D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.d
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.csproj.Up2Date
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.dll
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\refint\BEMobile.dll
+D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.pdb
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.genruntimeconfig.cache
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\ref\BEMobile.dll

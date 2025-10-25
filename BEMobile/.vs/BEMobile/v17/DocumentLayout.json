@@ -3,26 +3,6 @@
   "WorkspaceRootPath": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\knowledgegraphservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\knowledgegraphservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\connectors\\neo4jconnector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:connectors\\neo4jconnector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\imageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\imageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -31,24 +11,31 @@
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\global.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:global.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\knowledgegraphservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\knowledgegraphservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\bemobile.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:bemobile.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\reportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\reportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\modelbuilderextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:modelbuilderextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\transactionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\transactionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\.nuget\\packages\\epplus\\8.2.1\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.csproj.user||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -61,8 +48,52 @@
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Period5\\BE\\MobileProject\\BEMobile\\Data\\Entities\\Categories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\Login\\LoginResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\User\\Login\\LoginResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\CreateBudget\\Request.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\Budget\\CreateBudget\\Request.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\CreateBudget\\Response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\Budget\\CreateBudget\\Response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\SignUp\\SignUpRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\User\\SignUp\\SignUpRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\Login\\LoginRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\User\\Login\\LoginRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\SignUp\\SignUpResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\RequestResponse\\User\\SignUp\\SignUpResponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\budgetservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\budgetservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\controllers\\budgetcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\budgetcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\data\\entities\\budgets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -73,20 +104,24 @@
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:models\\dtos\\budgetdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\controllers\\budgetcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\budgetcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\models\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:models\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\data\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -101,8 +136,20 @@
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:bemobile.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\modelbuilderextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:modelbuilderextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\global.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:global.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\models\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:models\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\bemobile.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|solutionrelative:bemobile.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F52458AE-7652-46AB-9FF1-E729AEF9295E}|BEMobile.csproj|d:\\h\u1ECDc li\u1EC7u\\branch\\mobileproject\\bemobile\\extensions\\serviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -148,7 +195,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -161,63 +208,73 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Neo4jConnector.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Connectors\\Neo4jConnector.cs",
-              "RelativeDocumentMoniker": "Connectors\\Neo4jConnector.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Connectors\\Neo4jConnector.cs",
-              "RelativeToolTip": "Connectors\\Neo4jConnector.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Title": "KnowledgeGraphService.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\KnowledgeGraphService.cs",
+              "RelativeDocumentMoniker": "Services\\KnowledgeGraphService.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\KnowledgeGraphService.cs",
+              "RelativeToolTip": "Services\\KnowledgeGraphService.cs",
+              "ViewState": "AgIAAOgAAAAAAAAAAAAIwN0AAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:07:47.907Z"
+              "WhenOpened": "2025-10-22T10:22:39.754Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-19T17:34:29.805Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "AppDbContext.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\AppDbContext.cs",
-              "RelativeToolTip": "AppDbContext.cs",
-              "ViewState": "AgIAAF8AAAAAAAAAAAAIwGoAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "ImageController.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ImageController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ImageController.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ImageController.cs",
+              "RelativeToolTip": "Controllers\\ImageController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T17:34:29.814Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ModelBuilderExtension.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\ModelBuilderExtension.cs",
-              "RelativeDocumentMoniker": "ModelBuilderExtension.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\ModelBuilderExtension.cs",
-              "RelativeToolTip": "ModelBuilderExtension.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T17:34:29.856Z"
+              "WhenOpened": "2025-10-22T10:07:28.132Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAACMAAAApAAAAAAAAAA==",
+              "Title": "ImageService.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\ImageService.cs",
+              "RelativeDocumentMoniker": "Services\\ImageService.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\ImageService.cs",
+              "RelativeToolTip": "Services\\ImageService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB4AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T17:34:29.793Z",
+              "WhenOpened": "2025-10-22T10:05:07.16Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "readme.txt",
+              "DocumentMoniker": "C:\\Users\\Admin\\.nuget\\packages\\epplus\\8.2.1\\readme.txt",
+              "ToolTip": "C:\\Users\\Admin\\.nuget\\packages\\epplus\\8.2.1\\readme.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-10-22T09:58:34.727Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ReportController.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ReportController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReportController.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ReportController.cs",
+              "RelativeToolTip": "Controllers\\ReportController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-22T09:55:59.279Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ReportService.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\ReportService.cs",
+              "RelativeDocumentMoniker": "Services\\ReportService.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\ReportService.cs",
+              "RelativeToolTip": "Services\\ReportService.cs",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAkwAMAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-22T09:54:27.5Z"
             },
             {
               "$type": "Document",
@@ -227,133 +284,95 @@
               "RelativeDocumentMoniker": "Controllers\\ChatbotController.cs",
               "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ChatbotController.cs",
               "RelativeToolTip": "Controllers\\ChatbotController.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAgwB8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwBwAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:19:23.037Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "KnowledgeGraphService.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\KnowledgeGraphService.cs",
-              "RelativeDocumentMoniker": "Services\\KnowledgeGraphService.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\KnowledgeGraphService.cs",
-              "RelativeToolTip": "Services\\KnowledgeGraphService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGMBAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:17:17.387Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-22T10:21:37.823Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "ImageService.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\ImageService.cs",
-              "RelativeDocumentMoniker": "Services\\ImageService.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\ImageService.cs",
-              "RelativeToolTip": "Services\\ImageService.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAiwBAAAAAuAAAAAAAAAA==",
+              "Title": "TransactionService.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\TransactionService.cs",
+              "RelativeDocumentMoniker": "Services\\TransactionService.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\TransactionService.cs",
+              "RelativeToolTip": "Services\\TransactionService.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAUwHsAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:15:31.475Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CategoryService.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\CategoryService.cs",
-              "RelativeDocumentMoniker": "Services\\CategoryService.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\CategoryService.cs",
-              "RelativeToolTip": "Services\\CategoryService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T18:42:27.262Z"
+              "WhenOpened": "2025-10-22T11:44:41.01Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "ImageController.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ImageController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ImageController.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\ImageController.cs",
-              "RelativeToolTip": "Controllers\\ImageController.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Title": "UserService.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "Services\\UserService.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\UserService.cs",
+              "RelativeToolTip": "Services\\UserService.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAUwEAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-20T00:28:47.491Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "global.json",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\global.json",
-              "RelativeDocumentMoniker": "global.json",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\global.json",
-              "RelativeToolTip": "global.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-19T17:34:29.856Z"
+              "WhenOpened": "2025-10-19T17:34:29.803Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "BEMobile.http",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.http",
-              "RelativeDocumentMoniker": "BEMobile.http",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.http",
-              "RelativeToolTip": "BEMobile.http",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-10-19T17:34:29.864Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
               "Title": "BEMobile.csproj.user",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.csproj.user",
               "RelativeDocumentMoniker": "BEMobile.csproj.user",
               "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.csproj.user",
               "RelativeToolTip": "BEMobile.csproj.user",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003464|",
               "WhenOpened": "2025-10-19T18:01:43.338Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Budgets.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Data\\Entities\\Budgets.cs",
-              "RelativeDocumentMoniker": "Data\\Entities\\Budgets.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Data\\Entities\\Budgets.cs",
-              "RelativeToolTip": "Data\\Entities\\Budgets.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAUwCMAAAAfAAAAAAAAAA==",
+              "DocumentIndex": 12,
+              "Title": "DeleteBudgetResponse.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetResponse.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetResponse.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetResponse.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetResponse.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T17:34:29.775Z"
+              "WhenOpened": "2025-10-19T17:34:29.467Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "BudgetDto.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\BudgetDto.cs",
-              "RelativeDocumentMoniker": "Models\\DTOs\\BudgetDto.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\BudgetDto.cs",
-              "RelativeToolTip": "Models\\DTOs\\BudgetDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAWAAAAAAAAAA==",
+              "DocumentIndex": 13,
+              "Title": "DeleteBudgetRequest.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetRequest.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetRequest.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetRequest.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\Budget\\DeleteBudget\\DeleteBudgetRequest.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T17:34:29.783Z"
+              "WhenOpened": "2025-10-19T17:34:29.765Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 22,
               "Title": "BudgetService.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\BudgetService.cs",
               "RelativeDocumentMoniker": "Services\\BudgetService.cs",
               "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\BudgetService.cs",
               "RelativeToolTip": "Services\\BudgetService.cs",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAYwG8AAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAYwG8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T17:34:29.775Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 23,
+              "Title": "BudgetController.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\BudgetController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BudgetController.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\BudgetController.cs",
+              "RelativeToolTip": "Controllers\\BudgetController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.783Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\Mobile\\nhap\\MobileProject\\BEMobile\\Program.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\Mobile\\nhap\\MobileProject\\BEMobile\\Program.cs",
@@ -365,19 +384,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "BudgetController.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\BudgetController.cs",
-              "RelativeDocumentMoniker": "Controllers\\BudgetController.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\BudgetController.cs",
-              "RelativeToolTip": "Controllers\\BudgetController.cs",
-              "ViewState": "AgIAAEwAAAAAAAAAAAAWwFMAAAAbAAAAAAAAAA==",
+              "DocumentIndex": 24,
+              "Title": "Budgets.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Data\\Entities\\Budgets.cs",
+              "RelativeDocumentMoniker": "Data\\Entities\\Budgets.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Data\\Entities\\Budgets.cs",
+              "RelativeToolTip": "Data\\Entities\\Budgets.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAUwCMAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.775Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "BudgetDto.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\BudgetDto.cs",
+              "RelativeDocumentMoniker": "Models\\DTOs\\BudgetDto.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\BudgetDto.cs",
+              "RelativeToolTip": "Models\\DTOs\\BudgetDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T17:34:29.783Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 14,
+              "Title": "UpdateAmountResponse.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountResponse.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountResponse.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountResponse.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountResponse.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.783Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAIBJwDMAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.793Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",
@@ -389,19 +443,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\UserService.cs",
-              "RelativeDocumentMoniker": "Services\\UserService.cs",
-              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\UserService.cs",
-              "RelativeToolTip": "Services\\UserService.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAAAkwEAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 15,
+              "Title": "UpdateAmountRequest.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountRequest.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountRequest.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountRequest.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\Budget\\UpdateAmount\\UpdateAmountRequest.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T17:34:29.803Z"
+              "WhenOpened": "2025-10-19T17:34:29.795Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 28,
               "Title": "UserDto.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\DTOs\\UserDto.cs",
               "RelativeDocumentMoniker": "Models\\DTOs\\UserDto.cs",
@@ -413,7 +466,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 29,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-19T17:34:29.805Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "AppDbContext.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\AppDbContext.cs",
+              "RelativeToolTip": "AppDbContext.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAIwGoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.814Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Data\\Entities\\User.cs",
               "RelativeDocumentMoniker": "Data\\Entities\\User.cs",
@@ -425,7 +502,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
+              "Title": "LoginResponse.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\Login\\LoginResponse.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\User\\Login\\LoginResponse.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\Login\\LoginResponse.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\User\\Login\\LoginResponse.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.816Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Request.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\CreateBudget\\Request.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\Budget\\CreateBudget\\Request.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\CreateBudget\\Request.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\Budget\\CreateBudget\\Request.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.824Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "Categories.cs",
               "DocumentMoniker": "D:\\Period5\\BE\\MobileProject\\BEMobile\\Data\\Entities\\Categories.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\Period5\\BE\\MobileProject\\BEMobile\\Data\\Entities\\Categories.cs",
@@ -436,7 +535,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 18,
+              "Title": "Response.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\CreateBudget\\Response.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\Budget\\CreateBudget\\Response.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\Budget\\CreateBudget\\Response.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\Budget\\CreateBudget\\Response.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.832Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
               "Title": "WeatherForecastService.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Services\\WeatherForecastService.cs",
               "RelativeDocumentMoniker": "Services\\WeatherForecastService.cs",
@@ -448,7 +558,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 19,
+              "Title": "SignUpRequest.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\SignUp\\SignUpRequest.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\User\\SignUp\\SignUpRequest.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\SignUp\\SignUpRequest.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\User\\SignUp\\SignUpRequest.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.84Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "LoginRequest.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\Login\\LoginRequest.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\User\\Login\\LoginRequest.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\Login\\LoginRequest.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\User\\Login\\LoginRequest.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.848Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
               "Title": "BEMobile",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.csproj",
               "RelativeDocumentMoniker": "BEMobile.csproj",
@@ -459,7 +591,42 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 21,
+              "Title": "SignUpResponse.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\SignUp\\SignUpResponse.cs",
+              "RelativeDocumentMoniker": "Models\\RequestResponse\\User\\SignUp\\SignUpResponse.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\RequestResponse\\User\\SignUp\\SignUpResponse.cs",
+              "RelativeToolTip": "Models\\RequestResponse\\User\\SignUp\\SignUpResponse.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.856Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "ModelBuilderExtension.cs",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\ModelBuilderExtension.cs",
+              "RelativeDocumentMoniker": "ModelBuilderExtension.cs",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\ModelBuilderExtension.cs",
+              "RelativeToolTip": "ModelBuilderExtension.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-19T17:34:29.856Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "global.json",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\global.json",
+              "RelativeDocumentMoniker": "global.json",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\global.json",
+              "RelativeToolTip": "global.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-19T17:34:29.856Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
               "Title": "WeatherForecast.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Models\\WeatherForecast.cs",
               "RelativeDocumentMoniker": "Models\\WeatherForecast.cs",
@@ -471,7 +638,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 37,
+              "Title": "BEMobile.http",
+              "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.http",
+              "RelativeDocumentMoniker": "BEMobile.http",
+              "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.http",
+              "RelativeToolTip": "BEMobile.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-10-19T17:34:29.864Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
               "Title": "ServiceExtensions.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Extensions\\ServiceExtensions.cs",
               "RelativeDocumentMoniker": "Extensions\\ServiceExtensions.cs",
@@ -483,7 +662,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 39,
               "Title": "BaseEntity.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Common\\BaseEntity.cs",
               "RelativeDocumentMoniker": "Common\\BaseEntity.cs",
@@ -495,7 +674,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 40,
               "Title": "IReferenceEntity.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Common\\IReferenceEntity.cs",
               "RelativeDocumentMoniker": "Common\\IReferenceEntity.cs",
@@ -507,7 +686,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 41,
               "Title": "ISoftDeleteEntity.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Common\\ISoftDeleteEntity.cs",
               "RelativeDocumentMoniker": "Common\\ISoftDeleteEntity.cs",
@@ -519,7 +698,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 42,
               "Title": "ReferenceEntity.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Common\\ReferenceEntity.cs",
               "RelativeDocumentMoniker": "Common\\ReferenceEntity.cs",
@@ -531,7 +710,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 43,
               "Title": "SoftDeleteEntity.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Common\\SoftDeleteEntity.cs",
               "RelativeDocumentMoniker": "Common\\SoftDeleteEntity.cs",
@@ -543,7 +722,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 44,
               "Title": "EFFilterExtensions.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Common\\EFFilterExtensions.cs",
               "RelativeDocumentMoniker": "Common\\EFFilterExtensions.cs",
@@ -555,7 +734,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 45,
               "Title": "IBaseEntity.cs",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\Common\\IBaseEntity.cs",
               "RelativeDocumentMoniker": "Common\\IBaseEntity.cs",
@@ -567,13 +746,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 46,
               "Title": "BEMobile.csproj",
               "DocumentMoniker": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.csproj",
               "RelativeDocumentMoniker": "BEMobile.csproj",
               "ToolTip": "D:\\H\u1ECDc li\u1EC7u\\branch\\MobileProject\\BEMobile\\BEMobile.csproj",
               "RelativeToolTip": "BEMobile.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-10-19T17:34:29.904Z"
             }
