@@ -1,5 +1,6 @@
+using BEMobile.Models.DTOs;
+
 namespace BEMobile.Models.RequestResponse.NotificationRR.PushNotification
-stResponse/Notification/PushNotification/PushNotificationResponse.cs
 {
     public class PushNotificationResponse
     {

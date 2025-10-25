@@ -1,9 +1,9 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
-using BEMobile.Models.RequestResponse.Notification.DeleteNotification;
-using BEMobile.Models.RequestResponse.Notification.GetAllNotification;
-using BEMobile.Models.RequestResponse.Notification.PushNotification;
-using BEMobile.Models.RequestResponse.Notification.ReadNotification;
+using BEMobile.Models.RequestResponse.NotificationRR.DeleteNotification;
+using BEMobile.Models.RequestResponse.NotificationRR.GetAllNotification;
+using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
+using BEMobile.Models.RequestResponse.NotificationRR.ReadNotification;
 using Microsoft.EntityFrameworkCore;
 
 namespace BEMobile.Services

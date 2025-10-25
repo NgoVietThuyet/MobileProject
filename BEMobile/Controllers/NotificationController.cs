@@ -63,14 +63,8 @@ namespace BEMobile.Controllers
         [ProducesResponseType(typeof(PushNotificationResponse), 200)]
         public async Task<IActionResult> Push([FromBody] PushNotificationRequest request)
         {
-            var result = await _service.PushNotificationAsync(request.UserId, request.Content);
-                
-            return Ok(new PushNotificationResponse
-            {
-                Success = result,
-                Message = result ? "Gửi thông báo thành công" : "Gửi thông báo thất bại"
-            });
-=
+            var response = await _service.PushNotificationAsync(request);
+            return Ok(response);
         }
     }
 }

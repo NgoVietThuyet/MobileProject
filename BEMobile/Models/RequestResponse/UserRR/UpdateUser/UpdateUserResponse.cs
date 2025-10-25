@@ -1,6 +1,6 @@
 using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.User.UpdateUser
+namespace BEMobile.Models.RequestResponse.UserRR.UpdateUser
 {
     public class UpdateUserResponse
     {

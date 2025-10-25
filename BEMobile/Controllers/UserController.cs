@@ -1,10 +1,8 @@
 ﻿using BEMobile.Models.DTOs;
 
-
-
 using BEMobile.Models.RequestResponse.UserRR.Login;
 using BEMobile.Models.RequestResponse.UserRR.SignUp;
-
+using BEMobile.Models.RequestResponse.UserRR.UpdateUser;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -25,28 +23,8 @@ namespace BEMobile.Controllers
             _UserService = UserService;
         }
 
-        [HttpGet("GetAllUsers")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
-        {
-            try
-            {
 
 
-
-                 var Users = await _UserService.GetAllUsersAsync();
-                return Ok(Users);
-
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
-        }
-
-
-        
         [HttpPost("Create")]
         public async Task<ActionResult<UserDto>> CreateUser([FromBody] SignUpRequest request)
         {
@@ -99,39 +77,12 @@ namespace BEMobile.Controllers
         }
 
         [HttpPut("Update")]
-
-        public async Task<ActionResult<UserDto>> UpdateUser(UserDto UserDto)
+        public async Task<ActionResult<UpdateUserResponse>> UpdateUser([FromBody] UpdateUserRequest request)
         {
-            try
-            {
-                await _UserService.UpdateUserAsync(UserDto);
-
-                return Ok();
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpDelete("DeleteById{id}")]
-        public async Task<ActionResult> DeleteUser(string id)
-        {
-            try
-            {
-
-
-                var result = await _UserService.DeleteUserAsync(id);
-
-
-                if (!result)
-                { return NotFound("Xóa thất bại"); }
-                return Ok("Xóa thành công");
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var response = await _UserService.UpdateUserAsync(request);
+            if (!response.Success)
+                return BadRequest(response);
+            return Ok(response);
         }
 
 
@@ -146,7 +97,7 @@ namespace BEMobile.Controllers
 
                 // Gọi service để xác thực
                 var user = await _UserService.IsLogin(request.Email, request.Password);
-                
+
                 if (user == null)
                 {
                     return Unauthorized(new LoginResponse
