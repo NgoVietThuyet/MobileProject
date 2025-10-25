@@ -14,5 +14,6 @@ namespace BEMobile.Models.DTOs
         public string UpdatedDate { get; set; }
 
 
+
     }
 }

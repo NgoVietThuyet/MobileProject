@@ -1,8 +1,12 @@
+
 using BEMobile.Services;
 using Microsoft.EntityFrameworkCore;
 using BEMobile.Services;
 using BEMobile;
 using BEMobile.Connectors;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 
+// gemini
+builder.Services.Configure<GeminiOptions>(builder.Configuration.GetSection("Gemini"));
+builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("gemini");
+
 
 
 
@@ -29,6 +38,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+
 
 // gemini
 builder.Services.Configure<GeminiOptions>(builder.Configuration.GetSection("Gemini"));

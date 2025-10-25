@@ -2,16 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using BEMobile.Models.DTOs;
 
+
 using BEMobile.Models.RequestResponse.BudgetRR.GetAllBudget;
 using BEMobile.Models.RequestResponse.BudgetRR.CreateBudget;
 using BEMobile.Models.RequestResponse.BudgetRR.UpdateAmount;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace BEMobile.Services
 {
     public interface IBudgetService
     {
+
         Task<IEnumerable<BudgetDto>> GetAllBudgetsAsync(string userId);
+
         Task<Budget> CreateBudgetByUserAsync(Request request);
         Task UpdateAmountByUserIdAsync(UpdateAmountRequest request);
         //Task UpdateBudgetAsync(BudgetDto BudgetDto);
@@ -27,12 +31,16 @@ namespace BEMobile.Services
             _context = context;
         }
 
+
         public async Task<IEnumerable<BudgetDto>> GetAllBudgetsAsync(string userId)
+
         {
             if (_context.Budgets == null)
                 throw new Exception("Budget DbSet is null in AppDbContext");
             var Budgets = await _context.Budgets
+
                 .Where(x  => x.UserId == userId)
+
                 .Select(u => new BudgetDto
                 {
                     UserId = u.UserId,
@@ -47,8 +55,6 @@ namespace BEMobile.Services
 
                 })
                 .ToListAsync();
-            
-
             return Budgets;
         }
 
@@ -63,8 +69,6 @@ namespace BEMobile.Services
                 Current_Amount = "0",
                 CategoryId = request.CategoryId,
                 EndDate = request.EndDate,
-                
-                
                 CreatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss"),
                 StartDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss")
             };

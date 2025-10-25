@@ -1,3 +1,4 @@
+
 ﻿using Azure.Core;
 using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
@@ -11,7 +12,6 @@ namespace BEMobile.Services
     public interface ICategoryService
     {
         Task<IEnumerable<CategoryDto>> GetAllCategorysAsync();
-        
         Task<Category> CreateCategoryAsync(CategoryRequest request);
         Task UpdateCategoryAsync(CategoryRequest request);
     }
@@ -42,7 +42,6 @@ namespace BEMobile.Services
 
             return Categories;
         }
-        
 
         public async Task<Category> CreateCategoryAsync(CategoryRequest request)
         {

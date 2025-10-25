@@ -2,9 +2,11 @@
 using BEMobile.Models.DTOs;
 
 
+
 using BEMobile.Models.RequestResponse.SavingGoalRR;
 using BEMobile.Models.RequestResponse.SavingGoalRR.Create;
 using BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount;
+
 
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +28,13 @@ namespace BEMobile.Controllers
         }
 
         [HttpGet("GetAllSavingGoals")]
+
         public async Task<ActionResult<IEnumerable<SavingGoalDto>>> GetAllSavingGoals(string userId)
         {
             try
             {
                 var SavingGoals = await _SavingGoalService.GetAllSavingGoalAsync(userId);
+
                 return Ok(SavingGoals);
             }
             catch (Exception ex)

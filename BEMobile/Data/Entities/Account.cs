@@ -24,5 +24,6 @@ namespace BEMobile.Data.Entities
         [Column("CREATED_DATE")]
         public string? CreatedDate { get; set; }
 
+
     }
 }

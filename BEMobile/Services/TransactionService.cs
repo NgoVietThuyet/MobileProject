@@ -1,5 +1,6 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
+
 using BEMobile.Models.RequestResponse.TransactionRR.CreateTransaction;
 using BEMobile.Models.RequestResponse.TransactionRR.DeleteTransaction;
 using BEMobile.Models.RequestResponse.TransactionRR.GetAllTransaction;
@@ -19,10 +20,12 @@ namespace BEMobile.Services
     public class TransactionService : ITransactionService
     {
         private readonly AppDbContext _context;
+        private readonly INotificationService _notificationService;
 
-        public TransactionService(AppDbContext context)
+        public TransactionService(AppDbContext context, INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         public async Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync(string userId)
@@ -50,6 +53,59 @@ namespace BEMobile.Services
         {
             var dto = request.Transaction;
 
+            if (!decimal.TryParse(dto.Amount, out decimal amountValue))
+            {
+                return new CreateTransactionResponse
+                {
+                    Success = false,
+                    Message = "Số tiền không hợp lệ (vui lòng nhập số)"
+                };
+            }
+
+            if (amountValue <= 0)
+            {
+                return new CreateTransactionResponse
+                {
+                    Success = false,
+                    Message = "Số tiền phải lớn hơn 0"
+                };
+            }
+
+
+            var account = await _context.Accounts
+                .FirstOrDefaultAsync(acc => acc.UserId == dto.UserId);
+
+            if (account == null)
+            {
+                return new CreateTransactionResponse
+                {
+                    Success = false,
+                    Message = "Không tìm thấy tài khoản của người dùng"
+                };
+            }
+
+            //  Balance from string to decimal
+            decimal currentBalance = 0;
+            if (!string.IsNullOrEmpty(account.Balance))
+                decimal.TryParse(account.Balance, out currentBalance);
+
+            if (dto.Type == "Income")
+                currentBalance += amountValue;
+            else if (dto.Type == "Expense")
+                currentBalance -= amountValue;
+
+            if (currentBalance < 0)
+            {
+                return new CreateTransactionResponse
+                {
+                    Success = false,
+                    Message = "Số dư không đủ để thực hiện giao dịch này"
+                };
+            }
+
+            account.Balance = currentBalance.ToString("0.##");
+            account.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
+
             var transaction = new Transaction
             {
                 TransactionId = Guid.NewGuid().ToString(),
@@ -63,6 +119,13 @@ namespace BEMobile.Services
 
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
+
+            // creating notification
+            await _notificationService.PushNotificationAsync(new PushNotificationRequest
+            {
+                UserId = dto.UserId,
+                Content = "Bạn đã thêm một giao dịch mới!"
+            });
 
             dto.TransactionId = transaction.TransactionId;
             dto.CreatedDate = transaction.CreatedDate;
@@ -78,7 +141,7 @@ namespace BEMobile.Services
         public async Task<UpdateTransactionResponse> UpdateTransactionAsync(UpdateTransactionRequest request)
         {
             var dto = request.Transaction;
-            var existing = await _context.Transactions.FirstOrDefaultAsync(t => t.TransactionId == dto.TransactionId);
+            var existing = await _context.Transactions.FirstOrDefaultAsync(transaction => transaction.TransactionId == dto.TransactionId);
 
             if (existing == null)
             {
@@ -96,6 +159,13 @@ namespace BEMobile.Services
             existing.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
 
             await _context.SaveChangesAsync();
+
+            // creating notification
+            await _notificationService.PushNotificationAsync(new PushNotificationRequest
+            {
+                UserId = dto.UserId,
+                Content = "Bạn đã sửa một giao dịch!"
+            });
 
             return new UpdateTransactionResponse
             {

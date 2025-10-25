@@ -14,6 +14,7 @@ namespace BEMobile.Connectors
     {
         Task<IResultCursor> ExecuteWriteAsync(string query, object parameters = null);
         Task<List<IRecord>> ExecuteReadAsync(string query, object parameters = null);
+
     }
 
     public class Neo4jConnector : INeo4jConnector
@@ -35,6 +36,7 @@ namespace BEMobile.Connectors
             await using var session = _driver.AsyncSession();
             return await session.RunAsync(query, parameters);
         }
+
 
         public async Task<List<IRecord>> ExecuteReadAsync(string query, object parameters = null)
         {

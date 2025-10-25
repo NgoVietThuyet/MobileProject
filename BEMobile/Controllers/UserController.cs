@@ -1,8 +1,10 @@
 ﻿using BEMobile.Models.DTOs;
 
 
+
 using BEMobile.Models.RequestResponse.UserRR.Login;
 using BEMobile.Models.RequestResponse.UserRR.SignUp;
+
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -23,8 +25,6 @@ namespace BEMobile.Controllers
             _UserService = UserService;
         }
 
-
-
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
@@ -44,6 +44,7 @@ namespace BEMobile.Controllers
 
             }
         }
+
 
         
         [HttpPost("Create")]
@@ -133,16 +134,8 @@ namespace BEMobile.Controllers
             }
         }
 
-        [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> SearchUsers([FromQuery] string? name, [FromQuery] string? email, [FromQuery] string? phoneNumber)
-        {
 
 
-
-            var Users = await _UserService.SearchUsersAsync(name, email, phoneNumber);
-            return Ok(Users);
-        }
-        
         [HttpPost("login")]
         [ProducesResponseType(typeof(LoginResponse), 200)]
         [ProducesResponseType(typeof(LoginResponse), 400)]
