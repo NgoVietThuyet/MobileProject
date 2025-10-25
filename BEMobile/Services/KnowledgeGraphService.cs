@@ -70,7 +70,7 @@ Ví dụ: ""hôm nay tôi ăn trưa hết 40k""
 Chỉ trả lại mảng JSON, không thêm bất kỳ văn bản nào khác. Nếu không thể xác định được category hoặc amount, hãy trả về mảng rỗng []
 "
     ;
-            string modelResponse = await CallGeminiWithTextAsync(prompt);
+            string modelResponse = await CallGeminiWithTextAsync(prompt, 1);
             return modelResponse;
 
         }
@@ -202,7 +202,7 @@ Câu hỏi của người dùng: ""{fixQuestion}""
 Cypher Query:
 ";
 
-            string cypherQuery = await CallGeminiWithTextAsync(promptForCypher);
+            string cypherQuery = await CallGeminiWithTextAsync(promptForCypher, 1);
 
             cypherQuery = cypherQuery.Replace("```cypher", "").Replace("```", "").Trim();
             cypherQuery = cypherQuery.Trim('"');
@@ -247,9 +247,9 @@ Cypher Query:
 
             var promptForAnswer = $@"
             Bạn là một trợ lý tài chính thân thiện và bạn đang quản lý ứng dụng, người dùng đã cập nhật dữ liệu tài chính cá nhân của họ trong một cơ sở dữ liệu và bạn được cung cấp kết quả truy vấn từ cơ sở dữ liệu đó dưới dạng JSON.
-            Dựa vào câu hỏi gốc của người dùng và dữ liệu JSON được cung cấp, hãy tạo ra một câu trả lời tự nhiên bằng tiếng Việt. Nội dung trả lời chi tiết nhất có thể. Nếu dữ liệu quá nhiều, hãy tóm tắt.
+            Dựa vào câu hỏi gốc của người dùng và dữ liệu JSON được cung cấp, hãy tạo ra một câu trả lời tự nhiên bằng tiếng Việt. Nếu dữ liệu quá nhiều, hãy tóm tắt.
             Câu trả lời cần chính xác nhất có thể, từ chối các yêu cầu không cung cấp như  gửi mail, tìm kiếm giúp, ...
-            Chuẩn hoá định dạng.
+            Chuẩn hoá định dạng. Chir trả lời các thông tin cần thiết.
         
             Câu hỏi gốc: ""{userQuestion}""
         
@@ -259,7 +259,7 @@ Cypher Query:
             Câu trả lời của bạn:
         ";
 
-            string finalAnswer = await CallGeminiWithTextAsync(promptForAnswer);
+            string finalAnswer = await CallGeminiWithTextAsync(promptForAnswer, 1);
 
             return finalAnswer;
         }
@@ -283,7 +283,7 @@ Ví dụ 6: ""Tôi chi tiêu / mua gì hôm nay"" => ""Tôi chi tiêu gì vào n
             Câu trả lời của bạn:
         ";
 
-            string fixQuestion = await CallGeminiWithTextAsync(promptForAnswer);
+            string fixQuestion = await CallGeminiWithTextAsync(promptForAnswer, 1);
             return Rep_single_query(userQuestion, userId, fixQuestion).Result;
         }
 
@@ -302,7 +302,7 @@ Phân loại prompt sau: ""{text}""
 ";
             try
             {
-                string modelResponse = await CallGeminiWithTextAsync(prompt);
+                string modelResponse = await CallGeminiWithTextAsync(prompt, 0);
                 return modelResponse;
             }
             catch (Exception ex)
@@ -313,12 +313,12 @@ Phân loại prompt sau: ""{text}""
         }
 
         // Gọi gemini
-        private async Task<string> CallGeminiWithTextAsync(string prompt)
+        private async Task<string> CallGeminiWithTextAsync(string prompt, int op)
         {
             string api = _opts.GetRandomApiKey();
 
             var client = _httpFactory.CreateClient("gemini");
-            var url = $"{_opts.BaseUrl}/{_opts.Model}:generateContent?key={api}";
+            var url = $"{_opts.BaseUrl}/{_opts.Model[op]}:generateContent?key={api}";
 
             var body = new
             {

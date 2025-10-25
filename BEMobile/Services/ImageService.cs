@@ -23,7 +23,11 @@ namespace BEMobile.Services
             "AIzaSyD_pTQ0sScWEp0lilhoJR3xqDDHCuK_AGU"
         };
 
-        public string Model { get; set; } = "gemini-2.5-flash";
+        public List<string> Model { get; set; } = new List<string>
+        {
+            "gemini-2.0-flash",
+            "gemini-2.0-flash-lite"
+        };
         public string BaseUrl { get; set; } = "https://generativelanguage.googleapis.com/v1beta/models";
         public bool UseBearerToken { get; set; } = false; // Sửa thành false để dùng API Key
         public string ServiceAccountFile { get; set; }
@@ -156,7 +160,7 @@ Chỉ trả về mảng JSON, không thêm bất kỳ văn bản nào khác. Ph�
         {
             var client = _httpFactory.CreateClient("gemini");
 
-            var url = $"{_opts.BaseUrl}/{_opts.Model}:generateContent";
+            var url = $"{_opts.BaseUrl}/{_opts.Model[0]}:generateContent";
 
             var imageBase64 = Convert.ToBase64String(imageBytes);
             var body = new
