@@ -1,6 +1,6 @@
 using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.Notification.GetAllNotification
+namespace BEMobile.Models.RequestResponse.NotificationRR.GetAllNotification
 {
     public class GetAllNotificationResponse
     {

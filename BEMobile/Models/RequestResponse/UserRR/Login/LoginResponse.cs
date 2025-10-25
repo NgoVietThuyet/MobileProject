@@ -1,6 +1,8 @@
 ﻿using BEMobile.Models.DTOs;
 
-namespace BEMobile.Models.RequestResponse.User.Login
+
+namespace BEMobile.Models.RequestResponse.UserRR.Login
+
 {
     public class LoginResponse
     {

@@ -28,10 +28,18 @@ namespace BEMobile.Data.Entities
         [Column("TWITTER")]
         public string? Twitter { get; set; }
 
-        [Required]
         [EmailAddress]
         [Column("EMAIL")]
         public string? Email { get; set; } = string.Empty;
+
+        [Column("GOOGLE")]
+        public string? Google { get; set; } = string.Empty;
+
+        [Column("JOB")]
+        public string? Job { get; set; } 
+
+        [Column("DATE_OF_BIRTH")]
+        public string? DateOfBirth { get; set; } 
 
         [Required]
         [Column("PASSWORD")]

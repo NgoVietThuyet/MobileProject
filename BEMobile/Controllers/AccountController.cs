@@ -24,11 +24,12 @@ namespace BEMobile.Controllers
         }
 
         // GET /api/accounts/{id}
-        [HttpGet("GetAccountById")]
+
+        [HttpGet("GetAccountByUserId")]
         public async Task<ActionResult<DetailAccountResponse>> GetById(string id)
         {
-            var res = await _svc.GetAccountByIdAsync(new DetailAccountRequest { AccountId = id });
-            if (res == null) return NotFound();
+            var res = await _svc.GetAccountByUserIdAsync(new DetailAccountRequest { UserId = id });
+            if (!res.Success) return NotFound(res);
             return Ok(res);
         }
 

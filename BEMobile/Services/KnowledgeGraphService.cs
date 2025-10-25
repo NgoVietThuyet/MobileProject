@@ -1,4 +1,4 @@
-﻿
+
 using BEMobile.Connectors;
 using BEMobile.Data.Entities;
 using BEMobile.Services;

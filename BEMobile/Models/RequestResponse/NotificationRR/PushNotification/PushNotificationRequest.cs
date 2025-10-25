@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BEMobile.Models.RequestResponse.Notification.PushNotification
+namespace BEMobile.Models.RequestResponse.NotificationRR.PushNotification
 {
     public class PushNotificationRequest
     {

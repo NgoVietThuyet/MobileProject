@@ -1,4 +1,5 @@
 ﻿using BEMobile.Data.Entities;
+using BEMobile.Models.RequestResponse.ReportRR;
 using Google;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -10,24 +11,25 @@ namespace BEMobile.Services
 {
     public interface IReportService
     {
-        Task<byte[]> GenerateExcelReportByTemplateAsync(string userId, DateTime startDate, DateTime endDate);
+        Task<byte[]> GenerateExcelReportByTemplateAsync(GenerateExcelReportRequest reportRequest);
     }
 
     public class ReportService : IReportService
     {
         private readonly AppDbContext _context;
+        private readonly ICategoryService _categoryService;
 
-
-        public ReportService(AppDbContext context)
+        public ReportService(AppDbContext context, ICategoryService categoryService)
         {
             _context = context;
+            _categoryService = categoryService;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
-        public async Task<byte[]> GenerateExcelReportByTemplateAsync(string userId, DateTime startDate, DateTime endDate)
+        public async Task<byte[]> GenerateExcelReportByTemplateAsync(GenerateExcelReportRequest reportRequest)
         {
-            //Lấy toàn bộ transactions của user
+            //Lấy toàn bộ transactions của user 
                 var allTransactions = await _context.Transactions
-                    .Where(t => t.UserId == userId)
+                    .Where(t => t.UserId == reportRequest.UserId)
                     .AsNoTracking()
                     .ToListAsync();
             DateTime? ParseDate(string dateString)
@@ -57,8 +59,8 @@ namespace BEMobile.Services
                 {
                     var createdDate = ParseDate(t.CreatedDate);
                     return createdDate.HasValue &&
-                           createdDate.Value.Date >= startDate.Date &&
-                           createdDate.Value.Date <= endDate.Date;
+                           createdDate.Value.Date >= reportRequest.StartDate.Date &&
+                           createdDate.Value.Date <= reportRequest.EndDate.Date;
                 })
                 .OrderBy(t =>
                 {
@@ -67,6 +69,8 @@ namespace BEMobile.Services
                     return updatedDate ?? createdDate ?? DateTime.MinValue;
                 })
                 .ToList();
+            // Lấy tất cả các categories từ DB
+            var categoryDict = await _context.Categories.ToDictionaryAsync(c => c.Id, c => c.Name);
 
             // Tách income và expense
             var incomeTransactions = transactions.Where(t => t.Type == "INCOME").ToList();
@@ -79,10 +83,10 @@ namespace BEMobile.Services
             CreateTemplateHeader(worksheet);
 
             // Điền dữ liệu income
-            FillIncomeData(worksheet, incomeTransactions);
+            FillIncomeData(worksheet, incomeTransactions, categoryDict);
 
             // Điền dữ liệu expense - TRUYỀN THÊM incomeCount để xác định vị trí bắt đầu
-            FillExpenseData(worksheet, expenseTransactions, incomeTransactions.Count);
+            FillExpenseData(worksheet, expenseTransactions, incomeTransactions.Count, categoryDict);
 
             // Tính tổng và công thức - TRUYỀN THÊM incomeCount
             //CalculateTotals(worksheet, incomeTransactions.Count, expenseTransactions.Count, incomeTransactions.Count);
@@ -108,6 +112,7 @@ namespace BEMobile.Services
             var headerCells = new[] { "A1:D1", "A2", "B2", "C2", "D2" };
             foreach (var cell in headerCells)
             {
+                worksheet.Cells[cell].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[cell].Style.Font.Bold = true;
                 worksheet.Cells[cell].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells[cell].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
@@ -116,7 +121,7 @@ namespace BEMobile.Services
 
             // KHÔNG tạo header chi tiêu ở đây nữa, vì đã tạo trong FillExpenseData
         }
-        private void FillIncomeData(ExcelWorksheet worksheet, List<Transaction> incomeTransactions)
+        private void FillIncomeData(ExcelWorksheet worksheet, List<Transaction> incomeTransactions, Dictionary<string, string> categoryDict)
         {
             int startRow = 3;
 
@@ -127,7 +132,14 @@ namespace BEMobile.Services
                 var displayDate = transaction.UpdatedDate ?? transaction.CreatedDate;
 
                 worksheet.Cells[$"A{row}"].Value = i + 1; // STT
-                worksheet.Cells[$"B{row}"].Value = transaction.Note; // Tên thu nhập
+
+
+                
+                if (transaction.CategoryId != null && categoryDict.TryGetValue(transaction.CategoryId, out string name))
+                {
+                    worksheet.Cells[$"B{row}"].Value = name; // Tên thu nhập
+                }
+
                 if (decimal.TryParse(transaction.Amount, out decimal amount))
                 {
                     worksheet.Cells[$"C{row}"].Value = amount;
@@ -145,7 +157,7 @@ namespace BEMobile.Services
                 worksheet.Cells[$"G{startRow}"].Style.Font.Bold = true;
             }
         }
-        private void FillExpenseData(ExcelWorksheet worksheet, List<Transaction> expenseTransactions, int incomeCount)
+        private void FillExpenseData(ExcelWorksheet worksheet, List<Transaction> expenseTransactions, int incomeCount, Dictionary<string, string> categoryDict)
         {
             // Bắt đầu từ dòng cuối cùng của bảng thu nhập + 3 dòng (2 dòng trống + 1 dòng header)
             int startRow = 3 + incomeCount + 3;
@@ -164,6 +176,7 @@ namespace BEMobile.Services
             var expenseHeaderCells = new[] { $"A{startRow - 1}:D{startRow-1}", $"A{startRow}", $"B{startRow}", $"C{startRow}", $"D{startRow}" };
             foreach (var cell in expenseHeaderCells)
             {
+                worksheet.Cells[cell].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[cell].Style.Font.Bold = true;
                 worksheet.Cells[cell].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells[cell].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
@@ -178,7 +191,11 @@ namespace BEMobile.Services
                 var displayDate = transaction.UpdatedDate ?? transaction.CreatedDate;
 
                 worksheet.Cells[$"A{row}"].Value = i + 1;
-                worksheet.Cells[$"B{row}"].Value = transaction.Note;
+                
+                if (transaction.CategoryId != null && categoryDict.TryGetValue(transaction.CategoryId, out string name))
+                {
+                    worksheet.Cells[$"B{row}"].Value = name;
+                }
 
                 // CHUYỂN ĐỔI string sang số
                 if (decimal.TryParse(transaction.Amount, out decimal amount))
@@ -250,9 +267,9 @@ namespace BEMobile.Services
                 worksheet.Cells[$"A{expenseDataStartRow}:D{expenseDataEndRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 // ... [các định dạng border khác cho chi tiêu] ...
 
-                // Border cho header chi tiêu
-                worksheet.Cells[$"A{expenseDataStartRow - 1}:D{expenseDataStartRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                worksheet.Cells[$"A{expenseDataStartRow}:D{expenseDataStartRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                //// Border cho header chi tiêu
+                //worksheet.Cells[$"A{expenseDataStartRow - 1}:D{expenseDataStartRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                //worksheet.Cells[$"A{expenseDataStartRow}:D{expenseDataStartRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
             }
 
             // Căn giữa các cột STT

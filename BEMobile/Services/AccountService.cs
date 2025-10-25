@@ -12,7 +12,7 @@ namespace BEMobile.Services
     public interface IAccountService
     {
         Task<CreateAccountResponse> CreateAccountAsync(CreateAccountRequest req);
-        Task<DetailAccountResponse?> GetAccountByIdAsync(DetailAccountRequest req);
+        Task<DetailAccountResponse?> GetAccountByUserIdAsync(DetailAccountRequest req);
         Task<DeleteAccountResponse> DeleteAccountAsync(DeleteAccountRequest req);
     }
 
@@ -44,20 +44,29 @@ namespace BEMobile.Services
             };
         }
 
-        public async Task<DetailAccountResponse?> GetAccountByIdAsync(DetailAccountRequest req)
+        public async Task<DetailAccountResponse?> GetAccountByUserIdAsync(DetailAccountRequest req)
         {
-            var acc = await _db.Accounts.FirstOrDefaultAsync(x => x.AccountId == req.AccountId);
-            if (acc == null) return null;
+            var acc = await _db.Accounts.FirstOrDefaultAsync(x => x.UserId == req.UserId);
+
+            if (acc == null)
+            {
+                return new DetailAccountResponse
+                {
+                    Success = false,
+                    Message = $"Không tìm thấy account với User ID = {req.UserId}"
+                };
+            }
 
             return new DetailAccountResponse
             {
                 Success = true,
-                Message = "OK",
+                Message = "Tìm được tài khoản thành công",
                 AccountId = acc.AccountId,
                 UserId = acc.UserId,
                 Balance = acc.Balance
             };
         }
+
 
         public async Task<DeleteAccountResponse> DeleteAccountAsync(DeleteAccountRequest req)
         {

@@ -1,7 +1,7 @@
 ﻿using BEMobile.Models.DTOs;
 using System.ComponentModel.DataAnnotations;
 
-namespace BEMobile.Models.RequestResponse.Budget.CreateBudget
+namespace BEMobile.Models.RequestResponse.BudgetRR.CreateBudget
 {
     public class Request
     {

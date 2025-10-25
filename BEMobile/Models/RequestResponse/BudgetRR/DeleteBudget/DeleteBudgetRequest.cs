@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BEMobile.Models.RequestResponse.Budget.DeleteBudget
+namespace BEMobile.Models.RequestResponse.BudgetRR.DeleteBudget
 {
     public class DeleteBudgetRequest
     {

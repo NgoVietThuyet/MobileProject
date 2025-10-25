@@ -1,4 +1,4 @@
-namespace BEMobile.Models.RequestResponse.Transaction.DeleteTransaction
+namespace BEMobile.Models.RequestResponse.TransactionRR.DeleteTransaction
 {
     public class DeleteTransactionRequest
     {
