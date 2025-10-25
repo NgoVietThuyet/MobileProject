@@ -291,8 +291,8 @@ Ví dụ 6: ""Tôi chi tiêu / mua gì hôm nay"" => ""Tôi chi tiêu gì vào n
         {
             var prompt = $@"
 Hãy giúp tôi phân loại prompt sau thành các loại:
-OFF_TOPIC:Các yêu cầu không thuộc phạm vi tài chính (Thông tin cá nhân KHÔNG thuộc phần này).
-ADD_TRANSACTION: Nếu prompt yêu cầu thêm giao dịch mới.
+OFF_TOPIC:Các yêu cầu không hỏi về tài chính cá nhân.
+ADD_TRANSACTION: Nếu prompt yêu cầu thêm giao dịch mới (Key: mua, bán, tiêu, dùng, ...).
 SINGLE_QUERY: Các truy vấn đơn giản, thông tin cá nhân người dùng.
 MULTI_QUERY: Nếu prompt yêu cầu truy vấn nhiều hơn 1 tác vụ về tài chính cá nhân hoặc truy vấn với lượng lớn.
 
