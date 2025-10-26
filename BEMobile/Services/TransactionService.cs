@@ -1,4 +1,5 @@
-﻿using BEMobile.Data.Entities;
+﻿using BEMobile.Connectors;
+using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
 using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
 using BEMobile.Models.RequestResponse.TransactionRR.CreateTransaction;
@@ -21,6 +22,7 @@ namespace BEMobile.Services
     {
         private readonly AppDbContext _context;
         private readonly INotificationService _notificationService;
+        private readonly INeo4jConnector _neo4jConnector;
 
         public TransactionService(AppDbContext context, INotificationService notificationService)
         {
@@ -130,6 +132,8 @@ namespace BEMobile.Services
             dto.TransactionId = transaction.TransactionId;
             dto.CreatedDate = transaction.CreatedDate;
 
+            await _neo4jConnector.AddTransactionAsync(dto);
+
             return new CreateTransactionResponse
             {
                 Success = true,
@@ -167,6 +171,8 @@ namespace BEMobile.Services
                 Content = "Bạn đã sửa một giao dịch!"
             });
 
+            await _neo4jConnector.UpdateTransactionAsync(dto);
+
             return new UpdateTransactionResponse
             {
                 Success = true,
@@ -189,6 +195,18 @@ namespace BEMobile.Services
 
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
+            
+            await _neo4jConnector.DeleteTransactionAsync(new TransactionDto
+            {
+                TransactionId = transaction.TransactionId,
+                UserId = transaction.UserId,
+                CategoryId = transaction.CategoryId,
+                Type = transaction.Type,
+                Amount = transaction.Amount,
+                Note = transaction.Note,
+                CreatedDate = transaction.CreatedDate,
+                UpdatedDate = transaction.UpdatedDate
+            });
 
             return new DeleteTransactionResponse
             {

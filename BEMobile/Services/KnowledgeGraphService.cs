@@ -1,8 +1,8 @@
-
 using BEMobile.Connectors;
 using BEMobile.Data.Entities;
 using BEMobile.Services;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Build.Framework;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -11,8 +11,10 @@ using Newtonsoft.Json;
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static OpenCvSharp.ML.DTrees;
 
@@ -20,14 +22,11 @@ namespace BEMobile.Services
 {
     public interface IKnowledgeGraphService
     {
-        //Task CreateUserNodeAsync(UserDto user);
-        //Task CreateTransactionAsync(TransactionDto transaction);
-        // Hàm nhận một câu văn và trả về cấu trúc đồ thị được trích xuất
-        Task<string> Classify_prompt(string text);
+        Task<string> ProcessUserQueryAsync(string userQuestion, string userId);
         Task<string> Rep_add_transaction(string text);
 
-        Task<string> Rep_single_query(string text, string userId, string fixQuestion = null);
-        Task<string> Rep_multi_query(string userQuestion, string userId);
+        Task<string> Rep_single_query(string text, string userId, string fixQuestion = null, bool reQuestion = false);
+
     }
     public class KnowledgeGraphService : IKnowledgeGraphService
     {
@@ -46,6 +45,15 @@ namespace BEMobile.Services
             _httpFactory = httpFactory ?? throw new ArgumentNullException(nameof(httpFactory));
             _opts = opts?.Value ?? throw new ArgumentNullException(nameof(opts));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public class QueryAnalysisResult
+        {
+            [JsonPropertyName("classification")]
+            public string Classification { get; set; }
+
+            [JsonPropertyName("rephrasedQuery")]
+            public string RephrasedQuery { get; set; }
         }
 
         public async Task<string> Rep_add_transaction(string text)
@@ -77,73 +85,11 @@ Chỉ trả lại mảng JSON, không thêm bất kỳ văn bản nào khác. N�
 
 
 
-    public async Task<string> Rep_single_query(string userQuestion, string userId, string fixQuestion = null)
+        public async Task<string> Rep_single_query(string userQuestion, string userId, string fixQuestion = null, bool reQuestion = false)
         {
             if (string.IsNullOrEmpty(fixQuestion))
                 fixQuestion = userQuestion;
             fixQuestion = $"{userId} " + fixQuestion;
-
-            string schema = """
-    "Text1:\n"
-    "\"UserId: 1 * Name: Mai Đức Văn * Email: abc123@gmail.com * Facebook: vandeptrai * "
-    "PhoneNumber: 0123456789 * CreatedDate: 23/05/2025 * TransactionID: 1, 3, 4, 5, 6\"\n\n"
-    "Output:\n"
-    "Entities:\n"
-    "- 1: Mã người dùng\n"
-    "- Mai Đức Văn: Tên người dùng\n"
-    "- abc123@gmail.com: Email\n"
-    "- vandeptrai: Tài khoản Facebook\n"
-    "- 0123456789: Số điện thoại\n"
-    "- 23/05/2025: Ngày tạo tài khoản\n"
-    "- GD1: Mã giao dịch\n"
-    "- GD3: Mã giao dịch\n"
-    "- GD4: Mã giao dịch\n"
-    "- GD5: Mã giao dịch\n"
-    "- GD6: Mã giao dịch\n\n"
-    "Relationships:\n"
-    "- (1, CÓ_EMAIL, abc123@gmail.com)\n"
-    "- (1, FACEBOOK, vandeptrai)\n"
-    "- (1, PHONE, 0123456789)\n"
-    "- (1, TẠO_TÀI_KHOẢN, 23/05/2025)\n"
-    "- (1, CÓ_GIAO_DỊCH, GD1)\n"
-    "- (1, CÓ_GIAO_DỊCH, GD3)\n"
-    "- (1, CÓ_GIAO_DỊCH, GD4)\n"
-    "- (1, CÓ_GIAO_DỊCH, GD5)\n"
-    "- (1, CÓ_GIAO_DỊCH, GD6)\n"
-
-    f"Text2:\n"
-    f"\"CategoryID: 1 * CategoryName: Ăn uống\"\n\n"
-
-    f"Output:\n"
-    f"Entities:\n"
-    f"- DM1: Mã danh mục\n"
-    f"- Ăn uống: Tên danh mục\n\n"
-
-    f"Relationships:\n"
-    f"- (DM1, CÓ_TÊN, Ăn uống)\n\n"
-
-    f"Text3:\n"
-    f"\"TransactionId: 3 * Type: expense * Amount: 20000 * Note: Kem đánh răng * "
-    f"CreatedDate: 28/05/2025 * UpdatedDate: 28/05/2025 * CategoryID: 3\"\n\n"
-
-    f"Output:\n"
-    f"Entities:\n"
-    f"- GD3: Mã giao dịch\n"
-    f"- expense: Loại giao dịch\n"
-    f"- 20000: Số tiền\n"
-    f"- Kem đánh răng: Ghi chú\n"
-    f"- 28/05/2025: Ngày tạo\n"
-    f"- 28/05/2025: Ngày cập nhật\n"
-    f"- DM3: Mã danh mục\n\n"
-
-    f"Relationships:\n"
-    f"- (GD3, LÀ_LOẠI, expense)\n"
-    f"- (GD3, CÓ_SỐ_TIỀN, 20000)\n"
-    f"- (GD3, GHI_CHÚ, Kem đánh răng)\n"
-    f"- (GD3, CÓ_NGÀY_TẠO, 28/05/2025)\n"
-    f"- (GD3, CÓ_NGÀY_CẬP_NHẬT, 28/05/2025)\n"
-    f"- (GD3, CÓ_DANH_MỤC, DM3)\n"
-    """;
 
             var promptForCypher = $@"
 Bạn là một chuyên gia về Neo4j, có nhiệm vụ chuyển đổi câu hỏi của người dùng thành một câu lệnh Cypher **chỉ đọc (read-only)**.
@@ -152,7 +98,7 @@ Bạn là một chuyên gia về Neo4j, có nhiệm vụ chuyển đổi câu h�
 1. **Chỉ trả về DUY NHẤT** câu lệnh Cypher. Không thêm giải thích, markdown (```), hoặc bất kỳ văn bản nào khác.
 2. Chỉ sử dụng các loại node, thuộc tính và mối quan hệ có trong schema. Không được tự ý suy diễn ra các thuộc tính hoặc mối quan hệ không tồn tại.
 3. **Nghiêm cấm** tạo ra các câu lệnh có thể thay đổi dữ liệu (như CREATE, MERGE, SET, DELETE).
-4. Nếu câu hỏi không thể trả lời được bằng schema đã cho, hãy trả về chuỗi `UNANSWERABLE`.
+4. Chỉ trả về cypher truy vấn bảng (tối thiểu 5 cột như ví dụ), không tính toán tổng hợp (aggregation) hoặc các phép toán phức tạp khác.
 5. Tất cả các giá trị trong đồ thị là chuỗi (string). Hãy đảm bảo rằng bạn so sánh chúng đúng cách trong câu lệnh Cypher.
 
 **VÍ DỤ:**
@@ -225,21 +171,23 @@ Cypher Query:
         amt.name AS SoTien, 
         note.name AS GhiChu, 
         type.name AS Loai
+    ORDER BY NgayCapNhat DESC
+    LIMIT 100
 ";
 
             try
             {
                 records = await _connector.ExecuteReadAsync(cypherQuery);
 
-                if (records == null || records.Count == 0)
-                {
-                    records = await _connector.ExecuteReadAsync(fallbackQuery);
-                }
+                //if (records == null || records.Count == 0)
+                //{
+                //    records = await _connector.ExecuteReadAsync(fallbackQuery);
+                //}
             }
             catch (Exception ex)
             {
                 records = await _connector.ExecuteReadAsync(fallbackQuery);
-    
+
             }
 
 
@@ -249,7 +197,7 @@ Cypher Query:
             Bạn là một trợ lý tài chính thân thiện và bạn đang quản lý ứng dụng, người dùng đã cập nhật dữ liệu tài chính cá nhân của họ trong một cơ sở dữ liệu và bạn được cung cấp kết quả truy vấn từ cơ sở dữ liệu đó dưới dạng JSON.
             Dựa vào câu hỏi gốc của người dùng và dữ liệu JSON được cung cấp, hãy tạo ra một câu trả lời tự nhiên bằng tiếng Việt. Nếu dữ liệu quá nhiều, hãy tóm tắt.
             Câu trả lời cần chính xác nhất có thể, từ chối các yêu cầu không cung cấp như  gửi mail, tìm kiếm giúp, ...
-            Chuẩn hoá định dạng. Chir trả lời các thông tin cần thiết.
+            Chuẩn hoá định dạng. Trả lời đúng trọng tâm, nếu minh chứng dữ liệu.
         
             Câu hỏi gốc: ""{userQuestion}""
         
@@ -264,55 +212,129 @@ Cypher Query:
             return finalAnswer;
         }
 
-    public async Task<string> Rep_multi_query(string userQuestion, string userId)
+        public async Task<string> ProcessUserQueryAsync(string userQuestion, string userId)
         {
-            var promptForAnswer = $@"
-            Nhận câu hỏi và trả về nội dùng liên quan đến dữ liệu cần cung cấp để phục vụ cho chuyển đổi câu hỏi thành lệnh cypher. Chỉ trả về nội dung đã được chỉnh sửa, không giải thích gì thêm.    
+            string currentDateTime = DateTime.Now.ToString("F", new CultureInfo("vi-VN"));
 
-Ví dụ1: ""Tôi đã tiêu gì trong tháng 6?"" => ""Tôi đã tiêu gì từ ngày 2025/06/01 đến 2025/06/01? ""
-Ví dụ2: ""Tôi đã chi tiêu những gì trong tuần trước?"" => ""Tôi đã chi tiêu những gì từ ngày 2025/10/25 đến 2025/10/22? (Tuỳ vào ngày hiện tại)""
-Ví dụ3: "" Hôm nay tôi tiêu những gì?"" => ""Hôm nay tôi tiêu những gì vào ngày 2025/10/22? (Tuỳ vào ngày hiện tại)""
-Ví dụ 4: ""Hãy giúp tôi tổng hợp số tiền đã tiêu trong tháng và đề xuất cách tiết kiệm cho tháng sau."" => ""Chi tiêu trong tháng hiện tại của tôi?""
-Ví dụ 5: ""Cho tôi biết khoản nào lớn nhất hôm nay và tổng chi tháng này là bao nhiêu."" => ""Tổng chi tiêu từ ngày 2025/10/01 đến 2025/10/22? (Tuỳ vào ngày hiện tại)""
-Ví dụ 6: ""Tôi chi tiêu / mua gì hôm nay"" => ""Tôi chi tiêu gì vào ngày 2025/10/22? (Tuỳ vào ngày hiện tại)""
+            string combinedPrompt = $@"
+Bạn là một trợ lý AI chuyên về tài chính cá nhân. Nhiệm vụ của bạn là phân loại truy vấn của người dùng và chuẩn hóa các truy vấn liên quan đến thời gian.
 
+**Ngày giờ hiện tại để tham chiếu: {currentDateTime}**
 
+**1. Phân loại truy vấn:**
+Phân loại truy vấn của người dùng thành MỘT trong các loại sau:
+- **OFF_TOPIC**: Các yêu cầu không hỏi về tài chính cá nhân (ví dụ: thời tiết, tin tức).
+- **ADD_TRANSACTION**: Yêu cầu thêm giao dịch mới (Key: mua, bán, tiêu, dùng, chi, thêm khoản...).
+- **SINGLE_QUERY**: Các truy vấn đơn giản, hỏi thông tin cá nhân hoặc một thông tin cụ thể (ví dụ: hôm nay tôi tiêu gì?).
+- **MULTI_QUERY**: Yêu cầu truy vấn nhiều hơn 1 tác vụ, truy vấn phức tạp, hoặc truy vấn với lượng lớn dữ liệu (ví dụ: tổng hợp, phân tích, so sánh tháng này và tháng trước, đề xuất tiết kiệm).
+- **HATE**: Các truy vấn mang nghĩa tiêu cực, phủ định câu hỏi phía trước như ""Sai rồi!"", ""Không đúng!"", ""Bậy bạ!"",...
+- **TRAIN**: Các truy vấn với mong muốn giúp đỡ như ""Ứng dụng này có chức năng gì?"", ""Thêm giao dịch ở đâu?"",...
 
-            Câu hỏi gốc: ""{userQuestion}""
+**2. Chuẩn hóa truy vấn (Nếu cần):**
+- **Nếu** phân loại là `SINGLE_QUERY` hoặc `MULTI_QUERY`, Chỉ trả về dạng ""Tổng chi tiêu từ ngày YYYY/MM/DD đến ngày YYYY/MM/DD"" hoặc ""Tôi tiêu những gì vào ngày YYYY/MM/DD"".
+- **Nếu** phân loại là `OFF_TOPIC`, `ADD_TRANSACTION`, `HATE` hoặc `TRAIN` giá trị `rephrasedQuery` phải là `null`.
 
-            Câu trả lời của bạn:
-        ";
+**3. Định dạng trả về:**
+Chỉ trả về một đối tượng JSON duy nhất, không giải thích gì thêm. 
 
-            string fixQuestion = await CallGeminiWithTextAsync(promptForAnswer, 1);
-            return Rep_single_query(userQuestion, userId, fixQuestion).Result;
-        }
+**Ví dụ (với ngày hiện tại là {currentDateTime}):**
 
-        public async Task<string> Classify_prompt(string text)
-        {
-            var prompt = $@"
-Hãy giúp tôi phân loại prompt sau thành các loại:
-OFF_TOPIC:Các yêu cầu không hỏi về tài chính cá nhân.
-ADD_TRANSACTION: Nếu prompt yêu cầu thêm giao dịch mới (Key: mua, bán, tiêu, dùng, ...).
-SINGLE_QUERY: Các truy vấn đơn giản, thông tin cá nhân người dùng.
-MULTI_QUERY: Nếu prompt yêu cầu truy vấn nhiều hơn 1 tác vụ về tài chính cá nhân hoặc truy vấn với lượng lớn.
+- **Câu hỏi:** ""Tôi đã tiêu gì trong tháng 6?""
+  **JSON:** {{ ""classification"": ""MULTI_QUERY"", ""rephrasedQuery"": ""Tôi đã tiêu gì từ ngày 2025/06/01 đến 2025/06/30?"" }}
 
-Trả về kết quả dưới dạng OFF_TOPIC, ADD_TRANSACTION, SINGLE_QUERY hoặc MULTI_QUERY.
+- **Câu hỏi:** ""Tôi đã chi tiêu những gì trong tuần trước?""
+  **JSON:** {{ ""classification"": ""MULTI_QUERY"", ""rephrasedQuery"": ""Tôi đã chi tiêu những gì từ ngày 2025/10/13 đến 2025/10/19?"" }} (Giả sử tuần là Thứ 2 - Chủ Nhật)
 
-Phân loại prompt sau: ""{text}""
+- **Câu hỏi:** ""Hôm nay tôi tiêu những gì?""
+  **JSON:** {{ ""classification"": ""SINGLE_QUERY"", ""rephrasedQuery"": ""Tôi tiêu những gì vào ngày 2025/10/25?"" }}
+
+- **Câu hỏi:** ""Tổng chi tháng này là bao nhiêu?""
+  **JSON:** {{ ""classification"": ""MULTI_QUERY"", ""rephrasedQuery"": ""Tổng chi tiêu từ ngày 2025/10/01 đến 2025/10/25?"" }}
+
+- **Câu hỏi:** ""Tổng chi tiêu cho ăn uống tháng này và có mấy lần ăn đồ ăn nhanh"".
+    **JSON:** {{ ""classification"": ""MULTI_QUERY"", ""rephrasedQuery"": ""Tổng chi tiêu từ ngày 2025/10/01 đến 2025/10/25"" }}
+---
+**Truy vấn của người dùng:** ""{userQuestion}""
+**JSON trả về:**
 ";
+
+            string jsonResponse;
             try
             {
-                string modelResponse = await CallGeminiWithTextAsync(prompt, 0);
-                return modelResponse;
+                jsonResponse = await CallGeminiWithTextAsync(combinedPrompt, 0);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to extract graph from text using Gemini API.");
-                return $"Lỗi khi gọi Gemini API: {ex.Message}";
+                return null;
+            }
+
+            QueryAnalysisResult analysisResult;
+            try
+            {
+                string responseData = jsonResponse.Trim();
+                int jsonStart = responseData.IndexOf('{');
+                int jsonEnd = responseData.LastIndexOf('}');
+
+                if (jsonStart != -1 && jsonEnd != -1 && jsonEnd > jsonStart)
+                {
+                    string cleanJson = responseData.Substring(jsonStart, jsonEnd - jsonStart + 1);
+                    analysisResult = JsonConvert.DeserializeObject<QueryAnalysisResult>(cleanJson);
+                }
+                else
+                {
+                    throw new JsonException($"Không tìm thấy đối tượng JSON hợp lệ trong phản hồi: {jsonResponse}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            string train = @"
+📱 Hướng dẫn sử dụng ứng dụng Quản lý Chi tiêu Cá nhân
+
+Chào mừng bạn đến với MyFinance — trợ lý tài chính thông minh giúp bạn quản lý chi tiêu dễ dàng hơn mỗi ngày!
+
+💰 Theo dõi chi tiêu
+- Ghi lại các khoản chi tiêu hằng ngày.
+- Xem biểu đồ thống kê để biết bạn đang chi tiêu nhiều nhất ở đâu.
+
+🎯 Lập ngân sách
+- Tạo ngân sách cho từng danh mục.
+- Nhận cảnh báo khi sắp vượt giới hạn chi tiêu.
+
+🤖 Trợ lý Chatbot
+- Trò chuyện với chatbot để xem báo cáo nhanh hoặc hỏi về thói quen chi tiêu.
+
+📊 Báo cáo & thống kê
+- Xem tổng quan thu – chi theo tuần, tháng, hoặc năm.
+
+☁️ Đồng bộ & bảo mật
+- Dữ liệu được lưu an toàn và đồng bộ trên nhiều thiết bị.
+";
+
+
+            string classification = analysisResult?.Classification;
+            switch (classification)
+            {
+                case "SINGLE_QUERY":
+                case "MULTI_QUERY":
+                    return await Rep_single_query(userQuestion, userId, analysisResult.RephrasedQuery);
+
+                case "ADD_TRANSACTION":
+                    return await Rep_add_transaction(userQuestion);
+
+                case "OFF_TOPIC":
+                    return "Xin lỗi, tôi chỉ có thể giúp bạn về các vấn đề tài chính cá nhân.";
+                case "HATE":
+                    return await CallGeminiWithTextAsync("Bạn là chatbot của ứng dụng quản lý chi tiêu và bạn vừa trả lời khiến người dùng không vừa ý. Hãy viết một câu xin lỗi ngắn để xoa dịu người dùng ứng dụng. Chỉ gồm câu trả lời và mong muốn họ làm rõ câu hỏi.", 1);
+                case "TRAIN":   
+                    return await CallGeminiWithTextAsync("Bạn là chatbot của ứng dụng quản lý chi tiêu hãy trả lời câu hỏi dựa trên tài liệu: " + train + ". Câu hỏi: " + userQuestion + ". Trả lời ngắn gọn.", 1);
+                default:
+                    return null;
             }
         }
 
-        // Gọi gemini
         private async Task<string> CallGeminiWithTextAsync(string prompt, int op)
         {
             string api = _opts.GetRandomApiKey();
