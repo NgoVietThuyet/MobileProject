@@ -5,6 +5,7 @@ using BEMobile.Models.DTOs;
 
 using BEMobile.Models.RequestResponse.SavingGoalRR;
 using BEMobile.Models.RequestResponse.SavingGoalRR.Create;
+using BEMobile.Models.RequestResponse.SavingGoalRR.Delete;
 using BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount;
 
 
@@ -107,6 +108,28 @@ namespace BEMobile.Controllers
                 {
                     Success = false,
                     Message = "Cập nhật số tiền không thành công"
+                });
+            }
+        }
+        [HttpPut("DeleteSaving")]
+        public async Task<ActionResult<SavingGoal>> DeleteSavingGoalAysnc(DeleteSavingRequest request)
+        {
+            try
+            {
+                await _SavingGoalService.DeleteSavingGoalAsync(request);
+
+                return Ok(new DeleteSavingResponse
+                {
+                    Success = true,
+                    Message = "Xóa mục tiêu tiết kiệm thành công"
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Ok(new UpdateAmountGoalResponse
+                {
+                    Success = false,
+                    Message = "Xóa mục tiêu tiết kiệm không thành công"
                 });
             }
         }
