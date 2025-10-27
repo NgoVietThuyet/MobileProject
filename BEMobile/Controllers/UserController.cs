@@ -3,6 +3,7 @@
 using BEMobile.Models.RequestResponse.UserRR.Login;
 using BEMobile.Models.RequestResponse.UserRR.SignUp;
 using BEMobile.Models.RequestResponse.UserRR.UpdateUser;
+using BEMobile.Models.RequestResponse.UserRR.UploadUserImage;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -100,7 +101,29 @@ namespace BEMobile.Controllers
             return Ok(result);
         }
 
+        [HttpPost("UploadProfileImage")]
+        [ProducesResponseType(typeof(UploadUserImageResponse), 200)]
+        [ProducesResponseType(typeof(UploadUserImageResponse), 400)]
+        public async Task<IActionResult> UploadProfileImage([FromForm] UploadUserImageRequest request)
+        {
+            try
+            {
+                var result = await _UserService.UploadUserImageAsync(request);
 
+                if (!result.Success)
+                    return BadRequest(result);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new UploadUserImageResponse
+                {
+                    Success = false,
+                    Message = $"Đã xảy ra lỗi khi tải ảnh: {ex.Message}"
+                });
+            }
+        }
 
     }
 }

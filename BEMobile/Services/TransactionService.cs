@@ -1,5 +1,6 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
+using BEMobile.Models.RequestResponse.BudgetRR.UpdateAmount;
 using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
 using BEMobile.Models.RequestResponse.TransactionRR.CreateTransaction;
 using BEMobile.Models.RequestResponse.TransactionRR.DeleteTransaction;
@@ -21,11 +22,14 @@ namespace BEMobile.Services
     {
         private readonly AppDbContext _context;
         private readonly INotificationService _notificationService;
+        private readonly IBudgetService _budgetService;
 
-        public TransactionService(AppDbContext context, INotificationService notificationService)
+
+        public TransactionService(AppDbContext context, INotificationService notificationService, IBudgetService budgetService)
         {
             _context = context;
             _notificationService = notificationService;
+            _budgetService = budgetService;
         }
 
         public async Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync(string userId)
@@ -47,6 +51,38 @@ namespace BEMobile.Services
                 .ToListAsync();
         }
 
+        private async Task<string?> FindMatchingBudgetIdAsync(string userId, string categoryId, string transactionCreatedDate)
+        {
+            if (string.IsNullOrWhiteSpace(transactionCreatedDate))
+                return null;
+
+            var transParts = transactionCreatedDate.Split(' ')[0].Split('/');
+            if (transParts.Length < 3) return null;
+
+            string transMonth = transParts[1];
+            string transYear = transParts[2];
+
+            var budgets = await _context.Budgets
+                .Where(b => b.UserId == userId && b.CategoryId == categoryId)
+                .ToListAsync();
+
+            var matchedBudget = budgets.FirstOrDefault(b =>
+            {
+                if (string.IsNullOrWhiteSpace(b.CreatedDate))
+                    return false;
+
+                var parts = b.CreatedDate.Split(' ')[0].Split('/');
+                if (parts.Length < 3)
+                    return false;
+
+                return parts[1] == transMonth && parts[2] == transYear;
+            });
+
+            return matchedBudget?.BudgetId;
+        }
+
+
+
 
 
         public async Task<CreateTransactionResponse> CreateTransactionAsync(CreateTransactionRequest request)
@@ -61,6 +97,15 @@ namespace BEMobile.Services
                     Message = "Số tiền không hợp lệ (vui lòng nhập số)"
                 };
             }
+
+            if (dto.Type != "Income" && dto.Type != "Expense")
+            {
+                return new CreateTransactionResponse
+                {
+                    Success = false,
+                    Message = "Loại giao dịch không hợp lệ"
+                };
+            }    
 
             if (amountValue <= 0)
             {
@@ -127,6 +172,22 @@ namespace BEMobile.Services
                 Content = "Bạn đã thêm một giao dịch mới!"
             });
 
+            if(dto.Type == "Expense")
+            {
+                var budgetId = await FindMatchingBudgetIdAsync(dto.UserId, dto.CategoryId, transaction.CreatedDate);
+
+                if (budgetId != null)
+                {
+                    await _budgetService.UpdateAmountByUserIdAsync(new UpdateAmountRequest
+                    {
+                        BudgetId = budgetId,
+                        UserId = dto.UserId,
+                        UpdateAmount = dto.Amount,
+                        isAddAmount = dto.Type == "Expense" ? true : false
+                    });
+                }
+            }    
+
             dto.TransactionId = transaction.TransactionId;
             dto.CreatedDate = transaction.CreatedDate;
 
@@ -153,6 +214,15 @@ namespace BEMobile.Services
                 };
             }
 
+            if (dto.Type != "Income" && dto.Type != "Expense")
+            {
+                return new UpdateTransactionResponse
+                {
+                    Success = false,
+                    Message = "Loại giao dịch không hợp lệ"
+                };
+            }
+
             var account = await _context.Accounts.FirstOrDefaultAsync(acc => acc.UserId == dto.UserId);
             if (account == null)
             {
@@ -167,6 +237,8 @@ namespace BEMobile.Services
 
             decimal oldAmount = decimal.TryParse(existing.Amount, out decimal tempOld) ? tempOld : 0;
             decimal newAmount = decimal.TryParse(dto.Amount, out decimal tempNew) ? tempNew : 0;
+
+            var isIncreased = newAmount > oldAmount ? true : false;
 
             if (existing.Type == "Income")
                 currentBalance -= oldAmount;
@@ -196,6 +268,8 @@ namespace BEMobile.Services
             existing.Note = dto.Note;
             existing.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
 
+            
+
             await _context.SaveChangesAsync();
 
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
@@ -203,6 +277,25 @@ namespace BEMobile.Services
                 UserId = dto.UserId,
                 Content = "Bạn đã sửa một giao dịch và số dư đã được cập nhật!"
             });
+
+            if (dto.Type == "Expense")
+            {
+                var budgetId = await FindMatchingBudgetIdAsync(dto.UserId, dto.CategoryId, existing.CreatedDate);
+
+                if (budgetId != null)
+                {
+                    decimal diff = Math.Abs(newAmount - oldAmount);
+
+
+                    await _budgetService.UpdateAmountByUserIdAsync(new UpdateAmountRequest
+                    {
+                        BudgetId = budgetId,
+                        UserId = dto.UserId,
+                        UpdateAmount = diff.ToString(),
+                        isAddAmount = isIncreased
+                    });
+                }
+            }    
 
             return new UpdateTransactionResponse
             {
@@ -253,18 +346,36 @@ namespace BEMobile.Services
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
 
+            if (transaction.Type == "Expense")
+            {
+                var budgetId = await FindMatchingBudgetIdAsync(transaction.UserId, transaction.CategoryId, transaction.CreatedDate);
+
+                if (budgetId != null)
+                {
+                    await _budgetService.UpdateAmountByUserIdAsync(new UpdateAmountRequest
+                    {
+                        BudgetId = budgetId,
+                        UserId = transaction.UserId,
+                        UpdateAmount = transaction.Amount,
+                        isAddAmount = false
+                    });
+                }
+            } 
+                
+
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
             {
                 UserId = transaction.UserId,
-                Content = "Bạn đã xóa một giao dịch! Số dư của bạn đã được cập nhật."
+                Content = "Bạn đã xóa một giao dịch! Số dư và ngân sách của bạn đã được cập nhật."
             });
 
             return new DeleteTransactionResponse
             {
                 Success = true,
-                Message = "Xóa giao dịch thành công và số dư đã được cập nhật"
+                Message = "Xóa giao dịch thành công và đã cập nhật ngân sách"
             };
         }
+
 
     }
 }

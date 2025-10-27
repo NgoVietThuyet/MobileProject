@@ -46,10 +46,10 @@ namespace BEMobile.Data.Entities
         public string Password { get; set; } = string.Empty;
 
         [Column("URL_IMAGE")]
-        public string UrlImage { get; set; }
+        public string? UrlImage { get; set; }
 
         [Column("CREATED_DATE")]
-        public string CreatedDate { get; set; } 
+        public string? CreatedDate { get; set; } 
 
         [Column("UPDATED_DATE")]
         public string? UpdatedDate { get; set; }

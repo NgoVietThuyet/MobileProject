@@ -67,6 +67,7 @@ namespace BEMobile.Controllers
             }
         }
 
+        [HttpPut("Update")]
         public async Task<ActionResult<UpdateAmountResponse>> UpdateAmount([FromBody] UpdateAmountRequest request)
         {
             if (!ModelState.IsValid)

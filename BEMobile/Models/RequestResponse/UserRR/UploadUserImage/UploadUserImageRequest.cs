@@ -1,11 +1,18 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace BEMobile.Models.RequestResponse.UserRR.UploadUserImage
 {
     public class UploadUserImageRequest
     {
-        public string UserId { get; set; } = string.Empty;
+        [Required]
+        [FromForm(Name = "UserId")]
+        public string UserId { get; set; }
 
-        public IFormFile? ImageFile { get; set; }
+        [Required]
+        [FromForm(Name = "ImageFile")]
+        public IFormFile ImageFile { get; set; }
     }
 }

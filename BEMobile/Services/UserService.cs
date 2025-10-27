@@ -120,7 +120,7 @@ namespace BEMobile.Services
                 await _notificationService.PushNotificationAsync(new PushNotificationRequest
                 {
                     UserId = existingUser.UserId,
-                    Content = "Thông tin cá nhân của bạn đã được cập nhật thành công ✅"
+                    Content = "Thông tin cá nhân của bạn đã được cập nhật thành công "
                 });
 
                 response.Success = true;
@@ -176,6 +176,13 @@ namespace BEMobile.Services
                 return response;
             }
 
+            if (request.Password != request.ConfirmPassword)
+            {
+                response.Success = false;
+                response.Message = "Mật khẩu xác nhận không chính xác.";
+                return response;
+            }
+
             response.Success = true;
             response.Message = "Đăng nhập thành công.";
             response.User = new UserDto
@@ -207,6 +214,8 @@ namespace BEMobile.Services
                 response.Message = "Ảnh tải lên không hợp lệ";
                 return response;
             }
+            Console.WriteLine($"[DEBUG] Upload request: UserId={request.UserId}");
+
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == request.UserId);
             if (user == null)
