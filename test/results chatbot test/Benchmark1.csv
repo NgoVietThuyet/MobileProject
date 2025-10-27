@@ -1,0 +1,131 @@
+﻿ID,Cartegory,Input,Expected results
+1,OFF_TOPIC,Bạn có thể giải toán không?,"Xin lỗi, mình không thể thực hiện chức năng này."
+2,OFF_TOPIC,Thủ đô của Nhật Bản là gì?,Mình chỉ có thể hỗ trợ các câu hỏi về chi tiêu hoặc thống kê tài chính cá nhân.
+3,OFF_TOPIC,Viết cho tôi một bài thơ về mùa xuân.,"Xin lỗi, mình không được thiết kế để sáng tác nội dung ngoài phạm vi chi tiêu."
+4,OFF_TOPIC,Thời tiết hôm nay ở Hà Nội như thế nào?,"Xin lỗi, mình không có thông tin về thời tiết, mình chỉ hỗ trợ thống kê chi tiêu."
+5,OFF_TOPIC,Bạn là ai?,Mình là chatbot hỗ trợ bạn quản lý và thống kê chi tiêu cá nhân.
+6,OFF_TOPIC,Kể chuyện cười đi.,"Xin lỗi, mình không có chức năng kể chuyện, nhưng mình có thể giúp bạn xem lại chi tiêu hôm nay."
+7,OFF_TOPIC,Cho tôi công thức nấu phở bò.,"Xin lỗi, mình không có dữ liệu về nấu ăn, mình chỉ hỗ trợ quản lý chi tiêu."
+8,OFF_TOPIC,Hôm nay có đá bóng không?,"Xin lỗi, mình không theo dõi lịch thể thao, mình chỉ giúp bạn thống kê chi tiêu."
+9,OFF_TOPIC,Bạn có yêu tôi không?,"Mình không có cảm xúc, nhưng luôn sẵn sàng giúp bạn quản lý tài chính thật tốt."
+10,OFF_TOPIC,Mở nhạc thư giãn đi.,"Xin lỗi, mình không thể phát nhạc, mình chỉ có thể thống kê và phân tích chi tiêu."
+11,OFF_TOPIC,Viết giúp tôi đoạn code Python.,"Xin lỗi, mình không hỗ trợ lập trình, mình chuyên về thống kê chi tiêu cá nhân."
+12,OFF_TOPIC,Bitcoin hôm nay tăng hay giảm?,"Xin lỗi, mình không theo dõi thị trường tiền điện tử, mình chỉ giúp bạn theo dõi chi tiêu của mình."
+13,OFF_TOPIC,Bạn có thể gọi đồ ăn giúp tôi không?,"Xin lỗi, mình không thể đặt đồ ăn, mình chỉ hỗ trợ thống kê và phân tích chi tiêu."
+14,OFF_TOPIC,Tính giúp tôi 9×7 là bao nhiêu.,"Xin lỗi, mình không thực hiện phép tính toán chung, mình chỉ thống kê và phân tích chi tiêu cá nhân."
+15,OFF_TOPIC,Kể tên ba quốc gia ở châu Âu.,"Xin lỗi, mình không cung cấp thông tin địa lý, mình chỉ giúp bạn theo dõi chi tiêu."
+16,OFF_TOPIC,Dự đoán kết quả xổ số hôm nay.,"Xin lỗi, mình không thể dự đoán hay cung cấp thông tin xổ số."
+17,OFF_TOPIC,Gửi email giúp tôi.,"Xin lỗi, mình không có quyền truy cập vào email, mình chỉ hỗ trợ quản lý chi tiêu."
+18,OFF_TOPIC,Cho tôi biết công thức hóa học của nước.,"Xin lỗi, mình không cung cấp thông tin khoa học, mình chỉ hỗ trợ quản lý tài chính cá nhân."
+19,OFF_TOPIC,Bạn có thể dịch tiếng Anh sang tiếng Việt không?,"Xin lỗi, mình không hỗ trợ dịch ngôn ngữ, mình chỉ hỗ trợ thống kê chi tiêu."
+20,OFF_TOPIC,Bạn có thể đặt vé máy bay cho tôi không?,"Xin lỗi, mình không có chức năng đặt vé, mình chỉ hỗ trợ theo dõi chi tiêu cá nhân."
+21,ADD_TRAN,Hôm nay tôi mua 90k gạo.,"[{""category"": ""Ăn uống"", ""amount"": 90000, ""note"": ""Gạo""}]"
+22,ADD_TRAN,Trưa nay ăn bún bò 45k.,"[{""category"": ""Ăn uống"", ""amount"": 45000, ""note"": ""Bún bò""}]"
+23,ADD_TRAN,Tôi đổ 120 nghìn tiền xăng.,"[{""category"": ""Đi lại"", ""amount"": 120000, ""note"": ""Tiền xăng""}]"
+24,ADD_TRAN,Mua áo thun 250k ở chợ.,"[{""category"": ""Mua sắm"", ""amount"": 250000, ""note"": ""Áo thun""}]"
+25,ADD_TRAN,Hôm nay đi xem phim hết 80k.,"[{""category"": ""Giải trí"", ""amount"": 80000, ""note"": ""Xem phim""}]"
+26,ADD_TRAN,Đóng học phí 2 triệu cho con.,"[{""category"": ""Giáo dục"", ""amount"": 2000000, ""note"": ""Học phí cho con""}]"
+27,ADD_TRAN,Mua thuốc cảm 50 nghìn.,"[{""category"": ""Y tế"", ""amount"": 50000, ""note"": ""Thuốc cảm""}]"
+28,ADD_TRAN,Trả tiền điện 350k.,"[{""category"": ""Điện nước"", ""amount"": 350000, ""note"": ""Tiền điện""}]"
+29,ADD_TRAN,Thanh toán tiền thuê nhà 4 triệu.,"[{""category"": ""Nhà ở"", ""amount"": 4000000, ""note"": ""Tiền thuê nhà""}]"
+30,ADD_TRAN,Gửi mẹ 500k.,"[{""category"": ""Khác"", ""amount"": 500000, ""note"": ""Gửi mẹ""}]"
+31,ADD_TRAN,Mua cà phê 25k và bánh ngọt 40k.,"[{""category"": ""Ăn uống"", ""amount"": 25000, ""note"": ""Cà phê""}, {""category"": ""Ăn uống"", ""amount"": 40000, ""note"": ""Bánh ngọt""}]"
+32,ADD_TRAN,Đi taxi 100k rồi ăn tối 80k.,"[{""category"": ""Đi lại"", ""amount"": 100000, ""note"": ""Taxi""}, {""category"": ""Ăn uống"", ""amount"": 80000, ""note"": ""Ăn tối""}]"
+33,ADD_TRAN,Mua áo sơ mi 300k và giày 600k.,"[{""category"": ""Mua sắm"", ""amount"": 300000, ""note"": ""Áo sơ mi""}, {""category"": ""Mua sắm"", ""amount"": 600000, ""note"": ""Giày""}]"
+34,ADD_TRAN,Xem phim 75k với bạn ở CGV.,"[{""category"": ""Giải trí"", ""amount"": 75000, ""note"": ""Xem phim với bạn ở CGV""}]"
+35,ADD_TRAN,Mua sách lập trình 150k.,"[{""category"": ""Giáo dục"", ""amount"": 150000, ""note"": ""Sách lập trình""}]"
+36,ADD_TRAN,Khám bệnh 300 nghìn tại viện.,"[{""category"": ""Y tế"", ""amount"": 300000, ""note"": ""Khám bệnh tại viện""}]"
+37,ADD_TRAN,Đóng tiền nước 200k và tiền điện 400k.,"[{""category"": ""Điện nước"", ""amount"": 200000, ""note"": ""Tiền nước""}, {""category"": ""Điện nước"", ""amount"": 400000, ""note"": ""Tiền điện""}]"
+38,ADD_TRAN,Sửa ống nước 150k.,"[{""category"": ""Nhà ở"", ""amount"": 150000, ""note"": ""Sửa ống nước""}]"
+39,ADD_TRAN,Cho mèo ăn 30k.,"[{""category"": ""Khác"", ""amount"": 30000, ""note"": ""Cho mèo ăn""}]"
+40,ADD_TRAN,Đi uống trà sữa 55k với bạn.,"[{""category"": ""Ăn uống"", ""amount"": 55000, ""note"": ""Trà sữa với bạn""}]"
+41,ADD_TRAN,"Ăn sáng 35 nghìn, mua bánh mì 20k.","[{""category"": ""Ăn uống"", ""amount"": 35000, ""note"": ""Ăn sáng""}, {""category"": ""Ăn uống"", ""amount"": 20000, ""note"": ""Bánh mì""}]"
+42,ADD_TRAN,Mua vé xem hòa nhạc 900k.,"[{""category"": ""Giải trí"", ""amount"": 900000, ""note"": ""Vé xem hòa nhạc""}]"
+43,ADD_TRAN,Tiền học thêm 500k và mua bút 40k.,"[{""category"": ""Giáo dục"", ""amount"": 500000, ""note"": ""Học thêm""}, {""category"": ""Giáo dục"", ""amount"": 40000, ""note"": ""Bút""}]"
+44,ADD_TRAN,"Khám răng 200k, mua thuốc 60k.","[{""category"": ""Y tế"", ""amount"": 200000, ""note"": ""Khám răng""}, {""category"": ""Y tế"", ""amount"": 60000, ""note"": ""Thuốc""}]"
+45,ADD_TRAN,"Mua rau 30k, thịt 120k, nước mắm 25k.","[{""category"": ""Ăn uống"", ""amount"": 30000, ""note"": ""Rau""}, {""category"": ""Ăn uống"", ""amount"": 120000, ""note"": ""Thịt""}, {""category"": ""Ăn uống"", ""amount"": 25000, ""note"": ""Nước mắm""}]"
+46,ADD_TRAN2,"Hôm nay tan làm ghé mua ít đồ ăn tối, hết tầm 120 nghìn gồm thịt gà và rau.","[{""category"": ""Ăn uống"", ""amount"": 120000, ""note"": ""Thịt gà và rau cho bữa tối""}]"
+47,ADD_TRAN2,"Sáng nay đi làm muộn nên đặt grab 60k, trưa lại ăn cơm văn phòng hết 45k.","[{""category"": ""Đi lại"", ""amount"": 60000, ""note"": ""Grab đi làm""}, {""category"": ""Ăn uống"", ""amount"": 45000, ""note"": ""Cơm văn phòng""}]"
+48,ADD_TRAN2,"Mới mua đôi giày thể thao 1 triệu 2 ở shop gần nhà, hơi xót tiền.","[{""category"": ""Mua sắm"", ""amount"": 1200000, ""note"": ""Giày thể thao""}]"
+49,ADD_TRAN2,"Tối qua đi xem phim với bạn, vé 85k mỗi người, mình trả cả hai vé.","[{""category"": ""Giải trí"", ""amount"": 170000, ""note"": ""Vé xem phim cho 2 người""}]"
+50,ADD_TRAN2,"Đóng học phí cho con 3 triệu, thêm 200k mua sách luyện thi.","[{""category"": ""Giáo dục"", ""amount"": 3000000, ""note"": ""Học phí cho con""}, {""category"": ""Giáo dục"", ""amount"": 200000, ""note"": ""Sách luyện thi""}]"
+51,ADD_TRAN2,"Hôm nay hơi mệt, mua thuốc cảm 50k và uống trà gừng 25k.","[{""category"": ""Y tế"", ""amount"": 50000, ""note"": ""Thuốc cảm""}, {""category"": ""Ăn uống"", ""amount"": 25000, ""note"": ""Trà gừng""}]"
+52,ADD_TRAN2,"Cuối tuần thanh toán tiền điện 420k, nước 190k và tiền mạng 200k luôn cho tiện.","[{""category"": ""Điện nước"", ""amount"": 420000, ""note"": ""Tiền điện""}, {""category"": ""Điện nước"", ""amount"": 190000, ""note"": ""Tiền nước""}, {""category"": ""Điện nước"", ""amount"": 200000, ""note"": ""Tiền mạng""}]"
+53,ADD_TRAN2,"Mua vài món đồ linh tinh ở siêu thị hết 320k, gồm giấy vệ sinh, dầu gội, nước rửa chén.","[{""category"": ""Nhà ở"", ""amount"": 320000, ""note"": ""Giấy vệ sinh, dầu gội, nước rửa chén""}]"
+54,ADD_TRAN2,"Hôm nay đi chơi cùng bạn, mình chi phần vé 100k và đồ ăn nhẹ khoảng 60k.","[{""category"": ""Giải trí"", ""amount"": 100000, ""note"": ""Vé đi chơi""}, {""category"": ""Ăn uống"", ""amount"": 60000, ""note"": ""Đồ ăn nhẹ""}]"
+55,ADD_TRAN2,"Mua ít rau thịt sáng nay hết khoảng 80 nghìn, không nhớ chính xác từng món.","[{""category"": ""Ăn uống"", ""amount"": 80000, ""note"": ""Rau, thịt buổi sáng""}]"
+56,ADD_TRAN2,"Tối qua đặt đồ ăn trên app, tổng 115k gồm pizza và nước ngọt, phí ship 15k.","[{""category"": ""Ăn uống"", ""amount"": 130000, ""note"": ""Pizza, nước ngọt và phí ship""}]"
+57,ADD_TRAN2,"Đi siêu thị Coopmart mua sữa, bánh, nước rửa tay hết 410k.","[{""category"": ""Nhà ở"", ""amount"": 410000, ""note"": ""Sữa, bánh, nước rửa tay""}]"
+58,ADD_TRAN2,Mới mua gói bảo hiểm y tế 1 năm 2 triệu 5.,"[{""category"": ""Y tế"", ""amount"": 2500000, ""note"": ""Bảo hiểm y tế 1 năm""}]"
+59,ADD_TRAN2,Mình nạp tiền điện thoại 100k và mua thêm data 50k.,"[{""category"": ""Điện nước"", ""amount"": 100000, ""note"": ""Nạp điện thoại""}, {""category"": ""Điện nước"", ""amount"": 50000, ""note"": ""Data 4G""}]"
+60,ADD_TRAN2,"Trưa nay ăn lẩu cùng nhóm bạn, mình góp 200k.","[{""category"": ""Ăn uống"", ""amount"": 200000, ""note"": ""Ăn lẩu với bạn""}]"
+61,ADD_TRAN2,"Mới trả tiền thuê nhà tháng này 4 triệu, thêm 100k tiền gửi xe.","[{""category"": ""Nhà ở"", ""amount"": 4000000, ""note"": ""Thuê nhà""}, {""category"": ""Đi lại"", ""amount"": 100000, ""note"": ""Gửi xe""}]"
+62,ADD_TRAN2,Mua quà sinh nhật cho mẹ 350k và thêm bó hoa 120k.,"[{""category"": ""Mua sắm"", ""amount"": 350000, ""note"": ""Quà sinh nhật cho mẹ""}, {""category"": ""Mua sắm"", ""amount"": 120000, ""note"": ""Hoa tặng mẹ""}]"
+63,ADD_TRAN2,"Hôm nay đi khám sức khỏe định kỳ, hết 800k cả thuốc.","[{""category"": ""Y tế"", ""amount"": 800000, ""note"": ""Khám sức khỏe định kỳ và thuốc""}]"
+64,ADD_TRAN2,"Đặt vé xem ca nhạc tháng tới 1 triệu 8, trả luôn hôm nay.","[{""category"": ""Giải trí"", ""amount"": 1800000, ""note"": ""Vé xem ca nhạc tháng tới""}]"
+65,ADD_TRAN2,Mua đồ ăn cho mèo 150k và cát vệ sinh 90k.,"[{""category"": ""Khác"", ""amount"": 150000, ""note"": ""Đồ ăn cho mèo""}, {""category"": ""Khác"", ""amount"": 90000, ""note"": ""Cát vệ sinh cho mèo""}]"
+66,ADD_TRAN2,"Chi tiêu hôm nay gồm ăn sáng 35k, cà phê 30k, đi bus 10k và mua quyển vở 20k.","[{""category"": ""Ăn uống"", ""amount"": 35000, ""note"": ""Ăn sáng""}, {""category"": ""Ăn uống"", ""amount"": 30000, ""note"": ""Cà phê""}, {""category"": ""Đi lại"", ""amount"": 10000, ""note"": ""Bus""}, {""category"": ""Giáo dục"", ""amount"": 20000, ""note"": ""Vở""}]"
+67,ADD_TRAN2,"Mua áo sơ mi 350k, rồi tiện thể ghé cắt tóc 100k.","[{""category"": ""Mua sắm"", ""amount"": 350000, ""note"": ""Áo sơ mi""}, {""category"": ""Khác"", ""amount"": 100000, ""note"": ""Cắt tóc""}]"
+68,ADD_TRAN2,"Mình vừa đóng tiền điện tháng này 370k, còn nước thì chưa đến hạn.","[{""category"": ""Điện nước"", ""amount"": 370000, ""note"": ""Tiền điện tháng này""}]"
+69,ADD_TRAN2,"Mới sắm laptop mới 18 triệu, đắt nhưng phục vụ học hành.","[{""category"": ""Giáo dục"", ""amount"": 18000000, ""note"": ""Laptop phục vụ học tập""}]"
+70,ADD_TRAN2,"Hôm nay nấu cơm ở nhà, chỉ mua thêm ít rau 25k và thịt bò 90k.","[{""category"": ""Ăn uống"", ""amount"": 115000, ""note"": ""Rau và thịt bò""}]"
+71,SING_QUES,Hôm nay tôi tiêu hết bao nhiêu?,Trả về tổng chi tiêu của ngày hiện tại.
+72,SING_QUES,Tháng này tôi đã tốn bao nhiêu tiền?,Trả về tổng chi tiêu trong tháng hiện tại.
+73,SING_QUES,Hôm qua tôi tiêu những gì?,Liệt kê các giao dịch trong ngày hôm qua.
+74,SING_QUES,Tuần này tôi ăn uống hết bao nhiêu?,"Tổng chi tiêu danh mục ""Ăn uống"" trong tuần hiện tại."
+75,SING_QUES,Tháng này tiền đi lại là bao nhiêu?,"Tổng chi tiêu danh mục ""Đi lại"" trong tháng hiện tại."
+76,SING_QUES,Tôi đã mua sắm hết bao nhiêu trong tuần rồi?,"Tổng chi tiêu danh mục ""Mua sắm"" trong tuần hiện tại."
+77,SING_QUES,Hôm nay có giao dịch nào mới không?,Liệt kê các giao dịch được thêm trong ngày hôm nay.
+78,SING_QUES,Tổng chi tiêu từ đầu năm đến giờ là bao nhiêu?,Tổng toàn bộ chi tiêu từ đầu năm tới hiện tại.
+79,SING_QUES,Trong tháng này tôi đã chi bao nhiêu cho y tế?,"Tổng chi danh mục ""Y tế"" trong tháng hiện tại."
+80,SING_QUES,Từ đầu tháng đến nay tôi tiêu mấy lần rồi?,Đếm số giao dịch trong tháng hiện tại.
+81,SING_QUES,Hôm nay tôi có tốn khoản nào cho nhà ở không?,"Kiểm tra có giao dịch thuộc danh mục ""Nhà ở"" hôm nay hay không."
+82,SING_QUES,Chi nhiều nhất hôm nay là khoản nào?,Trả về giao dịch có giá trị lớn nhất trong ngày.
+83,SING_QUES,Hôm nay tôi ăn gì?,"Liệt kê các giao dịch danh mục ""Ăn uống"" trong ngày."
+84,SING_QUES,Tháng này tôi trả tiền điện chưa?,"Kiểm tra xem có giao dịch liên quan đến ""tiền điện"" trong tháng không."
+85,SING_QUES,Tôi còn chi tiêu nào chưa ghi trong hôm nay không?,Hỏi về khả năng bỏ sót giao dịch (bot có thể nhắc nhở người dùng).
+86,SING_QUES,Tôi tiêu nhiều nhất vào ngày nào trong tuần này?,Trả về ngày có tổng chi cao nhất trong tuần.
+87,SING_QUES,Tôi đã mua gì trong 3 ngày gần đây?,Liệt kê tất cả giao dịch 3 ngày gần nhất.
+88,SING_QUES,Tháng trước tôi tiêu ít hay nhiều hơn tháng này?,So sánh tổng chi giữa hai tháng liên tiếp.
+89,SING_QUES,Hôm nay ăn sáng hết bao nhiêu?,"Tổng chi tiêu danh mục ""Ăn uống"" có ghi chú liên quan “ăn sáng” trong ngày."
+90,SING_QUES,Tuần này tôi đã chi cho giáo dục bao nhiêu rồi?,"Tổng chi tiêu danh mục ""Giáo dục"" trong tuần."
+91,SING_QUES,Gần đây tôi có tiêu cho giải trí không?,"Kiểm tra danh mục ""Giải trí"" trong các giao dịch gần nhất."
+92,SING_QUES,Ngày nào tôi tiêu nhiều nhất trong tháng này?,Trả về ngày có tổng chi cao nhất trong tháng hiện tại.
+93,SING_QUES,Tôi đã chi bao nhiêu cho sức khỏe trong 7 ngày qua?,"Tổng chi danh mục ""Y tế"" trong 7 ngày gần đây."
+94,SING_QUES,Tôi đã tiêu hết bao nhiêu cho nhà ở từ đầu năm?,"Tổng danh mục ""Nhà ở"" từ đầu năm tới nay."
+95,SING_QUES,Tuần này tôi còn lại bao nhiêu so với ngân sách đặt ra?,Tính chênh lệch giữa tổng chi và ngân sách tuần.
+96,SING_QUES,Ngày hôm qua tôi có mua gì ở siêu thị không?,Kiểm tra giao dịch có từ khóa “siêu thị” hôm qua.
+97,SING_QUES,Tôi có khoản chi nào bị trùng trong tháng này không?,Kiểm tra trùng lặp giao dịch (cùng danh mục và số tiền).
+98,SING_QUES,Tôi chi trung bình mỗi ngày bao nhiêu trong tháng này?,Trung bình tổng chi mỗi ngày của tháng hiện tại.
+99,SING_QUES,Giao dịch gần nhất của tôi là gì?,Hiển thị giao dịch mới nhất được ghi nhận.
+100,SING_QUES,Tôi có khoản chi nào trên 1 triệu trong tuần này không?,Liệt kê giao dịch có số tiền > 1.000.000 trong tuần.
+101,MUL_QUES,Hãy giúp tôi tổng hợp số tiền đã tiêu trong tháng và đề xuất cách tiết kiệm cho tháng sau.,Thực hiện 2 hành động: (1) Thống kê tổng chi tháng hiện tại. (2) Đưa gợi ý tiết kiệm cho tháng tới.
+102,MUL_QUES,Cho tôi biết hôm nay tôi tiêu gì và còn bao nhiêu tiền trong ngân sách tuần này.,(1) Liệt kê giao dịch hôm nay. (2) Tính số tiền còn lại so với ngân sách tuần.
+103,MUL_QUES,Tính giúp tôi tổng chi ăn uống tháng này và so sánh với tháng trước.,(1) Tổng chi danh mục “Ăn uống” tháng hiện tại. (2) So sánh tăng/giảm so với tháng trước.
+104,MUL_QUES,Tôi muốn xem chi tiêu tuần này và danh mục nào đang vượt ngân sách.,(1) Tổng chi theo tuần. (2) Danh mục vượt ngân sách đã đặt.
+105,MUL_QUES,Cho tôi biết khoản nào lớn nhất hôm nay và tổng chi tháng này là bao nhiêu.,(1) Giao dịch lớn nhất trong ngày. (2) Tổng chi tháng hiện tại.
+106,MUL_QUES,Tổng hợp chi tiêu tháng này theo danh mục và gợi ý cắt giảm nếu cần.,(1) Thống kê chi tiêu theo từng danh mục. (2) Đưa gợi ý tiết kiệm.
+107,MUL_QUES,Tôi đã tiêu bao nhiêu cho đi lại và ăn uống trong tuần này?,Hai hành động: tổng chi danh mục “Đi lại” + “Ăn uống” tuần này.
+108,MUL_QUES,Xem giúp tôi hôm nay tiêu gì và ngày nào gần nhất tôi chi nhiều nhất.,(1) Liệt kê chi tiêu hôm nay. (2) Ngày có tổng chi cao nhất gần đây.
+109,MUL_QUES,Tôi muốn biết tổng chi tiêu của tháng rồi vẽ biểu đồ thống kê luôn.,(1) Tính tổng chi tháng. (2) Trả dữ liệu hoặc hiển thị biểu đồ.
+110,MUL_QUES,Kiểm tra xem tôi đã trả tiền điện chưa và tổng chi điện nước tháng này là bao nhiêu.,(1) Xác nhận có giao dịch tiền điện. (2) Tổng chi danh mục “Điện nước”.
+111,MUL_QUES,"Cho tôi xem chi tiêu hôm qua và hôm nay, so sánh xem ngày nào tốn hơn.",(1) Thống kê 2 ngày. (2) So sánh tổng chi.
+112,MUL_QUES,Hãy thống kê chi tiêu y tế năm nay và gợi ý mức chi hợp lý cho năm sau.,(1) Tổng chi danh mục “Y tế” năm nay. (2) Gợi ý giảm/duy trì cho năm sau.
+113,MUL_QUES,"Cho tôi biết tổng chi tháng này, số giao dịch, và trung bình mỗi giao dịch bao nhiêu.",(1) Tổng chi tháng. (2) Số giao dịch. (3) Trung bình/giao dịch.
+114,MUL_QUES,Tôi muốn biết các khoản ăn uống tuần này và khoản nào tốn nhất.,(1) Liệt kê chi tiêu “Ăn uống”. (2) Giao dịch lớn nhất trong nhóm này.
+115,MUL_QUES,Tổng hợp chi tiêu của tôi tuần này và chia nhỏ theo từng ngày.,(1) Tổng chi tuần. (2) Thống kê chi theo ngày.
+116,MUL_QUES,Xem lại chi tiêu hôm nay và gợi ý nên ghi chú thêm khoản nào chưa rõ.,(1) Liệt kê giao dịch hôm nay. (2) Đưa gợi ý bổ sung ghi chú còn thiếu.
+117,MUL_QUES,Thống kê các khoản vượt ngân sách và tính tổng tiền vượt.,(1) Danh sách danh mục vượt giới hạn. (2) Tổng phần vượt.
+118,MUL_QUES,Tôi muốn biết mình tiêu gì hôm qua và có khoản nào trùng với hôm kia không.,(1) Liệt kê chi hôm qua. (2) Phát hiện khoản trùng lặp.
+119,MUL_QUES,Cho tôi biết chi tiêu trung bình mỗi ngày trong tháng và ngày nào cao nhất.,(1) Tính trung bình chi/ngày. (2) Ngày cao nhất.
+120,MUL_QUES,Tôi tiêu bao nhiêu cho giáo dục năm nay và phần trăm so với tổng chi là bao nhiêu?,(1) Tổng danh mục “Giáo dục”. (2) Tỷ lệ phần trăm so với tổng chi.
+121,MUL_QUES,Cho tôi biết tổng chi ăn uống và số lần ăn ngoài trong tháng này.,(1) Tổng chi danh mục “Ăn uống”. (2) Đếm giao dịch có từ khóa “ăn ngoài”.
+122,MUL_QUES,Tổng hợp chi tiêu 7 ngày qua và dự đoán xu hướng tuần tới.,(1) Tổng chi 7 ngày. (2) Phân tích xu hướng chi.
+123,MUL_QUES,Cho tôi xem chi tiêu từng danh mục và danh mục nào cao nhất.,(1) Liệt kê chi từng danh mục. (2) Xác định danh mục cao nhất.
+124,MUL_QUES,Tôi tiêu bao nhiêu cho nhà ở và điện nước trong tháng này?,(1) Tổng “Nhà ở”. (2) Tổng “Điện nước”.
+125,MUL_QUES,Tổng hợp chi tháng này và gửi báo cáo qua email giúp tôi.,(1) Tính tổng chi tháng. (2) Gửi báo cáo (hoặc phản hồi yêu cầu gửi).
+126,MUL_QUES,Thống kê chi hôm nay và nhắc tôi nếu có khoản chưa ghi.,(1) Thống kê chi hôm nay. (2) Gợi ý kiểm tra khoản thiếu.
+127,MUL_QUES,Cho tôi biết 3 khoản lớn nhất trong tháng và tổng của chúng là bao nhiêu.,(1) Lấy 3 giao dịch lớn nhất. (2) Tính tổng.
+128,MUL_QUES,Tổng hợp chi tiêu của tôi hôm nay và hiển thị dưới dạng biểu đồ.,(1) Tổng hợp chi hôm nay. (2) Hiển thị biểu đồ trực quan.
+129,MUL_QUES,"Cho tôi xem tổng chi, trung bình mỗi danh mục, và danh mục nào chi ít nhất.",(1) Tổng chi. (2) Trung bình/danh mục. (3) Danh mục chi ít nhất.
+130,MUL_QUES,Tôi muốn biết chi tiêu tuần này và nhận gợi ý tiết kiệm hợp lý.,(1) Thống kê chi tuần. (2) Đưa gợi ý tiết kiệm.

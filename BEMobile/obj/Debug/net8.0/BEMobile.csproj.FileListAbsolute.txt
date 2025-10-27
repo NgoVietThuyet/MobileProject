@@ -732,3 +732,9 @@ D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\refint\BEMobile.d
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.pdb
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.genruntimeconfig.cache
 D:\Học liệu\branch\MobileProject\BEMobile\obj\Debug\net8.0\ref\BEMobile.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\MyApp.Tests\obj\MyApp.Tests.csproj.nuget.dgspec.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\MyApp.Tests\obj\project.assets.json
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\xunit.abstractions.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\xunit.assert.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\xunit.core.dll
+D:\Học liệu\branch\MobileProject\BEMobile\bin\Debug\net8.0\xunit.execution.dotnet.dll

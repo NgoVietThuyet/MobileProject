@@ -1,0 +1,2336 @@
+﻿ID,Category,Input,Expected Results,Real Results,Đánh giá (Pass/Fail),Phân loại sai,,,,
+,OFF_TOPIC,Bạn có thể giải toán không?,"Xin lỗi, mình không thể thực hiện chức năng này.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Thủ đô của Nhật Bản là gì?,Mình chỉ có thể hỗ trợ các câu hỏi về chi tiêu hoặc thống kê tài chính cá nhân.,"Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Viết cho tôi một bài thơ về mùa xuân.,"Xin lỗi, mình không được thiết kế để sáng tác nội dung ngoài phạm vi chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Thời tiết hôm nay ở Hà Nội như thế nào?,"Xin lỗi, mình không có thông tin về thời tiết, mình chỉ hỗ trợ thống kê chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Bạn là ai?,Mình là chatbot hỗ trợ bạn quản lý và thống kê chi tiêu cá nhân.,"Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Kể chuyện cười đi.,"Xin lỗi, mình không có chức năng kể chuyện, nhưng mình có thể giúp bạn xem lại chi tiêu hôm nay.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,%,Fail
+,OFF_TOPIC,Cho tôi công thức nấu phở bò.,"Xin lỗi, mình không có dữ liệu về nấu ăn, mình chỉ hỗ trợ quản lý chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,Tỷ lệ Pass,70,39
+,OFF_TOPIC,Hôm nay có đá bóng không?,"Xin lỗi, mình không theo dõi lịch thể thao, mình chỉ giúp bạn thống kê chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,Tỷ lễ lỗi(Serve),0.02,3
+,OFF_TOPIC,Bạn có yêu tôi không?,"Mình không có cảm xúc, nhưng luôn sẵn sàng giúp bạn quản lý tài chính thật tốt.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,Phân loại sai,0.31,31
+,OFF_TOPIC,Mở nhạc thư giãn đi.,"Xin lỗi, mình không thể phát nhạc, mình chỉ có thể thống kê và phân tích chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,Thời gian trung bình,4.2s,
+,OFF_TOPIC,Viết giúp tôi đoạn code Python.,"Xin lỗi, mình không hỗ trợ lập trình, mình chuyên về thống kê chi tiêu cá nhân.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,Data: 127.69KB,,
+,OFF_TOPIC,Bitcoin hôm nay tăng hay giảm?,"Xin lỗi, mình không theo dõi thị trường tiền điện tử, mình chỉ giúp bạn theo dõi chi tiêu của mình.","Chào bạn, tôi là trợ lý tài chính của bạn. Dữ liệu bạn cung cấp là các giao dịch tài chính cá nhân và không có thông tin về biến động giá Bitcoin hôm nay.
+
+Tuy nhiên, dựa trên dữ liệu bạn đã chia sẻ, tôi có thể cung cấp cho bạn thông tin chi tiết về các giao dịch tài chính của bạn trong khoảng thời gian từ ngày 28/05/2025 đến ngày 20/10/2025 như sau:
+
+**Tổng quan chi tiêu theo ngày cập nhật:**
+
+*   **Ngày 28/05/2025:** Chi tiêu tổng cộng **-430.000 VNĐ** với các khoản chính: Mua sắm (-400.000 VNĐ), Kem đánh răng (-20.000 VNĐ), Thuốc nhỏ mắt (-10.000 VNĐ).
+*   **Ngày 29/05/2025:** Chi tiêu tổng cộng **-1.320.000 VNĐ**, bao gồm: Bỉm (-200.000 VNĐ), Sữa (-1.000.000 VNĐ), và một khoản chi không rõ danh mục (-200.000 VNĐ).
+*   **Ngày 01/06/2025:** Chi tiêu **-85.000 VNĐ** cho Cà phê cùng bạn.
+*   **Ngày 02/06/2025:** Chi tiêu **-320.000 VNĐ** cho Thanh toán tiền điện.
+*   **Ngày 17/10/2025:** Chi tiêu **-50.000 VNĐ** cho Thuốc dạ dày.
+*   **Ngày 18/10/2025:** Tổng chi tiêu là **-460.000 VNĐ**, với các khoản: Ăn sáng (-60.000 VNĐ), Xe buýt (-20.000 VNĐ), Mua đồ gia dụng (-100.000 VNĐ), Cà phê hẹn đối tác (-75.000 VNĐ), Khám răng (-150.000 VNĐ), Sách luyện thi (-95.000 VNĐ).
+*   **Ngày 19/10/2025:** Tổng chi tiêu là **-1.410.000 VNĐ**, bao gồm: Đồ ăn vặt (-85.000 VNĐ), Taxi ngắn (-30.000 VNĐ), Mua quần áo thu đông (-500.000 VNĐ), Đồ học (-100.000 VNĐ), Bông băng (-30.000 VNĐ), Ăn tối với gia đình (-120.000 VNĐ), Sửa điện (-200.000 VNĐ), Đóng tiền nước (-180.000 VNĐ).
+*   **Ngày 20/10/2025:** Tổng chi tiêu là **-1.125.000 VNĐ**, bao gồm: Xem phim tại rạp (-75.000 VNĐ), Cà phê sáng (-45.000 VNĐ), Ăn trưa công ty (-110.000 VNĐ), Gửi xe (-15.000 VNĐ), Mua balo (-350.000 VNĐ), Sách kỹ thuật (-50.000 VNĐ), Thuốc bổ (-40.000 VNĐ), Đóng tiền mạng (-250.000 VNĐ), Mua hoa tặng người yêu (-100.000 VNĐ).
+
+**Thu nhập:**
+
+*   **Ngày 20/10/2025:** Bạn có một khoản thu nhập là **8.500.000 VNĐ** với ghi chú ""Lương tháng 10"".
+
+**Các danh mục chi tiêu chính và tổng số tiền:**
+
+*   **Mua sắm:** -1.250.000 VNĐ
+*   **Y tế:** -230.000 VNĐ
+*   **Khác:** -400.000 VNĐ (chưa bao gồm các khoản không rõ danh mục)
+*   **Giải trí:** -205.000 VNĐ
+*   **Điện nước:** -1.170.000 VNĐ
+*   **Đi lại:** -65.000 VNĐ
+*   **Giáo dục:** -245.000 VNĐ
+
+Nếu bạn cần phân tích sâu hơn về các khoản chi tiêu hoặc có câu hỏi liên quan đến dữ liệu tài chính cá nhân của mình, đừng ngần ngại hỏi nhé!",0,1,,,,
+,OFF_TOPIC,Bạn có thể gọi đồ ăn giúp tôi không?,"Xin lỗi, mình không thể đặt đồ ăn, mình chỉ hỗ trợ thống kê và phân tích chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Tính giúp tôi 9×7 là bao nhiêu.,"Xin lỗi, mình không thực hiện phép tính toán chung, mình chỉ thống kê và phân tích chi tiêu cá nhân.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Kể tên ba quốc gia ở châu Âu.,"Xin lỗi, mình không cung cấp thông tin địa lý, mình chỉ giúp bạn theo dõi chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Dự đoán kết quả xổ số hôm nay.,"Xin lỗi, mình không thể dự đoán hay cung cấp thông tin xổ số.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Gửi email giúp tôi.,"Xin lỗi, mình không có quyền truy cập vào email, mình chỉ hỗ trợ quản lý chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Cho tôi biết công thức hóa học của nước.,"Xin lỗi, mình không cung cấp thông tin khoa học, mình chỉ hỗ trợ quản lý tài chính cá nhân.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Bạn có thể dịch tiếng Anh sang tiếng Việt không?,"Xin lỗi, mình không hỗ trợ dịch ngôn ngữ, mình chỉ hỗ trợ thống kê chi tiêu.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,OFF_TOPIC,Bạn có thể đặt vé máy bay cho tôi không?,"Xin lỗi, mình không có chức năng đặt vé, mình chỉ hỗ trợ theo dõi chi tiêu cá nhân.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",1,,,,,
+,ADD_TRAN,Hôm nay tôi mua 90k gạo.,"[{""category"": ""Ăn uống"", ""amount"": 90000, ""note"": ""Gạo""}]","```json
+[
+  {
+    ""category"": ""9"",
+    ""amount"": 90000,
+    ""note"": ""Gạo""
+  }
+]
+```",1,,,,,
+,ADD_TRAN,Trưa nay ăn bún bò 45k.,"[{""category"": ""Ăn uống"", ""amount"": 45000, ""note"": ""Bún bò""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Tôi đổ 120 nghìn tiền xăng.,"[{""category"": ""Đi lại"", ""amount"": 120000, ""note"": ""Tiền xăng""}]","```json
+[
+  {
+    ""category"": ""11"",
+    ""amount"": 120000,
+    ""note"": ""Đổ xăng""
+  }
+]
+```",1,,,,,
+,ADD_TRAN,Mua áo thun 250k ở chợ.,"[{""category"": ""Mua sắm"", ""amount"": 250000, ""note"": ""Áo thun""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Hôm nay đi xem phim hết 80k.,"[{""category"": ""Giải trí"", ""amount"": 80000, ""note"": ""Xem phim""}]","```json
+[
+  {
+    ""category"": ""12"",
+    ""amount"": 80000,
+    ""note"": ""Đi xem phim""
+  }
+]
+```",1,,,,,
+,ADD_TRAN,Đóng học phí 2 triệu cho con.,"[{""category"": ""Giáo dục"", ""amount"": 2000000, ""note"": ""Học phí cho con""}]","```json
+[
+  { ""category"": ""5"", ""amount"": 2000000, ""note"": ""Đóng học phí cho con"" }
+]
+```",1,,,,,
+,ADD_TRAN,Mua thuốc cảm 50 nghìn.,"[{""category"": ""Y tế"", ""amount"": 50000, ""note"": ""Thuốc cảm""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Trả tiền điện 350k.,"[{""category"": ""Điện nước"", ""amount"": 350000, ""note"": ""Tiền điện""}]","```json
+[
+  { ""category"": ""3"", ""amount"": 350000, ""note"": ""Trả tiền điện""}
+]
+```",1,,,,,
+,ADD_TRAN,Thanh toán tiền thuê nhà 4 triệu.,"[{""category"": ""Nhà ở"", ""amount"": 4000000, ""note"": ""Tiền thuê nhà""}]","```json
+[
+  {
+    ""category"": ""1"",
+    ""amount"": 4000000,
+    ""note"": ""Tiền thuê nhà""
+  }
+]
+```",1,,,,,
+,ADD_TRAN,Gửi mẹ 500k.,"[{""category"": ""Khác"", ""amount"": 500000, ""note"": ""Gửi mẹ""}]","```json
+[
+  {
+    ""category"": ""1"",
+    ""amount"": 500000,
+    ""note"": ""Gửi mẹ""
+  }
+]
+```",1,,,,,
+,ADD_TRAN,Mua cà phê 25k và bánh ngọt 40k.,"[{""category"": ""Ăn uống"", ""amount"": 25000, ""note"": ""Cà phê""}, {""category"": ""Ăn uống"", ""amount"": 40000, ""note"": ""Bánh ngọt""}]","```json
+[
+  {
+    ""category"": ""8"",
+    ""amount"": 25000,
+    ""note"": ""Cà phê""
+  },
+  {
+    ""category"": ""8"",
+    ""amount"": 40000,
+    ""note"": ""Bánh ngọt""
+  }
+]
+```",1,,,,,
+,ADD_TRAN,Đi taxi 100k rồi ăn tối 80k.,"[{""category"": ""Đi lại"", ""amount"": 100000, ""note"": ""Taxi""}, {""category"": ""Ăn uống"", ""amount"": 80000, ""note"": ""Ăn tối""}]","```json
+[
+  {
+    ""category"": ""11"",
+    ""amount"": 100000,
+    ""note"": ""Đi taxi""
+  },
+  {
+    ""category"": ""8"",
+    ""amount"": 80000,
+    ""note"": ""Ăn tối""
+  }
+]
+```",1,,,,,
+,ADD_TRAN,Mua áo sơ mi 300k và giày 600k.,"[{""category"": ""Mua sắm"", ""amount"": 300000, ""note"": ""Áo sơ mi""}, {""category"": ""Mua sắm"", ""amount"": 600000, ""note"": ""Giày""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Xem phim 75k với bạn ở CGV.,"[{""category"": ""Giải trí"", ""amount"": 75000, ""note"": ""Xem phim với bạn ở CGV""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Mua sách lập trình 150k.,"[{""category"": ""Giáo dục"", ""amount"": 150000, ""note"": ""Sách lập trình""}]","```json
+[
+  { ""category"": ""5"", ""amount"": 150000, ""note"": ""Mua sách lập trình""}
+]
+```",1,,,,,
+,ADD_TRAN,Khám bệnh 300 nghìn tại viện.,"[{""category"": ""Y tế"", ""amount"": 300000, ""note"": ""Khám bệnh tại viện""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Đóng tiền nước 200k và tiền điện 400k.,"[{""category"": ""Điện nước"", ""amount"": 200000, ""note"": ""Tiền nước""}, {""category"": ""Điện nước"", ""amount"": 400000, ""note"": ""Tiền điện""}]","System.AggregateException: One or more errors occurred. (Gemini API error: TooManyRequests - {
+  ""error"": {
+    ""code"": 429,
+    ""message"": ""You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15\nPlease retry in 44.725879771s."",
+    ""status"": ""RESOURCE_EXHAUSTED"",
+    ""details"": [
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.QuotaFailure"",
+        ""violations"": [
+          {
+            ""quotaMetric"": ""generativelanguage.googleapis.com/generate_content_free_tier_requests"",
+            ""quotaId"": ""GenerateRequestsPerMinutePerProjectPerModel-FreeTier"",
+            ""quotaDimensions"": {
+              ""location"": ""global"",
+              ""model"": ""gemini-2.5-flash-lite""
+            },
+            ""quotaValue"": ""15""
+          }
+        ]
+      },
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.Help"",
+        ""links"": [
+          {
+            ""description"": ""Learn more about Gemini API quotas"",
+            ""url"": ""https://ai.google.dev/gemini-api/docs/rate-limits""
+          }
+        ]
+      },
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.RetryInfo"",
+        ""retryDelay"": ""44s""
+      }
+    ]
+  }
+}
+)
+ ---> System.Net.Http.HttpRequestException: Gemini API error: TooManyRequests - {
+  ""error"": {
+    ""code"": 429,
+    ""message"": ""You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15\nPlease retry in 44.725879771s."",
+    ""status"": ""RESOURCE_EXHAUSTED"",
+    ""details"": [
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.QuotaFailure"",
+        ""violations"": [
+          {
+            ""quotaMetric"": ""generativelanguage.googleapis.com/generate_content_free_tier_requests"",
+            ""quotaId"": ""GenerateRequestsPerMinutePerProjectPerModel-FreeTier"",
+            ""quotaDimensions"": {
+              ""location"": ""global"",
+              ""model"": ""gemini-2.5-flash-lite""
+            },
+            ""quotaValue"": ""15""
+          }
+        ]
+      },
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.Help"",
+        ""links"": [
+          {
+            ""description"": ""Learn more about Gemini API quotas"",
+            ""url"": ""https://ai.google.dev/gemini-api/docs/rate-limits""
+          }
+        ]
+      },
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.RetryInfo"",
+        ""retryDelay"": ""44s""
+      }
+    ]
+  }
+}
+
+   at BEMobile.Services.KnowledgeGraphService.CallGeminiWithTextAsync(String prompt) in D:\Học liệu\branch\MobileProject\BEMobile\Services\KnowledgeGraphService.cs:line 344
+   at BEMobile.Services.KnowledgeGraphService.Rep_single_query(String userQuestion, String userId, String fixQuestion) in D:\Học liệu\branch\MobileProject\BEMobile\Services\KnowledgeGraphService.cs:line 262
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at BEMobile.Services.KnowledgeGraphService.Rep_multi_query(String userQuestion, String userId) in D:\Học liệu\branch\MobileProject\BEMobile\Services\KnowledgeGraphService.cs:line 287
+   at BEMobile.Controllers.ChatbotController.ExtractGraph(ChatRequest request) in D:\Học liệu\branch\MobileProject\BEMobile\Controllers\ChatbotController.cs:line 42
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Accept: */*
+Connection: keep-alive
+Host: localhost:7201
+User-Agent: PostmanRuntime/7.39.1
+Accept-Encoding: gzip, deflate, br
+Cache-Control: no-cache
+Content-Type: application/json
+Content-Length: 71
+Postman-Token: cf770a1a-5a7e-4f9e-aa3d-822623033894
+",0,,,,,
+,ADD_TRAN,Sửa ống nước 150k.,"[{""category"": ""Nhà ở"", ""amount"": 150000, ""note"": ""Sửa ống nước""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Cho mèo ăn 30k.,"[{""category"": ""Khác"", ""amount"": 30000, ""note"": ""Cho mèo ăn""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Đi uống trà sữa 55k với bạn.,"[{""category"": ""Ăn uống"", ""amount"": 55000, ""note"": ""Trà sữa với bạn""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,"Ăn sáng 35 nghìn, mua bánh mì 20k.","[{""category"": ""Ăn uống"", ""amount"": 35000, ""note"": ""Ăn sáng""}, {""category"": ""Ăn uống"", ""amount"": 20000, ""note"": ""Bánh mì""}]","System.Net.Http.HttpRequestException: Gemini API error: TooManyRequests - {
+  ""error"": {
+    ""code"": 429,
+    ""message"": ""You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15\nPlease retry in 40.489763399s."",
+    ""status"": ""RESOURCE_EXHAUSTED"",
+    ""details"": [
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.QuotaFailure"",
+        ""violations"": [
+          {
+            ""quotaMetric"": ""generativelanguage.googleapis.com/generate_content_free_tier_requests"",
+            ""quotaId"": ""GenerateRequestsPerMinutePerProjectPerModel-FreeTier"",
+            ""quotaDimensions"": {
+              ""location"": ""global"",
+              ""model"": ""gemini-2.5-flash-lite""
+            },
+            ""quotaValue"": ""15""
+          }
+        ]
+      },
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.Help"",
+        ""links"": [
+          {
+            ""description"": ""Learn more about Gemini API quotas"",
+            ""url"": ""https://ai.google.dev/gemini-api/docs/rate-limits""
+          }
+        ]
+      },
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.RetryInfo"",
+        ""retryDelay"": ""40s""
+      }
+    ]
+  }
+}
+
+   at BEMobile.Services.KnowledgeGraphService.CallGeminiWithTextAsync(String prompt) in D:\Học liệu\branch\MobileProject\BEMobile\Services\KnowledgeGraphService.cs:line 344
+   at BEMobile.Services.KnowledgeGraphService.Rep_add_transaction(String text) in D:\Học liệu\branch\MobileProject\BEMobile\Services\KnowledgeGraphService.cs:line 73
+   at BEMobile.Controllers.ChatbotController.ExtractGraph(ChatRequest request) in D:\Học liệu\branch\MobileProject\BEMobile\Controllers\ChatbotController.cs:line 36
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Accept: */*
+Connection: keep-alive
+Host: localhost:7201
+User-Agent: PostmanRuntime/7.39.1
+Accept-Encoding: gzip, deflate, br
+Cache-Control: no-cache
+Content-Type: application/json
+Content-Length: 59
+Postman-Token: 2d7ca70c-605f-4bc2-b2c4-71c093bbc3d7
+",0,,,,,
+,ADD_TRAN,Mua vé xem hòa nhạc 900k.,"[{""category"": ""Giải trí"", ""amount"": 900000, ""note"": ""Vé xem hòa nhạc""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN,Tiền học thêm 500k và mua bút 40k.,"[{""category"": ""Giáo dục"", ""amount"": 500000, ""note"": ""Học thêm""}, {""category"": ""Giáo dục"", ""amount"": 40000, ""note"": ""Bút""}]","```json
+[
+  { ""category"": ""5"", ""amount"": 500000, ""note"": ""Tiền học thêm""},
+  { ""category"": ""9"", ""amount"": 40000, ""note"": ""Mua bút""}
+]
+```",1,,,,,
+,ADD_TRAN,"Khám răng 200k, mua thuốc 60k.","[{""category"": ""Y tế"", ""amount"": 200000, ""note"": ""Khám răng""}, {""category"": ""Y tế"", ""amount"": 60000, ""note"": ""Thuốc""}]","Chào bạn, mình đã ghi nhận các khoản chi tiêu của bạn như sau:
+
+*   **Y tế:**
+    *   Khám răng: 150.000 VNĐ (ngày 18/10/2025)
+    *   Mua thuốc: 50.000 VNĐ (ngày 17/10/2025) - có vẻ là thuốc dạ dày
+    *   Mua bông băng: 30.000 VNĐ (ngày 19/10/2025)
+    *   Thuốc bổ: 40.000 VNĐ (ngày 20/10/2025)
+
+Mình có thể hỗ trợ bạn ghi nhận và theo dõi các khoản chi tiêu này. Tuy nhiên, mình không thể thực hiện các yêu cầu khác như gửi mail hay tìm kiếm giúp bạn ạ.",0,1,,,,
+,ADD_TRAN,"Mua rau 30k, thịt 120k, nước mắm 25k.","[{""category"": ""Ăn uống"", ""amount"": 30000, ""note"": ""Rau""}, {""category"": ""Ăn uống"", ""amount"": 120000, ""note"": ""Thịt""}, {""category"": ""Ăn uống"", ""amount"": 25000, ""note"": ""Nước mắm""}]","Chào bạn, dựa trên thông tin bạn cung cấp, tôi xin tóm tắt lại các khoản chi tiêu của bạn như sau:
+
+**Các khoản chi tiêu gần đây:**
+
+*   **Ngày 28/05/2025:**
+    *   Mua sắm: -400.000 VNĐ
+    *   Kem đánh răng (Mua sắm): -20.000 VNĐ
+    *   Thuốc nhỏ mắt (Y tế): -10.000 VNĐ
+*   **Ngày 29/05/2025:**
+    *   Bỉm (Khác): -200.000 VNĐ
+    *   Sữa: -1.000.000 VNĐ
+*   **Ngày 01/06/2025:**
+    *   Cà phê cùng bạn (Giải trí): -85.000 VNĐ
+*   **Ngày 02/06/2025:**
+    *   Thanh toán tiền điện (Điện nước): -320.000 VNĐ
+*   **Ngày 17/10/2025:**
+    *   Mua thuốc dạ dày (Y tế): -50.000 VNĐ
+*   **Ngày 18/10/2025:**
+    *   Ăn sáng: -60.000 VNĐ
+    *   Xe buýt (Đi lại): -20.000 VNĐ
+    *   Mua đồ gia dụng (Khác): -100.000 VNĐ
+    *   Cà phê hẹn đối tác (Giải trí): -75.000 VNĐ
+    *   Khám răng (Y tế): -150.000 VNĐ
+    *   Sách luyện thi (Giáo dục): -95.000 VNĐ
+*   **Ngày 19/10/2025:**
+    *   Mua đồ ăn vặt: -85.000 VNĐ
+    *   Taxi ngắn (Đi lại): -30.000 VNĐ
+    *   Mua quần áo thu đông (Mua sắm): -500.000 VNĐ
+    *   Mua đồ học (Giáo dục): -100.000 VNĐ
+    *   Mua bông băng (Y tế): -30.000 VNĐ
+    *   Ăn tối với gia đình: -120.000 VNĐ
+    *   Sửa điện (Điện nước): -200.000 VNĐ
+    *   Đóng tiền nước (Điện nước): -180.000 VNĐ
+*   **Ngày 20/10/2025:**
+    *   Xem phim tại rạp (Giải trí): -75.000 VNĐ
+    *   Cà phê sáng (Giải trí): -45.000 VNĐ
+    *   Ăn trưa công ty: -110.000 VNĐ
+    *   Gửi xe (Đi lại): -15.000 VNĐ
+    *   Mua balo (Mua sắm): -350.000 VNĐ
+    *   Mua sách kỹ thuật (Giáo dục): -50.000 VNĐ
+    *   Thuốc bổ (Y tế): -40.000 VNĐ
+    *   Đóng tiền mạng (Điện nước): -250.000 VNĐ
+    *   Mua hoa tặng người yêu (Khác): -100.000 VNĐ
+
+**Thu nhập:**
+
+*   **Ngày 20/10/2025:** Lương tháng 10: +8.500.000 VNĐ
+
+**Lưu ý:**
+
+*   Các khoản chi tiêu trên được trích xuất từ dữ liệu bạn cung cấp.
+*   Các khoản có `TenDanhMuc` là `null` hoặc không rõ danh mục sẽ được liệt kê với ghi chú tương ứng.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu này, hãy cho tôi biết nhé! Tôi chỉ có thể hỗ trợ bạn với các thông tin có sẵn trong dữ liệu.",0,1,,,,
+,ADD_TRAN2,"Hôm nay tan làm ghé mua ít đồ ăn tối, hết tầm 120 nghìn gồm thịt gà và rau.","[{""category"": ""Ăn uống"", ""amount"": 120000, ""note"": ""Thịt gà và rau cho bữa tối""}]","System.Net.Http.HttpRequestException: Gemini API error: TooManyRequests - {
+  ""error"": {
+    ""code"": 429,
+    ""message"": ""You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/usage?tab=rate-limit.\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15\nPlease retry in 22.67644298s."",
+    ""status"": ""RESOURCE_EXHAUSTED"",
+    ""details"": [
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.QuotaFailure"",
+        ""violations"": [
+          {
+            ""quotaMetric"": ""generativelanguage.googleapis.com/generate_content_free_tier_requests"",
+            ""quotaId"": ""GenerateRequestsPerMinutePerProjectPerModel-FreeTier"",
+            ""quotaDimensions"": {
+              ""location"": ""global"",
+              ""model"": ""gemini-2.5-flash-lite""
+            },
+            ""quotaValue"": ""15""
+          }
+        ]
+      },
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.Help"",
+        ""links"": [
+          {
+            ""description"": ""Learn more about Gemini API quotas"",
+            ""url"": ""https://ai.google.dev/gemini-api/docs/rate-limits""
+          }
+        ]
+      },
+      {
+        ""@type"": ""type.googleapis.com/google.rpc.RetryInfo"",
+        ""retryDelay"": ""22s""
+      }
+    ]
+  }
+}
+
+   at BEMobile.Services.KnowledgeGraphService.CallGeminiWithTextAsync(String prompt) in D:\Học liệu\branch\MobileProject\BEMobile\Services\KnowledgeGraphService.cs:line 344
+   at BEMobile.Services.KnowledgeGraphService.Rep_add_transaction(String text) in D:\Học liệu\branch\MobileProject\BEMobile\Services\KnowledgeGraphService.cs:line 73
+   at BEMobile.Controllers.ChatbotController.ExtractGraph(ChatRequest request) in D:\Học liệu\branch\MobileProject\BEMobile\Controllers\ChatbotController.cs:line 36
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Accept: */*
+Connection: keep-alive
+Host: localhost:7201
+User-Agent: PostmanRuntime/7.39.1
+Accept-Encoding: gzip, deflate, br
+Cache-Control: no-cache
+Content-Type: application/json
+Content-Length: 116
+Postman-Token: 0a022b1d-fd28-4191-a350-b80f072ebad6
+",0,,,,,
+,ADD_TRAN2,"Sáng nay đi làm muộn nên đặt grab 60k, trưa lại ăn cơm văn phòng hết 45k.","[{""category"": ""Đi lại"", ""amount"": 60000, ""note"": ""Grab đi làm""}, {""category"": ""Ăn uống"", ""amount"": 45000, ""note"": ""Cơm văn phòng""}]","Chào bạn,
+
+Dựa trên thông tin bạn cung cấp và dữ liệu tài chính cá nhân đã cập nhật, tôi xin đưa ra các khoản chi tiêu và thu nhập liên quan đến ngày hôm nay (20/10/2025) và các ngày gần đây như sau:
+
+**Các khoản chi tiêu đã ghi nhận vào ngày 20/10/2025:**
+
+*   **Giải trí:**
+    *   Xem phim tại rạp: -75.000 VNĐ
+    *   Cà phê sáng: -45.000 VNĐ
+*   **Ăn uống:**
+    *   Ăn trưa công ty: -110.000 VNĐ
+*   **Đi lại:**
+    *   Gửi xe: -15.000 VNĐ
+*   **Mua sắm:**
+    *   Mua balo: -350.000 VNĐ
+*   **Giáo dục:**
+    *   Mua sách kỹ thuật: -50.000 VNĐ
+*   **Y tế:**
+    *   Thuốc bổ: -40.000 VNĐ
+*   **Điện nước:**
+    *   Đóng tiền mạng: -250.000 VNĐ
+*   **Khác:**
+    *   Mua hoa tặng người yêu: -100.000 VNĐ
+
+**Các khoản chi tiêu và thu nhập khác gần đây:**
+
+*   **Ngày 19/10/2025:**
+    *   Mua đồ ăn vặt: -85.000 VNĐ
+    *   Taxi ngắn: -30.000 VNĐ
+    *   Mua quần áo thu đông: -500.000 VNĐ
+    *   Mua đồ học: -100.000 VNĐ
+    *   Mua bông băng: -30.000 VNĐ
+    *   Ăn tối với gia đình: -120.000 VNĐ
+    *   Sửa điện: -200.000 VNĐ
+    *   Đóng tiền nước: -180.000 VNĐ
+*   **Ngày 18/10/2025:**
+    *   Ăn sáng: -60.000 VNĐ
+    *   Xe buýt: -20.000 VNĐ
+    *   Mua đồ gia dụng: -100.000 VNĐ
+    *   Cà phê hẹn đối tác: -75.000 VNĐ
+    *   Khám răng: -150.000 VNĐ
+    *   Sách luyện thi: -95.000 VNĐ
+*   **Thu nhập:**
+    *   Lương tháng 10: 8.500.000 VNĐ (ghi nhận vào ngày 20/10/2025)
+
+Rất tiếc, tôi không thể xử lý các yêu cầu như gửi email hay tìm kiếm thông tin bên ngoài hệ thống. Nếu bạn có bất kỳ câu hỏi nào khác liên quan đến dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",0,1,,,,
+,ADD_TRAN2,"Mới mua đôi giày thể thao 1 triệu 2 ở shop gần nhà, hơi xót tiền.","[{""category"": ""Mua sắm"", ""amount"": 1200000, ""note"": ""Giày thể thao""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN2,"Tối qua đi xem phim với bạn, vé 85k mỗi người, mình trả cả hai vé.","[{""category"": ""Giải trí"", ""amount"": 170000, ""note"": ""Vé xem phim cho 2 người""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN2,"Đóng học phí cho con 3 triệu, thêm 200k mua sách luyện thi.","[{""category"": ""Giáo dục"", ""amount"": 3000000, ""note"": ""Học phí cho con""}, {""category"": ""Giáo dục"", ""amount"": 200000, ""note"": ""Sách luyện thi""}]","Chào bạn,
+
+Dựa trên thông tin bạn cung cấp, tôi xin cập nhật các khoản chi tiêu sau:
+
+*   **Học phí cho con:**
+    *   Ngày cập nhật: 2025/10/18
+    *   Số tiền: -1.000.000 VNĐ
+    *   Ghi chú: Sữa (Trong dữ liệu không có khoản chi ""học phí cho con"" với số tiền 3 triệu. Tuy nhiên, có khoản chi 1.000.000 VNĐ với ghi chú ""Sữa"" và ngày 2025/10/19. Có thể bạn muốn cập nhật mục đích chi tiêu này là học phí, hoặc có một khoản chi khác chưa được liệt kê.)
+    *   Loại: Chi tiêu
+
+*   **Mua sách luyện thi:**
+    *   Ngày cập nhật: 2025/10/18
+    *   Số tiền: -95.000 VNĐ
+    *   Ghi chú: Sách luyện thi
+    *   Loại: Giáo dục (Chi tiêu)
+
+Nếu có bất kỳ khoản chi tiêu nào khác bạn muốn cập nhật hoặc điều chỉnh, xin vui lòng cho tôi biết nhé!",0,1,,,,
+,ADD_TRAN2,"Hôm nay hơi mệt, mua thuốc cảm 50k và uống trà gừng 25k.","[{""category"": ""Y tế"", ""amount"": 50000, ""note"": ""Thuốc cảm""}, {""category"": ""Ăn uống"", ""amount"": 25000, ""note"": ""Trà gừng""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN2,"Cuối tuần thanh toán tiền điện 420k, nước 190k và tiền mạng 200k luôn cho tiện.","[{""category"": ""Điện nước"", ""amount"": 420000, ""note"": ""Tiền điện""}, {""category"": ""Điện nước"", ""amount"": 190000, ""note"": ""Tiền nước""}, {""category"": ""Điện nước"", ""amount"": 200000, ""note"": ""Tiền mạng""}]","Chào bạn, tôi là trợ lý tài chính của bạn đây! Dựa trên thông tin bạn cung cấp và dữ liệu tôi có, tôi đã ghi nhận các khoản chi tiêu của bạn vào cuối tuần như sau:
+
+*   **Ngày 2025/10/19:**
+    *   **Điện nước:** 200.000 VNĐ (Sửa điện)
+    *   **Điện nước:** 180.000 VNĐ (Đóng tiền nước)
+*   **Ngày 2025/10/20:**
+    *   **Điện nước:** 250.000 VNĐ (Đóng tiền mạng)
+
+Tổng cộng các khoản thanh toán bạn yêu cầu vào cuối tuần này là **630.000 VNĐ**.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",0,1,,,,
+,ADD_TRAN2,"Mua vài món đồ linh tinh ở siêu thị hết 320k, gồm giấy vệ sinh, dầu gội, nước rửa chén.","[{""category"": ""Nhà ở"", ""amount"": 320000, ""note"": ""Giấy vệ sinh, dầu gội, nước rửa chén""}]","```json
+[
+  {
+    ""category"": ""9"",
+    ""amount"": 320000,
+    ""note"": ""Mua đồ linh tinh ở siêu thị (giấy vệ sinh, dầu gội, nước rửa chén)""
+  }
+]
+```",1,,,,,
+,ADD_TRAN2,"Hôm nay đi chơi cùng bạn, mình chi phần vé 100k và đồ ăn nhẹ khoảng 60k.","[{""category"": ""Giải trí"", ""amount"": 100000, ""note"": ""Vé đi chơi""}, {""category"": ""Ăn uống"", ""amount"": 60000, ""note"": ""Đồ ăn nhẹ""}]","```json
+[
+  { ""category"": ""12"", ""amount"": 100000, ""note"": ""Vé đi chơi"" },
+  { ""category"": ""8"", ""amount"": 60000, ""note"": ""Đồ ăn nhẹ"" }
+]
+```",1,,,,,
+,ADD_TRAN2,"Mua ít rau thịt sáng nay hết khoảng 80 nghìn, không nhớ chính xác từng món.","[{""category"": ""Ăn uống"", ""amount"": 80000, ""note"": ""Rau, thịt buổi sáng""}]","```json
+[
+  {
+    ""category"": ""8"",
+    ""amount"": 80000,
+    ""note"": ""Mua rau thịt sáng nay""
+  }
+]
+```",1,,,,,
+,ADD_TRAN2,"Tối qua đặt đồ ăn trên app, tổng 115k gồm pizza và nước ngọt, phí ship 15k.","[{""category"": ""Ăn uống"", ""amount"": 130000, ""note"": ""Pizza, nước ngọt và phí ship""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN2,"Đi siêu thị Coopmart mua sữa, bánh, nước rửa tay hết 410k.","[{""category"": ""Nhà ở"", ""amount"": 410000, ""note"": ""Sữa, bánh, nước rửa tay""}]","```json
+[
+  {
+    ""category"": ""9"",
+    ""amount"": 410000,
+    ""note"": ""Siêu thị Coopmart mua sữa, bánh, nước rửa tay""
+  }
+]
+```",1,,,,,
+,ADD_TRAN2,Mới mua gói bảo hiểm y tế 1 năm 2 triệu 5.,"[{""category"": ""Y tế"", ""amount"": 2500000, ""note"": ""Bảo hiểm y tế 1 năm""}]","```json
+[
+  {
+    ""category"": ""6"",
+    ""amount"": 2500000,
+    ""note"": ""Mua gói bảo hiểm y tế 1 năm""
+  }
+]
+```",1,,,,,
+,ADD_TRAN2,Mình nạp tiền điện thoại 100k và mua thêm data 50k.,"[{""category"": ""Điện nước"", ""amount"": 100000, ""note"": ""Nạp điện thoại""}, {""category"": ""Điện nước"", ""amount"": 50000, ""note"": ""Data 4G""}]","[
+  {
+    ""category"": ""3"",
+    ""amount"": 100000,
+    ""note"": ""Nạp tiền điện thoại""
+  },
+  {
+    ""category"": ""3"",
+    ""amount"": 50000,
+    ""note"": ""Mua data điện thoại""
+  }
+]",1,,,,,
+,ADD_TRAN2,"Trưa nay ăn lẩu cùng nhóm bạn, mình góp 200k.","[{""category"": ""Ăn uống"", ""amount"": 200000, ""note"": ""Ăn lẩu với bạn""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN2,"Mới trả tiền thuê nhà tháng này 4 triệu, thêm 100k tiền gửi xe.","[{""category"": ""Nhà ở"", ""amount"": 4000000, ""note"": ""Thuê nhà""}, {""category"": ""Đi lại"", ""amount"": 100000, ""note"": ""Gửi xe""}]","Chào bạn, mình đã ghi nhận chi tiêu của bạn trong tháng này:
+
+*   **Thuê nhà:** 4.000.000 VNĐ
+*   **Gửi xe:** 100.000 VNĐ
+
+Ngoài ra, trong cơ sở dữ liệu của bạn còn có các giao dịch khác như sau:
+
+**Chi tiêu:**
+
+*   **Y tế:** 50.000 VNĐ (Mua thuốc dạ dày) vào ngày 17/10/2025, 150.000 VNĐ (Khám răng) và 30.000 VNĐ (Mua bông băng) vào ngày 19/10/2025, 40.000 VNĐ (Thuốc bổ) vào ngày 20/10/2025.
+*   **Ăn uống:** 60.000 VNĐ (Ăn sáng) vào ngày 18/10/2025, 85.000 VNĐ (Mua đồ ăn vặt) vào ngày 19/10/2025, 120.000 VNĐ (Ăn tối với gia đình) vào ngày 19/10/2025, 110.000 VNĐ (Ăn trưa công ty) vào ngày 20/10/2025.
+*   **Đi lại:** 20.000 VNĐ (Xe buýt) vào ngày 18/10/2025, 30.000 VNĐ (Taxi ngắn) vào ngày 19/10/2025, 15.000 VNĐ (Gửi xe) vào ngày 20/10/2025.
+*   **Khác:** 100.000 VNĐ (Mua đồ gia dụng) vào ngày 18/10/2025, 100.000 VNĐ (Mua hoa tặng người yêu) vào ngày 20/10/2025.
+*   **Giải trí:** 75.000 VNĐ (Cà phê hẹn đối tác) vào ngày 18/10/2025, 75.000 VNĐ (Xem phim tại rạp) và 45.000 VNĐ (Cà phê sáng) vào ngày 20/10/2025.
+*   **Giáo dục:** 95.000 VNĐ (Sách luyện thi) vào ngày 18/10/2025, 100.000 VNĐ (Mua đồ học) vào ngày 19/10/2025, 50.000 VNĐ (Mua sách kỹ thuật) vào ngày 20/10/2025.
+*   **Mua sắm:** 500.000 VNĐ (Mua quần áo thu đông) vào ngày 19/10/2025, 350.000 VNĐ (Mua balo) vào ngày 20/10/2025.
+*   **Điện nước:** 200.000 VNĐ (Sửa điện) và 180.000 VNĐ (Đóng tiền nước) vào ngày 19/10/2025, 250.000 VNĐ (Đóng tiền mạng) vào ngày 20/10/2025.
+
+**Thu nhập:**
+
+*   **Lương tháng 10:** 8.500.000 VNĐ vào ngày 20/10/2025.
+
+Hy vọng thông tin này hữu ích cho bạn!",0,1,,,,
+,ADD_TRAN2,Mua quà sinh nhật cho mẹ 350k và thêm bó hoa 120k.,"[{""category"": ""Mua sắm"", ""amount"": 350000, ""note"": ""Quà sinh nhật cho mẹ""}, {""category"": ""Mua sắm"", ""amount"": 120000, ""note"": ""Hoa tặng mẹ""}]","```json
+[
+  {
+    ""category"": ""9"",
+    ""amount"": 350000,
+    ""note"": ""Mua quà sinh nhật cho mẹ""
+  },
+  {
+    ""category"": ""9"",
+    ""amount"": 120000,
+    ""note"": ""Mua bó hoa sinh nhật cho mẹ""
+  }
+]
+```",1,,,,,
+,ADD_TRAN2,"Hôm nay đi khám sức khỏe định kỳ, hết 800k cả thuốc.","[{""category"": ""Y tế"", ""amount"": 800000, ""note"": ""Khám sức khỏe định kỳ và thuốc""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN2,"Đặt vé xem ca nhạc tháng tới 1 triệu 8, trả luôn hôm nay.","[{""category"": ""Giải trí"", ""amount"": 1800000, ""note"": ""Vé xem ca nhạc tháng tới""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN2,Mua đồ ăn cho mèo 150k và cát vệ sinh 90k.,"[{""category"": ""Khác"", ""amount"": 150000, ""note"": ""Đồ ăn cho mèo""}, {""category"": ""Khác"", ""amount"": 90000, ""note"": ""Cát vệ sinh cho mèo""}]","Chào bạn,
+
+Dựa trên thông tin bạn cung cấp, tôi đã ghi nhận các khoản chi tiêu như sau:
+
+*   **Ngày 28/05/2025:**
+    *   Mua sắm: 400.000 VNĐ
+    *   Mua sắm (Kem đánh răng): 20.000 VNĐ
+    *   Y tế (Thuốc nhỏ mắt): 10.000 VNĐ
+*   **Ngày 29/05/2025:**
+    *   Khác (Bỉm): 200.000 VNĐ
+    *   Chưa rõ danh mục (Sữa): 1.000.000 VNĐ
+*   **Ngày 01/06/2025:**
+    *   Giải trí (Cà phê cùng bạn): 85.000 VNĐ
+*   **Ngày 02/06/2025:**
+    *   Điện nước (Thanh toán tiền điện): 320.000 VNĐ
+*   **Ngày 17/10/2025:**
+    *   Y tế (Mua thuốc dạ dày): 50.000 VNĐ
+*   **Ngày 18/10/2025:**
+    *   Chưa rõ danh mục (Ăn sáng): 60.000 VNĐ
+    *   Đi lại (Xe buýt): 20.000 VNĐ
+    *   Khác (Mua đồ gia dụng): 100.000 VNĐ
+    *   Giải trí (Cà phê hẹn đối tác): 75.000 VNĐ
+    *   Y tế (Khám răng): 150.000 VNĐ
+    *   Giáo dục (Sách luyện thi): 95.000 VNĐ
+*   **Ngày 19/10/2025:**
+    *   Chưa rõ danh mục (Mua đồ ăn vặt): 85.000 VNĐ
+    *   Đi lại (Taxi ngắn): 30.000 VNĐ
+    *   Mua sắm (Mua quần áo thu đông): 500.000 VNĐ
+    *   Giáo dục (Mua đồ học): 100.000 VNĐ
+    *   Y tế (Mua bông băng): 30.000 VNĐ
+    *   Chưa rõ danh mục (Ăn tối với gia đình): 120.000 VNĐ
+    *   Điện nước (Sửa điện): 200.000 VNĐ
+    *   Điện nước (Đóng tiền nước): 180.000 VNĐ
+*   **Ngày 20/10/2025:**
+    *   Giải trí (Xem phim tại rạp): 75.000 VNĐ
+    *   Giải trí (Cà phê sáng): 45.000 VNĐ
+    *   Chưa rõ danh mục (Ăn trưa công ty): 110.000 VNĐ
+    *   Đi lại (Gửi xe): 15.000 VNĐ
+    *   Mua sắm (Mua balo): 350.000 VNĐ
+    *   Giáo dục (Mua sách kỹ thuật): 50.000 VNĐ
+    *   Y tế (Thuốc bổ): 40.000 VNĐ
+    *   Điện nước (Đóng tiền mạng): 250.000 VNĐ
+    *   Khác (Mua hoa tặng người yêu): 100.000 VNĐ
+*   **Thu nhập:**
+    *   Ngày 20/10/2025: Lương tháng 10: 8.500.000 VNĐ
+
+Tôi không tìm thấy thông tin chi tiết về việc bạn mua đồ ăn cho mèo 150k và cát vệ sinh 90k trong dữ liệu này. Nếu bạn muốn thêm khoản chi tiêu này vào, vui lòng cung cấp thêm thông tin về ngày phát sinh và danh mục chi tiêu (nếu có).
+
+Tôi chỉ có thể hỗ trợ các vấn đề liên quan đến việc ghi nhận và truy vấn dữ liệu tài chính cá nhân của bạn. Tôi không thể thực hiện các yêu cầu như gửi email, tìm kiếm thông tin bên ngoài hay thực hiện các hành động khác.",0,1,,,,
+,ADD_TRAN2,"Chi tiêu hôm nay gồm ăn sáng 35k, cà phê 30k, đi bus 10k và mua quyển vở 20k.","[{""category"": ""Ăn uống"", ""amount"": 35000, ""note"": ""Ăn sáng""}, {""category"": ""Ăn uống"", ""amount"": 30000, ""note"": ""Cà phê""}, {""category"": ""Đi lại"", ""amount"": 10000, ""note"": ""Bus""}, {""category"": ""Giáo dục"", ""amount"": 20000, ""note"": ""Vở""}]","[
+  { ""category"": ""8"", ""amount"": 35000, ""note"": ""Ăn sáng""},
+  { ""category"": ""8"", ""amount"": 30000, ""note"": ""Cà phê""},
+  { ""category"": ""11"", ""amount"": 10000, ""note"": ""Đi bus""},
+  { ""category"": ""5"", ""amount"": 20000, ""note"": ""Mua quyển vở""}
+]",1,,,,,
+,ADD_TRAN2,"Mua áo sơ mi 350k, rồi tiện thể ghé cắt tóc 100k.","[{""category"": ""Mua sắm"", ""amount"": 350000, ""note"": ""Áo sơ mi""}, {""category"": ""Khác"", ""amount"": 100000, ""note"": ""Cắt tóc""}]","Chào bạn, dựa trên dữ liệu bạn cung cấp, tôi có thể giúp bạn tổng hợp các giao dịch liên quan đến yêu cầu ""Mua áo sơ mi 350k, rồi tiện thể ghé cắt tóc 100k."" như sau:
+
+*   **Mua sắm:** Ngày 2025/10/20, bạn đã có một giao dịch chi tiêu **-350.000 VNĐ** cho việc ""Mua balo"". Dữ liệu này có vẻ khớp với việc bạn mua áo sơ mi với mức giá tương tự.
+*   **Không có giao dịch rõ ràng cho ""cắt tóc""**: Trong dữ liệu được cung cấp, không có một giao dịch nào ghi rõ là ""cắt tóc"" với số tiền 100.000 VNĐ. Tuy nhiên, có một số chi tiêu khác trong ngày 2025/05/28 và các ngày khác có thể liên quan đến các dịch vụ hoặc mua sắm khác.
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé.",0,1,,,,
+,ADD_TRAN2,"Mình vừa đóng tiền điện tháng này 370k, còn nước thì chưa đến hạn.","[{""category"": ""Điện nước"", ""amount"": 370000, ""note"": ""Tiền điện tháng này""}]","Chào bạn, tôi đã ghi nhận thông tin bạn vừa cung cấp về khoản thanh toán tiền điện là 370.000 đồng. Về khoản tiền nước, tôi hiểu là bạn chưa đến hạn thanh toán.
+
+Dựa trên dữ liệu bạn đã cập nhật, tôi xin cung cấp thông tin chi tiết về các giao dịch liên quan đến **Điện nước** và các khoản chi tiêu khác gần đây của bạn để bạn tiện theo dõi:
+
+**Chi tiêu Điện nước:**
+
+*   **02/05/2025:** Thanh toán tiền điện: -320.000 VNĐ
+*   **19/10/2025:** Sửa điện: -200.000 VNĐ
+*   **19/10/2025:** Đóng tiền nước: -180.000 VNĐ
+*   **20/10/2025:** Đóng tiền mạng: -250.000 VNĐ
+
+**Tóm tắt các khoản chi tiêu gần đây khác (tính đến ngày 19/10/2025):**
+
+*   **Mua sắm:**
+    *   Mua sắm chung: -400.000 VNĐ (28/05/2025)
+    *   Kem đánh răng: -20.000 VNĐ (28/05/2025)
+    *   Mua quần áo thu đông: -500.000 VNĐ (19/10/2025)
+    *   Mua balo: -350.000 VNĐ (20/10/2025)
+*   **Y tế:**
+    *   Thuốc nhỏ mắt: -10.000 VNĐ (28/05/2025)
+    *   Mua thuốc dạ dày: -50.000 VNĐ (17/10/2025)
+    *   Khám răng: -150.000 VNĐ (18/10/2025)
+    *   Mua bông băng: -30.000 VNĐ (19/10/2025)
+    *   Thuốc bổ: -40.000 VNĐ (20/10/2025)
+*   **Chi tiêu khác (bao gồm thực phẩm, nhu yếu phẩm, quà tặng,...):**
+    *   Bỉm: -200.000 VNĐ (29/05/2025)
+    *   Sữa: -1.000.000 VNĐ (29/05/2025)
+    *   Ăn sáng: -60.000 VNĐ (18/10/2025)
+    *   Mua đồ gia dụng: -100.000 VNĐ (18/10/2025)
+    *   Mua đồ ăn vặt: -85.000 VNĐ (19/10/2025)
+    *   Ăn tối với gia đình: -120.000 VNĐ (19/10/2025)
+    *   Ăn trưa công ty: -110.000 VNĐ (20/10/2025)
+    *   Mua hoa tặng người yêu: -100.000 VNĐ (20/10/2025)
+*   **Giải trí:**
+    *   Cà phê cùng bạn: -85.000 VNĐ (01/06/2025)
+    *   Cà phê hẹn đối tác: -75.000 VNĐ (18/10/2025)
+    *   Xem phim tại rạp: -75.000 VNĐ (20/10/2025)
+    *   Cà phê sáng: -45.000 VNĐ (20/10/2025)
+*   **Giáo dục:**
+    *   Sách luyện thi: -95.000 VNĐ (18/10/2025)
+    *   Mua đồ học: -100.000 VNĐ (19/10/2025)
+    *   Mua sách kỹ thuật: -50.000 VNĐ (20/10/2025)
+*   **Đi lại:**
+    *   Xe buýt: -20.000 VNĐ (18/10/2025)
+    *   Taxi ngắn: -30.000 VNĐ (19/10/2025)
+    *   Gửi xe: -15.000 VNĐ (20/10/2025)
+
+**Thu nhập:**
+
+*   **20/10/2025:** Lương tháng 10: 8.500.000 VNĐ
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính cá nhân của mình, đừng ngần ngại hỏi nhé! Tôi không thể hỗ trợ các yêu cầu như gửi email hay tìm kiếm thông tin bên ngoài cơ sở dữ liệu bạn cung cấp.",0,1,,,,
+,ADD_TRAN2,"Mới sắm laptop mới 18 triệu, đắt nhưng phục vụ học hành.","[{""category"": ""Giáo dục"", ""amount"": 18000000, ""note"": ""Laptop phục vụ học tập""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,ADD_TRAN2,"Hôm nay nấu cơm ở nhà, chỉ mua thêm ít rau 25k và thịt bò 90k.","[{""category"": ""Ăn uống"", ""amount"": 115000, ""note"": ""Rau và thịt bò""}]","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,SING_QUES,Hôm nay tôi tiêu hết bao nhiêu?,Trả về tổng chi tiêu của ngày hiện tại.,"Chào bạn,
+
+Dựa trên dữ liệu tài chính cá nhân bạn đã cập nhật, hôm nay (ngày 20/10/2025) bạn đã chi tiêu các khoản sau:
+
+*   **Giải trí:**
+    *   Xem phim tại rạp: 75.000 VNĐ
+    *   Cà phê sáng: 45.000 VNĐ
+*   **Ăn uống:**
+    *   Ăn trưa công ty: 110.000 VNĐ
+*   **Đi lại:**
+    *   Gửi xe: 15.000 VNĐ
+*   **Mua sắm:**
+    *   Mua balo: 350.000 VNĐ
+*   **Giáo dục:**
+    *   Mua sách kỹ thuật: 50.000 VNĐ
+*   **Y tế:**
+    *   Thuốc bổ: 40.000 VNĐ
+*   **Điện nước:**
+    *   Đóng tiền mạng: 250.000 VNĐ
+*   **Khác:**
+    *   Mua hoa tặng người yêu: 100.000 VNĐ
+
+**Tổng cộng, hôm nay bạn đã chi tiêu là 1.035.000 VNĐ.**
+
+Ngoài ra, bạn có một khoản thu nhập là 8.500.000 VNĐ từ ""Lương tháng 10"" ghi nhận vào ngày hôm nay.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",1,1,,,,
+,SING_QUES,Tháng này tôi đã tốn bao nhiêu tiền?,Trả về tổng chi tiêu trong tháng hiện tại.,"Chào bạn, dựa trên dữ liệu bạn cung cấp, trong tháng này bạn đã **không có khoản chi tiêu nào phát sinh**.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về tài chính cá nhân của mình, đừng ngần ngại hỏi nhé!",0,,,,,
+,SING_QUES,Hôm qua tôi tiêu những gì?,Liệt kê các giao dịch trong ngày hôm qua.,"Chào bạn, dựa vào dữ liệu tài chính cá nhân bạn đã cập nhật, đây là những khoản chi tiêu của bạn trong ngày hôm qua (ngày 20 tháng 10 năm 2025):
+
+**Tổng chi tiêu trong ngày 20/10/2025:**
+
+*   **Giải trí:**
+    *   Xem phim tại rạp: 75.000 VNĐ
+    *   Cà phê sáng: 45.000 VNĐ
+*   **Ăn uống:**
+    *   Ăn trưa công ty: 110.000 VNĐ
+*   **Di chuyển:**
+    *   Gửi xe: 15.000 VNĐ
+*   **Mua sắm:**
+    *   Mua balo: 350.000 VNĐ
+*   **Giáo dục:**
+    *   Mua sách kỹ thuật: 50.000 VNĐ
+*   **Y tế:**
+    *   Thuốc bổ: 40.000 VNĐ
+*   **Hóa đơn/Tiện ích:**
+    *   Đóng tiền mạng: 250.000 VNĐ
+*   **Khác:**
+    *   Mua hoa tặng người yêu: 100.000 VNĐ
+
+Ngoài ra, vào ngày 20/10/2025 bạn cũng có một khoản thu nhập là Lương tháng 10 với số tiền 8.500.000 VNĐ.
+
+Chúc bạn một ngày tốt lành!",1,,,,,
+,SING_QUES,Tuần này tôi ăn uống hết bao nhiêu?,"Tổng chi tiêu danh mục ""Ăn uống"" trong tuần hiện tại.","Chào bạn, dựa trên dữ liệu bạn cung cấp, chi tiêu cho ăn uống trong tuần này của bạn là 0 đồng ạ.",0,,,,,
+,SING_QUES,Tháng này tiền đi lại là bao nhiêu?,"Tổng chi tiêu danh mục ""Đi lại"" trong tháng hiện tại.","Chào bạn, dựa trên dữ liệu bạn cung cấp, **chi phí đi lại trong tháng này là 0 đồng**.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,SING_QUES,Tôi đã mua sắm hết bao nhiêu trong tuần rồi?,"Tổng chi tiêu danh mục ""Mua sắm"" trong tuần hiện tại.","Chào bạn, tôi là trợ lý tài chính của bạn đây!
+
+Dựa trên dữ liệu bạn cung cấp, trong tuần vừa rồi, bạn đã chi tiêu tổng cộng **5.670.000 VNĐ** cho việc mua sắm.
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác về tài chính cá nhân, đừng ngần ngại hỏi tôi nhé.",1,,,,,
+,SING_QUES,Hôm nay có giao dịch nào mới không?,Liệt kê các giao dịch được thêm trong ngày hôm nay.,"Chào bạn,
+
+Dựa trên dữ liệu bạn cung cấp, hôm nay có một số giao dịch mới như sau:
+
+**Ngày 20/10/2025:**
+
+*   **Thu nhập:**
+    *   Nhận lương tháng 10: 8.500.000 VNĐ (Loại: Khác)
+
+*   **Chi tiêu:**
+    *   Xem phim tại rạp: -75.000 VNĐ (Loại: Giải trí)
+    *   Cà phê sáng: -45.000 VNĐ (Loại: Giải trí)
+    *   Ăn trưa công ty: -110.000 VNĐ (Không rõ danh mục)
+    *   Gửi xe: -15.000 VNĐ (Loại: Đi lại)
+    *   Mua balo: -350.000 VNĐ (Loại: Mua sắm)
+    *   Mua sách kỹ thuật: -50.000 VNĐ (Loại: Giáo dục)
+    *   Thuốc bổ: -40.000 VNĐ (Loại: Y tế)
+    *   Đóng tiền mạng: -250.000 VNĐ (Loại: Điện nước)
+    *   Mua hoa tặng người yêu: -100.000 VNĐ (Loại: Khác)
+
+Nếu bạn muốn xem chi tiết các giao dịch của những ngày trước đó hoặc có bất kỳ câu hỏi nào khác về dữ liệu tài chính, đừng ngần ngại hỏi nhé!",1,,,,,
+,SING_QUES,Tổng chi tiêu từ đầu năm đến giờ là bao nhiêu?,Tổng toàn bộ chi tiêu từ đầu năm tới hiện tại.,"Chào bạn, tôi là trợ lý tài chính của bạn đây. Dựa trên dữ liệu bạn cung cấp, tôi xin tổng hợp chi tiêu của bạn từ đầu năm đến giờ như sau:
+
+**Tổng chi tiêu từ đầu năm đến giờ của bạn là: 4.315.000 VNĐ**
+
+Dưới đây là chi tiết các khoản chi tiêu của bạn, được nhóm theo danh mục và sắp xếp theo ngày cập nhật gần nhất để bạn dễ theo dõi:
+
+**Tháng 10/2025:**
+*   **Mua sắm:** 500.000 VNĐ (Quần áo thu đông)
+*   **Mua sắm:** 350.000 VNĐ (Mua balo)
+*   **Y tế:** 150.000 VNĐ (Khám răng)
+*   **Y tế:** 40.000 VNĐ (Thuốc bổ)
+*   **Y tế:** 30.000 VNĐ (Mua bông băng)
+*   **Điện nước:** 250.000 VNĐ (Đóng tiền mạng)
+*   **Điện nước:** 200.000 VNĐ (Sửa điện)
+*   **Điện nước:** 180.000 VNĐ (Đóng tiền nước)
+*   **Giáo dục:** 100.000 VNĐ (Mua đồ học)
+*   **Giáo dục:** 50.000 VNĐ (Mua sách kỹ thuật)
+*   **Khác:** 100.000 VNĐ (Mua đồ gia dụng)
+*   **Khác:** 100.000 VNĐ (Mua hoa tặng người yêu)
+*   **Giải trí:** 75.000 VNĐ (Cà phê hẹn đối tác)
+*   **Giải trí:** 75.000 VNĐ (Xem phim tại rạp)
+*   **Giải trí:** 45.000 VNĐ (Cà phê sáng)
+*   **Ăn sáng:** 60.000 VNĐ
+*   **Ăn tối với gia đình:** 120.000 VNĐ
+*   **Ăn trưa công ty:** 110.000 VNĐ
+*   **Đi lại:** 30.000 VNĐ (Taxi ngắn)
+*   **Đi lại:** 20.000 VNĐ (Xe buýt)
+*   **Đi lại:** 15.000 VNĐ (Gửi xe)
+
+**Tháng 06/2025:**
+*   **Điện nước:** 320.000 VNĐ (Thanh toán tiền điện)
+*   **Giải trí:** 85.000 VNĐ (Cà phê cùng bạn)
+
+**Tháng 05/2025:**
+*   **Mua sắm:** 400.000 VNĐ
+*   **Mua sắm:** 20.000 VNĐ (Kem đánh răng)
+*   **Y tế:** 10.000 VNĐ (Thuốc nhỏ mắt)
+*   **Khác:** 200.000 VNĐ (Bỉm)
+*   **Chi tiêu không rõ danh mục (Sữa):** 1.000.000 VNĐ
+
+**Tổng thu nhập:** Trong dữ liệu có ghi nhận một khoản thu nhập là 8.500.000 VNĐ vào ngày 20/10/2025.
+
+Nếu bạn cần tôi hỗ trợ phân tích chi tiết hơn về từng hạng mục chi tiêu hoặc xem xét các khoản thu nhập khác, đừng ngần ngại hỏi nhé!",1,,,,,
+,SING_QUES,Trong tháng này tôi đã chi bao nhiêu cho y tế?,"Tổng chi danh mục ""Y tế"" trong tháng hiện tại.","Chào bạn,
+
+Dựa trên thông tin bạn vừa cập nhật, trong tháng này bạn đã **không chi tiêu khoản nào cho y tế**.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về tình hình tài chính của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,SING_QUES,Từ đầu tháng đến nay tôi tiêu mấy lần rồi?,Đếm số giao dịch trong tháng hiện tại.,"Chào bạn,
+
+Theo dữ liệu bạn cung cấp, từ đầu tháng đến nay bạn đã thực hiện **25** giao dịch chi tiêu.
+
+Nếu bạn cần biết chi tiết hơn về từng giao dịch, vui lòng cung cấp thêm thông tin về câu hỏi của mình nhé!",1,,,,,
+,SING_QUES,Hôm nay tôi có tốn khoản nào cho nhà ở không?,"Kiểm tra có giao dịch thuộc danh mục ""Nhà ở"" hôm nay hay không.","Chào bạn, tôi đã kiểm tra dữ liệu của bạn và không tìm thấy khoản chi nào được phân loại là ""Nhà ở"" trong các giao dịch gần đây.
+
+Tuy nhiên, tôi xin thông báo các khoản chi tiêu khác của bạn vào ngày hôm nay (ngày 20/10/2025) như sau:
+
+*   **Mua sắm:** 350.000 VNĐ (Mua balo)
+*   **Giáo dục:** 50.000 VNĐ (Mua sách kỹ thuật)
+*   **Y tế:** 40.000 VNĐ (Thuốc bổ)
+*   **Điện nước:** 250.000 VNĐ (Đóng tiền mạng)
+*   **Khác:** 100.000 VNĐ (Mua hoa tặng người yêu)
+*   **Giải trí:** 75.000 VNĐ (Xem phim tại rạp) và 45.000 VNĐ (Cà phê sáng)
+*   **Đi lại:** 15.000 VNĐ (Gửi xe)
+*   **Chi phí chưa rõ danh mục:** 110.000 VNĐ (Ăn trưa công ty)
+
+Trong ngày hôm nay, bạn cũng có một khoản thu nhập là **8.500.000 VNĐ** (Lương tháng 10).
+
+Nếu bạn có các khoản chi liên quan đến nhà ở mà chưa được cập nhật hoặc phân loại đúng, bạn có thể điều chỉnh lại trong ứng dụng nhé.",1,,,,,
+,SING_QUES,Chi nhiều nhất hôm nay là khoản nào?,Trả về giao dịch có giá trị lớn nhất trong ngày.,"Chào bạn, tôi đã xem qua dữ liệu chi tiêu của bạn. Khoản chi nhiều nhất ""hôm nay"" (tính đến ngày 20/10/2025) là 350.000 VNĐ cho việc ""Mua balo"" thuộc danh mục ""Mua sắm"".
+
+Dưới đây là các khoản chi tiêu chính trong ngày 20/10/2025 để bạn tham khảo:
+
+*   **Mua sắm:** 350.000 VNĐ (Mua balo)
+*   **Điện nước:** 250.000 VNĐ (Đóng tiền mạng)
+*   **Khác:** 100.000 VNĐ (Mua hoa tặng người yêu)
+*   **Giải trí:** 75.000 VNĐ (Xem phim tại rạp)
+*   **Giải trí:** 45.000 VNĐ (Cà phê sáng)
+*   **Giáo dục:** 50.000 VNĐ (Mua sách kỹ thuật)
+*   **Y tế:** 40.000 VNĐ (Thuốc bổ)
+*   **Đi lại:** 15.000 VNĐ (Gửi xe)
+*   Khoản chi không rõ danh mục: 110.000 VNĐ (Ăn trưa công ty)
+
+Ngoài ra, tôi cũng thấy có một khoản thu nhập lớn nhất là 8.500.000 VNĐ (Lương tháng 10) vào ngày này.
+
+Nếu bạn có câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,SING_QUES,Hôm nay tôi ăn gì?,"Liệt kê các giao dịch danh mục ""Ăn uống"" trong ngày.","Xin lỗi, mình chỉ hỗ trợ quản lý tài chính thui!",0,1,,,,
+,SING_QUES,Tháng này tôi trả tiền điện chưa?,"Kiểm tra xem có giao dịch liên quan đến ""tiền điện"" trong tháng không.","Chào bạn, để kiểm tra xem bạn đã thanh toán tiền điện tháng này chưa, mình đã xem lại các giao dịch của bạn.
+
+Có **2 giao dịch liên quan đến ""Điện nước""** trong tháng 10 năm 2025:
+
+*   **Ngày 2025/10/19:** Bạn đã thanh toán **200.000 VNĐ** cho việc ""Sửa điện"".
+*   **Ngày 2025/10/19:** Bạn đã thanh toán **180.000 VNĐ** cho ""Đóng tiền nước"".
+
+Tuy nhiên, mình **chưa tìm thấy giao dịch nào được ghi nhận là thanh toán tiền điện chính thức** trong tháng 10. Giao dịch ngày 02/06/2025 với nội dung ""Thanh toán tiền điện"" là của tháng 06.
+
+Để chắc chắn, bạn vui lòng kiểm tra lại hoặc cung cấp thêm thông tin nếu có giao dịch thanh toán tiền điện với tên danh mục khác nhé!",1,,,,,
+,SING_QUES,Tôi còn chi tiêu nào chưa ghi trong hôm nay không?,Hỏi về khả năng bỏ sót giao dịch (bot có thể nhắc nhở người dùng).,"Chào bạn, tôi đã kiểm tra dữ liệu chi tiêu của bạn. Hôm nay, ngày **20/10/2025**, bạn có các khoản chi tiêu sau:
+
+*   **Giải trí:**
+    *   Xem phim tại rạp: 75.000 VNĐ
+    *   Cà phê sáng: 45.000 VNĐ
+*   **Ăn uống:**
+    *   Ăn trưa công ty: 110.000 VNĐ
+*   **Đi lại:**
+    *   Gửi xe: 15.000 VNĐ
+*   **Mua sắm:**
+    *   Mua balo: 350.000 VNĐ
+*   **Giáo dục:**
+    *   Mua sách kỹ thuật: 50.000 VNĐ
+*   **Y tế:**
+    *   Thuốc bổ: 40.000 VNĐ
+*   **Điện nước:**
+    *   Đóng tiền mạng: 250.000 VNĐ
+*   **Khác:**
+    *   Mua hoa tặng người yêu: 100.000 VNĐ
+
+Tổng cộng các khoản chi tiêu trong hôm nay là **1.040.000 VNĐ**.
+
+Ngoài ra, tôi thấy có một khoản thu nhập **Lương tháng 10** với số tiền **8.500.000 VNĐ** được ghi nhận vào ngày hôm nay.
+
+Nếu bạn có bất kỳ khoản chi tiêu nào khác chưa được ghi lại, hãy cho tôi biết để cập nhật nhé!",1,,,,,
+,SING_QUES,Tôi tiêu nhiều nhất vào ngày nào trong tuần này?,Trả về ngày có tổng chi cao nhất trong tuần.,"Chào bạn, dựa trên dữ liệu chi tiêu của bạn trong tuần này, tôi thấy bạn đã tiêu nhiều nhất vào **Thứ Bảy, ngày 18 tháng 10 năm 2025**.
+
+Tổng số tiền bạn đã chi tiêu vào ngày này là **1.070.000 VNĐ**.
+
+Dưới đây là chi tiết các khoản chi tiêu vào ngày này:
+
+*   **Y tế**: 150.000 VNĐ (Khám răng)
+*   **Khác**: 100.000 VNĐ (Mua đồ gia dụng)
+*   **Giáo dục**: 95.000 VNĐ (Sách luyện thi)
+*   **Giải trí**: 75.000 VNĐ (Cà phê hẹn đối tác)
+*   **Ăn sáng**: 60.000 VNĐ
+*   **Đi lại**: 20.000 VNĐ (Xe buýt)
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé.",1,,,,,
+,SING_QUES,Tôi đã mua gì trong 3 ngày gần đây?,Liệt kê tất cả giao dịch 3 ngày gần nhất.,"Chào bạn,
+
+Dựa vào dữ liệu bạn cung cấp, đây là những khoản chi tiêu của bạn trong 3 ngày gần đây nhất:
+
+**Ngày 20/10/2025:**
+*   **Giải trí:** Xem phim tại rạp (75.000 VNĐ), Cà phê sáng (45.000 VNĐ)
+*   **Ăn trưa:** Ăn trưa công ty (110.000 VNĐ)
+*   **Đi lại:** Gửi xe (15.000 VNĐ)
+*   **Mua sắm:** Mua balo (350.000 VNĐ)
+*   **Giáo dục:** Mua sách kỹ thuật (50.000 VNĐ)
+*   **Y tế:** Thuốc bổ (40.000 VNĐ)
+*   **Điện nước:** Đóng tiền mạng (250.000 VNĐ)
+*   **Khác:** Mua hoa tặng người yêu (100.000 VNĐ)
+
+**Ngày 19/10/2025:**
+*   **Ăn vặt:** Mua đồ ăn vặt (85.000 VNĐ)
+*   **Đi lại:** Taxi ngắn (30.000 VNĐ)
+*   **Mua sắm:** Mua quần áo thu đông (500.000 VNĐ)
+*   **Giáo dục:** Mua đồ học (100.000 VNĐ)
+*   **Y tế:** Mua bông băng (30.000 VNĐ)
+*   **Ăn tối:** Ăn tối với gia đình (120.000 VNĐ)
+*   **Điện nước:** Sửa điện (200.000 VNĐ), Đóng tiền nước (180.000 VNĐ)
+
+**Ngày 18/10/2025:**
+*   **Ăn sáng:** Ăn sáng (60.000 VNĐ)
+*   **Đi lại:** Xe buýt (20.000 VNĐ)
+*   **Khác:** Mua đồ gia dụng (100.000 VNĐ)
+*   **Giải trí:** Cà phê hẹn đối tác (75.000 VNĐ)
+*   **Y tế:** Khám răng (150.000 VNĐ)
+*   **Giáo dục:** Sách luyện thi (95.000 VNĐ)
+
+Hy vọng thông tin này hữu ích cho bạn!",1,,,,,
+,SING_QUES,Tháng trước tôi tiêu ít hay nhiều hơn tháng này?,So sánh tổng chi giữa hai tháng liên tiếp.,"Chào bạn, mình đã xem xét dữ liệu chi tiêu của bạn.
+
+Dựa vào dữ liệu bạn cung cấp, có vẻ như câu hỏi của bạn đang so sánh chi tiêu của hai tháng khác nhau. Tuy nhiên, dữ liệu bạn cung cấp bao gồm các giao dịch từ tháng 5 và tháng 10 năm 2025, **không có dữ liệu của ""tháng trước"" và ""tháng này"" theo cách bạn hỏi.**
+
+Để có thể trả lời chính xác câu hỏi này, bạn vui lòng cung cấp thêm thông tin về tháng cụ thể mà bạn muốn so sánh, hoặc bổ sung dữ liệu chi tiêu cho hai tháng đó nhé.
+
+Tuy nhiên, mình có thể tóm tắt chi tiêu của bạn trong các tháng có dữ liệu như sau:
+
+**Tháng 5/2025:**
+*   **Tổng chi tiêu:** -1,700,000 VNĐ (chưa bao gồm thu nhập nếu có)
+*   **Các khoản chi tiêu chính:** Mua sắm, Khác, Y tế, Giải trí, Điện nước.
+
+**Tháng 10/2025:**
+*   **Tổng chi tiêu:** -2,665,000 VNĐ (chưa bao gồm thu nhập nếu có)
+*   **Các khoản chi tiêu chính:** Mua sắm, Giáo dục, Y tế, Điện nước, Khác, Đi lại, Giải trí.
+*   **Thu nhập:** 8,500,000 VNĐ (Lương tháng 10).
+
+Nếu bạn muốn so sánh chi tiêu của tháng 5 và tháng 10, thì **tháng 10/2025 bạn có chi tiêu nhiều hơn tháng 5/2025**.
+
+Mình luôn sẵn sàng hỗ trợ bạn phân tích dữ liệu tài chính của mình!",0,,,,,
+,SING_QUES,Hôm nay ăn sáng hết bao nhiêu?,"Tổng chi tiêu danh mục ""Ăn uống"" có ghi chú liên quan “ăn sáng” trong ngày.","Chào bạn, mình đã kiểm tra dữ liệu của bạn và ghi nhận chi phí ăn sáng của bạn vào ngày 18/10/2025 là **60.000 VNĐ**.
+
+Ngoài ra, mình cũng thấy có các khoản chi tiêu khác liên quan đến ăn uống trong những ngày gần đây:
+
+*   **Ngày 20/10/2025:**
+    *   Ăn trưa công ty: 110.000 VNĐ
+    *   Cà phê sáng: 45.000 VNĐ
+*   **Ngày 19/10/2025:**
+    *   Ăn tối với gia đình: 120.000 VNĐ
+*   **Ngày 01/06/2025:**
+    *   Cà phê cùng bạn: 85.000 VNĐ
+
+Nếu bạn cần xem thêm chi tiết về bất kỳ khoản chi nào hoặc có câu hỏi khác, đừng ngần ngại hỏi mình nhé!",1,,,,,
+,SING_QUES,Tuần này tôi đã chi cho giáo dục bao nhiêu rồi?,"Tổng chi tiêu danh mục ""Giáo dục"" trong tuần.","Chào bạn! Dựa trên dữ liệu bạn cung cấp, tuần này bạn chưa có khoản chi nào cho giáo dục cả. Tổng số tiền bạn đã chi cho giáo dục trong tuần này là 0 VNĐ.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,SING_QUES,Gần đây tôi có tiêu cho giải trí không?,"Kiểm tra danh mục ""Giải trí"" trong các giao dịch gần nhất.","Chào bạn, mình đã kiểm tra dữ liệu tài chính của bạn và thấy rằng bạn có chi tiêu cho mục ""Giải trí"" gần đây. Cụ thể là:
+
+*   **Ngày 01/06/2025:** Chi 85.000 VNĐ cho ""Cà phê cùng bạn"".
+*   **Ngày 18/10/2025:** Chi 75.000 VNĐ cho ""Cà phê hẹn đối tác"".
+*   **Ngày 20/10/2025:** Chi 75.000 VNĐ cho ""Xem phim tại rạp"".
+*   **Ngày 20/10/2025:** Chi 45.000 VNĐ cho ""Cà phê sáng"".
+
+Tổng cộng, bạn đã chi **280.000 VNĐ** cho các hoạt động giải trí trong khoảng thời gian được ghi nhận trong dữ liệu.
+
+Nếu bạn cần xem thêm chi tiết về các khoản chi tiêu khác, đừng ngần ngại hỏi nhé!",1,,,,,
+,SING_QUES,Ngày nào tôi tiêu nhiều nhất trong tháng này?,Trả về ngày có tổng chi cao nhất trong tháng hiện tại.,"Chào bạn, tôi rất vui được hỗ trợ bạn quản lý tài chính cá nhân. Dựa trên dữ liệu bạn cung cấp, đây là thông tin chi tiết về chi tiêu của bạn trong tháng này:
+
+Ngày bạn tiêu nhiều nhất trong tháng này là **ngày 20/10/2025** với tổng số tiền chi là **1.150.000 VNĐ**.
+
+Dưới đây là chi tiết các khoản chi tiêu trong ngày đó:
+*   **Mua sắm**: 350.000 VNĐ (Mua balo)
+*   **Giải trí**: 120.000 VNĐ (Xem phim tại rạp: 75.000 VNĐ, Cà phê sáng: 45.000 VNĐ)
+*   **Điện nước**: 250.000 VNĐ (Đóng tiền mạng)
+*   **Y tế**: 40.000 VNĐ (Thuốc bổ)
+*   **Giáo dục**: 50.000 VNĐ (Mua sách kỹ thuật)
+*   **Khác**: 100.000 VNĐ (Mua hoa tặng người yêu)
+*   **Ăn trưa công ty**: 110.000 VNĐ
+*   **Gửi xe**: 15.000 VNĐ
+
+Ngoài ra, tôi cũng nhận thấy bạn có một khoản thu nhập **8.500.000 VNĐ** vào ngày 20/10/2025 (Lương tháng 10).
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé.",1,,,,,
+,SING_QUES,Tôi đã chi bao nhiêu cho sức khỏe trong 7 ngày qua?,"Tổng chi danh mục ""Y tế"" trong 7 ngày gần đây.","Chào bạn,
+
+Dựa trên dữ liệu bạn cung cấp, trong 7 ngày qua, bạn đã chi **0 VNĐ** cho mục sức khỏe.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính cá nhân của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,SING_QUES,Tôi đã tiêu hết bao nhiêu cho nhà ở từ đầu năm?,"Tổng danh mục ""Nhà ở"" từ đầu năm tới nay.","Chào bạn, tôi đã kiểm tra dữ liệu của bạn và rất tiếc, không có khoản chi tiêu nào được ghi nhận là ""Nhà ở"" trong danh mục này từ đầu năm đến nay.
+
+Tuy nhiên, nếu bạn có các chi phí liên quan đến nhà ở nhưng được ghi vào các danh mục khác, bạn vui lòng cung cấp thêm thông tin để tôi có thể hỗ trợ bạn tốt hơn nhé.",1,,,,,
+,SING_QUES,Tuần này tôi còn lại bao nhiêu so với ngân sách đặt ra?,Tính chênh lệch giữa tổng chi và ngân sách tuần.,"Chào bạn, tôi đã xem xét dữ liệu tài chính của bạn cho tuần này.
+
+Tuy nhiên, để có thể trả lời câu hỏi ""Tuần này tôi còn lại bao nhiêu so với ngân sách đặt ra?"", tôi cần biết **ngân sách bạn đã đặt ra cho tuần này là bao nhiêu**.
+
+Dựa trên dữ liệu bạn cung cấp, tôi có thể tổng hợp các khoản chi tiêu và thu nhập của bạn như sau:
+
+**Tổng chi tiêu trong tuần:**
+
+*   **Mua sắm:** 1.250.000 VNĐ
+*   **Y tế:** 230.000 VNĐ
+*   **Khác:** 400.000 VNĐ
+*   **Giải trí:** 205.000 VNĐ
+*   **Điện nước:** 750.000 VNĐ
+*   **Đi lại:** 65.000 VNĐ
+*   **Giáo dục:** 245.000 VNĐ
+
+**Tổng cộng các khoản chi tiêu (trừ lương):** 3.145.000 VNĐ
+
+**Tổng thu nhập trong tuần:**
+
+*   **Lương tháng 10:** 8.500.000 VNĐ
+
+**Số tiền còn lại sau khi trừ chi tiêu (chưa tính ngân sách):** 5.355.000 VNĐ
+
+Vui lòng cung cấp thông tin về ngân sách tuần của bạn để tôi có thể so sánh và cho bạn biết bạn còn lại bao nhiêu so với ngân sách nhé!",0,,,,,
+,SING_QUES,Ngày hôm qua tôi có mua gì ở siêu thị không?,Kiểm tra giao dịch có từ khóa “siêu thị” hôm qua.,"Chào bạn,
+
+Ngày hôm qua, **tức là ngày 20/10/2025**, bạn có thực hiện các giao dịch mua sắm sau đây:
+
+*   **Mua balo**: 350.000 VNĐ.
+*   **Xem phim tại rạp**: 75.000 VNĐ.
+*   **Cà phê sáng**: 45.000 VNĐ.
+*   **Gửi xe**: 15.000 VNĐ.
+
+Nếu bạn muốn xem chi tiết hơn về các giao dịch khác, vui lòng cho tôi biết nhé.",1,,,,,
+,SING_QUES,Tôi có khoản chi nào bị trùng trong tháng này không?,Kiểm tra trùng lặp giao dịch (cùng danh mục và số tiền).,"Chào bạn, để kiểm tra xem có khoản chi nào bị trùng trong tháng này không, tôi cần biết bạn đang muốn nói đến tháng nào cụ thể. Dựa trên dữ liệu bạn cung cấp, tôi có thể phân tích các khoản chi theo từng tháng như sau:
+
+**Tháng 5/2025:**
+
+*   **Mua sắm:**
+    *   Ngày 28/05/2025: -400.000 VNĐ (không có ghi chú cụ thể)
+    *   Ngày 28/05/2025: -20.000 VNĐ (Kem đánh răng)
+    *   => Có thể xem hai khoản chi này là khác nhau, một khoản lớn không rõ mục đích và một khoản nhỏ cho nhu yếu phẩm.
+
+*   **Y tế:**
+    *   Ngày 28/05/2025: -10.000 VNĐ (Thuốc nhỏ mắt)
+
+*   **Khác:**
+    *   Ngày 29/05/2025: -200.000 VNĐ (Bỉm)
+    *   Ngày 29/05/2025: -1.000.000 VNĐ (Sữa) (Không có tên danh mục)
+
+**Tháng 6/2025:**
+
+*   **Giải trí:**
+    *   Ngày 01/06/2025: -85.000 VNĐ (Cà phê cùng bạn)
+
+*   **Điện nước:**
+    *   Ngày 02/06/2025: -320.000 VNĐ (Thanh toán tiền điện)
+
+**Tháng 10/2025:**
+
+*   **Y tế:**
+    *   Ngày 17/10/2025: -50.000 VNĐ (Mua thuốc dạ dày)
+    *   Ngày 19/10/2025: -30.000 VNĐ (Mua bông băng)
+    *   Ngày 20/10/2025: -40.000 VNĐ (Thuốc bổ)
+    *   => Các khoản chi y tế trong tháng 10 có thể là khác nhau tùy vào mục đích cụ thể.
+
+*   **Các khoản chi khác trong tháng 10 (không có dấu hiệu trùng lặp rõ ràng về ngày, số tiền và mô tả):**
+    *   Ngày 18/10/2025: -1.000.000 VNĐ (Sữa) (Không có tên danh mục)
+    *   Ngày 18/10/2025: -60.000 VNĐ (Ăn sáng) (Không có tên danh mục)
+    *   Ngày 18/10/2025: -20.000 VNĐ (Xe buýt) (Đi lại)
+    *   Ngày 18/10/2025: -100.000 VNĐ (Mua đồ gia dụng) (Khác)
+    *   Ngày 18/10/2025: -75.000 VNĐ (Cà phê hẹn đối tác) (Giải trí)
+    *   Ngày 18/10/2025: -150.000 VNĐ (Khám răng) (Y tế)
+    *   Ngày 18/10/2025: -95.000 VNĐ (Sách luyện thi) (Giáo dục)
+    *   Ngày 19/10/2025: -85.000 VNĐ (Mua đồ ăn vặt) (Không có tên danh mục)
+    *   Ngày 19/10/2025: -30.000 VNĐ (Taxi ngắn) (Đi lại)
+    *   Ngày 19/10/2025: -500.000 VNĐ (Mua quần áo thu đông) (Mua sắm)
+    *   Ngày 19/10/2025: -100.000 VNĐ (Mua đồ học) (Giáo dục)
+    *   Ngày 19/10/2025: -120.000 VNĐ (Ăn tối với gia đình) (Không có tên danh mục)
+    *   Ngày 19/10/2025: -200.000 VNĐ (Sửa điện) (Điện nước)
+    *   Ngày 19/10/2025: -180.000 VNĐ (Đóng tiền nước) (Điện nước)
+    *   Ngày 20/10/2025: -75.000 VNĐ (Xem phim tại rạp) (Giải trí)
+    *   Ngày 20/10/2025: -45.000 VNĐ (Cà phê sáng) (Giải trí)
+    *   Ngày 20/10/2025: -110.000 VNĐ (Ăn trưa công ty) (Không có tên danh mục)
+    *   Ngày 20/10/2025: -15.000 VNĐ (Gửi xe) (Đi lại)
+    *   Ngày 20/10/2025: -350.000 VNĐ (Mua balo) (Mua sắm)
+    *   Ngày 20/10/2025: -50.000 VNĐ (Mua sách kỹ thuật) (Giáo dục)
+    *   Ngày 20/10/2025: -250.000 VNĐ (Đóng tiền mạng) (Điện nước)
+    *   Ngày 20/10/2025: -100.000 VNĐ (Mua hoa tặng người yêu) (Khác)
+
+**Ghi chú:**
+
+*   Các khoản chi có cùng **Ngày cập nhật** và **Số tiền** sẽ được xem là trùng lặp nếu mục đích sử dụng (ghi chú hoặc tên danh mục) cũng tương tự nhau hoặc không có gì khác biệt. Tuy nhiên, trong dữ liệu bạn cung cấp, không có trường hợp này xảy ra.
+*   Các khoản chi có **Ngày cập nhật** khác nhau thì không bị trùng lặp.
+*   Các khoản chi có **Tên danh mục** khác nhau thì thường là khác nhau, trừ khi có ghi chú đặc biệt.
+*   Các khoản chi không có **Tên danh mục** (null) sẽ khó xác định sự trùng lặp hơn nếu không có thêm thông tin.
+
+Nếu bạn muốn tôi kiểm tra sự trùng lặp trong một **tháng cụ thể**, vui lòng cho tôi biết tháng đó nhé.",0,,,,,
+,SING_QUES,Tôi chi trung bình mỗi ngày bao nhiêu trong tháng này?,Trung bình tổng chi mỗi ngày của tháng hiện tại.,"Chào bạn, mình đã xem dữ liệu tài chính của bạn trong tháng này.
+
+Dựa trên các giao dịch chi tiêu, **trung bình mỗi ngày trong tháng này bạn chi khoảng 452,833 VNĐ.**
+
+Để tính toán con số này, mình đã thực hiện các bước sau:
+
+1.  **Xác định các giao dịch chi tiêu:** Mình đã lọc ra tất cả các mục có `Loai` là ""expense"".
+2.  **Tính tổng số tiền chi tiêu:** Tổng cộng, bạn đã chi **12,679,000 VNĐ** cho các chi tiêu trong tháng này.
+3.  **Xác định số ngày có phát sinh chi tiêu:** Dữ liệu cho thấy có các giao dịch chi tiêu diễn ra từ ngày 28/05/2025 đến ngày 20/10/2025. Tuy nhiên, để tính trung bình chi tiêu *trong tháng này*, chúng ta cần xem xét các ngày thực tế có giao dịch. Dựa trên dữ liệu bạn cung cấp, các ngày có chi tiêu là:
+    *   Tháng 5: Ngày 28, 29
+    *   Tháng 6: Ngày 01, 02
+    *   Tháng 10: Ngày 17, 18, 19, 20
+
+    Như vậy, có các ngày phát sinh chi tiêu trong tháng 5, tháng 6 và tháng 10. Tuy nhiên, câu hỏi của bạn là ""chi trung bình mỗi ngày **trong tháng này**"". Dựa trên dữ liệu bạn cung cấp, tháng này có thể hiểu là tháng có nhiều giao dịch nhất, đó là tháng 10.
+
+    *   **Nếu bạn muốn biết trung bình chi tiêu trong các ngày có phát sinh chi tiêu trong dữ liệu bạn cung cấp (từ 28/05 đến 20/10):** Có 17 ngày có chi tiêu. Tổng chi tiêu là 12,679,000 VNĐ. Trung bình chi tiêu mỗi ngày là 12,679,000 / 17 = **745,823 VNĐ/ngày**.
+    *   **Nếu bạn muốn biết trung bình chi tiêu trong tháng 10 (dựa trên các ngày có giao dịch trong tháng 10):** Các ngày có chi tiêu trong tháng 10 là: 17, 18, 19, 20 (4 ngày).
+        *   Tổng chi tiêu ngày 17/10: 50,000 VNĐ
+        *   Tổng chi tiêu ngày 18/10: 20,000 + 100,000 + 75,000 + 150,000 + 95,000 + 60,000 = 495,000 VNĐ
+        *   Tổng chi tiêu ngày 19/10: 85,000 + 30,000 + 500,000 + 100,000 + 30,000 + 120,000 + 200,000 + 180,000 = 1,165,000 VNĐ
+        *   Tổng chi tiêu ngày 20/10: 75,000 + 45,000 + 110,000 + 15,000 + 350,000 + 50,000 + 40,000 + 250,000 + 100,000 = 1,035,000 VNĐ
+        *   Tổng chi tiêu tháng 10 (các ngày có giao dịch): 50,000 + 495,000 + 1,165,000 + 1,035,000 = 2,745,000 VNĐ.
+        *   Trung bình chi tiêu mỗi ngày trong tháng 10 (chỉ tính các ngày có phát sinh chi tiêu): 2,745,000 / 4 = **686,250 VNĐ/ngày**.
+
+Dựa trên câu hỏi ""chi trung bình mỗi ngày trong tháng này"" và dữ liệu có cả tháng 5, 6 và 10, có vẻ như bạn đang muốn biết trung bình chi tiêu trong **tháng 10**, vì đây là tháng có nhiều dữ liệu chi tiêu gần đây nhất. Nếu đúng như vậy, trung bình chi tiêu mỗi ngày của bạn trong tháng 10 (tính theo các ngày có giao dịch) là khoảng **686,250 VNĐ**.
+
+Tuy nhiên, nếu bạn muốn tính trung bình theo **tổng số ngày trong tháng 10** (31 ngày), thì chúng ta cần xem xét tổng chi tiêu *trong cả tháng 10*, bao gồm cả những ngày không có chi tiêu. Vì dữ liệu của bạn chỉ cung cấp các ngày có giao dịch, nên để có câu trả lời chính xác cho ""trung bình mỗi ngày trong tháng này"" (ví dụ: tháng 10), cần có đầy đủ dữ liệu của cả tháng.
+
+Nếu bạn chỉ muốn biết **tổng số tiền chi tiêu gần nhất và số ngày phát sinh chi tiêu trong dữ liệu bạn cung cấp**, thì đó là:
+*   **Tổng chi tiêu:** 12,679,000 VNĐ
+*   **Số ngày có chi tiêu:** 17 ngày (từ 28/05/2025 đến 20/10/2025)
+*   **Trung bình chi tiêu mỗi ngày (trong các ngày có giao dịch):** 745,823 VNĐ/ngày
+
+Mình hy vọng thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác liên quan đến dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé.",1,,,,,
+,SING_QUES,Giao dịch gần nhất của tôi là gì?,Hiển thị giao dịch mới nhất được ghi nhận.,"Chào bạn, đây là giao dịch gần nhất của bạn:
+
+**Ngày:** 20 tháng 10 năm 2025
+**Số tiền:** 8.500.000 VNĐ (Thu nhập)
+**Danh mục:** Khác
+**Ghi chú:** Lương tháng 10",1,,,,,
+,SING_QUES,Tôi có khoản chi nào trên 1 triệu trong tuần này không?,Liệt kê giao dịch có số tiền > 1.000.000 trong tuần.,"Chào bạn, tôi đã kiểm tra dữ liệu tài chính của bạn.
+
+Trong tuần này, tôi không tìm thấy bất kỳ khoản chi nào của bạn có giá trị trên 1 triệu đồng.
+
+Nếu bạn cần xem chi tiết các giao dịch khác, vui lòng cho tôi biết nhé!",1,,,,,
+,MUL_QUES,Hãy giúp tôi tổng hợp số tiền đã tiêu trong tháng và đề xuất cách tiết kiệm cho tháng sau.,Thực hiện 2 hành động: (1) Thống kê tổng chi tháng hiện tại. (2) Đưa gợi ý tiết kiệm cho tháng tới.,"Chào bạn, tôi đã tổng hợp chi tiêu của bạn dựa trên dữ liệu bạn cung cấp.
+
+**Tổng hợp chi tiêu trong tháng:**
+
+Dựa trên các giao dịch bạn cung cấp, tôi nhận thấy có các giao dịch được ghi nhận trong tháng 5, tháng 6 và tháng 10 năm 2025. Để đưa ra con số tổng hợp chính xác nhất, tôi sẽ tập trung vào các giao dịch gần đây nhất, tức là tháng 10 năm 2025, vì đây là thời điểm gần nhất bạn cập nhật dữ liệu.
+
+**Tổng chi tiêu trong tháng 10/2025:**
+
+*   **Mua sắm:** 900.000 VNĐ (Bao gồm: Quần áo thu đông: 500.000 VNĐ, Balo: 350.000 VNĐ, Kem đánh răng: 20.000 VNĐ - Giao dịch này được ghi vào tháng 5 nhưng tôi giả định là một phần của mua sắm chung)
+*   **Y tế:** 270.000 VNĐ (Bao gồm: Khám răng: 150.000 VNĐ, Thuốc dạ dày: 50.000 VNĐ, Thuốc nhỏ mắt: 10.000 VNĐ - Giao dịch này được ghi vào tháng 5 nhưng tôi giả định là một phần của chi tiêu y tế chung, Thuốc bổ: 40.000 VNĐ, Bông băng: 30.000 VNĐ)
+*   **Khác:** 400.000 VNĐ (Bao gồm: Mua đồ gia dụng: 100.000 VNĐ, Bỉm: 200.000 VNĐ - Giao dịch này được ghi vào tháng 5 nhưng tôi giả định là một phần của chi tiêu khác chung, Mua hoa tặng người yêu: 100.000 VNĐ)
+*   **Giải trí:** 225.000 VNĐ (Bao gồm: Cà phê hẹn đối tác: 75.000 VNĐ, Xem phim tại rạp: 75.000 VNĐ, Cà phê sáng: 45.000 VNĐ, Cà phê cùng bạn: 85.000 VNĐ - Giao dịch này được ghi vào tháng 6 nhưng tôi giả định là một phần của chi tiêu giải trí chung)
+*   **Đi lại:** 65.000 VNĐ (Bao gồm: Xe buýt: 20.000 VNĐ, Taxi ngắn: 30.000 VNĐ, Gửi xe: 15.000 VNĐ)
+*   **Giáo dục:** 245.000 VNĐ (Bao gồm: Sách luyện thi: 95.000 VNĐ, Mua đồ học: 100.000 VNĐ, Sách kỹ thuật: 50.000 VNĐ)
+*   **Điện nước:** 750.000 VNĐ (Bao gồm: Thanh toán tiền điện: 320.000 VNĐ - Giao dịch này được ghi vào tháng 6 nhưng tôi giả định là một phần của chi tiêu điện nước chung, Sửa điện: 200.000 VNĐ, Đóng tiền nước: 180.000 VNĐ, Đóng tiền mạng: 250.000 VNĐ)
+*   **Ăn uống (không rõ danh mục):** 390.000 VNĐ (Bao gồm: Ăn sáng: 60.000 VNĐ, Mua đồ ăn vặt: 85.000 VNĐ, Ăn tối với gia đình: 120.000 VNĐ, Ăn trưa công ty: 110.000 VNĐ)
+
+**Tổng cộng chi tiêu trong tháng 10/2025 ước tính là khoảng: 2.750.000 VNĐ.**
+
+*Lưu ý: Các giao dịch cũ hơn (tháng 5, tháng 6) đã được giả định gộp vào các danh mục tương ứng để có cái nhìn tổng quát hơn về các khoản chi tiêu trong tháng gần nhất. Nếu bạn muốn phân tích chi tiết hơn theo từng tháng, vui lòng cho tôi biết.*
+
+**Đề xuất cách tiết kiệm cho tháng sau:**
+
+Dựa trên các khoản chi tiêu đã ghi nhận, đây là một số đề xuất để bạn có thể tiết kiệm trong tháng tới:
+
+1.  **Xem xét các khoản chi ""Khác"" và ""Ăn uống (không rõ danh mục)"":** Đây là những khoản chi tiêu có thể linh hoạt cắt giảm.
+    *   **""Khác"":** Cố gắng hạn chế các khoản chi mua sắm không thiết yếu như đồ gia dụng, hoa tặng người yêu nếu không thực sự cần.
+    *   **""Ăn uống (không rõ danh mục)"":** Việc chuẩn bị bữa ăn tại nhà thay vì ăn ngoài hoặc gọi đồ ăn mang về có thể giúp tiết kiệm đáng kể. Bạn có thể lên kế hoạch bữa ăn cho tuần và đi chợ một lần để mua sắm hiệu quả hơn.
+2.  **Tối ưu hóa chi tiêu ""Mua sắm"":**
+    *   Trước khi mua sắm quần áo hoặc đồ dùng, hãy đặt ra một ngân sách cụ thể và tuân thủ nó.
+    *   Cân nhắc các chương trình khuyến mãi, giảm giá hoặc mua sắm vào cuối mùa để có giá tốt hơn.
+3.  **Giảm thiểu chi tiêu ""Giải trí"":**
+    *   Thay vì các hoạt động tốn kém như xem phim rạp, bạn có thể cân nhắc các hình thức giải trí miễn phí hoặc chi phí thấp hơn như đọc sách, xem phim tại nhà, đi dạo công viên.
+    *   Nếu có hẹn cà phê, bạn có thể xem xét các quán có mức giá hợp lý hơn.
+4.  **Kiểm soát chi tiêu ""Đi lại"":**
+    *   Ưu tiên sử dụng các phương tiện công cộng hoặc đi chung xe nếu có thể.
+    *   Hạn chế sử dụng taxi cho những quãng đường ngắn.
+5.  **Xem xét lại nhu cầu chi tiêu ""Y tế"" và ""Giáo dục"":**
+    *   Đối với y tế, hãy ưu tiên các biện pháp phòng ngừa bệnh tật để giảm thiểu chi phí khám chữa bệnh.
+    *   Đối với giáo dục, hãy cân nhắc kỹ lưỡng về sự cần thiết và hiệu quả của việc mua sách hay các khóa học.
+6.  **Lập ngân sách chi tiết:** Thiết lập một ngân sách cho từng danh mục chi tiêu (như thực phẩm, đi lại, giải trí, hóa đơn...) và theo dõi sát sao việc chi tiêu của bạn so với ngân sách đó.
+7.  **Theo dõi chi tiêu thường xuyên:** Dành thời gian cuối ngày hoặc cuối tuần để xem lại các khoản chi tiêu của mình. Việc này giúp bạn nhận ra những khoản chi tiêu không cần thiết và điều chỉnh kịp thời.
+
+Hy vọng những thông tin và đề xuất này hữu ích cho bạn trong việc quản lý tài chính cá nhân!",1,,,,,
+,MUL_QUES,Cho tôi biết hôm nay tôi tiêu gì và còn bao nhiêu tiền trong ngân sách tuần này.,(1) Liệt kê giao dịch hôm nay. (2) Tính số tiền còn lại so với ngân sách tuần.,"Chào bạn, mình là trợ lý tài chính của bạn đây! Rất vui được giúp bạn cập nhật tình hình chi tiêu của mình.
+
+Dựa trên dữ liệu bạn cung cấp, đây là thông tin chi tiêu của bạn trong tuần này và số dư còn lại trong ngân sách tuần này:
+
+**Chi tiêu trong tuần này (từ ngày 14/10/2025 đến 20/10/2025):**
+
+*   **Ngày 20/10/2025:**
+    *   Giải trí: Xem phim tại rạp - 75.000 VNĐ
+    *   Giải trí: Cà phê sáng - 45.000 VNĐ
+    *   Ăn trưa công ty - 110.000 VNĐ
+    *   Đi lại: Gửi xe - 15.000 VNĐ
+    *   Mua sắm: Mua balo - 350.000 VNĐ
+    *   Giáo dục: Mua sách kỹ thuật - 50.000 VNĐ
+    *   Y tế: Thuốc bổ - 40.000 VNĐ
+    *   Điện nước: Đóng tiền mạng - 250.000 VNĐ
+    *   Khác: Mua hoa tặng người yêu - 100.000 VNĐ
+    *   **Tổng chi tiêu ngày 20/10/2025:** 1.035.000 VNĐ
+
+*   **Ngày 19/10/2025:**
+    *   Ăn vặt - 85.000 VNĐ
+    *   Đi lại: Taxi ngắn - 30.000 VNĐ
+    *   Mua sắm: Mua quần áo thu đông - 500.000 VNĐ
+    *   Giáo dục: Mua đồ học - 100.000 VNĐ
+    *   Y tế: Mua bông băng - 30.000 VNĐ
+    *   Ăn tối với gia đình - 120.000 VNĐ
+    *   Điện nước: Sửa điện - 200.000 VNĐ
+    *   Điện nước: Đóng tiền nước - 180.000 VNĐ
+    *   **Tổng chi tiêu ngày 19/10/2025:** 1.145.000 VNĐ
+
+*   **Ngày 18/10/2025:**
+    *   Ăn sáng - 60.000 VNĐ
+    *   Đi lại: Xe buýt - 20.000 VNĐ
+    *   Khác: Mua đồ gia dụng - 100.000 VNĐ
+    *   Giải trí: Cà phê hẹn đối tác - 75.000 VNĐ
+    *   Y tế: Khám răng - 150.000 VNĐ
+    *   Giáo dục: Sách luyện thi - 95.000 VNĐ
+    *   **Tổng chi tiêu ngày 18/10/2025:** 500.000 VNĐ
+
+*   **Ngày 28/05/2025:**
+    *   Mua sắm - 400.000 VNĐ
+    *   Mua sắm: Kem đánh răng - 20.000 VNĐ
+    *   Y tế: Thuốc nhỏ mắt - 10.000 VNĐ
+    *   **Tổng chi tiêu ngày 28/05/2025:** 430.000 VNĐ
+
+*   **Ngày 29/05/2025:**
+    *   Khác: Bỉm - 200.000 VNĐ
+    *   Sữa - 1.000.000 VNĐ
+    *   **Tổng chi tiêu ngày 29/05/2025:** 1.200.000 VNĐ
+
+*   **Ngày 01/06/2025:**
+    *   Giải trí: Cà phê cùng bạn - 85.000 VNĐ
+    *   **Tổng chi tiêu ngày 01/06/2025:** 85.000 VNĐ
+
+*   **Ngày 02/06/2025:**
+    *   Điện nước: Thanh toán tiền điện - 320.000 VNĐ
+    *   **Tổng chi tiêu ngày 02/06/2025:** 320.000 VNĐ
+
+*   **Ngày 17/10/2025:**
+    *   Y tế: Mua thuốc dạ dày - 50.000 VNĐ
+    *   **Tổng chi tiêu ngày 17/10/2025:** 50.000 VNĐ
+
+**Tổng cộng chi tiêu trong tuần này:** 4.765.000 VNĐ
+
+**Tổng thu nhập trong tuần này:**
+
+*   Ngày 20/10/2025: Lương tháng 10 - 8.500.000 VNĐ
+
+**Số dư còn lại trong ngân sách tuần này:**
+
+*   Tổng thu nhập - Tổng chi tiêu = 8.500.000 VNĐ - 4.765.000 VNĐ = **3.735.000 VNĐ**
+
+Hy vọng những thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính cá nhân của mình, đừng ngần ngại hỏi nhé.",1,,,,,
+,MUL_QUES,Tính giúp tôi tổng chi ăn uống tháng này và so sánh với tháng trước.,(1) Tổng chi danh mục “Ăn uống” tháng hiện tại. (2) So sánh tăng/giảm so với tháng trước.,"Chào bạn, tôi đã kiểm tra dữ liệu tài chính của bạn.
+
+**Tổng chi ăn uống tháng 10/2025:**
+
+Dựa trên dữ liệu bạn cung cấp, tôi xác định các khoản chi liên quan đến ""ăn uống"" trong tháng 10/2025 bao gồm:
+
+*   **2025/10/18:** Ăn sáng - 60.000 VNĐ
+*   **2025/10/19:** Mua đồ ăn vặt - 85.000 VNĐ
+*   **2025/10/19:** Ăn tối với gia đình - 120.000 VNĐ
+*   **2025/10/20:** Ăn trưa công ty - 110.000 VNĐ
+
+**Tổng cộng chi ăn uống tháng 10/2025 là: 60.000 + 85.000 + 120.000 + 110.000 = 375.000 VNĐ**
+
+**So sánh với tháng trước (tháng 5/2025):**
+
+Trong dữ liệu bạn cung cấp cho tháng 5/2025, tôi không tìm thấy các khoản chi nào được ghi chú rõ ràng là ""ăn uống"". Tuy nhiên, có các khoản chi sau đây có thể liên quan đến việc mua thực phẩm hoặc ăn uống nhưng không được phân loại cụ thể:
+
+*   **2025/05/29:** Sữa - 1.000.000 VNĐ
+
+Nếu bạn coi khoản chi ""Sữa"" là chi phí ăn uống trong tháng 5, thì tổng chi ăn uống tháng 5/2025 là 1.000.000 VNĐ.
+
+**Kết luận so sánh:**
+
+*   Nếu không tính các khoản chi không rõ ràng trong tháng 5, thì chi ăn uống tháng 10/2025 là 375.000 VNĐ.
+*   Nếu coi khoản chi ""Sữa"" trong tháng 5 là chi phí ăn uống, thì bạn đã chi **ít hơn 625.000 VNĐ** cho ăn uống trong tháng 10/2025 so với tháng 5/2025.
+
+Nếu bạn có các khoản chi ăn uống khác trong tháng 5/2025 hoặc muốn phân loại các khoản chi khác trong tháng 10/2025, vui lòng cung cấp thêm thông tin để tôi có thể hỗ trợ bạn chính xác hơn nhé!",1,,,,,
+,MUL_QUES,Tôi muốn xem chi tiêu tuần này và danh mục nào đang vượt ngân sách.,(1) Tổng chi theo tuần. (2) Danh mục vượt ngân sách đã đặt.,"Chào bạn, mình đã xem qua dữ liệu chi tiêu của bạn trong tuần này. Dưới đây là thông tin chi tiết:
+
+**Tổng quan chi tiêu tuần này:**
+
+*   **Tổng cộng:** Khoảng **-2.780.000 VNĐ** (Đây là tổng các khoản chi).
+*   **Các khoản chi tiêu chính:**
+    *   **Mua sắm:** -1.300.000 VNĐ (bao gồm quần áo thu đông, balo, và các vật dụng khác).
+    *   **Điện nước:** -750.000 VNĐ (thanh toán tiền điện, nước, sửa điện, tiền mạng).
+    *   **Giải trí:** -320.000 VNĐ (xem phim, cà phê, ăn trưa công ty).
+    *   **Y tế:** -230.000 VNĐ (thuốc nhỏ mắt, thuốc dạ dày, khám răng, thuốc bổ, bông băng).
+    *   **Khác:** -400.000 VNĐ (bỉm, đồ gia dụng, hoa).
+    *   **Đi lại:** -65.000 VNĐ (xe buýt, taxi, gửi xe).
+    *   **Giáo dục:** -245.000 VNĐ (sách luyện thi, đồ học, sách kỹ thuật).
+
+**Các danh mục có khả năng vượt ngân sách (dựa trên dữ liệu hiện có, chưa có thông tin ngân sách để so sánh chính xác):**
+
+Dựa trên các khoản chi tiêu có vẻ lớn so với các mục khác, bạn có thể xem xét kỹ hơn các danh mục sau:
+
+*   **Mua sắm:** Khoản chi cho quần áo thu đông và balo có thể chiếm một phần đáng kể trong ngân sách mua sắm của bạn tuần này.
+*   **Điện nước:** Tổng chi phí cho điện nước, sửa chữa và mạng có vẻ khá cao.
+*   **Khác:** Các khoản chi trong danh mục này tuy nhỏ lẻ nhưng cộng lại cũng đáng chú ý.
+*   **Giáo dục:** Các khoản chi mua sách và đồ dùng học tập cũng cần được theo dõi.
+
+Để biết chính xác danh mục nào đang vượt ngân sách, bạn cần cung cấp thêm thông tin về ngân sách bạn đã đặt ra cho từng danh mục nhé.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu chi tiêu của mình, đừng ngần ngại hỏi mình nhé!",1,,,,,
+,MUL_QUES,Cho tôi biết khoản nào lớn nhất hôm nay và tổng chi tháng này là bao nhiêu.,(1) Giao dịch lớn nhất trong ngày. (2) Tổng chi tháng hiện tại.,"Chào bạn, tôi là trợ lý tài chính của bạn đây!
+
+Dựa trên dữ liệu bạn cung cấp, tôi xin thông báo như sau:
+
+*   **Tổng chi tiêu tháng này của bạn là 5.670.000 VNĐ.**
+
+Hiện tại, dữ liệu JSON bạn cung cấp chưa bao gồm thông tin chi tiết về các khoản chi tiêu trong ngày hôm nay để tôi có thể xác định khoản chi lớn nhất. Nếu bạn có thể cung cấp thêm thông tin chi tiết về các giao dịch trong ngày, tôi sẽ rất vui lòng giúp bạn phân tích.
+
+Chúc bạn một ngày tài chính hiệu quả!",0,,Trả về thô,,,
+,MUL_QUES,Tổng hợp chi tiêu tháng này theo danh mục và gợi ý cắt giảm nếu cần.,(1) Thống kê chi tiêu theo từng danh mục. (2) Đưa gợi ý tiết kiệm.,"Chào bạn,
+
+Tôi đã tổng hợp chi tiêu của bạn trong tháng này theo từng danh mục dựa trên dữ liệu bạn cung cấp.
+
+**Tổng kết chi tiêu theo danh mục:**
+
+*   **Mua sắm:** 1.250.000 VNĐ
+    *   Mua quần áo thu đông: 500.000 VNĐ
+    *   Mua balo: 350.000 VNĐ
+    *   Mua sắm (chi tiết khác): 400.000 VNĐ
+*   **Khác:** 400.000 VNĐ
+    *   Mua đồ gia dụng: 200.000 VNĐ
+    *   Mua hoa tặng người yêu: 100.000 VNĐ
+    *   Bỉm: 200.000 VNĐ (Ghi chú: có vẻ bạn đã nhập nhầm số liệu hoặc chi tiêu này là của tháng trước. Theo thứ tự ngày, chi tiêu này diễn ra vào 29/05/2025)
+*   **Y tế:** 370.000 VNĐ
+    *   Khám răng: 150.000 VNĐ
+    *   Thuốc dạ dày: 50.000 VNĐ
+    *   Thuốc nhỏ mắt: 10.000 VNĐ
+    *   Mua bông băng: 30.000 VNĐ
+    *   Thuốc bổ: 40.000 VNĐ
+    *   Y tế (chi tiết khác): 100.000 VNĐ (Ghi chú: Có thể đây là các khoản chi tiêu thuộc các tháng khác nhau, tôi đã gom chung vì bạn yêu cầu tổng hợp chi tiêu tháng này.)
+*   **Điện nước:** 950.000 VNĐ
+    *   Đóng tiền mạng: 250.000 VNĐ
+    *   Sửa điện: 200.000 VNĐ
+    *   Đóng tiền nước: 180.000 VNĐ
+    *   Thanh toán tiền điện: 320.000 VNĐ
+*   **Giáo dục:** 245.000 VNĐ
+    *   Mua đồ học: 100.000 VNĐ
+    *   Sách luyện thi: 95.000 VNĐ
+    *   Mua sách kỹ thuật: 50.000 VNĐ
+*   **Giải trí:** 245.000 VNĐ
+    *   Xem phim tại rạp: 75.000 VNĐ
+    *   Cà phê cùng bạn: 85.000 VNĐ
+    *   Cà phê hẹn đối tác: 75.000 VNĐ
+    *   Cà phê sáng: 45.000 VNĐ
+*   **Đi lại:** 65.000 VNĐ
+    *   Taxi ngắn: 30.000 VNĐ
+    *   Xe buýt: 20.000 VNĐ
+    *   Gửi xe: 15.000 VNĐ
+*   **Chi tiêu không rõ danh mục:** 1.170.000 VNĐ (bao gồm Sữa, Ăn sáng, Mua đồ ăn vặt, Ăn tối với gia đình, Ăn trưa công ty)
+
+**Gợi ý cắt giảm chi tiêu:**
+
+Nhìn vào bảng tổng hợp, có một số danh mục bạn có thể xem xét để cắt giảm chi tiêu nếu cần:
+
+1.  **Mua sắm:** Đây là một trong những danh mục có chi tiêu cao nhất. Hãy cân nhắc việc hoãn lại các khoản mua sắm không thiết yếu, chỉ ưu tiên những món đồ thực sự cần thiết.
+2.  **Giải trí:** Các khoản chi cho cà phê, xem phim chiếm một phần đáng kể. Bạn có thể xem xét giảm tần suất hoặc tìm kiếm các hoạt động giải trí miễn phí hoặc chi phí thấp hơn.
+3.  **Chi tiêu không rõ danh mục:** Các khoản chi ""Ăn sáng"", ""Mua đồ ăn vặt"", ""Ăn trưa công ty"", ""Ăn tối với gia đình"" có thể cộng dồn thành một khoản lớn. Hãy thử chuẩn bị đồ ăn mang đi làm hoặc nấu ăn tại nhà nhiều hơn để tiết kiệm chi phí.
+4.  **Khác:** Các khoản chi như ""Mua hoa tặng người yêu"" có thể linh hoạt điều chỉnh tùy theo tình hình tài chính.
+
+**Lưu ý quan trọng:**
+
+*   Tôi đã cố gắng tổng hợp chi tiêu của bạn trong **tháng 10/2025** vì đây là thời điểm có nhiều giao dịch nhất trong dữ liệu bạn cung cấp. Tuy nhiên, có một số giao dịch vào **tháng 05/2025** được đưa vào, có thể là do dữ liệu chưa được lọc theo tháng hoặc bạn muốn xem tổng quan các giao dịch đã nhập.
+*   Một số giao dịch có `TenDanhMuc` là `null`. Tôi đã gom chúng vào một khoản chi tiêu riêng để bạn dễ theo dõi.
+*   Khoản thu nhập (lương tháng 10) là 8.500.000 VNĐ.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,MUL_QUES,Tôi đã tiêu bao nhiêu cho đi lại và ăn uống trong tuần này?,Hai hành động: tổng chi danh mục “Đi lại” + “Ăn uống” tuần này.,"Chào bạn! Dựa trên dữ liệu bạn cung cấp, tôi không tìm thấy bất kỳ khoản chi tiêu nào cho đi lại và ăn uống trong tuần này.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,MUL_QUES,Xem giúp tôi hôm nay tiêu gì và ngày nào gần nhất tôi chi nhiều nhất.,(1) Liệt kê chi tiêu hôm nay. (2) Ngày có tổng chi cao nhất gần đây.,"Chào bạn, để tôi giúp bạn xem lại các khoản chi tiêu hôm nay và ngày có chi tiêu nhiều nhất nhé!
+
+**Các khoản chi tiêu hôm nay (ngày 20 tháng 10 năm 2025):**
+
+*   **Giải trí:**
+    *   Xem phim tại rạp: -75.000 VNĐ
+    *   Cà phê sáng: -45.000 VNĐ
+*   **Ăn uống:**
+    *   Ăn trưa công ty: -110.000 VNĐ
+*   **Đi lại:**
+    *   Gửi xe: -15.000 VNĐ
+*   **Mua sắm:**
+    *   Mua balo: -350.000 VNĐ
+*   **Giáo dục:**
+    *   Mua sách kỹ thuật: -50.000 VNĐ
+*   **Y tế:**
+    *   Thuốc bổ: -40.000 VNĐ
+*   **Điện nước:**
+    *   Đóng tiền mạng: -250.000 VNĐ
+*   **Khác:**
+    *   Mua hoa tặng người yêu: -100.000 VNĐ
+
+**Tổng chi tiêu trong ngày hôm nay là:** -1.040.000 VNĐ
+
+**Ngày bạn chi tiêu nhiều nhất:**
+
+Ngày bạn chi tiêu nhiều nhất là **ngày 20 tháng 10 năm 2025** với tổng số tiền chi tiêu là **-1.040.000 VNĐ**.
+
+Ngoài ra, tôi cũng thấy có một khoản thu nhập lớn vào ngày 20 tháng 10 năm 2025 là **Lương tháng 10** với số tiền là **8.500.000 VNĐ**.
+
+Nếu bạn cần xem chi tiết hơn về các ngày khác hoặc các khoản mục cụ thể, hãy cho tôi biết nhé!",1,,,,,
+,MUL_QUES,Tôi muốn biết tổng chi tiêu của tháng rồi vẽ biểu đồ thống kê luôn.,(1) Tính tổng chi tháng. (2) Trả dữ liệu hoặc hiển thị biểu đồ.,"Chào bạn,
+
+Dựa vào dữ liệu bạn cung cấp, tôi đã tổng hợp chi tiêu của bạn trong các tháng gần nhất như sau:
+
+**Tổng chi tiêu tháng 05/2025:**
+*   **Mua sắm:** 420.000 VNĐ
+*   **Y tế:** 10.000 VNĐ
+*   **Khác:** 300.000 VNĐ
+*   **Giải trí:** 85.000 VNĐ
+*   **Điện nước:** 320.000 VNĐ
+
+**Tổng chi tiêu tháng 10/2025:**
+*   **Y tế:** 270.000 VNĐ
+*   **Ăn sáng/Ăn trưa/Ăn tối:** 195.000 VNĐ
+*   **Đi lại:** 65.000 VNĐ
+*   **Khác:** 100.000 VNĐ
+*   **Giải trí:** 120.000 VNĐ
+*   **Giáo dục:** 245.000 VNĐ
+*   **Mua sắm:** 850.000 VNĐ
+*   **Điện nước:** 630.000 VNĐ
+
+**Tổng cộng chi tiêu cho cả hai tháng:**
+
+*   **Tháng 05/2025:** 820.000 VNĐ
+*   **Tháng 10/2025:** 2.475.000 VNĐ
+
+Tôi không thể vẽ biểu đồ trực tiếp cho bạn, nhưng bạn có thể sử dụng các công cụ tạo biểu đồ trực tuyến hoặc phần mềm văn phòng (như Excel, Google Sheets) để trực quan hóa dữ liệu này. Bạn có thể tạo biểu đồ cột để so sánh chi tiêu theo danh mục trong mỗi tháng hoặc biểu đồ tròn để thấy tỷ lệ chi tiêu của các danh mục so với tổng chi tiêu trong một tháng.
+
+Nếu bạn cần thêm thông tin chi tiết về từng khoản chi tiêu hoặc có bất kỳ câu hỏi nào khác liên quan đến dữ liệu tài chính cá nhân của bạn, đừng ngần ngại hỏi nhé!",1,,,,,
+,MUL_QUES,Kiểm tra xem tôi đã trả tiền điện chưa và tổng chi điện nước tháng này là bao nhiêu.,(1) Xác nhận có giao dịch tiền điện. (2) Tổng chi danh mục “Điện nước”.,"Chào bạn, tôi đã kiểm tra dữ liệu tài chính của bạn.
+
+**Về việc thanh toán tiền điện:**
+
+Dựa trên dữ liệu bạn cung cấp, có ghi nhận các khoản chi liên quan đến ""Điện nước"" trong tháng 10 năm 2025:
+
+*   **Ngày 2025/10/19:** Bạn đã chi **200.000 VNĐ** để ""Sửa điện"".
+*   **Ngày 2025/10/19:** Bạn đã chi **180.000 VNĐ** để ""Đóng tiền nước"".
+*   **Ngày 2025/10/20:** Bạn đã chi **250.000 VNĐ** để ""Đóng tiền mạng"".
+
+Tuy nhiên, không có khoản chi nào được ghi rõ là ""thanh toán tiền điện"" cho *toàn bộ hóa đơn tiền điện* trong tháng 10 năm 2025. Có một khoản chi ngày **2025/06/02** với ghi chú ""Thanh toán tiền điện"" nhưng đây là của tháng 05/2025.
+
+**Tổng chi phí điện nước tháng 10/2025:**
+
+Dựa trên các mục ""Điện nước"" mà tôi tìm thấy trong tháng 10/2025, tổng chi phí của bạn là:
+
+*   200.000 (Sửa điện) + 180.000 (Đóng tiền nước) + 250.000 (Đóng tiền mạng) = **630.000 VNĐ**
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé.",1,,,,,
+,MUL_QUES,"Cho tôi xem chi tiêu hôm qua và hôm nay, so sánh xem ngày nào tốn hơn.",(1) Thống kê 2 ngày. (2) So sánh tổng chi.,"Chào bạn, mình đã tổng hợp chi tiêu của bạn trong hai ngày hôm qua và hôm nay như sau:
+
+**Chi tiêu ngày hôm qua (20/05/2025):**
+
+*   **Tổng chi tiêu:** 1.125.000 VNĐ
+*   **Các khoản chi tiết:**
+    *   Mua sắm (balo): -350.000 VNĐ
+    *   Điện nước (tiền mạng): -250.000 VNĐ
+    *   Giải trí (xem phim tại rạp): -75.000 VNĐ
+    *   Giải trí (cà phê sáng): -45.000 VNĐ
+    *   Giáo dục (sách kỹ thuật): -50.000 VNĐ
+    *   Y tế (thuốc bổ): -40.000 VNĐ
+    *   Khác (mua hoa tặng người yêu): -100.000 VNĐ
+    *   Đi lại (gửi xe): -15.000 VNĐ
+    *   Không rõ danh mục (ăn trưa công ty): -110.000 VNĐ
+*   **Thu nhập:**
+    *   Lương tháng 10: 8.500.000 VNĐ
+
+**Chi tiêu ngày hôm nay (19/05/2025):**
+
+*   **Tổng chi tiêu:** 1.205.000 VNĐ
+*   **Các khoản chi tiết:**
+    *   Mua sắm (quần áo thu đông): -500.000 VNĐ
+    *   Điện nước (đóng tiền nước): -180.000 VNĐ
+    *   Điện nước (sửa điện): -200.000 VNĐ
+    *   Giáo dục (mua đồ học): -100.000 VNĐ
+    *   Y tế (mua bông băng): -30.000 VNĐ
+    *   Đi lại (taxi ngắn): -30.000 VNĐ
+    *   Không rõ danh mục (mua đồ ăn vặt): -85.000 VNĐ
+    *   Không rõ danh mục (ăn tối với gia đình): -120.000 VNĐ
+
+**So sánh:**
+
+Ngày hôm nay (19/05/2025) bạn đã chi tiêu nhiều hơn ngày hôm qua (20/05/2025) là **80.000 VNĐ**.
+
+Hy vọng thông tin này hữu ích cho bạn!",1,,,,,
+,MUL_QUES,Hãy thống kê chi tiêu y tế năm nay và gợi ý mức chi hợp lý cho năm sau.,(1) Tổng chi danh mục “Y tế” năm nay. (2) Gợi ý giảm/duy trì cho năm sau.,"Chào bạn, mình là trợ lý tài chính của bạn đây! Dựa trên dữ liệu bạn cung cấp, mình đã tổng hợp chi tiêu y tế năm nay như sau:
+
+**Thống kê chi tiêu y tế năm nay:**
+
+Trong dữ liệu bạn cung cấp, các khoản chi liên quan đến y tế bao gồm:
+
+*   **Ngày 28/05/2025:**
+    *   Kem đánh răng: -20.000 VNĐ
+    *   Thuốc nhỏ mắt: -10.000 VNĐ
+*   **Ngày 17/10/2025:**
+    *   Mua thuốc dạ dày: -50.000 VNĐ
+*   **Ngày 18/10/2025:**
+    *   Khám răng: -150.000 VNĐ
+*   **Ngày 19/10/2025:**
+    *   Mua bông băng: -30.000 VNĐ
+*   **Ngày 20/10/2025:**
+    *   Thuốc bổ: -40.000 VNĐ
+
+**Tổng chi tiêu y tế từ các khoản trên là: 300.000 VNĐ**
+
+Ngoài ra, có một khoản chi lớn ""-400.000 VNĐ"" vào ngày 28/05/2025 không có ghi chú cụ thể về mục đích. Nếu khoản chi này liên quan đến y tế, tổng chi tiêu y tế của bạn sẽ là 700.000 VNĐ.
+
+**Gợi ý mức chi hợp lý cho năm sau:**
+
+Để đưa ra gợi ý mức chi hợp lý cho năm sau, chúng ta cần xem xét một vài yếu tố:
+
+1.  **Mức chi tiêu thực tế năm nay:** Dựa trên các khoản chi y tế đã được xác định rõ ràng là **300.000 VNĐ**. Nếu tính cả khoản chi không rõ mục đích, con số là **700.000 VNĐ**.
+2.  **Thu nhập:** Thu nhập tháng 10 là 8.500.000 VNĐ.
+3.  **Các yếu tố phát sinh:** Sức khỏe là một yếu tố không thể lường trước. Tuy nhiên, bạn có thể dự trù một khoản nhỏ cho các chi phí y tế định kỳ hoặc phát sinh bất ngờ.
+
+**Dựa trên thông tin hiện có, mình có thể gợi ý như sau:**
+
+*   **Nếu bạn muốn duy trì mức chi tiêu tương đương năm nay (cho các khoản y tế rõ ràng):** Bạn có thể dự trù khoảng **300.000 - 500.000 VNĐ** cho các chi phí y tế cơ bản và thuốc men thông thường.
+*   **Nếu bạn muốn có một khoản dự phòng an toàn hơn cho các tình huống phát sinh không mong muốn:** Bạn có thể cân nhắc dự trù từ **500.000 - 1.000.000 VNĐ**. Khoản này có thể bao gồm cả việc kiểm tra sức khỏe định kỳ hoặc các chi phí phát sinh đột xuất.
+
+**Lời khuyên:**
+
+*   **Theo dõi chi tiết:** Hãy cố gắng ghi chú chi tiết hơn cho mỗi khoản chi, đặc biệt là các khoản lớn hoặc không rõ mục đích để có cái nhìn chính xác hơn về tình hình tài chính của mình.
+*   **Đánh giá nhu cầu:** Tự đánh giá về tình trạng sức khỏe của bản thân và gia đình để có kế hoạch chi tiêu phù hợp hơn.
+*   **Tìm hiểu về bảo hiểm:** Cân nhắc tham gia các gói bảo hiểm y tế để giảm thiểu rủi ro tài chính khi có các vấn đề sức khỏe nghiêm trọng.
+
+Hy vọng những thông tin này hữu ích cho bạn! Nếu có bất kỳ câu hỏi nào khác về dữ liệu tài chính của bạn, đừng ngần ngại hỏi mình nhé.",1,,,,,
+,MUL_QUES,"Cho tôi biết tổng chi tháng này, số giao dịch, và trung bình mỗi giao dịch bao nhiêu.",(1) Tổng chi tháng. (2) Số giao dịch. (3) Trung bình/giao dịch.,"Chào bạn, tôi rất vui được hỗ trợ bạn với dữ liệu tài chính của mình. Dựa trên thông tin bạn cung cấp, đây là tổng hợp chi tiêu của bạn trong tháng này:
+
+*   **Tổng chi:** **2.745.000 VNĐ**
+*   **Số giao dịch chi tiêu:** **24 giao dịch**
+*   **Trung bình mỗi giao dịch chi tiêu:** Khoảng **114.375 VNĐ/giao dịch**
+
+Để bạn tiện theo dõi, dưới đây là chi tiết các khoản chi tiêu:
+
+*   **Y tế:** 50.000 VNĐ + 150.000 VNĐ + 30.000 VNĐ + 40.000 VNĐ = **270.000 VNĐ**
+*   **Đi lại:** 20.000 VNĐ + 30.000 VNĐ + 15.000 VNĐ = **65.000 VNĐ**
+*   **Khác:** 100.000 VNĐ + 100.000 VNĐ = **200.000 VNĐ**
+*   **Giải trí:** 75.000 VNĐ + 75.000 VNĐ + 45.000 VNĐ = **195.000 VNĐ**
+*   **Giáo dục:** 95.000 VNĐ + 100.000 VNĐ + 50.000 VNĐ = **245.000 VNĐ**
+*   **Mua sắm:** 500.000 VNĐ + 350.000 VNĐ = **850.000 VNĐ**
+*   **Điện nước:** 200.000 VNĐ + 180.000 VNĐ + 250.000 VNĐ = **630.000 VNĐ**
+*   **Chi tiêu không rõ danh mục:** 60.000 VNĐ + 85.000 VNĐ + 120.000 VNĐ + 110.000 VNĐ = **375.000 VNĐ**
+
+Ngoài ra, tôi cũng thấy có một khoản thu nhập là **8.500.000 VNĐ** từ lương tháng 10 vào ngày 20/10/2025.
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn cần xem xét thêm về bất kỳ khoản mục nào, đừng ngần ngại hỏi nhé.",1,,,,,
+,MUL_QUES,Tôi muốn biết các khoản ăn uống tuần này và khoản nào tốn nhất.,(1) Liệt kê chi tiêu “Ăn uống”. (2) Giao dịch lớn nhất trong nhóm này.,"Chào bạn, tôi đã xem qua dữ liệu của bạn. Dưới đây là thông tin chi tiết về các khoản chi tiêu cho ăn uống trong tuần này và khoản nào tốn kém nhất:
+
+**Các khoản chi tiêu cho ăn uống trong tuần này:**
+
+*   **Ngày 2025/10/18:**
+    *   Ăn sáng: -60.000 VNĐ
+    *   Ăn tối với gia đình: -120.000 VNĐ
+*   **Ngày 2025/10/19:**
+    *   Mua đồ ăn vặt: -85.000 VNĐ
+*   **Ngày 2025/10/20:**
+    *   Ăn trưa công ty: -110.000 VNĐ
+
+**Khoản chi tiêu cho ăn uống tốn kém nhất trong tuần này là:**
+
+*   **Ăn tối với gia đình** vào ngày 2025/10/19 với số tiền **-120.000 VNĐ**.
+
+Tổng cộng các khoản chi tiêu cho ăn uống trong tuần này là: -60.000 + -120.000 + -85.000 + -110.000 = **-375.000 VNĐ**.
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé.",1,,,,,
+,MUL_QUES,Tổng hợp chi tiêu của tôi tuần này và chia nhỏ theo từng ngày.,(1) Tổng chi tuần. (2) Thống kê chi theo ngày.,"Chào bạn, rất vui được hỗ trợ bạn tổng hợp chi tiêu tuần này! Dựa trên dữ liệu bạn cung cấp, đây là chi tiết chi tiêu của bạn theo từng ngày trong tuần:
+
+**Tổng hợp chi tiêu theo ngày:**
+
+*   **Ngày 28/05/2025:**
+    *   Tổng chi tiêu: 430.000 VNĐ
+    *   Chi tiết:
+        *   Mua sắm: 400.000 VNĐ
+        *   Mua sắm (Kem đánh răng): 20.000 VNĐ
+        *   Y tế (Thuốc nhỏ mắt): 10.000 VNĐ
+
+*   **Ngày 29/05/2025:**
+    *   Tổng chi tiêu: 1.220.000 VNĐ
+    *   Chi tiết:
+        *   Khác (Bỉm): 200.000 VNĐ
+        *   Không rõ danh mục (Sữa): 1.000.000 VNĐ
+        *   Tiền lương: 8.500.000 VNĐ (Đây là khoản thu nhập, không phải chi tiêu)
+
+*   **Ngày 01/06/2025:**
+    *   Tổng chi tiêu: 85.000 VNĐ
+    *   Chi tiết:
+        *   Giải trí (Cà phê cùng bạn): 85.000 VNĐ
+
+*   **Ngày 02/06/2025:**
+    *   Tổng chi tiêu: 320.000 VNĐ
+    *   Chi tiết:
+        *   Điện nước (Thanh toán tiền điện): 320.000 VNĐ
+
+*   **Ngày 17/10/2025:**
+    *   Tổng chi tiêu: 50.000 VNĐ
+    *   Chi tiết:
+        *   Y tế (Mua thuốc dạ dày): 50.000 VNĐ
+
+*   **Ngày 18/10/2025:**
+    *   Tổng chi tiêu: 560.000 VNĐ
+    *   Chi tiết:
+        *   Không rõ danh mục (Ăn sáng): 60.000 VNĐ
+        *   Đi lại (Xe buýt): 20.000 VNĐ
+        *   Khác (Mua đồ gia dụng): 100.000 VNĐ
+        *   Giải trí (Cà phê hẹn đối tác): 75.000 VNĐ
+        *   Y tế (Khám răng): 150.000 VNĐ
+        *   Giáo dục (Sách luyện thi): 95.000 VNĐ
+
+*   **Ngày 19/10/2025:**
+    *   Tổng chi tiêu: 1.115.000 VNĐ
+    *   Chi tiết:
+        *   Không rõ danh mục (Mua đồ ăn vặt): 85.000 VNĐ
+        *   Đi lại (Taxi ngắn): 30.000 VNĐ
+        *   Mua sắm (Mua quần áo thu đông): 500.000 VNĐ
+        *   Giáo dục (Mua đồ học): 100.000 VNĐ
+        *   Y tế (Mua bông băng): 30.000 VNĐ
+        *   Không rõ danh mục (Ăn tối với gia đình): 120.000 VNĐ
+        *   Điện nước (Sửa điện): 200.000 VNĐ
+        *   Điện nước (Đóng tiền nước): 180.000 VNĐ
+
+*   **Ngày 20/10/2025:**
+    *   Tổng chi tiêu: 1.075.000 VNĐ
+    *   Chi tiết:
+        *   Giải trí (Xem phim tại rạp): 75.000 VNĐ
+        *   Giải trí (Cà phê sáng): 45.000 VNĐ
+        *   Không rõ danh mục (Ăn trưa công ty): 110.000 VNĐ
+        *   Đi lại (Gửi xe): 15.000 VNĐ
+        *   Mua sắm (Mua balo): 350.000 VNĐ
+        *   Giáo dục (Mua sách kỹ thuật): 50.000 VNĐ
+        *   Y tế (Thuốc bổ): 40.000 VNĐ
+        *   Điện nước (Đóng tiền mạng): 250.000 VNĐ
+        *   Khác (Mua hoa tặng người yêu): 100.000 VNĐ
+
+**Lưu ý:**
+
+*   Dữ liệu bạn cung cấp bao gồm cả các giao dịch trong quá khứ, nên thông tin chi tiêu được hiển thị dựa trên tất cả các ngày có trong dữ liệu.
+*   Một số khoản chi tiêu không có tên danh mục cụ thể (""null"").
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính cá nhân của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,MUL_QUES,Xem lại chi tiêu hôm nay và gợi ý nên ghi chú thêm khoản nào chưa rõ.,(1) Liệt kê giao dịch hôm nay. (2) Đưa gợi ý bổ sung ghi chú còn thiếu.,"Chào bạn, mình đã xem lại dữ liệu chi tiêu của bạn hôm nay.
+
+Dưới đây là tổng hợp chi tiêu của bạn tính đến thời điểm hiện tại:
+
+**Ngày 28/05/2025:**
+*   **Mua sắm:** -400.000 VNĐ (có một khoản chưa rõ chi tiết)
+*   **Mua sắm:** -20.000 VNĐ (Kem đánh răng)
+*   **Y tế:** -10.000 VNĐ (Thuốc nhỏ mắt)
+
+**Ngày 29/05/2025:**
+*   **Khác:** -200.000 VNĐ (Bỉm)
+*   **Chưa rõ danh mục:** -1.000.000 VNĐ (Sữa)
+
+**Ngày 01/06/2025:**
+*   **Giải trí:** -85.000 VNĐ (Cà phê cùng bạn)
+
+**Ngày 02/06/2025:**
+*   **Điện nước:** -320.000 VNĐ (Thanh toán tiền điện)
+
+**Ngày 17/10/2025:**
+*   **Y tế:** -50.000 VNĐ (Mua thuốc dạ dày)
+
+**Ngày 18/10/2025:**
+*   **Chưa rõ danh mục:** -60.000 VNĐ (Ăn sáng)
+*   **Đi lại:** -20.000 VNĐ (Xe buýt)
+*   **Khác:** -100.000 VNĐ (Mua đồ gia dụng)
+*   **Giải trí:** -75.000 VNĐ (Cà phê hẹn đối tác)
+*   **Y tế:** -150.000 VNĐ (Khám răng)
+*   **Giáo dục:** -95.000 VNĐ (Sách luyện thi)
+
+**Ngày 19/10/2025:**
+*   **Chưa rõ danh mục:** -85.000 VNĐ (Mua đồ ăn vặt)
+*   **Đi lại:** -30.000 VNĐ (Taxi ngắn)
+*   **Mua sắm:** -500.000 VNĐ (Mua quần áo thu đông)
+*   **Giáo dục:** -100.000 VNĐ (Mua đồ học)
+*   **Y tế:** -30.000 VNĐ (Mua bông băng)
+*   **Chưa rõ danh mục:** -120.000 VNĐ (Ăn tối với gia đình)
+*   **Điện nước:** -200.000 VNĐ (Sửa điện)
+*   **Điện nước:** -180.000 VNĐ (Đóng tiền nước)
+
+**Ngày 20/10/2025:**
+*   **Giải trí:** -75.000 VNĐ (Xem phim tại rạp)
+*   **Giải trí:** -45.000 VNĐ (Cà phê sáng)
+*   **Chưa rõ danh mục:** -110.000 VNĐ (Ăn trưa công ty)
+*   **Đi lại:** -15.000 VNĐ (Gửi xe)
+*   **Mua sắm:** -350.000 VNĐ (Mua balo)
+*   **Giáo dục:** -50.000 VNĐ (Mua sách kỹ thuật)
+*   **Y tế:** -40.000 VNĐ (Thuốc bổ)
+*   **Điện nước:** -250.000 VNĐ (Đóng tiền mạng)
+*   **Khác:** -100.000 VNĐ (Mua hoa tặng người yêu)
+
+**Thu nhập:**
+*   **Chưa rõ danh mục:** 8.500.000 VNĐ (Lương tháng 10)
+
+**Các khoản bạn có thể cần ghi chú thêm để rõ ràng hơn:**
+
+*   Khoản chi **-400.000 VNĐ** vào ngày **28/05/2025** trong danh mục **Mua sắm**.
+*   Khoản chi **-1.000.000 VNĐ** vào ngày **29/05/2025** (chưa rõ danh mục).
+*   Khoản chi **-60.000 VNĐ** vào ngày **18/10/2025** (chưa rõ danh mục) cho ""Ăn sáng"".
+*   Khoản chi **-85.000 VNĐ** vào ngày **19/10/2025** (chưa rõ danh mục) cho ""Mua đồ ăn vặt"".
+*   Khoản chi **-120.000 VNĐ** vào ngày **19/10/2025** (chưa rõ danh mục) cho ""Ăn tối với gia đình"".
+*   Khoản chi **-110.000 VNĐ** vào ngày **20/10/2025** (chưa rõ danh mục) cho ""Ăn trưa công ty"".
+
+Việc bổ sung ghi chú chi tiết cho các khoản này sẽ giúp bạn quản lý tài chính cá nhân tốt hơn. Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, mình luôn sẵn lòng hỗ trợ.",1,,,,,
+,MUL_QUES,Thống kê các khoản vượt ngân sách và tính tổng tiền vượt.,(1) Danh sách danh mục vượt giới hạn. (2) Tổng phần vượt.,"Chào bạn,
+
+Dựa trên dữ liệu tài chính bạn đã cung cấp, tôi xin thống kê các khoản chi tiêu vượt ngân sách và tính tổng số tiền vượt như sau:
+
+**Các khoản chi tiêu vượt ngân sách (tính trên các khoản chi có giá trị âm):**
+
+*   **Mua sắm:**
+    *   Mua sắm chung: -400.000 VNĐ
+    *   Kem đánh răng: -20.000 VNĐ
+    *   Mua quần áo thu đông: -500.000 VNĐ
+    *   Mua balo: -350.000 VNĐ
+    *   **Tổng chi tiêu cho danh mục Mua sắm vượt ngân sách:** **-1.270.000 VNĐ**
+*   **Y tế:**
+    *   Thuốc nhỏ mắt: -10.000 VNĐ
+    *   Mua thuốc dạ dày: -50.000 VNĐ
+    *   Khám răng: -150.000 VNĐ
+    *   Thuốc bổ: -40.000 VNĐ
+    *   **Tổng chi tiêu cho danh mục Y tế vượt ngân sách:** **-250.000 VNĐ**
+*   **Khác:**
+    *   Bỉm: -200.000 VNĐ
+    *   Mua đồ gia dụng: -100.000 VNĐ
+    *   Mua hoa tặng người yêu: -100.000 VNĐ
+    *   **Tổng chi tiêu cho danh mục Khác vượt ngân sách:** **-400.000 VNĐ**
+*   **Giải trí:**
+    *   Cà phê cùng bạn: -85.000 VNĐ
+    *   Cà phê hẹn đối tác: -75.000 VNĐ
+    *   Xem phim tại rạp: -75.000 VNĐ
+    *   Cà phê sáng: -45.000 VNĐ
+    *   **Tổng chi tiêu cho danh mục Giải trí vượt ngân sách:** **-280.000 VNĐ**
+*   **Điện nước:**
+    *   Thanh toán tiền điện: -320.000 VNĐ
+    *   Sửa điện: -200.000 VNĐ
+    *   Đóng tiền nước: -180.000 VNĐ
+    *   Đóng tiền mạng: -250.000 VNĐ
+    *   **Tổng chi tiêu cho danh mục Điện nước vượt ngân sách:** **-950.000 VNĐ**
+*   **Không rõ danh mục:**
+    *   Sữa: -1.000.000 VNĐ
+    *   Ăn sáng: -60.000 VNĐ
+    *   Mua đồ ăn vặt: -85.000 VNĐ
+    *   Ăn tối với gia đình: -120.000 VNĐ
+    *   Ăn trưa công ty: -110.000 VNĐ
+    *   **Tổng chi tiêu cho các khoản không rõ danh mục vượt ngân sách:** **-1.375.000 VNĐ**
+*   **Đi lại:**
+    *   Xe buýt: -20.000 VNĐ
+    *   Taxi ngắn: -30.000 VNĐ
+    *   Gửi xe: -15.000 VNĐ
+    *   **Tổng chi tiêu cho danh mục Đi lại vượt ngân sách:** **-65.000 VNĐ**
+*   **Giáo dục:**
+    *   Sách luyện thi: -95.000 VNĐ
+    *   Mua đồ học: -100.000 VNĐ
+    *   Mua sách kỹ thuật: -50.000 VNĐ
+    *   **Tổng chi tiêu cho danh mục Giáo dục vượt ngân sách:** **-245.000 VNĐ**
+
+**Tổng số tiền vượt ngân sách:**
+
+Để tính tổng số tiền vượt ngân sách, chúng ta sẽ cộng tất cả các khoản chi tiêu có giá trị âm lại:
+-1.270.000 + (-250.000) + (-400.000) + (-280.000) + (-950.000) + (-1.375.000) + (-65.000) + (-245.000) = **-4.835.000 VNĐ**
+
+Như vậy, tổng số tiền bạn đã chi vượt ngân sách là **4.835.000 VNĐ**.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,MUL_QUES,Tôi muốn biết mình tiêu gì hôm qua và có khoản nào trùng với hôm kia không.,(1) Liệt kê chi hôm qua. (2) Phát hiện khoản trùng lặp.,"Chào bạn, mình là trợ lý tài chính của bạn đây!
+
+Dựa trên dữ liệu bạn cung cấp, đây là chi tiết các khoản chi tiêu của bạn trong ngày hôm qua (ngày 20/10/2025):
+
+**Chi tiêu ngày 20/10/2025:**
+
+*   **Giải trí:**
+    *   Xem phim tại rạp: -75.000 VNĐ
+    *   Cà phê sáng: -45.000 VNĐ
+*   **Ăn uống:**
+    *   Ăn trưa công ty: -110.000 VNĐ
+*   **Đi lại:**
+    *   Gửi xe: -15.000 VNĐ
+*   **Mua sắm:**
+    *   Mua balo: -350.000 VNĐ
+*   **Giáo dục:**
+    *   Mua sách kỹ thuật: -50.000 VNĐ
+*   **Y tế:**
+    *   Thuốc bổ: -40.000 VNĐ
+*   **Điện nước:**
+    *   Đóng tiền mạng: -250.000 VNĐ
+*   **Khác:**
+    *   Mua hoa tặng người yêu: -100.000 VNĐ
+
+Ngoài ra, bạn có một khoản thu nhập trong ngày 20/10/2025 là:
+
+*   Lương tháng 10: +8.500.000 VNĐ
+
+**Về khoản chi trùng với hôm kia:**
+
+Rất tiếc, dữ liệu bạn cung cấp chỉ bao gồm các giao dịch của ngày 20/10/2025. Để kiểm tra xem có khoản chi nào trùng với hôm kia không, mình cần thêm dữ liệu của ngày hôm kia (tức là ngày 19/10/2025). Bạn vui lòng cung cấp thêm thông tin đó nhé!
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi mình nhé!",1,,,,,
+,MUL_QUES,Cho tôi biết chi tiêu trung bình mỗi ngày trong tháng và ngày nào cao nhất.,(1) Tính trung bình chi/ngày. (2) Ngày cao nhất.,"Chào bạn, mình đã xem qua dữ liệu chi tiêu của bạn. Dưới đây là thông tin chi tiết về chi tiêu trung bình mỗi ngày và ngày có chi tiêu cao nhất:
+
+**Tổng quan chi tiêu trong tháng:**
+
+Dữ liệu bạn cung cấp bao gồm các giao dịch từ tháng 5, tháng 10 năm 2025. Để có thể tính toán chi tiêu trung bình mỗi ngày *trong tháng*, mình cần xác định rõ bạn muốn xem xét tháng nào. Tuy nhiên, dựa trên các giao dịch có sẵn, mình có thể cung cấp thông tin sau:
+
+*   **Chi tiêu các ngày có giao dịch:**
+    *   **Ngày 28/05/2025:** Tổng chi tiêu là 430.000 VNĐ.
+    *   **Ngày 29/05/2025:** Tổng chi tiêu là 1.220.000 VNĐ.
+    *   **Ngày 01/06/2025:** Tổng chi tiêu là 85.000 VNĐ.
+    *   **Ngày 02/06/2025:** Tổng chi tiêu là 320.000 VNĐ.
+    *   **Ngày 17/10/2025:** Tổng chi tiêu là 50.000 VNĐ.
+    *   **Ngày 18/10/2025:** Tổng chi tiêu là 1.355.000 VNĐ.
+    *   **Ngày 19/10/2025:** Tổng chi tiêu là 2.210.000 VNĐ.
+    *   **Ngày 20/10/2025:** Tổng chi tiêu là 1.175.000 VNĐ.
+
+*   **Ngày có chi tiêu cao nhất:** Dựa trên dữ liệu có sẵn, **ngày 19/10/2025** là ngày bạn có tổng chi tiêu cao nhất với **2.210.000 VNĐ**. Các khoản chi tiêu lớn trong ngày này bao gồm:
+    *   Mua quần áo thu đông: 500.000 VNĐ
+    *   Ăn tối với gia đình: 120.000 VNĐ
+    *   Đóng tiền nước: 180.000 VNĐ
+    *   Đóng tiền mạng: 200.000 VNĐ (thông tin này có thể nhầm lẫn với ngày 20/10/2025, dữ liệu cho thấy ngày 20/10/2025 có khoản đóng tiền mạng 250.000 VNĐ)
+    *   Mua đồ học: 100.000 VNĐ
+    *   Mua bông băng: 30.000 VNĐ
+    *   Mua đồ ăn vặt: 85.000 VNĐ
+    *   Taxi ngắn: 30.000 VNĐ
+    *   Sửa điện: 200.000 VNĐ
+    *   Y tế: 30.000 VNĐ
+    *   Giáo dục: 100.000 VNĐ
+    *   Đi lại: 30.000 VNĐ
+
+*   **Chi tiêu trung bình mỗi ngày:**
+    Để tính chi tiêu trung bình mỗi ngày, chúng ta cần tổng tất cả các khoản chi tiêu và chia cho số ngày có chi tiêu. Tuy nhiên, dữ liệu của bạn trải dài trên nhiều tháng và có vẻ như chưa đầy đủ cho một tháng cụ thể.
+
+    Nếu bạn muốn biết chi tiêu trung bình mỗi ngày **trong các ngày có phát sinh chi tiêu** dựa trên dữ liệu này, ta sẽ có:
+    Tổng chi tiêu (chỉ các khoản chi tiêu âm): 430.000 + 1.220.000 + 85.000 + 320.000 + 50.000 + 1.355.000 + 2.210.000 + 1.175.000 = **6.845.000 VNĐ**
+    Số ngày có chi tiêu: 8 ngày.
+    Chi tiêu trung bình mỗi ngày (trên các ngày có chi tiêu): 6.845.000 VNĐ / 8 ngày ≈ **855.625 VNĐ/ngày**.
+
+    **Lưu ý quan trọng:**
+    *   Dữ liệu có cả các khoản thu nhập (Lương tháng 10) với số dương, mình đã loại trừ các khoản này khi tính chi tiêu.
+    *   Để có số liệu chính xác về chi tiêu trung bình *trong một tháng cụ thể*, bạn vui lòng cung cấp dữ liệu chi tiết chỉ cho tháng đó nhé.
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn có câu hỏi nào khác hoặc muốn phân tích sâu hơn về một khoảng thời gian cụ thể, đừng ngần ngại hỏi mình nhé.",1,,,,,
+,MUL_QUES,Tôi tiêu bao nhiêu cho giáo dục năm nay và phần trăm so với tổng chi là bao nhiêu?,(1) Tổng danh mục “Giáo dục”. (2) Tỷ lệ phần trăm so với tổng chi.,"Chào bạn, để giúp bạn trả lời câu hỏi này, mình đã phân tích dữ liệu chi tiêu cá nhân của bạn.
+
+**Tổng chi tiêu cho Giáo dục trong năm nay:**
+
+*   Bạn đã chi tổng cộng **-345.000 VNĐ** cho danh mục Giáo dục.
+    *   Trong đó có các khoản như: ""Sách luyện thi"" (-95.000 VNĐ), ""Mua đồ học"" (-100.000 VNĐ), và ""Mua sách kỹ thuật"" (-50.000 VNĐ), cùng một số khoản chi khác liên quan đến giáo dục.
+
+**Tỷ lệ chi tiêu cho Giáo dục so với tổng chi:**
+
+Để tính tỷ lệ này, mình cần xác định tổng chi tiêu và tổng thu nhập của bạn.
+*   **Tổng chi tiêu:** Sau khi tổng hợp tất cả các khoản chi từ dữ liệu bạn cung cấp, tổng chi tiêu là **-2.750.000 VNĐ**.
+*   **Tổng thu nhập:** Bạn có một khoản thu nhập là **8.500.000 VNĐ** (Lương tháng 10).
+
+Dựa trên các số liệu trên, tỷ lệ chi tiêu cho Giáo dục so với tổng chi của bạn là khoảng **12.55%**.
+
+Hy vọng thông tin này hữu ích cho bạn!",1,,,,,
+,MUL_QUES,Cho tôi biết tổng chi ăn uống và số lần ăn ngoài trong tháng này.,(1) Tổng chi danh mục “Ăn uống”. (2) Đếm giao dịch có từ khóa “ăn ngoài”.,"Chào bạn, dựa trên dữ liệu bạn cung cấp, đây là thông tin chi tiết về chi tiêu ăn uống và số lần ăn ngoài trong tháng này:
+
+**Tổng chi ăn uống:**
+
+Trong tháng này, các khoản chi liên quan đến ăn uống được ghi nhận như sau:
+
+*   **Ngày 2025/10/18:**
+    *   ""Ăn sáng"": -60.000 VNĐ
+    *   ""Ăn tối với gia đình"": -120.000 VNĐ
+*   **Ngày 2025/10/19:**
+    *   ""Mua đồ ăn vặt"": -85.000 VNĐ
+*   **Ngày 2025/10/20:**
+    *   ""Ăn trưa công ty"": -110.000 VNĐ
+
+**Tổng cộng cho các khoản ăn uống đã ghi nhận là: 60.000 + 120.000 + 85.000 + 110.000 = 375.000 VNĐ**
+
+**Số lần ăn ngoài:**
+
+Dựa vào các ghi chú, có thể xác định các lần bạn ăn ngoài như sau:
+
+*   **Ngày 2025/10/18:**
+    *   ""Ăn sáng""
+    *   ""Ăn tối với gia đình""
+*   **Ngày 2025/10/19:**
+    *   ""Mua đồ ăn vặt""
+*   **Ngày 2025/10/20:**
+    *   ""Ăn trưa công ty""
+
+**Như vậy, trong tháng này bạn đã có 4 lần ăn ngoài được ghi nhận.**
+
+**Lưu ý:**
+
+*   Các khoản chi ""Cà phê cùng bạn"" (2025/06/01) và ""Cà phê hẹn đối tác"" (2025/10/18), ""Cà phê sáng"" (2025/10/20) có thể được xem là chi tiêu cho việc gặp gỡ, giao tiếp hơn là ăn uống chính. Tuy nhiên, nếu bạn muốn tính cả những khoản này vào chi ""ăn uống"", vui lòng cho tôi biết để tôi cập nhật lại.
+*   Dữ liệu chỉ bao gồm những khoản chi mà bạn đã cập nhật. Nếu có các khoản chi ăn uống khác chưa được nhập vào hệ thống, chúng sẽ chưa được tính vào đây.
+
+Hy vọng thông tin này hữu ích cho bạn! Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé.",1,,,,,
+,MUL_QUES,Tổng hợp chi tiêu 7 ngày qua và dự đoán xu hướng tuần tới.,(1) Tổng chi 7 ngày. (2) Phân tích xu hướng chi.,"Chào bạn, rất vui được hỗ trợ bạn tổng hợp chi tiêu và dự đoán xu hướng! Dựa trên dữ liệu bạn cung cấp, đây là chi tiết:
+
+**Tổng hợp chi tiêu 7 ngày qua:**
+
+Dữ liệu bạn cung cấp bao gồm các giao dịch từ ngày **2025/10/17 đến 2025/10/20**. Tuy nhiên, để tổng hợp chi tiêu 7 ngày, tôi cần dữ liệu cho cả tuần. Dựa trên dữ liệu hiện có, tôi sẽ tổng hợp chi tiêu cho những ngày có thông tin:
+
+*   **Ngày 2025/10/17:**
+    *   Y tế: -50.000 VNĐ (Mua thuốc dạ dày)
+    *   **Tổng chi tiêu ngày 17/10/2025: -50.000 VNĐ**
+
+*   **Ngày 2025/10/18:**
+    *   Ăn uống: -60.000 VNĐ (Ăn sáng)
+    *   Đi lại: -20.000 VNĐ (Xe buýt)
+    *   Khác: -100.000 VNĐ (Mua đồ gia dụng)
+    *   Giải trí: -75.000 VNĐ (Cà phê hẹn đối tác)
+    *   Y tế: -150.000 VNĐ (Khám răng)
+    *   Giáo dục: -95.000 VNĐ (Sách luyện thi)
+    *   **Tổng chi tiêu ngày 18/10/2025: -500.000 VNĐ**
+
+*   **Ngày 2025/10/19:**
+    *   Ăn uống: -85.000 VNĐ (Mua đồ ăn vặt)
+    *   Đi lại: -30.000 VNĐ (Taxi ngắn)
+    *   Mua sắm: -500.000 VNĐ (Mua quần áo thu đông)
+    *   Giáo dục: -100.000 VNĐ (Mua đồ học)
+    *   Y tế: -30.000 VNĐ (Mua bông băng)
+    *   Ăn uống: -120.000 VNĐ (Ăn tối với gia đình)
+    *   Điện nước: -200.000 VNĐ (Sửa điện)
+    *   Điện nước: -180.000 VNĐ (Đóng tiền nước)
+    *   **Tổng chi tiêu ngày 19/10/2025: -1.245.000 VNĐ**
+
+*   **Ngày 2025/10/20:**
+    *   Giải trí: -75.000 VNĐ (Xem phim tại rạp)
+    *   Giải trí: -45.000 VNĐ (Cà phê sáng)
+    *   Ăn uống: -110.000 VNĐ (Ăn trưa công ty)
+    *   Đi lại: -15.000 VNĐ (Gửi xe)
+    *   Mua sắm: -350.000 VNĐ (Mua balo)
+    *   Giáo dục: -50.000 VNĐ (Mua sách kỹ thuật)
+    *   Y tế: -40.000 VNĐ (Thuốc bổ)
+    *   Điện nước: -250.000 VNĐ (Đóng tiền mạng)
+    *   Khác: -100.000 VNĐ (Mua hoa tặng người yêu)
+    *   **Tổng chi tiêu ngày 20/10/2025: -1.035.000 VNĐ**
+
+**Tổng chi tiêu cho các ngày có dữ liệu (2025/10/17 - 2025/10/20):** -50.000 + (-500.000) + (-1.245.000) + (-1.035.000) = **-2.830.000 VNĐ**
+
+**Tổng thu nhập:**
+*   Ngày 2025/10/20: 8.500.000 VNĐ (Lương tháng 10)
+
+**Các hạng mục chi tiêu nổi bật:**
+*   **Mua sắm:** Có các khoản chi lớn cho quần áo và balo.
+*   **Điện nước:** Bao gồm các khoản chi cho sửa điện, tiền nước và tiền mạng.
+*   **Giáo dục:** Các khoản chi mua sách và đồ học tập.
+*   **Y tế:** Các khoản chi cho thuốc men và khám răng.
+
+**Dự đoán xu hướng tuần tới:**
+
+Dựa trên dữ liệu hạn chế của bạn (chỉ có 4 ngày), việc dự đoán xu hướng chi tiêu tuần tới sẽ **mang tính tương đối**. Tuy nhiên, dựa vào các giao dịch đã có, tôi có thể đưa ra một số nhận định ban đầu:
+
+*   **Chi tiêu cho Nhu cầu thiết yếu:** Các khoản chi cho ăn uống, đi lại, y tế có xu hướng diễn ra hàng ngày và chiếm một phần không nhỏ trong tổng chi tiêu.
+*   **Chi tiêu cho Mua sắm và Giáo dục:** Các khoản chi lớn cho mua sắm quần áo, đồ dùng cá nhân và sách vở có thể là các khoản chi theo đợt hoặc khi có nhu cầu cụ thể.
+*   **Chi tiêu cho Điện nước:** Các khoản chi này thường có tính định kỳ (hàng tháng), bạn có thể dự kiến các khoản chi này vào đầu hoặc giữa tháng.
+
+**Để dự đoán chính xác hơn cho tuần tới, tôi sẽ cần thêm dữ liệu chi tiêu của các ngày còn lại trong tuần và dữ liệu của các tuần trước đó.**
+
+Nếu bạn muốn tôi tổng hợp chi tiết hơn hoặc phân tích theo từng hạng mục cụ thể, vui lòng cho tôi biết nhé!",1,,,,,
+,MUL_QUES,Cho tôi xem chi tiêu từng danh mục và danh mục nào cao nhất.,(1) Liệt kê chi từng danh mục. (2) Xác định danh mục cao nhất.,"Chào bạn,
+
+Dưới đây là chi tiết chi tiêu theo từng danh mục và danh mục có mức chi tiêu cao nhất dựa trên dữ liệu bạn cung cấp:
+
+**Tổng chi tiêu theo danh mục:**
+
+*   **Mua sắm:** 1.270.000 VNĐ
+*   **Y tế:** 330.000 VNĐ
+*   **Khác:** 420.000 VNĐ
+*   **Giải trí:** 245.000 VNĐ
+*   **Điện nước:** 750.000 VNĐ
+*   **Đi lại:** 65.000 VNĐ
+*   **Giáo dục:** 245.000 VNĐ
+
+*(Lưu ý: Các khoản có `TenDanhMuc` là null đã được bỏ qua trong phân loại này.)*
+
+**Danh mục chi tiêu cao nhất:**
+
+Trong các danh mục chi tiêu, **Mua sắm** là danh mục có tổng số tiền chi tiêu cao nhất với **1.270.000 VNĐ**.
+
+Chúc bạn quản lý tài chính hiệu quả!",1,,,,,
+,MUL_QUES,Tôi tiêu bao nhiêu cho nhà ở và điện nước trong tháng này?,(1) Tổng “Nhà ở”. (2) Tổng “Điện nước”.,"Chào bạn,
+
+Dựa trên dữ liệu bạn cung cấp, tôi chưa thể cung cấp thông tin chi tiết về chi tiêu cho nhà ở và điện nước trong tháng này.
+
+Lý do là vì kết quả truy vấn từ cơ sở dữ liệu chỉ trả về một dòng với tổng số tiền là `0`. Điều này có thể có nghĩa là:
+
+*   **Chưa có dữ liệu được ghi nhận:** Có thể bạn chưa nhập hoặc ứng dụng chưa ghi nhận các khoản chi tiêu cho nhà ở và điện nước trong tháng này.
+*   **Dữ liệu bị lỗi hoặc không đầy đủ:** Trường hợp này ít xảy ra hơn, nhưng cũng có thể dữ liệu được truy xuất không phản ánh đúng thực tế.
+
+**Để có thông tin chính xác nhất, bạn vui lòng:**
+
+1.  **Kiểm tra lại việc nhập liệu:** Hãy chắc chắn rằng bạn đã nhập đầy đủ và chính xác các khoản chi tiêu liên quan đến nhà ở và điện nước vào ứng dụng.
+2.  **Xem lại lịch sử giao dịch:** Bạn có thể xem lại lịch sử các giao dịch đã ghi nhận trong tháng để xác định các khoản chi tiêu này.
+
+Nếu sau khi kiểm tra lại mà bạn vẫn gặp khó khăn, hoặc cần hỗ trợ về cách sử dụng ứng dụng để ghi nhận chi tiêu, đừng ngần ngại cho tôi biết nhé!",1,,,,,
+,MUL_QUES,Tổng hợp chi tháng này và gửi báo cáo qua email giúp tôi.,(1) Tính tổng chi tháng. (2) Gửi báo cáo (hoặc phản hồi yêu cầu gửi).,"Chào bạn, tôi đã tổng hợp các khoản chi tiêu của bạn dựa trên dữ liệu bạn cung cấp. Tuy nhiên, tôi không thể gửi báo cáo qua email. Tôi sẽ cung cấp cho bạn bản tổng hợp chi tiết nhất có thể ở đây.
+
+**Tổng hợp chi tiêu tháng 10/2025:**
+
+**I. Chi tiêu theo danh mục:**
+
+*   **Mua sắm:**
+    *   Mua quần áo thu đông: -500.000 VNĐ (Ngày 19/10)
+    *   Mua balo: -350.000 VNĐ (Ngày 20/10)
+    *   Mua sắm (chung): -400.000 VNĐ (Ngày 28/05 - có thể là tháng trước)
+    *   Mua sắm (chung): -20.000 VNĐ (Ngày 28/05 - có thể là tháng trước, ghi chú Kem đánh răng)
+    *   **Tổng chi tiêu Mua sắm:** -1.270.000 VNĐ
+
+*   **Y tế:**
+    *   Khám răng: -150.000 VNĐ (Ngày 18/10)
+    *   Mua thuốc dạ dày: -50.000 VNĐ (Ngày 17/10)
+    *   Thuốc bổ: -40.000 VNĐ (Ngày 20/10)
+    *   Mua bông băng: -30.000 VNĐ (Ngày 19/10)
+    *   Thuốc nhỏ mắt: -10.000 VNĐ (Ngày 28/05 - có thể là tháng trước)
+    *   **Tổng chi tiêu Y tế:** -280.000 VNĐ
+
+*   **Giải trí:**
+    *   Xem phim tại rạp: -75.000 VNĐ (Ngày 20/10)
+    *   Cà phê hẹn đối tác: -75.000 VNĐ (Ngày 18/10)
+    *   Cà phê cùng bạn: -85.000 VNĐ (Ngày 01/06 - có thể là tháng trước)
+    *   Cà phê sáng: -45.000 VNĐ (Ngày 20/10)
+    *   **Tổng chi tiêu Giải trí:** -280.000 VNĐ
+
+*   **Điện nước:**
+    *   Đóng tiền mạng: -250.000 VNĐ (Ngày 20/10)
+    *   Sửa điện: -200.000 VNĐ (Ngày 19/10)
+    *   Đóng tiền nước: -180.000 VNĐ (Ngày 19/10)
+    *   Thanh toán tiền điện: -320.000 VNĐ (Ngày 02/06 - có thể là tháng trước)
+    *   **Tổng chi tiêu Điện nước:** -950.000 VNĐ
+
+*   **Khác:**
+    *   Mua hoa tặng người yêu: -100.000 VNĐ (Ngày 20/10)
+    *   Mua đồ gia dụng: -100.000 VNĐ (Ngày 18/10)
+    *   Bỉm: -200.000 VNĐ (Ngày 29/05 - có thể là tháng trước)
+    *   **Tổng chi tiêu Khác:** -400.000 VNĐ
+
+*   **Giáo dục:**
+    *   Mua đồ học: -100.000 VNĐ (Ngày 19/10)
+    *   Sách luyện thi: -95.000 VNĐ (Ngày 18/10)
+    *   Mua sách kỹ thuật: -50.000 VNĐ (Ngày 20/10)
+    *   **Tổng chi tiêu Giáo dục:** -245.000 VNĐ
+
+*   **Đi lại:**
+    *   Xe buýt: -20.000 VNĐ (Ngày 18/10)
+    *   Taxi ngắn: -30.000 VNĐ (Ngày 19/10)
+    *   Gửi xe: -15.000 VNĐ (Ngày 20/10)
+    *   **Tổng chi tiêu Đi lại:** -65.000 VNĐ
+
+**II. Chi tiêu theo ngày (các khoản chi tiêu phát sinh trong tháng 10/2025):**
+
+*   **Ngày 17/10/2025:**
+    *   Y tế (Mua thuốc dạ dày): -50.000 VNĐ
+*   **Ngày 18/10/2025:**
+    *   Y tế (Khám răng): -150.000 VNĐ
+    *   Giáo dục (Sách luyện thi): -95.000 VNĐ
+    *   Đi lại (Xe buýt): -20.000 VNĐ
+    *   Giải trí (Cà phê hẹn đối tác): -75.000 VNĐ
+    *   Khác (Mua đồ gia dụng): -100.000 VNĐ
+    *   **Chi tiêu không rõ danh mục (Ăn sáng): -60.000 VNĐ**
+*   **Ngày 19/10/2025:**
+    *   Mua sắm (Mua quần áo thu đông): -500.000 VNĐ
+    *   Giáo dục (Mua đồ học): -100.000 VNĐ
+    *   Y tế (Mua bông băng): -30.000 VNĐ
+    *   Đi lại (Taxi ngắn): -30.000 VNĐ
+    *   Điện nước (Sửa điện): -200.000 VNĐ
+    *   Điện nước (Đóng tiền nước): -180.000 VNĐ
+    *   **Chi tiêu không rõ danh mục (Mua đồ ăn vặt): -85.000 VNĐ**
+    *   **Chi tiêu không rõ danh mục (Ăn tối với gia đình): -120.000 VNĐ**
+*   **Ngày 20/10/2025:**
+    *   Giải trí (Xem phim tại rạp): -75.000 VNĐ
+    *   Giải trí (Cà phê sáng): -45.000 VNĐ
+    *   Đi lại (Gửi xe): -15.000 VNĐ
+    *   Mua sắm (Mua balo): -350.000 VNĐ
+    *   Giáo dục (Mua sách kỹ thuật): -50.000 VNĐ
+    *   Y tế (Thuốc bổ): -40.000 VNĐ
+    *   Điện nước (Đóng tiền mạng): -250.000 VNĐ
+    *   Khác (Mua hoa tặng người yêu): -100.000 VNĐ
+    *   **Chi tiêu không rõ danh mục (Ăn trưa công ty): -110.000 VNĐ**
+
+**III. Khoản thu nhập:**
+
+*   Lương tháng 10: +8.500.000 VNĐ (Ngày 20/10)
+
+**IV. Tổng kết:**
+
+Để có thể tính toán chi tiết hơn, vui lòng xác định rõ các khoản chi tiêu mà bạn chưa gắn danh mục cụ thể (như ""Ăn sáng"", ""Mua đồ ăn vặt"", ""Ăn tối với gia đình"", ""Ăn trưa công ty"", ""Sữa""). Nếu bạn muốn có một bản tổng hợp chính xác cho **tháng 5 và tháng 6**, vui lòng cung cấp thêm thông tin về tháng bạn muốn tổng hợp.
+
+Tôi không thể thực hiện yêu cầu gửi báo cáo qua email.",1,,,,,
+,MUL_QUES,Thống kê chi hôm nay và nhắc tôi nếu có khoản chưa ghi.,(1) Thống kê chi hôm nay. (2) Gợi ý kiểm tra khoản thiếu.,"Chào bạn, mình đã tổng hợp lại các khoản chi tiêu của bạn theo dữ liệu được cung cấp:
+
+**Tổng quan chi tiêu hôm nay (tính đến ngày 20/10/2025):**
+
+*   **Tổng số tiền chi tiêu:** -1.910.000 VNĐ
+*   **Tổng số tiền thu nhập:** 8.500.000 VNĐ
+
+**Chi tiết các khoản chi tiêu theo từng hạng mục trong ngày 20/10/2025:**
+
+*   **Giải trí:**
+    *   Xem phim tại rạp: -75.000 VNĐ
+    *   Cà phê sáng: -45.000 VNĐ
+*   **Ăn uống:**
+    *   Ăn trưa công ty: -110.000 VNĐ
+*   **Đi lại:**
+    *   Gửi xe: -15.000 VNĐ
+*   **Mua sắm:**
+    *   Mua balo: -350.000 VNĐ
+*   **Giáo dục:**
+    *   Mua sách kỹ thuật: -50.000 VNĐ
+*   **Y tế:**
+    *   Thuốc bổ: -40.000 VNĐ
+*   **Điện nước:**
+    *   Đóng tiền mạng: -250.000 VNĐ
+*   **Khác:**
+    *   Mua hoa tặng người yêu: -100.000 VNĐ
+
+**Các khoản chi tiêu chưa được phân loại (có `TenDanhMuc` là null):**
+
+*   Ngày 28/05/2025: -400.000 VNĐ (Mua sắm)
+*   Ngày 29/05/2025: -200.000 VNĐ (Bỉm)
+*   Ngày 29/05/2025: -1.000.000 VNĐ (Sữa)
+*   Ngày 18/10/2025: -60.000 VNĐ (Ăn sáng)
+*   Ngày 19/10/2025: -85.000 VNĐ (Mua đồ ăn vặt)
+*   Ngày 19/10/2025: -120.000 VNĐ (Ăn tối với gia đình)
+
+**Nhắc nhở:**
+
+Mình thấy có một số khoản chi tiêu chưa được phân loại rõ ràng (không có tên danh mục). Bạn vui lòng kiểm tra lại và cập nhật danh mục cho các khoản này để việc quản lý tài chính được chi tiết hơn nhé.
+
+Nếu bạn cần xem lại các khoản chi tiêu của các ngày khác hoặc có bất kỳ câu hỏi nào khác về dữ liệu tài chính của mình, đừng ngần ngại hỏi nhé!",1,,,,,
+,MUL_QUES,Cho tôi biết 3 khoản lớn nhất trong tháng và tổng của chúng là bao nhiêu.,(1) Lấy 3 giao dịch lớn nhất. (2) Tính tổng.,"Chào bạn, dựa trên dữ liệu tài chính cá nhân bạn đã cập nhật, đây là thông tin về 3 khoản chi tiêu lớn nhất trong tháng (tính đến thời điểm hiện tại):
+
+1.  **Khoản chi lớn nhất:** **Lương tháng 10** với số tiền **8.500.000 VNĐ** (Đây là khoản thu nhập, không phải chi tiêu).
+2.  **Khoản chi thứ hai:** **Mua sắm** với số tiền **500.000 VNĐ** (vào ngày 2025/10/19, ghi chú: Mua quần áo thu đông).
+3.  **Khoản chi thứ ba:** **Mua sắm** với số tiền **400.000 VNĐ** (vào ngày 2025/05/28, ghi chú: không có).
+
+**Tổng 3 khoản chi tiêu lớn nhất (không bao gồm khoản thu nhập) là:** 500.000 + 400.000 + 350.000 = **1.250.000 VNĐ**.
+
+Lưu ý: Dữ liệu có bao gồm cả các khoản thu nhập và chi tiêu từ các tháng khác nhau. Nếu bạn muốn xem chi tiết theo từng tháng cụ thể, vui lòng cung cấp thêm thông tin về tháng bạn quan tâm nhé!",1,,,,,
+,MUL_QUES,Tổng hợp chi tiêu của tôi hôm nay và hiển thị dưới dạng biểu đồ.,(1) Tổng hợp chi hôm nay. (2) Hiển thị biểu đồ trực quan.,"Chào bạn! Dưới đây là tổng hợp chi tiêu của bạn được trích xuất từ dữ liệu bạn cung cấp. Rất tiếc, tôi không thể hiển thị biểu đồ trực tiếp tại đây, nhưng tôi sẽ cung cấp thông tin chi tiết để bạn có thể tự hình dung hoặc sử dụng cho mục đích biểu đồ của mình.
+
+**Tổng quan chi tiêu theo ngày:**
+
+*   **Ngày 28/05/2025:**
+    *   Mua sắm: 420.000 VNĐ
+    *   Y tế: 10.000 VNĐ
+    *   **Tổng chi tiêu:** 430.000 VNĐ
+
+*   **Ngày 29/05/2025:**
+    *   Khác: 200.000 VNĐ
+    *   Chi tiêu không rõ danh mục (Sữa): 1.000.000 VNĐ
+    *   **Tổng chi tiêu:** 1.200.000 VNĐ
+
+*   **Ngày 01/06/2025:**
+    *   Giải trí: 85.000 VNĐ
+    *   **Tổng chi tiêu:** 85.000 VNĐ
+
+*   **Ngày 02/06/2025:**
+    *   Điện nước: 320.000 VNĐ
+    *   **Tổng chi tiêu:** 320.000 VNĐ
+
+*   **Ngày 17/10/2025:**
+    *   Y tế: 50.000 VNĐ
+    *   **Tổng chi tiêu:** 50.000 VNĐ
+
+*   **Ngày 18/10/2025:**
+    *   Chi tiêu không rõ danh mục (Ăn sáng): 60.000 VNĐ
+    *   Đi lại: 20.000 VNĐ
+    *   Khác: 100.000 VNĐ
+    *   Giải trí: 75.000 VNĐ
+    *   Y tế: 150.000 VNĐ
+    *   Giáo dục: 95.000 VNĐ
+    *   **Tổng chi tiêu:** 500.000 VNĐ
+
+*   **Ngày 19/10/2025:**
+    *   Chi tiêu không rõ danh mục (Ăn vặt): 85.000 VNĐ
+    *   Đi lại: 30.000 VNĐ
+    *   Mua sắm: 500.000 VNĐ
+    *   Giáo dục: 100.000 VNĐ
+    *   Y tế: 30.000 VNĐ
+    *   Chi tiêu không rõ danh mục (Ăn tối): 120.000 VNĐ
+    *   Điện nước: 380.000 VNĐ
+    *   **Tổng chi tiêu:** 1.245.000 VNĐ
+
+*   **Ngày 20/10/2025:**
+    *   Giải trí: 120.000 VNĐ
+    *   Chi tiêu không rõ danh mục (Ăn trưa): 110.000 VNĐ
+    *   Đi lại: 15.000 VNĐ
+    *   Mua sắm: 350.000 VNĐ
+    *   Giáo dục: 50.000 VNĐ
+    *   Y tế: 40.000 VNĐ
+    *   Điện nước: 250.000 VNĐ
+    *   Khác: 100.000 VNĐ
+    *   **Tổng chi tiêu:** 985.000 VNĐ
+
+**Tổng hợp chi tiêu theo danh mục (chỉ bao gồm các khoản chi tiêu):**
+
+*   **Mua sắm:** 420.000 + 500.000 + 350.000 = **1.270.000 VNĐ**
+*   **Y tế:** 10.000 + 50.000 + 150.000 + 30.000 + 40.000 = **280.000 VNĐ**
+*   **Khác:** 200.000 + 100.000 + 100.000 = **400.000 VNĐ**
+*   **Giải trí:** 85.000 + 75.000 + 120.000 + 45.000 = **325.000 VNĐ**
+*   **Điện nước:** 320.000 + 380.000 + 250.000 = **950.000 VNĐ**
+*   **Giáo dục:** 95.000 + 100.000 + 50.000 = **245.000 VNĐ**
+*   **Đi lại:** 20.000 + 30.000 + 15.000 = **65.000 VNĐ**
+*   **Chi tiêu không rõ danh mục:** 1.000.000 (Sữa) + 60.000 (Ăn sáng) + 85.000 (Ăn vặt) + 120.000 (Ăn tối) = **1.265.000 VNĐ**
+
+**Tổng cộng tất cả các khoản chi tiêu (không tính thu nhập):**
+
+1.270.000 + 280.000 + 400.000 + 325.000 + 950.000 + 245.000 + 65.000 + 1.265.000 = **4.800.000 VNĐ**
+
+**Thu nhập:**
+
+*   **Lương tháng 10:** 8.500.000 VNĐ
+
+Hy vọng những thông tin này hữu ích cho bạn!",1,,,,,
+,MUL_QUES,"Cho tôi xem tổng chi, trung bình mỗi danh mục, và danh mục nào chi ít nhất.",(1) Tổng chi. (2) Trung bình/danh mục. (3) Danh mục chi ít nhất.,"Chào bạn! Dựa trên dữ liệu tài chính cá nhân bạn đã cung cấp, tôi xin đưa ra các thông tin sau:
+
+*   **Tổng chi tiêu:** Hiện tại, dữ liệu cho thấy tổng chi tiêu của bạn là **0**.
+
+*   **Trung bình mỗi danh mục:**
+    *   Danh mục ""DM4"" có tổng chi tiêu là **0**. Do chỉ có một danh mục được cung cấp dữ liệu, nên giá trị trung bình cho danh mục này cũng là **0**.
+
+*   **Danh mục chi tiêu ít nhất:**
+    *   Dựa trên dữ liệu hiện có, danh mục **""DM4""** có chi tiêu là **0**, đây là mức chi tiêu ít nhất.
+
+Nếu bạn có thêm dữ liệu về các danh mục chi tiêu khác, tôi có thể cung cấp thông tin chi tiết hơn nữa về tổng chi tiêu, mức chi tiêu trung bình theo từng danh mục và xác định danh mục nào bạn đã chi tiêu ít nhất.",1,,,,,
+,MUL_QUES,Tôi muốn biết chi tiêu tuần này và nhận gợi ý tiết kiệm hợp lý.,(1) Thống kê chi tuần. (2) Đưa gợi ý tiết kiệm.,"Chào bạn, tôi đã xem qua dữ liệu chi tiêu của bạn. Dưới đây là chi tiết chi tiêu trong tuần này và một số gợi ý để bạn có thể tiết kiệm hiệu quả hơn:
+
+**Tổng quan chi tiêu trong tuần:**
+
+*   **Tổng thu nhập:** 8.500.000 VNĐ (Lương tháng 10)
+*   **Tổng chi tiêu:** 4.270.000 VNĐ
+
+**Chi tiêu chi tiết theo danh mục:**
+
+*   **Mua sắm:** 1.270.000 VNĐ (Mua sắm chung, kem đánh răng, bỉm, quần áo thu đông, balo)
+*   **Y tế:** 330.000 VNĐ (Thuốc nhỏ mắt, thuốc dạ dày, khám răng, bông băng, thuốc bổ)
+*   **Khác:** 400.000 VNĐ (Bỉm, đồ gia dụng, hoa tặng người yêu)
+*   **Giải trí:** 295.000 VNĐ (Cà phê cùng bạn, cà phê hẹn đối tác, xem phim tại rạp, cà phê sáng)
+*   **Điện nước:** 1.120.000 VNĐ (Tiền điện, sửa điện, tiền nước, tiền mạng)
+*   **Đi lại:** 65.000 VNĐ (Xe buýt, taxi ngắn, gửi xe)
+*   **Giáo dục:** 245.000 VNĐ (Sách luyện thi, đồ học, sách kỹ thuật)
+*   **Chi tiêu không có danh mục rõ ràng:** 1.105.000 VNĐ (Sữa, ăn sáng, ăn vặt, ăn tối với gia đình, ăn trưa công ty)
+
+**Gợi ý tiết kiệm hợp lý:**
+
+1.  **Xem xét các khoản chi ""Khác"" và ""Không rõ danh mục"":** Các khoản chi tiêu này chiếm một phần đáng kể. Hãy cố gắng ghi chú chi tiết hơn cho các khoản mục này trong tương lai để bạn dễ dàng theo dõi và đánh giá. Việc ghi chú rõ ràng có thể giúp bạn nhận ra những khoản chi không cần thiết.
+2.  **Kiểm soát chi tiêu ""Mua sắm"":** Khoản chi cho mua sắm, đặc biệt là quần áo và đồ dùng, có thể được xem xét lại. Bạn có thể cân nhắc lập danh sách các món đồ cần mua trước khi đi mua sắm để tránh mua sắm bộc phát.
+3.  **Tối ưu hóa chi phí ""Điện nước"" và ""Đi lại"":**
+    *   Đối với **Điện nước**, bạn có thể áp dụng các biện pháp tiết kiệm điện, nước hàng ngày như tắt đèn khi không sử dụng, tắt các thiết bị điện khi không dùng, hạn chế sử dụng nước lãng phí. Đối với các dịch vụ như mạng, hãy xem xét lại các gói cước hiện tại để tìm ra gói phù hợp và tiết kiệm hơn nếu có.
+    *   Đối với **Đi lại**, cân nhắc sử dụng các phương tiện công cộng hoặc đi chung xe nếu có thể để giảm chi phí xăng xe hoặc phí đi lại.
+4.  **Đánh giá lại chi phí ""Giải trí"":** Các khoản chi cho cà phê, xem phim có thể được cân nhắc điều chỉnh tần suất hoặc tìm kiếm các lựa chọn giải trí khác có chi phí thấp hơn.
+5.  **Theo dõi chi tiêu ""Y tế"" và ""Giáo dục"":** Mặc dù đây là những khoản chi quan trọng, bạn có thể lên kế hoạch trước cho các chi phí y tế định kỳ (nếu có) hoặc tìm kiếm các chương trình khuyến mãi cho sách vở, khóa học để tiết kiệm.
+
+Bằng cách ghi chép chi tiết và phân tích các khoản chi tiêu một cách thường xuyên, bạn sẽ có cái nhìn rõ ràng hơn về tình hình tài chính của mình và đưa ra những quyết định chi tiêu thông minh hơn.
+
+Nếu bạn có bất kỳ câu hỏi nào khác về dữ liệu chi tiêu của mình, đừng ngần ngại hỏi nhé!",1,,,,,
