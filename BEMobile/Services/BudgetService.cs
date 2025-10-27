@@ -91,13 +91,27 @@ namespace BEMobile.Services
 
                 if (request.isAddAmount)
                 {
-                    budget.Current_Amount =
-                        (long.Parse(budget.Current_Amount) + long.Parse(request.UpdateAmount)).ToString();
+                    var checkAdd = long.Parse(budget.Current_Amount) + long.Parse(request.UpdateAmount); 
+                    if (checkAdd <= long.Parse(budget.Initial_Amount))
+                    {
+                        budget.Current_Amount = checkAdd.ToString();
+                    } else
+                    {
+                        throw new ArgumentException("Số tiền vượt mức số tiền mặc định");
+                    }
+                    
                 }
                 else
                 {
-                    budget.Current_Amount =
-                        (long.Parse(budget.Current_Amount) - long.Parse(request.UpdateAmount)).ToString();
+                    var checkSub = long.Parse(budget.Current_Amount) - long.Parse(request.UpdateAmount);
+                    if(checkSub >= 0)
+                    {
+                        budget.Current_Amount = checkSub.ToString();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Số tiền âm");
+                    }
                 }
 
                 budget.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
