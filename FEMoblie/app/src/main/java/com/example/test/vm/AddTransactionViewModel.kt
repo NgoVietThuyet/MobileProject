@@ -86,7 +86,6 @@ class AddTransactionViewModel @Inject constructor(
                 amount = amount,
                 note = note,
                 createdDate = createdDateString,
-
                 transactionId = UUID.randomUUID().toString(),
                 updatedDate = null
             )

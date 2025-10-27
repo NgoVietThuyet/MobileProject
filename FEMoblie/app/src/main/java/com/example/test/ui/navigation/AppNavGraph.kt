@@ -8,8 +8,10 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -87,7 +89,11 @@ sealed class Screen(val route: String) {
         fun create(index: Int) = "budget_edit/$index"
         const val ARG = "index"
     }
-    data object BudgetCreate : Screen("budget_create")
+    object BudgetCreate {
+        const val ARG = "userId"
+        const val PATTERN = "budget_create/{$ARG}"
+        fun route(userId: String) = "budget_create/$userId"
+    }
     data object IncomeCreate : Screen("income_create")
     data object ExpenseCreate : Screen("expense_create")
     data object Notifications : Screen("notifications")
@@ -336,12 +342,26 @@ fun AppNavGraph(navController: NavHostController) {
             }
 
             composable(Screen.BudgetAll.route) {
-                BudgetAllScreen(
-                    onBack = { navController.popBackStack() },
-                    onOpenEdit = { idx -> navController.navigate(Screen.BudgetEdit.create(idx)) },
-                    onAdd = { navController.navigate(Screen.BudgetCreate.route) }
-                )
+                val ctx = LocalContext.current
+                val uid by AuthStore.userIdFlow.collectAsState()
+
+                if (uid.isNullOrBlank()) {
+                    LaunchedEffect("nav_to_auth") {
+                        Toast.makeText(ctx, "Vui lòng đăng nhập để xem ngân sách", Toast.LENGTH_LONG).show()
+                        navController.navigate("auth") {
+                            popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                } else {
+                    BudgetAllScreen(
+                        onBack = { navController.popBackStack() },
+                        onOpenEdit = { idx -> navController.navigate(Screen.BudgetEdit.create(idx)) },
+                        onAdd = { navController.navigate(Screen.BudgetCreate.PATTERN) }
+                    )
+                }
             }
+
 
             composable(
                 route = Screen.BudgetEdit.route,
@@ -351,13 +371,29 @@ fun AppNavGraph(navController: NavHostController) {
                 BudgetEditScreen(index = idx, onBack = { navController.popBackStack() })
             }
 
-            composable(Screen.BudgetCreate.route) {
-                AddBudgetScreen(
-                    onBack = { navController.popBackStack() },
-                    onCancel = { navController.popBackStack() },
-                    onCreate = { _, _, _, _ -> navController.popBackStack() }
-                )
+            composable(
+                route = Screen.BudgetCreate.PATTERN
+            ) {
+                val userId by AuthStore.userIdFlow.collectAsStateWithLifecycle()
+
+                if (userId.isNullOrBlank()) {
+                    Text("Không thể tạo ngân sách: bạn chưa đăng nhập.")
+                } else {
+                    AddBudgetScreen(
+                        onBack = { navController.popBackStack() },
+                        onCancel = { navController.popBackStack() },
+                        onCreate = {
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("budget_created", true)
+                            navController.popBackStack()
+                        }
+                    )
+                }
             }
+
+
+
 
             composable(Screen.IncomeCreate.route) {
                 AddIncomeScreen(

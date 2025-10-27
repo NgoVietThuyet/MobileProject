@@ -1,6 +1,8 @@
 package com.example.test.data
 
 import com.example.test.ui.models.CategoryDto
+import java.util.Locale
+
 object LocalCategoryDataSource {
     val allCategories = listOf(
         CategoryDto("0498994E-0EDC-42A7-A43A-58125D409FD6", "Khác", "📦"),
@@ -19,4 +21,19 @@ object LocalCategoryDataSource {
         CategoryDto("F0B27DDE-A738-4C25-8B87-ACBBEFE78A9A2", "Thu nhập khác", "💰"),
         CategoryDto("F1A62269-1BD6-47F6-ACC0-0CDFFCB332C2", "Nhà ở", "🏠")
     )
+
+    private val incomeIds = setOf(
+        "314EB08E-A648-44E9-B4CE-B01433343892",
+        "545C70A6-2DFD-4678-829D-3E9CA4ACB5CA",
+        "8337A0E6-BD20-41C8-9FE7-649B7E28298C",
+        "D179AC8C-C38F-4C63-B429-8E1BB14AB0A4",
+        "E14ACDAC-2B6F-4199-AA2E-BAB6CBDC23A4",
+        "F0B27DDE-A738-4C25-8B87-ACBBEFE78A9A2"
+    ).map { it.uppercase(Locale.US) }.toSet()
+
+    fun expenseOnly(): List<CategoryDto> =
+        allCategories.filter { it.categoryId.uppercase(Locale.US) !in incomeIds }
+
+    fun find(id: String): CategoryDto? =
+        allCategories.firstOrNull { it.categoryId.equals(id, ignoreCase = true) }
 }

@@ -23,12 +23,25 @@ object NumberFmt {
         decimalSeparator = ','
     }
 
+    fun vndCompact(value: Long): String {
+        return when {
+            value >= 1_000_000 -> "${value / 1_000_000}M"
+            value >= 1_000 -> "${value / 1_000}K"
+            else -> value.toString()
+        }
+    }
+
     fun round(value: Double, decimals: Int): Double =
         BigDecimal(value).setScale(decimals, RoundingMode.HALF_UP).toDouble()
 
     fun vnd(amount: Long): String = NumberFormat.getCurrencyInstance(vi).format(amount) // "1.234.567 ₫"
+
     fun vndPlain(amount: Long): String = DecimalFormat("#,##0", sym).format(amount)     // "1.234.567"
-    fun vndPadded(amount: Long): String = DecimalFormat("000,000,000", sym).format(amount) // "000.000.123"
+
+    fun vndPadded(amount: Long): String {
+        val formatted = DecimalFormat("###,###,###", sym).format(amount)
+        return formatted.ifBlank { "0" }
+    }
 
     fun toM(amountVnd: Long): Double = amountVnd / 1_000_000.0
 
@@ -44,31 +57,38 @@ object NumberFmt {
             val u = (usedM * 1_000_000).roundToLong()
             val t = totalM?.let { (it * 1_000_000).roundToLong() }
             buildString {
-                append(vndPlain(u)); t?.takeIf { it > 0 }?.let { append(" / ${vndPlain(it)}") }
+                append(vndPlain(u))
+                t?.takeIf { it > 0 }?.let { append(" / ${vndPlain(it)}") }
             }
         }
+
         AmountStyle.VND_PADDED -> {
             val u = (usedM * 1_000_000).roundToLong()
             val t = totalM?.let { (it * 1_000_000).roundToLong() }
             buildString {
-                append(vndPadded(u)); t?.takeIf { it > 0 }?.let { append(" / ${vndPadded(it)}") }
+                append(vndPadded(u))
+                t?.takeIf { it > 0 }?.let { append(" / ${vndPadded(it)}") }
             }
         }
-        AmountStyle.MILLION_1DP ->
-            buildString {
-                append(millionLabel(usedM, 1)); totalM?.takeIf { it > 0 }?.let { append(" / ${millionLabel(it, 1)}") }
-            }
-        AmountStyle.MILLION_0DP ->
-            buildString {
-                append(millionLabel(usedM, 0)); totalM?.takeIf { it > 0 }?.let { append(" / ${millionLabel(it, 0)}") }
-            }
+
+        AmountStyle.MILLION_1DP -> buildString {
+            append(millionLabel(usedM, 1))
+            totalM?.takeIf { it > 0 }?.let { append(" / ${millionLabel(it, 1)}") }
+        }
+
+        AmountStyle.MILLION_0DP -> buildString {
+            append(millionLabel(usedM, 0))
+            totalM?.takeIf { it > 0 }?.let { append(" / ${millionLabel(it, 0)}") }
+        }
     }
 }
 
 fun parseUsedMFromMock(amount: String): Double =
     amount.split('/').firstOrNull().orEmpty().lowercase()
-        .replace(",", ".").replace("[^0-9\\.]".toRegex(), "").toDoubleOrNull() ?: 0.0
+        .replace(",", ".").replace("[^0-9\\.]".toRegex(), "")
+        .toDoubleOrNull() ?: 0.0
 
 fun parseTotalMFromMock(amount: String): Double? =
     amount.split('/').getOrNull(1)?.trim().orEmpty().lowercase()
-        .replace(",", ".").replace("[^0-9\\.]".toRegex(), "").toDoubleOrNull()
+        .replace(",", ".").replace("[^0-9\\.]".toRegex(), "")
+        .toDoubleOrNull()

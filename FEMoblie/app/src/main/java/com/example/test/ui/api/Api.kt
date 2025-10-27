@@ -122,4 +122,8 @@ object Api {
     val chatbotService: ChatbotApi by lazy {
         retrofit.create(ChatbotApi::class.java)
     }
+
+    val budgetService: BudgetApi by lazy {
+        retrofit.create(BudgetApi::class.java)
+    }
 }

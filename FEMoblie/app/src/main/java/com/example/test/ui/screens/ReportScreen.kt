@@ -24,14 +24,15 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.ui.components.AppHeader
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
-import com.example.test.ui.mock.MockData
-import java.time.*
-import java.time.format.DateTimeFormatter
+import com.example.test.vm.ReportViewModel
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
@@ -47,67 +48,28 @@ fun ReportScreen(
     onReport: () -> Unit = {},
     onSaving: () -> Unit = {},
     onSetting: () -> Unit = {},
-    onCamera: () -> Unit = {}
+    onCamera: () -> Unit = {},
+    viewModel: ReportViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-    var period by remember { mutableStateOf(1) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     var tab by remember { mutableStateOf(0) }
 
-    val zone = remember { ZoneId.systemDefault() }
-    val today = remember { LocalDate.now(zone) }
-
-    val dayLabels: List<String>
-    val barsIncome: List<Float>
-    val barsExpense: List<Float>
-    run {
-        val days = (5 downTo 0).map { today.minusDays(it.toLong()) }
-        val fmt = DateTimeFormatter.ofPattern("dd/MM")
-        dayLabels = days.map { it.format(fmt) }
-        val grouped = MockData.recentTransactions.groupBy {
-            Instant.ofEpochMilli(it.createdAt).atZone(zone).toLocalDate()
-        }
-        fun sumFor(d: LocalDate, positive: Boolean): Float =
-            grouped[d]
-                ?.filter { it.isPositive == positive }
-                ?.sumOf { it.amount.filter(Char::isDigit).toLongOrNull() ?: 0L }?.toFloat()
-                ?.div(1_000_000f) ?: 0f
-
-        barsIncome = days.map { sumFor(it, true) }
-        barsExpense = days.map { sumFor(it, false) }
-    }
-
     val scheme = MaterialTheme.colorScheme
-    val pie: List<ReportSlice> = remember(
-        scheme.primary, scheme.secondary, scheme.tertiary,
-        scheme.inversePrimary, scheme.error, scheme.outline
-    ) {
+
+    val pieSlices: List<ReportSlice> = remember(uiState.budgetPieData, scheme) {
         val palette = listOf(
             scheme.primary, scheme.secondary, scheme.tertiary,
             scheme.inversePrimary, scheme.error, scheme.outline
         )
-        val byCat = MockData.recentTransactions
-            .filter { !it.isPositive }
-            .groupBy { it.subtitle.substringBefore(" • ").trim() }
-            .mapValues { e -> e.value.sumOf { it.amount.filter(Char::isDigit).toLongOrNull() ?: 0L } }
-        byCat.entries.sortedByDescending { it.value }
-            .mapIndexed { i, (k, v) ->
-                ReportSlice(k, v / 1_000_000f, palette[i % palette.size])
-            }
-    }
-
-    val weekLabels: List<String>
-    val lineExpense: List<Float>
-    run {
-        val start = today.with(DayOfWeek.MONDAY)
-        val weekDays = (0..6).map { start.plusDays(it.toLong()) }
-        weekLabels = listOf("T2", "T3", "T4", "T5", "T6", "T7", "CN")
-        val grouped = MockData.recentTransactions
-            .filter { !it.isPositive }
-            .groupBy { Instant.ofEpochMilli(it.createdAt).atZone(zone).toLocalDate() }
-        lineExpense = weekDays.map { d ->
-            grouped[d]?.sumOf { it.amount.filter(Char::isDigit).toLongOrNull() ?: 0L }?.toFloat()
-                ?.div(1_000_000f) ?: 0f
+        uiState.budgetPieData.mapIndexed { i, data ->
+            ReportSlice(
+                label = data.label,
+                value = data.value,
+                color = palette[i % palette.size]
+            )
         }
     }
 
@@ -148,22 +110,22 @@ fun ReportScreen(
                 ) {
                     SegTab(
                         "Tuần",
-                        period == 0,
+                        uiState.currentPeriod == 0,
                         selectedColor = scheme.secondary,
                         selectedLabel = scheme.onSecondary
-                    ) { period = 0 }
+                    ) { viewModel.setPeriod(0) }
                     SegTab(
                         "Tháng",
-                        period == 1,
+                        uiState.currentPeriod == 1,
                         selectedColor = scheme.secondary,
                         selectedLabel = scheme.onSecondary
-                    ) { period = 1 }
+                    ) { viewModel.setPeriod(1) }
                     SegTab(
                         "Năm",
-                        period == 2,
+                        uiState.currentPeriod == 2,
                         selectedColor = scheme.secondary,
                         selectedLabel = scheme.onSecondary
-                    ) { period = 2 }
+                    ) { viewModel.setPeriod(2) }
                 }
                 Spacer(Modifier.height(12.dp))
             }
@@ -175,9 +137,13 @@ fun ReportScreen(
                         .padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
+                    val incomeM = uiState.kpiIncome / 1_000_000f
+                    val expenseM = uiState.kpiExpense / 1_000_000f
+                    val savingM = (uiState.kpiIncome - uiState.kpiExpense) / 1_000_000f
+
                     KpiCard(
                         title = "Thu nhập",
-                        value = "+30M đ",
+                        value = "+${"%.1f".format(incomeM)}M",
                         valueColor = scheme.tertiary,
                         icon = Icons.Outlined.TrendingUp,
                         iconTint = scheme.tertiary,
@@ -186,7 +152,7 @@ fun ReportScreen(
                     )
                     KpiCard(
                         title = "Chi tiêu",
-                        value = "-25M đ",
+                        value = "-${"%.1f".format(expenseM)}M",
                         valueColor = scheme.error,
                         icon = Icons.Outlined.TrendingDown,
                         iconTint = scheme.error,
@@ -195,7 +161,7 @@ fun ReportScreen(
                     )
                     KpiCard(
                         title = "Tiết kiệm",
-                        value = "+5M đ",
+                        value = "${if (savingM > 0) "+" else ""}${"%.1f".format(savingM)}M",
                         valueColor = scheme.primary,
                         icon = Icons.Outlined.Savings,
                         iconTint = scheme.primary,
@@ -220,49 +186,85 @@ fun ReportScreen(
                 Spacer(Modifier.height(12.dp))
             }
 
-            item {
-                OutlinedCard(
-                    shape = RoundedCornerShape(16.dp),
-                    border = CardDefaults.outlinedCardBorder(),
-                    colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                ) {
-                    when (tab) {
-                        0 -> {
-                            val maxV = max(
-                                barsIncome.maxOrNull() ?: 0f,
-                                barsExpense.maxOrNull() ?: 0f
-                            )
-                            val ticks = yTicks(maxV)
-                            ChartWithAxes(
-                                yTicks = ticks,
-                                xLabels = dayLabels,
-                                chart = {
-                                    BarCompareChart(
-                                        income = barsIncome,
-                                        expense = barsExpense,
-                                        yMax = ticks.last()
-                                    )
-                                }
-                            )
-                        }
-                        1 -> {
-                            Column(Modifier.padding(12.dp)) { PieChartDynamic(pie) }
-                        }
-                        else -> {
-                            val maxV = lineExpense.maxOrNull() ?: 0f
-                            val ticks = yTicks(maxV)
-                            ChartWithAxes(
-                                yTicks = ticks,
-                                xLabels = weekLabels,
-                                chart = { LineChart(pointsM = lineExpense, yMax = ticks.last()) }
-                            )
-                        }
+            if (uiState.isLoading) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
                     }
                 }
-                Spacer(Modifier.height(16.dp))
+            } else if (uiState.error != null) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp)
+                            .padding(horizontal = 20.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Lỗi: ${uiState.error}",
+                            color = scheme.error,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            } else {
+                item {
+                    OutlinedCard(
+                        shape = RoundedCornerShape(16.dp),
+                        border = CardDefaults.outlinedCardBorder(),
+                        colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                    ) {
+                        when (tab) {
+                            0 -> {
+                                val maxV = max(
+                                    uiState.overviewIncome.maxOrNull() ?: 0f,
+                                    uiState.overviewExpense.maxOrNull() ?: 0f
+                                )
+                                val ticks = yTicks(maxV)
+                                ChartWithAxes(
+                                    yTicks = ticks,
+                                    xLabels = uiState.overviewLabels,
+                                    chart = {
+                                        BarCompareChart(
+                                            income = uiState.overviewIncome,
+                                            expense = uiState.overviewExpense,
+                                            yMax = ticks.last()
+                                        )
+                                    }
+                                )
+                            }
+                            1 -> {
+                                Column(Modifier.padding(12.dp)) {
+                                    PieChartDynamic(pieSlices)
+                                }
+                            }
+                            else -> {
+                                val maxV = uiState.trendExpense.maxOrNull() ?: 0f
+                                val ticks = yTicks(maxV)
+                                ChartWithAxes(
+                                    yTicks = ticks,
+                                    xLabels = uiState.trendLabels,
+                                    chart = {
+                                        LineChart(
+                                            pointsM = uiState.trendExpense,
+                                            yMax = ticks.last()
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(16.dp))
+                }
             }
 
             item {
@@ -350,8 +352,6 @@ fun ReportScreen(
     }
 }
 
-// helpers //
-
 private fun yTicks(maxValue: Float): List<Float> {
     val m = if (maxValue <= 0f) 1f else maxValue
     val step = max(0.5f, ceil(m / 4f * 2f) / 2f)
@@ -364,11 +364,16 @@ private fun ChartWithAxes(
     xLabels: List<String>,
     chart: @Composable BoxScope.() -> Unit
 ) {
+    val yAxisWidth = 44.dp
+    val h = 200.dp
+
     Column(Modifier.fillMaxWidth().padding(12.dp)) {
-        val h = 200.dp
+
         Row(Modifier.fillMaxWidth()) {
             Column(
-                modifier = Modifier.width(44.dp).height(h),
+                modifier = Modifier
+                    .width(yAxisWidth)
+                    .height(h),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 yTicks.reversed().forEach { v ->
@@ -377,12 +382,28 @@ private fun ChartWithAxes(
             }
             Box(Modifier.height(h).weight(1f)) { chart() }
         }
+
         Spacer(Modifier.height(8.dp))
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            xLabels.forEach { Text(it, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+
+        Row(Modifier.fillMaxWidth()) {
+            Spacer(Modifier.width(yAxisWidth))
+            Row(Modifier.weight(1f)) {
+                if (xLabels.isNotEmpty()) {
+                    xLabels.forEach {
+                        Text(
+                            it,
+                            fontSize = 10.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
         }
     }
 }
+
 
 @Composable
 private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Float) {
@@ -398,7 +419,7 @@ private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Flo
         val plotW = w - pad * 2
         val plotH = h - pad * 2
         val groupW = plotW / n
-        val barW = groupW / 3
+        val barW = (groupW * 0.8f) / 2f
 
         for (i in 1 until 4) {
             val y = pad + plotH * i / 4f
@@ -410,9 +431,9 @@ private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Flo
             val exp = expense.getOrNull(i) ?: 0f
             val h1 = if (yMax > 0) (inc / yMax) * plotH else 0f
             val h2 = if (yMax > 0) (exp / yMax) * plotH else 0f
-            val gx = pad + groupW * i
-            drawRect(pos, topLeft = Offset(gx + barW * 0.8f, pad + plotH - h1), size = Size(barW, h1))
-            drawRect(neg, topLeft = Offset(gx + barW * 1.9f, pad + plotH - h2), size = Size(barW, h2))
+            val gx = pad + groupW * i + (groupW * 0.1f)
+            drawRect(pos, topLeft = Offset(gx, pad + plotH - h1), size = Size(barW, h1))
+            drawRect(neg, topLeft = Offset(gx + barW, pad + plotH - h2), size = Size(barW, h2))
         }
     }
 }
@@ -428,7 +449,7 @@ private fun LineChart(pointsM: List<Float>, yMax: Float) {
         val pad = 8f
         val w = size.width - pad * 2
         val h = size.height - pad * 2
-        val stepX = if (pointsM.size > 1) w / (pointsM.size - 1) else 0f
+        val stepX = if (pointsM.size > 1) w / (pointsM.size - 1) else w
 
         for (i in 1 until 4) {
             val y = pad + h * i / 4f
@@ -454,7 +475,9 @@ private fun LineChart(pointsM: List<Float>, yMax: Float) {
 @Composable
 private fun PieChartDynamic(data: List<ReportSlice>) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Canvas(Modifier.size(140.dp)) {
@@ -471,14 +494,25 @@ private fun PieChartDynamic(data: List<ReportSlice>) {
         }
         Spacer(Modifier.width(12.dp))
         Column(
-            modifier = Modifier.weight(1f).padding(4.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(4.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            if (data.isEmpty()) {
+                Text("Không có dữ liệu ngân sách", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
             data.forEach {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(10.dp).background(it.color, CircleShape))
                     Spacer(Modifier.width(8.dp))
-                    Text(it.label, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
+                    Text(
+                        it.label,
+                        Modifier.weight(1f),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    )
                     Text("${"%.1f".format(it.value)}M", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }

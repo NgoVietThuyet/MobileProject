@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.example.test.ui.screens
 
@@ -10,8 +10,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -25,14 +25,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -43,13 +41,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
-import com.example.test.ui.mock.BudgetCategoryMock
-import com.example.test.ui.mock.MockData as HomeMock
 import com.example.test.ui.mock.TxType
 import com.example.test.ui.mock.TxUi
 import com.example.test.ui.theme.AppGradient
-import com.example.test.vm.HomeViewModel
+import com.example.test.ui.util.MoneyUiConfig
+import com.example.test.ui.util.NumberFmt
 import com.example.test.vm.ChatViewModel
+import com.example.test.vm.HomeBudgetViewModel
+import com.example.test.vm.HomeViewModel
 import java.text.NumberFormat
 import java.util.Locale
 import java.util.UUID
@@ -79,16 +78,24 @@ fun HomeScreen(
     onSetting: () -> Unit = {},
     onCamera: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
-    chatViewModel: ChatViewModel = hiltViewModel()
+    chatViewModel: ChatViewModel = hiltViewModel(),
+    budgetViewModel: HomeBudgetViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var chatOpen by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(isLoggedIn) { if (!isLoggedIn) chatOpen = false }
+
     val homeState by viewModel.uiState.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) { viewModel.fetchInitialData() }
     val vmMessages by chatViewModel.messages.collectAsStateWithLifecycle()
+    val budgetState by budgetViewModel.ui.collectAsStateWithLifecycle()
+
     val effectiveMessages = messages ?: vmMessages
     val effectiveOnSend: (String) -> Unit = onSendMessage ?: chatViewModel::send
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchInitialData()
+        budgetViewModel.loadBudgets()
+    }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -96,19 +103,16 @@ fun HomeScreen(
         bottomBar = {
             MainBottomBar(
                 selected = BottomTab.HOME,
-                onHome = { },
+                onHome = {},
                 onReport = onReport,
                 onCamera = onCamera,
                 onSaving = onSaving,
-                onSetting = onSetting,
+                onSetting = onSetting
             )
         },
         floatingActionButton = {
             if (isLoggedIn && !chatOpen) {
-                ChatAssistButton(
-                    unread = unreadChats,
-                    onClick = { chatOpen = true }
-                )
+                ChatAssistButton(unread = unreadChats, onClick = { chatOpen = true })
             }
         },
         floatingActionButtonPosition = FabPosition.End
@@ -122,11 +126,11 @@ fun HomeScreen(
                 .padding(
                     start = padding.calculateStartPadding(LayoutDirection.Ltr),
                     end = padding.calculateEndPadding(LayoutDirection.Ltr),
-                    top = 0.dp,
                     bottom = padding.calculateBottomPadding()
                 ),
             contentPadding = PaddingValues(bottom = 48.dp)
         ) {
+            // Header
             item {
                 HeaderSection(
                     userName = homeState.userName,
@@ -136,11 +140,31 @@ fun HomeScreen(
                     onAddExpense = onAddExpense
                 )
             }
+
             item { Spacer(Modifier.height(24.dp)) }
-            item { MonthlySummaryCard() }
+
+            // Monthly summary
+            item {
+                MonthlySummaryCard(
+                    monthlyIncome = homeState.monthlyIncome,
+                    monthlyExpense = homeState.monthlyExpense
+                )
+            }
+
             item { Spacer(Modifier.height(24.dp)) }
-            item { BudgetCategoriesCard(onSeeAll = onOpenBudgetAll) }
+
+            // Budgets
+            item {
+                BudgetCategoriesCard(
+                    budgets = budgetState.items,
+                    isLoading = budgetState.isLoading,
+                    onSeeAll = onOpenBudgetAll
+                )
+            }
+
             item { Spacer(Modifier.height(24.dp)) }
+
+            // Recent transactions
             item {
                 RecentTransactionsCard(
                     transactions = homeState.recentTransactions,
@@ -150,6 +174,7 @@ fun HomeScreen(
             }
         }
 
+        // Chat overlay
         ChatOverlay(
             open = isLoggedIn && chatOpen,
             onDismiss = { chatOpen = false },
@@ -176,7 +201,7 @@ private fun HeaderSection(
             .background(brush = AppGradient.BluePurple)
     ) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(Modifier.height(50.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -206,7 +231,7 @@ private fun HeaderSection(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(Modifier.height(30.dp))
             OutlinedCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -216,12 +241,22 @@ private fun HeaderSection(
                 )
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    Text("Số dư hiện tại", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Medium)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(balance ?: "...", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        "Số dư hiện tại",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        balance ?: "...",
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(Modifier.height(20.dp))
             QuickActionButtons(
                 onAddIncome = onAddIncome,
                 onAddExpense = onAddExpense,
@@ -242,10 +277,7 @@ private fun QuickActionButtons(
     val expenseBg = Color(0xFFFBE2E2)
     val expenseFg = Color(0xFFB40000)
 
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Button(
             onClick = onAddIncome,
             modifier = Modifier
@@ -254,11 +286,8 @@ private fun QuickActionButtons(
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = incomeBg,
-                contentColor = incomeFg,
-                disabledContainerColor = incomeBg.copy(alpha = 0.6f),
-                disabledContentColor = incomeFg.copy(alpha = 0.6f)
-            ),
-            contentPadding = PaddingValues(vertical = 12.dp)
+                contentColor = incomeFg
+            )
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("+", fontSize = 24.sp, fontWeight = FontWeight.Bold)
@@ -275,11 +304,8 @@ private fun QuickActionButtons(
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = expenseBg,
-                contentColor = expenseFg,
-                disabledContainerColor = expenseBg.copy(alpha = 0.6f),
-                disabledContentColor = expenseFg.copy(alpha = 0.6f)
-            ),
-            contentPadding = PaddingValues(vertical = 12.dp)
+                contentColor = expenseFg
+            )
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("-", fontSize = 24.sp, fontWeight = FontWeight.Bold)
@@ -291,7 +317,10 @@ private fun QuickActionButtons(
 }
 
 @Composable
-private fun MonthlySummaryCard() {
+private fun MonthlySummaryCard(
+    monthlyIncome: Long,
+    monthlyExpense: Long
+) {
     val scheme = MaterialTheme.colorScheme
     Card(
         modifier = Modifier
@@ -307,17 +336,37 @@ private fun MonthlySummaryCard() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Tháng này", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
-                Icon(painter = painterResource(R.drawable.increase), contentDescription = null, tint = scheme.primary)
+                Text("Tháng này", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                Icon(
+                    painter = painterResource(R.drawable.increase),
+                    contentDescription = null,
+                    tint = scheme.primary
+                )
             }
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(Modifier.height(24.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                SummaryCol("Thu nhập", HomeMock.monthlyIncome, MaterialTheme.colorScheme.tertiary)
-                SummaryCol("Chi tiêu", HomeMock.monthlyExpense, MaterialTheme.colorScheme.error)
-                SummaryCol("Tiết kiệm", HomeMock.monthlySaving, MaterialTheme.colorScheme.primary)
+                val decimals = MoneyUiConfig.ROUND_DECIMALS_FOR_M
+                SummaryCol(
+                    "Thu nhập",
+                    "+${NumberFmt.millionLabel(NumberFmt.toM(monthlyIncome), decimals)}",
+                    scheme.tertiary
+                )
+                SummaryCol(
+                    "Chi tiêu",
+                    "-${NumberFmt.millionLabel(NumberFmt.toM(monthlyExpense), decimals)}",
+                    scheme.error
+                )
+                SummaryCol(
+                    "Tiết kiệm",
+                    NumberFmt.millionLabel(
+                        NumberFmt.toM(monthlyIncome - monthlyExpense),
+                        decimals
+                    ),
+                    scheme.primary
+                )
             }
         }
     }
@@ -332,35 +381,76 @@ private fun SummaryCol(label: String, value: String, color: Color) {
     }
 }
 
+private fun parseColorOrNull(hex: String?): Color? = try {
+    hex?.let { Color(android.graphics.Color.parseColor(it)) }
+} catch (_: Exception) { null }
+
 @Composable
-private fun BudgetCategoriesCard(onSeeAll: () -> Unit) {
+private fun BudgetCategoriesCard(
+    budgets: List<com.example.test.vm.HomeBudgetItem>,
+    isLoading: Boolean,
+    onSeeAll: () -> Unit
+) {
     val scheme = MaterialTheme.colorScheme
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = scheme.surface),
-        border = BorderStroke(1.dp, scheme.outlineVariant)
+        border = BorderStroke(1.dp, scheme.outlineVariant),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Ngân sách theo danh mục", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
+                Text(
+                    text = "Ngân sách theo danh mục",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = scheme.onSurface
+                )
                 TextButton(
                     onClick = onSeeAll,
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     colors = ButtonDefaults.textButtonColors(contentColor = scheme.primary)
-                ) { Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold) }
+                ) {
+                    Text(
+                        text = "Xem tất cả",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(24.dp))
-            HomeMock.budgetCategories.forEachIndexed { index, item ->
-                BudgetCategoryItem(item)
-                if (index < HomeMock.budgetCategories.lastIndex) {
-                    Spacer(modifier = Modifier.height(16.dp))
+
+            Spacer(Modifier.height(24.dp))
+
+            when {
+                isLoading -> Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    contentAlignment = Alignment.Center
+                ) { CircularProgressIndicator() }
+
+                budgets.isEmpty() -> Text(
+                    "Chưa có ngân sách nào",
+                    color = scheme.onSurfaceVariant,
+                    fontSize = 14.sp
+                )
+
+                else -> Column {
+                    budgets.take(4).forEachIndexed { index, item ->
+                        BudgetCategoryItem(item)
+                        if (index != budgets.take(4).lastIndex) {
+                            Spacer(Modifier.height(16.dp))
+                        }
+                    }
                 }
             }
         }
@@ -368,23 +458,60 @@ private fun BudgetCategoriesCard(onSeeAll: () -> Unit) {
 }
 
 @Composable
-private fun BudgetCategoryItem(data: BudgetCategoryMock) {
+private fun BudgetCategoryItem(
+    item: com.example.test.vm.HomeBudgetItem
+) {
     val scheme = MaterialTheme.colorScheme
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+
+    val color = parseColorOrNull(item.categoryColor) ?: scheme.primary
+    val decimals = MoneyUiConfig.ROUND_DECIMALS_FOR_M
+    val total = item.initialAmount.filter { it.isDigit() }.toFloatOrNull() ?: 0f
+    val used = item.currentAmount.filter { it.isDigit() }.toFloatOrNull() ?: 0f
+    val progress = if (total > 0f) used / total else 0f
+
+    val amountLabel = "${NumberFmt.millionLabel(NumberFmt.toM(used.toLong()), decimals)} / " +
+            "${NumberFmt.millionLabel(NumberFmt.toM(total.toLong()), decimals)}"
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Box(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(data.color),
+                .background(color),
             contentAlignment = Alignment.Center
-        ) { Text(data.icon, fontSize = 18.sp) }
+        ) {
+            Text(
+                item.categoryIcon ?: "💰",
+                fontSize = 18.sp,
+                color = Color.White
+            )
+        }
+
         Spacer(modifier = Modifier.width(16.dp))
+
         Column(modifier = Modifier.weight(1f)) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(data.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
-                Text(data.amount, fontSize = 14.sp, color = scheme.onSurfaceVariant)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    item.categoryName ?: "Danh mục",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = scheme.onSurface
+                )
+                Text(
+                    amountLabel,
+                    fontSize = 14.sp,
+                    color = scheme.onSurfaceVariant
+                )
             }
+
             Spacer(modifier = Modifier.height(8.dp))
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -394,16 +521,15 @@ private fun BudgetCategoryItem(data: BudgetCategoryMock) {
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(data.progress.coerceIn(0f, 1f))
+                        .fillMaxWidth(progress.coerceIn(0f, 1f))
                         .fillMaxHeight()
                         .clip(RoundedCornerShape(3.dp))
-                        .background(data.color)
+                        .background(color)
                 )
             }
         }
     }
 }
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun RecentTransactionsCard(
@@ -426,22 +552,28 @@ private fun RecentTransactionsCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Giao dịch gần đây", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
-                TextButton(onClick = onSeeAll, colors = ButtonDefaults.textButtonColors(contentColor = scheme.primary)) {
-                    Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                }
+                Text("Giao dịch gần đây", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                TextButton(
+                    onClick = onSeeAll,
+                    colors = ButtonDefaults.textButtonColors(contentColor = scheme.primary)
+                ) { Text("Xem tất cả", fontSize = 14.sp, fontWeight = FontWeight.Bold) }
             }
-            Spacer(modifier = Modifier.height(20.dp))
-            if (isLoading) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 24.dp), contentAlignment = Alignment.Center
-                ) { CircularProgressIndicator() }
-            } else if (transactions.isEmpty()) {
-                Text("Không có giao dịch gần đây.", color = scheme.onSurfaceVariant)
-            } else {
-                transactions.forEach { tx -> TransactionItem(tx) }
+            Spacer(Modifier.height(20.dp))
+            when {
+                isLoading -> {
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 24.dp),
+                        contentAlignment = Alignment.Center
+                    ) { CircularProgressIndicator() }
+                }
+
+                transactions.isEmpty() -> {
+                    Text("Không có giao dịch gần đây.", color = scheme.onSurfaceVariant)
+                }
+
+                else -> transactions.forEach { tx -> TransactionItem(tx) }
             }
         }
     }
@@ -464,24 +596,31 @@ private fun TransactionItem(tx: TxUi) {
                 .background(scheme.surfaceVariant),
             contentAlignment = Alignment.Center
         ) { Text(tx.emoji ?: "💰", fontSize = 18.sp) }
-        Spacer(modifier = Modifier.width(16.dp))
+
+        Spacer(Modifier.width(16.dp))
+
         Column(modifier = Modifier.weight(1f)) {
             Text(tx.title, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = scheme.onSurface)
             Text(tx.category, fontSize = 12.sp, color = scheme.onSurfaceVariant)
         }
+
         val isPositive = tx.type == TxType.INCOME
-        val formattedAmount = (if (isPositive) "+" else "-") + vn(tx.amount.toLongOrNull() ?: 0L)
+        val formattedAmount =
+            (if (isPositive) "+" else "-") + vn(tx.amount.toLongOrNull() ?: 0L)
+
         Text(
             text = formattedAmount,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = if (isPositive) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
+            color = if (isPositive) scheme.tertiary else scheme.error
         )
     }
 }
 
 private fun vn(value: Long): String =
-    NumberFormat.getCurrencyInstance(Locale("vi", "VN")).format(value).replace(" ", "")
+    NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+        .format(value)
+        .replace(" ", "")
 
 @Composable
 private fun ChatAssistButton(
@@ -498,6 +637,7 @@ private fun ChatAssistButton(
             elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 6.dp),
             modifier = Modifier.size(56.dp)
         ) { Icon(painter = painterResource(R.drawable.message), contentDescription = "Chat trợ lý") }
+
         if (unread > 0) {
             Box(
                 modifier = Modifier
@@ -540,7 +680,7 @@ private fun ChatOverlay(
                 Modifier
                     .fillMaxSize()
                     .background(scheme.scrim.copy(alpha = 0.35f))
-                    .noRippleClickable { onDismiss() }
+                    .pointerInput(Unit) { detectTapGestures(onTap = { onDismiss() }) }
                     .zIndex(1f)
             )
         }
@@ -570,14 +710,20 @@ private fun ChatOverlay(
                             .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(painter = painterResource(R.drawable.message), contentDescription = null, tint = scheme.onPrimary)
+                        Icon(
+                            painter = painterResource(R.drawable.message),
+                            contentDescription = null,
+                            tint = scheme.onPrimary
+                        )
                         Spacer(Modifier.width(12.dp))
                         Text("Chat bot", color = scheme.onPrimary, fontSize = 18.sp, fontWeight = FontWeight.Medium)
                     }
+
                     val listState = rememberLazyListState()
                     LaunchedEffect(messages.size) {
                         if (messages.isNotEmpty()) listState.animateScrollToItem(messages.lastIndex)
                     }
+
                     LazyColumn(
                         state = listState,
                         modifier = Modifier
@@ -600,6 +746,7 @@ private fun ChatOverlay(
                             }
                         }
                     }
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -666,19 +813,4 @@ private fun MeBubble(text: String) {
                 .padding(horizontal = 12.dp, vertical = 8.dp)
         ) { Text(text, color = scheme.onTertiaryContainer, fontSize = 14.sp) }
     }
-}
-
-private fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
-    composed { pointerInput(Unit) { detectTapGestures(onTap = { onClick() }) } }
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(widthDp = 412, heightDp = 900, showBackground = true)
-@Composable
-private fun HomeScreenPreview() {
-    HomeScreen(
-        isLoggedIn = true,
-        unreadChats = 0,
-        messages = null,
-        onSendMessage = null
-    )
 }

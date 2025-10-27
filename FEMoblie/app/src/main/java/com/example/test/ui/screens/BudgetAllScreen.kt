@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.test.ui.screens
 
 import android.annotation.SuppressLint
@@ -11,48 +13,62 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.test.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.example.test.ui.api.AuthStore
 import com.example.test.ui.components.AppHeader
-import com.example.test.ui.mock.MockData
+import com.example.test.vm.BudgetAllViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetAllScreen(
     onBack: () -> Unit = {},
     onOpenEdit: (Int) -> Unit = {},
-    onAdd: () -> Unit = {}
+    onAdd: () -> Unit = {},
+    viewModel: BudgetAllViewModel = hiltViewModel()
 ) {
     val appBarHeight = 36.dp
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-
-    val budgets = MockData.budgetCategories
-    val totalUsedM = budgets.sumOf { parseUsedM(it.amount) }
-    val totalBudgetM = budgets.sumOf { parseTotalM(it.amount) }
-    val progress = if (totalBudgetM > 0.0) (totalUsedM / totalBudgetM).toFloat().coerceIn(0f, 1f) else 0f
-
     val cs = MaterialTheme.colorScheme
+
+    val userId by AuthStore.userIdFlow.collectAsState()
+
+    LaunchedEffect(userId) {
+        if (!userId.isNullOrBlank()) viewModel.load(userId)
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner, userId) {
+        val obs = LifecycleEventObserver { _, e ->
+            if (e == Lifecycle.Event.ON_RESUME && !userId.isNullOrBlank()) {
+                viewModel.load(userId)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(obs)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(obs) }
+    }
+
+    val state by viewModel.uiState.collectAsState()
+
+    val totalUsedM = state.items.sumOf { parseUsedM(it.amountLabel) }
+    val totalBudgetM = state.items.sumOf { parseTotalM(it.amountLabel) }
+    val progress = if (totalBudgetM > 0.0) (totalUsedM / totalBudgetM).toFloat().coerceIn(0f, 1f) else 0f
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         contentWindowInsets = WindowInsets(0),
-        topBar = {
-            AppHeader(
-                title = "Ngân sách theo danh mục",
-                showBack = true,
-                onBack = onBack
-            )
-        },
+        topBar = { AppHeader(title = "Ngân sách theo danh mục", showBack = true, onBack = onBack) },
         containerColor = cs.background
     ) { innerPadding ->
         LazyColumn(
@@ -73,14 +89,23 @@ fun BudgetAllScreen(
                 Spacer(Modifier.height(16.dp))
             }
 
+            if (state.isLoading) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
+
+            state.error?.let { err ->
+                item {
+                    Text("Lỗi: $err", color = Color.Red)
+                    Spacer(Modifier.height(8.dp))
+                }
+            }
+
             itemsIndexed(
-                items = budgets,
-                key = { index, item -> "${item.title}#$index" }
+                items = state.items,
+                key = { index, item -> "${item.id}#$index" }
             ) { index, cat ->
                 BudgetRow(
                     icon = cat.icon,
                     title = cat.title,
-                    amount = cat.amount,
+                    amount = cat.amountLabel,
                     progress = cat.progress,
                     color = cat.color,
                     onClick = { onOpenEdit(index) }
@@ -163,22 +188,6 @@ private fun TotalBudgetCard(
 }
 
 @Composable
-private fun TitleRow(title: String, onBack: () -> Unit) {
-    val cs = MaterialTheme.colorScheme
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back),
-                contentDescription = "Quay lại",
-                tint = cs.onSurface
-            )
-        }
-        Spacer(Modifier.width(6.dp))
-        Text(title, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = cs.onSurface)
-    }
-}
-
-@Composable
 private fun BudgetRow(
     icon: String,
     title: String,
@@ -246,7 +255,6 @@ private fun parseTotalM(amount: String): Double {
     val second = parts.getOrNull(1)?.trim().orEmpty()
     return parseM(second)
 }
-
 private fun parseM(text: String): Double {
     if (text.isEmpty()) return 0.0
     val cleaned = text.lowercase()
@@ -254,7 +262,6 @@ private fun parseM(text: String): Double {
         .replace("[^0-9\\.]".toRegex(), "")
     return cleaned.toDoubleOrNull() ?: 0.0
 }
-
 private fun formatM(v: Double): String {
     val r = kotlin.math.round(v * 10.0) / 10.0
     return if (r % 1.0 == 0.0) "${r.toInt()}M" else String.format(java.util.Locale.US, "%.1fM", r)

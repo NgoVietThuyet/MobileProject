@@ -32,7 +32,9 @@ data class HomeUiState(
     val userName: String? = null,
     val balance: String? = null,
     val recentTransactions: List<TxUi> = emptyList(),
-    val error: String? = null
+    val error: String? = null,
+    val monthlyIncome: Long = 0L,
+    val monthlyExpense: Long = 0L,
 )
 
 private val apiDateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
@@ -54,6 +56,7 @@ class HomeViewModel @Inject constructor(
                 val transactionDeferred = async { transactionRepo.getAllFromAuth() }
                 val accountDeferred = async { accountRepo.getAccount() }
 
+
                 val transactionResponse = transactionDeferred.await()
                 val accountResponse = accountDeferred.await()
 
@@ -63,12 +66,34 @@ class HomeViewModel @Inject constructor(
                         val categories = transactionRepo.getLocalCategories()
                         val dtos = transactionBody.transactions ?: emptyList()
                         val categoryMap = categories.associateBy { it.categoryId }
-                        val uiModels = dtos
+
+                        val allUiModels = dtos
                             .map { it.toTxUi(categoryMap) }
                             .sortedByDescending { it.dateTime }
-                            .take(4)
 
-                        _uiState.update { it.copy(recentTransactions = uiModels) }
+                        val recentTxs = allUiModels.take(4)
+
+                        val now = LocalDate.now()
+                        val monthlyTxs = allUiModels.filter {
+                            it.dateTime.month == now.month && it.dateTime.year == now.year
+                        }
+
+
+                        val income = monthlyTxs
+                            .filter { it.type == TxType.INCOME }
+                            .sumOf { it.amount.toLongOrNull() ?: 0L }
+
+                        val expense = monthlyTxs
+                            .filter { it.type == TxType.EXPENSE }
+                            .sumOf { it.amount.toLongOrNull() ?: 0L }
+
+                        _uiState.update {
+                            it.copy(
+                                recentTransactions = recentTxs,
+                                monthlyIncome = income,
+                                monthlyExpense = expense
+                            )
+                        }
                     }
                 } else {
                     val errorMsg = "Lỗi tải giao dịch: ${transactionResponse.code()}"
@@ -142,4 +167,3 @@ private fun TransactionDto.toTxUi(categoryMap: Map<String, CategoryDto>): TxUi {
         type = if (isIncome) TxType.INCOME else TxType.EXPENSE
     )
 }
-

@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.ui.graphics)
+    implementation(libs.foundation)
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
@@ -112,6 +113,10 @@ dependencies {
 
     // Facebook Login
     implementation("com.facebook.android:facebook-login:17.0.0")
+
+    implementation("com.squareup.retrofit2:converter-scalars:2.11.0")
+
+    implementation("androidx.compose.ui:ui-text:1.7.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

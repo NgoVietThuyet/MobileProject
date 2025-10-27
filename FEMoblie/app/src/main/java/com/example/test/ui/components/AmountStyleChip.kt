@@ -12,20 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.test.ui.util.AmountStyle
-
-@Composable
-fun AmountStyleChips(
-    style: AmountStyle,
-    onChange: (AmountStyle) -> Unit
-) {
-    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        FilterChip("1.234.567", style == AmountStyle.VND_PLAIN) { onChange(AmountStyle.VND_PLAIN) }
-        FilterChip("000.000.000", style == AmountStyle.VND_PADDED) { onChange(AmountStyle.VND_PADDED) }
-        FilterChip("M (1dp)", style == AmountStyle.MILLION_1DP) { onChange(AmountStyle.MILLION_1DP) }
-        FilterChip("M (0dp)", style == AmountStyle.MILLION_0DP) { onChange(AmountStyle.MILLION_0DP) }
-    }
-}
 
 @Composable
 private fun FilterChip(label: String, selected: Boolean, onClick: () -> Unit) {

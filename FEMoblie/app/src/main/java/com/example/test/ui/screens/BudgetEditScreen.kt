@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,13 +20,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
+import com.example.test.data.LocalCategoryDataSource
+import com.example.test.ui.api.Api
+import com.example.test.ui.api.AuthStore
 import com.example.test.ui.components.AppHeader
-import com.example.test.ui.mock.MockData
+import com.example.test.ui.models.BudgetDto
+import com.example.test.ui.models.UpdateBudgetAmountReq
 import com.example.test.ui.theme.AppGradient
-import com.example.test.ui.util.parseTotalMFromMock
-import com.example.test.ui.util.parseUsedMFromMock
 import kotlinx.coroutines.launch
-import kotlin.math.roundToLong
+import kotlin.math.abs
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -34,31 +37,69 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
     val scope = rememberCoroutineScope()
     val cs = MaterialTheme.colorScheme
 
-    val item = MockData.budgetCategories.getOrNull(index)
-    LaunchedEffect(item) { if (item == null) onBack() }
+    val userId = remember { AuthStore.userId }
+    val budgetApi = remember { Api.budgetService }
 
-    val usedVnd: Long = item?.let { (parseUsedMFromMock(it.amount) * 1_000_000).roundToLong() } ?: 0L
-    val totalVndInitial: Long? =
-        MockData.getBudgetTotalVnd(index) ?: item?.let {
-            val usedM = parseUsedMFromMock(it.amount)
-            val totalM = parseTotalMFromMock(it.amount) ?: if (it.progress > 0f && usedM > 0.0) usedM / it.progress else null
-            totalM?.let { m -> (m * 1_000_000).roundToLong() }
-        }
+    var isLoading by remember { mutableStateOf(true) }
+    var isSubmitting by remember { mutableStateOf(false) }
 
-    var totalVndRaw by remember { mutableStateOf(totalVndInitial?.toString() ?: "") }
+    var budget: BudgetDto? by remember { mutableStateOf(null) }
+    var budgetId by remember { mutableStateOf<String?>(null) }
+    var usedVnd by remember { mutableStateOf(0L) }
+    var totalVndInitial by remember { mutableStateOf<Long?>(null) }
+
+    var totalVndRaw by remember { mutableStateOf("") }
     fun sanitizeDigits(s: String) = s.filter { it.isDigit() }
     val totalVndLong: Long? = totalVndRaw.toLongOrNull()
-    val isUpdateEnabled = totalVndLong != null
+    val isUpdateEnabled = !isSubmitting && totalVndLong != null && budgetId != null
+
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
+    var categoryName by remember { mutableStateOf<String?>(null) }
+    var categoryIcon by remember { mutableStateOf<String?>(null) }
+    var categoryColor by remember { mutableStateOf<Color?>(null) }
+
+    LaunchedEffect(index, userId) {
+        if (userId.isNullOrBlank()) {
+            scope.launch { snackbarHostState.showSnackbar("Vui lòng đăng nhập") }
+            onBack(); return@LaunchedEffect
+        }
+        isLoading = true
+        try {
+            val res = budgetApi.getAllBudgets(userId)
+            if (!res.isSuccessful) {
+                scope.launch { snackbarHostState.showSnackbar("Tải ngân sách lỗi: HTTP ${res.code()}") }
+                onBack(); return@LaunchedEffect
+            }
+            val list = res.body().orEmpty()
+            val item = list.getOrNull(index)
+            if (item == null) {
+                scope.launch { snackbarHostState.showSnackbar("Không tìm thấy ngân sách") }
+                onBack(); return@LaunchedEffect
+            }
+
+            budget = item
+            budgetId = item.budgetId
+            usedVnd = item.currentAmount?.onlyDigits()?.toLongOrNull() ?: 0L
+            val initialVnd = item.initialAmount?.onlyDigits()?.toLongOrNull()
+            totalVndInitial = initialVnd
+            totalVndRaw = initialVnd?.toString() ?: ""
+
+            val cat = LocalCategoryDataSource.find(item.categoryId)
+            categoryName = cat?.name ?: "Danh mục ${item.categoryId.take(6)}"
+            categoryIcon = cat?.icon ?: pickEmoji(abs(item.categoryId.hashCode()))
+            categoryColor = pickColor(abs(item.categoryId.hashCode()))
+
+        } catch (e: Exception) {
+            scope.launch { snackbarHostState.showSnackbar(e.message ?: "Lỗi tải ngân sách") }
+            onBack()
+        } finally {
+            isLoading = false
+        }
+    }
+
     Scaffold(
-        topBar = {
-            AppHeader(
-                title = "Chỉnh sửa ngân sách",
-                showBack = true,
-                onBack = onBack
-            )
-        },
+        topBar = { AppHeader(title = "Chỉnh sửa ngân sách", showBack = true, onBack = onBack) },
         snackbarHost = { SnackbarHost(snackbarHostState) },
         contentWindowInsets = WindowInsets(0),
         containerColor = cs.background
@@ -72,7 +113,6 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
         ) {
             Spacer(Modifier.height(48.dp))
 
-            // Header card
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -80,57 +120,64 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                     .background(brush = AppGradient.BlueGreen, shape = RoundedCornerShape(16.dp))
                     .padding(16.dp)
             ) {
-                item?.let { cat ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterStart)
-                            .background(cs.surface.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
-                            .padding(horizontal = 16.dp, vertical = 14.dp)
-                    ) {
-                        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Surface(
-                                    color = cat.color,
-                                    shape = RoundedCornerShape(8.dp)
-                                ) {
-                                    Box(Modifier.size(28.dp), contentAlignment = Alignment.Center) {
-                                        Text(cat.icon)
-                                    }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterStart)
+                        .background(cs.surface.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
+                        .padding(horizontal = 16.dp, vertical = 14.dp)
+                ) {
+                    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Surface(color = categoryColor ?: cs.secondary, shape = RoundedCornerShape(8.dp)) {
+                                Box(Modifier.size(28.dp), contentAlignment = Alignment.Center) {
+                                    Text(categoryIcon ?: "💰")
                                 }
-                                Spacer(Modifier.width(12.dp))
-                                Text(cat.title, color = cs.onPrimary, fontSize = 16.sp, fontWeight = FontWeight.Medium)
                             }
-
-                            val displayTotalVnd = totalVndInitial ?: 0L
+                            Spacer(Modifier.width(12.dp))
                             Text(
-                                text = "${usedVnd} / ${displayTotalVnd}",
+                                text = categoryName ?: "Danh mục",
                                 color = cs.onPrimary,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
                             )
+                        }
 
+                        val displayTotalVnd = totalVndInitial ?: 0L
+                        Text(
+                            text = "${usedVnd} / ${displayTotalVnd} ₫",
+                            color = cs.onPrimary,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Start
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp)
+                                .background(cs.onPrimary.copy(alpha = 0.35f), RoundedCornerShape(999.dp))
+                        ) {
+                            val progress = if (displayTotalVnd > 0)
+                                (usedVnd.toFloat() / displayTotalVnd).coerceIn(0f, 1f)
+                            else 0f
                             Box(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(8.dp)
-                                    .background(cs.onPrimary.copy(alpha = 0.35f), RoundedCornerShape(999.dp))
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth((item.progress).coerceIn(0f, 1f))
-                                        .fillMaxHeight()
-                                        .background(cat.color, RoundedCornerShape(999.dp))
-                                )
-                            }
+                                    .fillMaxWidth(progress)
+                                    .fillMaxHeight()
+                                    .background(categoryColor ?: cs.primary, RoundedCornerShape(999.dp))
+                            )
                         }
                     }
-                } ?: Text("Không tìm thấy danh mục", color = cs.onPrimary, modifier = Modifier.align(Alignment.CenterStart))
+                }
             }
 
             Spacer(Modifier.height(16.dp))
 
-            // Edit card
+            if (isLoading) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                Spacer(Modifier.height(12.dp))
+            }
+
             Card(
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = cs.surface),
@@ -149,9 +196,9 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                         singleLine = true,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth(),
-                        isError = totalVndRaw.isNotEmpty() && !isUpdateEnabled,
+                        isError = totalVndRaw.isNotEmpty() && totalVndLong == null,
                         supportingText = {
-                            if (totalVndRaw.isNotEmpty() && !isUpdateEnabled) Text("Giá trị không hợp lệ")
+                            if (totalVndRaw.isNotEmpty() && totalVndLong == null) Text("Giá trị không hợp lệ")
                         }
                     )
 
@@ -159,18 +206,43 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
 
                     Button(
                         onClick = {
-                            val vnd = totalVndLong ?: 0L
-                            val newTotalM = vnd / 1_000_000.0
-                            MockData.updateBudgetTotalM(index, newTotalM)
-                            scope.launch { snackbarHostState.showSnackbar("Đã cập nhật ngân sách") }
-                            onBack()
+                            val id = budgetId
+                            val vnd = totalVndLong
+                            if (id == null || vnd == null) return@Button
+                            isSubmitting = true
+                            scope.launch {
+                                try {
+                                    val req = UpdateBudgetAmountReq(
+                                        budgetId = id,
+                                        updateAmount = vnd.toString(),
+                                        isAddAmount = false
+                                    )
+                                    val res = budgetApi.updateBudget(req)
+                                    if (res.isSuccessful) {
+                                        snackbar(scope, snackbarHostState, "Đã cập nhật ngân sách")
+                                        onBack()
+                                    } else {
+                                        val msg = res.errorBody()?.string().orEmpty()
+                                        snackbar(scope, snackbarHostState, msg.ifBlank { "Cập nhật thất bại (${res.code()})" })
+                                    }
+                                } catch (e: Exception) {
+                                    snackbar(scope, snackbarHostState, e.message ?: "Lỗi cập nhật")
+                                } finally {
+                                    isSubmitting = false
+                                }
+                            }
                         },
                         enabled = isUpdateEnabled,
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = cs.primary, contentColor = cs.onPrimary)
                     ) {
-                        Icon(painter = painterResource(R.drawable.increase), contentDescription = null)
-                        Spacer(Modifier.width(8.dp))
+                        if (isSubmitting) {
+                            CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(18.dp))
+                            Spacer(Modifier.width(8.dp))
+                        } else {
+                            Icon(painter = painterResource(R.drawable.increase), contentDescription = null)
+                            Spacer(Modifier.width(8.dp))
+                        }
                         Text("Cập nhật")
                     }
                 }
@@ -181,6 +253,7 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
             OutlinedButton(
                 onClick = { showDeleteConfirm = true },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !isSubmitting && budgetId != null,
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = cs.error),
                 border = BorderStroke(1.dp, cs.error)
             ) {
@@ -197,10 +270,25 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                     confirmButton = {
                         TextButton(
                             onClick = {
-                                MockData.deleteBudget(index)
+                                val id = budgetId ?: return@TextButton
+                                isSubmitting = true
                                 showDeleteConfirm = false
-                                scope.launch { snackbarHostState.showSnackbar("Đã xoá ngân sách") }
-                                onBack()
+                                scope.launch {
+                                    try {
+                                        val res = budgetApi.deleteBudgetById(id)
+                                        if (res.isSuccessful) {
+                                            snackbar(scope, snackbarHostState, "Đã xoá ngân sách")
+                                            onBack()
+                                        } else {
+                                            val msg = res.errorBody()?.string().orEmpty()
+                                            snackbar(scope, snackbarHostState, msg.ifBlank { "Xoá thất bại (${res.code()})" })
+                                        }
+                                    } catch (e: Exception) {
+                                        snackbar(scope, snackbarHostState, e.message ?: "Lỗi xoá ngân sách")
+                                    } finally {
+                                        isSubmitting = false
+                                    }
+                                }
                             },
                             colors = ButtonDefaults.textButtonColors(contentColor = cs.error)
                         ) { Text("Xoá") }
@@ -210,4 +298,24 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
             }
         }
     }
+}
+
+private fun String.onlyDigits(): String = this.filter { it.isDigit() }
+
+private fun snackbar(scope: kotlinx.coroutines.CoroutineScope, host: SnackbarHostState, msg: String) {
+    scope.launch { host.showSnackbar(msg) }
+}
+
+private fun pickEmoji(i: Int): String {
+    val em = listOf("🍔", "🚗", "🏠", "🎓", "🛒", "💡", "🏥", "🎉", "🧾", "🛠")
+    return em[i % em.size]
+}
+
+private fun pickColor(i: Int): Color {
+    val colors = listOf(
+        Color(0xFF4CAF50), Color(0xFF2196F3),
+        Color(0xFFFF9800), Color(0xFFE91E63),
+        Color(0xFF9C27B0)
+    )
+    return colors[i % colors.size]
 }
