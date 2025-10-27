@@ -63,7 +63,11 @@ data class ReportUiState(
 
     val isExporting: Boolean = false,
     val exportSuccessMessage: String? = null,
-    val exportErrorMessage: String? = null
+    val exportErrorMessage: String? = null,
+
+    val insightCard1: String? = null,
+    val insightCard2: String? = null,
+    val insightCard3: String? = null
 )
 
 private val apiDateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
@@ -151,9 +155,7 @@ class ReportViewModel @Inject constructor(
                 val months = (1..12).map { Month.of(it) }
                 val labels = months.map { "T${it.value}" }
 
-                val groupedByMonth = allTransactions
-                    .filter { it.dateTime.year == year }
-                    .groupBy { it.dateTime.month }
+                val groupedByMonth = allTransactions.filter { it.dateTime.year == year }.groupBy { it.dateTime.month }
                 val incomes = mutableListOf<Float>()
                 val expenses = mutableListOf<Float>()
                 var totalIncome = 0L
@@ -170,14 +172,15 @@ class ReportViewModel @Inject constructor(
 
                 val pieTxs = allTransactions.filter { it.dateTime.year == year }
                 val expensePie = calculateExpensePieData(pieTxs)
-
                 val periodBudgets = allBudgets.filter {
-                    try {
-                        LocalDateTime.parse(it.startDate, budgetDateFormatter).toLocalDate().year == year
-                    }
+                    try { LocalDateTime.parse(it.startDate, budgetDateFormatter).toLocalDate().year == year }
                     catch (e: DateTimeParseException) { false }
                 }
                 val budgetPie = calculateBudgetPieData(periodBudgets)
+
+                val insight1 = calculateInsightCard1(periodBudgets)
+                val insight2 = calculateInsightCard2(pieTxs)
+                val insight3 = calculateInsightCard3(expensePie, totalExpense)
 
                 _uiState.update { it.copy(
                     overviewLabels = labels,
@@ -188,7 +191,10 @@ class ReportViewModel @Inject constructor(
                     expensePieData = expensePie,
                     budgetPieData = budgetPie,
                     kpiIncome = totalIncome,
-                    kpiExpense = totalExpense
+                    kpiExpense = totalExpense,
+                    insightCard1 = insight1,
+                    insightCard2 = insight2,
+                    insightCard3 = insight3
                 )}
             }
 
@@ -198,12 +204,7 @@ class ReportViewModel @Inject constructor(
                 val labels = listOf("Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4")
 
                 val firstDay = today.withDayOfMonth(1)
-                val dayRanges = listOf(
-                    firstDay..firstDay.plusDays(6),
-                    firstDay.plusDays(7)..firstDay.plusDays(13),
-                    firstDay.plusDays(14)..firstDay.plusDays(20),
-                    firstDay.plusDays(21)..today.withDayOfMonth(today.lengthOfMonth())
-                )
+                val dayRanges = listOf(firstDay..firstDay.plusDays(6), firstDay.plusDays(7)..firstDay.plusDays(13), firstDay.plusDays(14)..firstDay.plusDays(20), firstDay.plusDays(21)..today.withDayOfMonth(today.lengthOfMonth()))
                 val incomes = mutableListOf<Float>()
                 val expenses = mutableListOf<Float>()
                 var totalIncome = 0L
@@ -229,7 +230,6 @@ class ReportViewModel @Inject constructor(
 
                 val pieTxs = allTransactions.filter { it.dateTime.month == currentMonth && it.dateTime.year == currentYear }
                 val expensePie = calculateExpensePieData(pieTxs)
-
                 val periodBudgets = allBudgets.filter {
                     try {
                         val d = LocalDateTime.parse(it.startDate, budgetDateFormatter).toLocalDate()
@@ -237,6 +237,10 @@ class ReportViewModel @Inject constructor(
                     } catch (e: DateTimeParseException) { false }
                 }
                 val budgetPie = calculateBudgetPieData(periodBudgets)
+
+                val insight1 = calculateInsightCard1(periodBudgets)
+                val insight2 = calculateInsightCard2(pieTxs)
+                val insight3 = calculateInsightCard3(expensePie, totalExpense)
 
                 _uiState.update { it.copy(
                     overviewLabels = labels,
@@ -247,7 +251,10 @@ class ReportViewModel @Inject constructor(
                     expensePieData = expensePie,
                     budgetPieData = budgetPie,
                     kpiIncome = totalIncome,
-                    kpiExpense = totalExpense
+                    kpiExpense = totalExpense,
+                    insightCard1 = insight1,
+                    insightCard2 = insight2,
+                    insightCard3 = insight3
                 )}
             }
 
@@ -271,13 +278,15 @@ class ReportViewModel @Inject constructor(
 
                 val pieTxs = allTransactions.filter { it.dateTime.toLocalDate() in weekDays }
                 val expensePie = calculateExpensePieData(pieTxs)
-
                 val periodBudgets = allBudgets.filter {
-                    try {
-                        LocalDateTime.parse(it.startDate, budgetDateFormatter).toLocalDate() in weekDays
-                    } catch (e: DateTimeParseException) { false }
+                    try { LocalDateTime.parse(it.startDate, budgetDateFormatter).toLocalDate() in weekDays }
+                    catch (e: DateTimeParseException) { false }
                 }
                 val budgetPie = calculateBudgetPieData(periodBudgets)
+
+                val insight1 = calculateInsightCard1(periodBudgets)
+                val insight2 = calculateInsightCard2(pieTxs)
+                val insight3 = calculateInsightCard3(expensePie, totalExpense)
 
                 _uiState.update { it.copy(
                     overviewLabels = overviewLbls,
@@ -288,9 +297,65 @@ class ReportViewModel @Inject constructor(
                     expensePieData = expensePie,
                     budgetPieData = budgetPie,
                     kpiIncome = totalIncome,
-                    kpiExpense = totalExpense
+                    kpiExpense = totalExpense,
+                    insightCard1 = insight1,
+                    insightCard2 = insight2,
+                    insightCard3 = insight3
                 )}
             }
+        }
+    }
+
+    private fun calculateInsightCard1(budgets: List<BudgetDto>): String {
+        val overspentCount = budgets.count { (toMoney(it.currentAmount) ?: 0.0) < 0.0 }
+        return if (overspentCount > 0) {
+            "Bạn đã chi tiêu vượt $overspentCount ngân sách trong kỳ này."
+        } else {
+            "Tốt! Bạn chưa vượt ngân sách nào trong kỳ này."
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateInsightCard2(expenseTxs: List<TxUi>): String {
+        if (expenseTxs.isEmpty()) return "Không có dữ liệu chi tiêu trong kỳ."
+
+        val topDay = expenseTxs
+            .groupBy { it.dateTime.dayOfWeek }
+            .mapValues { (_, txs) -> txs.sumOf { it.amount.toLongOrNull() ?: 0L } }
+            .maxByOrNull { it.value }
+            ?.key
+
+        return if (topDay != null) {
+            "Bạn chi tiêu nhiều nhất vào ${topDay.toVietnamese()}."
+        } else {
+            "Không có chi tiêu trong kỳ này."
+        }
+    }
+
+    private fun calculateInsightCard3(expensePie: List<CategoryPieData>, totalExpense: Long): String {
+        val topCategory = expensePie.firstOrNull()
+
+        val totalExpenseFloat = totalExpense / 1_000_000f
+
+        if (topCategory == null || topCategory.value <= 0 || totalExpenseFloat <= 0) {
+            return "Bạn chưa có chi tiêu nào trong kỳ này."
+        }
+
+        val percentage = (topCategory.value / totalExpenseFloat * 100).toInt()
+
+        return "Danh mục “${topCategory.label}” chiếm ${percentage}% tổng chi tiêu."
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun DayOfWeek.toVietnamese(): String {
+        return when (this) {
+            DayOfWeek.MONDAY -> "Thứ Hai"
+            DayOfWeek.TUESDAY -> "Thứ Ba"
+            DayOfWeek.WEDNESDAY -> "Thứ Tư"
+            DayOfWeek.THURSDAY -> "Thứ Năm"
+            DayOfWeek.FRIDAY -> "Thứ Sáu"
+            DayOfWeek.SATURDAY -> "Thứ Bảy"
+            DayOfWeek.SUNDAY -> "Chủ Nhật"
         }
     }
 
@@ -344,54 +409,81 @@ class ReportViewModel @Inject constructor(
         if (hasDot) return if (raw.count { it == '.' } > 1) raw.replace(".", "") else raw
         return raw
     }
+
     fun exportExcelReport(startDate: LocalDate, endDate: LocalDate) {
         viewModelScope.launch {
             _uiState.update { it.copy(isExporting = true, exportErrorMessage = null, exportSuccessMessage = null) }
-
             val userId = AuthStore.userId.orEmpty()
             if (userId.isBlank()) {
                 _uiState.update { it.copy(isExporting = false, exportErrorMessage = "Bạn chưa đăng nhập.") }
                 return@launch
             }
-
             val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
             val startStr = startDate.format(formatter)
             val endStr = endDate.format(formatter)
-
             try {
                 val response: Response<ResponseBody> = reportApi.exportReport(
                     userId = userId,
                     startDate = startStr,
                     endDate = endStr
                 )
-
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
                     val contentDisposition = response.headers()["content-disposition"]
                     val filename = contentDisposition
                         ?.substringAfter("filename=\"", "")
                         ?.substringBefore("\"", "BaoCaoTaiChinh.xlsx") ?: "BaoCaoTaiChinh_${startStr}_${endStr}.xlsx"
-
-                    saveFileToDownloads(body, filename)
+                    saveFileToDownloads(body, filename, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                     _uiState.update { it.copy(isExporting = false, exportSuccessMessage = "Đã lưu file: $filename") }
                 } else {
                     _uiState.update { it.copy(isExporting = false, exportErrorMessage = "Lỗi: ${response.code()}") }
                 }
             } catch (e: Exception) {
-                Log.e("ReportViewModel", "Export failed", e)
-                _uiState.update { it.copy(isExporting = false, exportErrorMessage = e.message ?: "Export thất bại") }
+                Log.e("ReportViewModel", "Export Excel failed", e)
+                _uiState.update { it.copy(isExporting = false, exportErrorMessage = e.message ?: "Export Excel thất bại") }
             }
         }
     }
 
-    private fun saveFileToDownloads(body: ResponseBody, filename: String) {
+    fun exportPdfReport(startDate: LocalDate, endDate: LocalDate) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isExporting = true, exportErrorMessage = null, exportSuccessMessage = null) }
+            val userId = AuthStore.userId.orEmpty()
+            if (userId.isBlank()) {
+                _uiState.update { it.copy(isExporting = false, exportErrorMessage = "Bạn chưa đăng nhập.") }
+                return@launch
+            }
+            val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+            val startStr = startDate.format(formatter)
+            val endStr = endDate.format(formatter)
+            try {
+                val response: Response<ResponseBody> = reportApi.exportReportPdf(
+                    userId = userId,
+                    startDate = startStr,
+                    endDate = endStr
+                )
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    val filename = "BaoCaoTaiChinh_${startStr}_${endStr}.pdf"
+                    saveFileToDownloads(body, filename, "application/pdf")
+                    _uiState.update { it.copy(isExporting = false, exportSuccessMessage = "Đã lưu file: $filename") }
+                } else {
+                    _uiState.update { it.copy(isExporting = false, exportErrorMessage = "Chức năng xuất PDF chưa được hỗ trợ (Lỗi: ${response.code()})") }
+                }
+            } catch (e: Exception) {
+                Log.e("ReportViewModel", "Export PDF failed (API likely missing)", e)
+                _uiState.update { it.copy(isExporting = false, exportErrorMessage = "Chức năng xuất PDF chưa được hỗ trợ.") }
+            }
+        }
+    }
+
+    private fun saveFileToDownloads(body: ResponseBody, filename: String, mimeType: String) {
         val resolver = context.contentResolver
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-            put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
-
         val uri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
         if (uri != null) {
             resolver.openOutputStream(uri).use { outputStream ->
@@ -414,16 +506,12 @@ private fun TransactionDto.toTxUi(categoryMap: Map<String, CategoryDto>): TxUi {
     } catch (e: Exception) {
         LocalDateTime.now()
     }
-
     val isIncome = this.type.equals("Income", ignoreCase = true)
     val category = categoryMap[this.categoryId]
-
     val title = category?.name ?: (if (isIncome) "Thu nhập" else "Chi tiêu")
-
     val noteText = this.note?.takeIf { it.isNotBlank() && it != "string" } ?: "Không có ghi chú"
     val timeString = localDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
     val subtitle = "$noteText • $timeString"
-
     return TxUi(
         id = this.transactionId,
         title = title,

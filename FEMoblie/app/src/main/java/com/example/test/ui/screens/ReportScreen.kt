@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.ui.components.AppHeader
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
+import com.example.test.vm.CategoryPieData
 import com.example.test.vm.ReportViewModel
 import kotlin.math.ceil
 import kotlin.math.max
@@ -40,6 +41,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+
 private data class ReportSlice(val label: String, val value: Float, val color: Color)
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -59,7 +61,8 @@ fun ReportScreen(
     var tab by remember { mutableStateOf(0) }
     val scheme = MaterialTheme.colorScheme
 
-    var showExportDialog by remember { mutableStateOf(false) }
+    var showExportExcelDialog by remember { mutableStateOf(false) }
+    var showExportPdfDialog by remember { mutableStateOf(false) }
 
     val pieSlices: List<ReportSlice> = remember(uiState.budgetPieData, scheme) {
         val palette = listOf(
@@ -75,34 +78,35 @@ fun ReportScreen(
         }
     }
 
-    if (showExportDialog) {
+    if (showExportExcelDialog) {
         ExportDateRangeDialog(
-            onDismiss = { showExportDialog = false },
+            onDismiss = { showExportExcelDialog = false },
             onExport = { start, end ->
-                showExportDialog = false
+                showExportExcelDialog = false
                 viewModel.exportExcelReport(start, end)
+            }
+        )
+    }
+    if (showExportPdfDialog) {
+        ExportDateRangeDialog(
+            onDismiss = { showExportPdfDialog = false },
+            onExport = { start, end ->
+                showExportPdfDialog = false
+                viewModel.exportPdfReport(start, end)
             }
         )
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
-
     LaunchedEffect(uiState.exportSuccessMessage) {
         if (uiState.exportSuccessMessage != null) {
-            snackbarHostState.showSnackbar(
-                message = uiState.exportSuccessMessage!!,
-                duration = SnackbarDuration.Short
-            )
+            snackbarHostState.showSnackbar(message = uiState.exportSuccessMessage!!, duration = SnackbarDuration.Short)
             viewModel.clearExportMessages()
         }
     }
     LaunchedEffect(uiState.exportErrorMessage) {
         if (uiState.exportErrorMessage != null) {
-            snackbarHostState.showSnackbar(
-                message = "Lỗi: ${uiState.exportErrorMessage}",
-                duration = SnackbarDuration.Short,
-                withDismissAction = true
-            )
+            snackbarHostState.showSnackbar(message = uiState.exportErrorMessage!!, duration = SnackbarDuration.Short, withDismissAction = true)
             viewModel.clearExportMessages()
         }
     }
@@ -112,20 +116,10 @@ fun ReportScreen(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            AppHeader(
-                title = "Báo cáo",
-                showBack = false,
-            )
+            AppHeader(title = "Báo cáo", showBack = false)
         },
         bottomBar = {
-            MainBottomBar(
-                selected = BottomTab.REPORT,
-                onHome = onHome,
-                onReport = onReport,
-                onCamera = onCamera,
-                onSaving = onSaving,
-                onSetting = onSetting
-            )
+            MainBottomBar(selected = BottomTab.REPORT, onHome = onHome, onReport = onReport, onCamera = onCamera, onSaving = onSaving, onSetting = onSetting)
         }
     ) { innerPadding ->
         LazyColumn(
@@ -136,37 +130,30 @@ fun ReportScreen(
                 .consumeWindowInsets(innerPadding),
             contentPadding = PaddingValues(top = 24.dp, bottom = 40.dp)
         ) {
+
             item {
-                Row(
-                    Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     SegTab("Tuần", uiState.currentPeriod == 0, scheme.secondary, scheme.onSecondary) { viewModel.setPeriod(0) }
                     SegTab("Tháng", uiState.currentPeriod == 1, scheme.secondary, scheme.onSecondary) { viewModel.setPeriod(1) }
                     SegTab("Năm", uiState.currentPeriod == 2, scheme.secondary, scheme.onSecondary) { viewModel.setPeriod(2) }
                 }
                 Spacer(Modifier.height(12.dp))
             }
+
             item {
-                Row(
-                    Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     val incomeM = uiState.kpiIncome / 1_000_000f
                     val expenseM = uiState.kpiExpense / 1_000_000f
                     val savingM = (uiState.kpiIncome - uiState.kpiExpense) / 1_000_000f
-
                     KpiCard("Thu nhập", "+${"%.1f".format(incomeM)}M", scheme.tertiary, Icons.Outlined.TrendingUp, scheme.tertiary, scheme.tertiary.copy(alpha = 0.12f), Modifier.weight(1f))
                     KpiCard("Chi tiêu", "-${"%.1f".format(expenseM)}M", scheme.error, Icons.Outlined.TrendingDown, scheme.error, scheme.error.copy(alpha = 0.12f), Modifier.weight(1f))
                     KpiCard("Tiết kiệm", "${if (savingM > 0) "+" else ""}${"%.1f".format(savingM)}M", scheme.primary, Icons.Outlined.Savings, scheme.primary, scheme.primary.copy(alpha = 0.12f), Modifier.weight(1f))
                 }
                 Spacer(Modifier.height(12.dp))
             }
+
             item {
-                Row(
-                    Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     SegTab("Tổng quan", tab == 0) { tab = 0 }
                     SegTab("Danh mục", tab == 1) { tab = 1 }
                     SegTab("Xu hướng", tab == 2) { tab = 2 }
@@ -175,48 +162,25 @@ fun ReportScreen(
             }
 
             if (uiState.isLoading) {
-                item {
-                    Box(modifier = Modifier.fillMaxWidth().height(250.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                }
+                item { Box(modifier = Modifier.fillMaxWidth().height(250.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator() } }
             } else if (uiState.error != null) {
-                item {
-                    Box(modifier = Modifier.fillMaxWidth().height(250.dp).padding(horizontal = 20.dp), contentAlignment = Alignment.Center) {
-                        Text(text = "Lỗi: ${uiState.error}", color = scheme.error, textAlign = TextAlign.Center)
-                    }
-                }
+                item { Box(modifier = Modifier.fillMaxWidth().height(250.dp).padding(horizontal = 20.dp), contentAlignment = Alignment.Center) { Text(text = "Lỗi: ${uiState.error}", color = scheme.error, textAlign = TextAlign.Center) } }
             } else {
                 item {
-                    OutlinedCard(
-                        shape = RoundedCornerShape(16.dp),
-                        border = CardDefaults.outlinedCardBorder(),
-                        colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
-                    ) {
+                    OutlinedCard(shape = RoundedCornerShape(16.dp), border = CardDefaults.outlinedCardBorder(), colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface), modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
                         when (tab) {
                             0 -> {
                                 val maxV = max(uiState.overviewIncome.maxOrNull() ?: 0f, uiState.overviewExpense.maxOrNull() ?: 0f)
                                 val ticks = yTicks(maxV)
-                                ChartWithAxes(
-                                    yTicks = ticks,
-                                    xLabels = uiState.overviewLabels,
-                                    chart = { BarCompareChart(income = uiState.overviewIncome, expense = uiState.overviewExpense, yMax = ticks.last()) }
-                                )
+                                ChartWithAxes(yTicks = ticks, xLabels = uiState.overviewLabels, chart = { BarCompareChart(income = uiState.overviewIncome, expense = uiState.overviewExpense, yMax = ticks.last()) })
                             }
                             1 -> {
-                                Column(Modifier.padding(12.dp)) {
-                                    PieChartDynamic(pieSlices)
-                                }
+                                Column(Modifier.padding(12.dp)) { PieChartDynamic(pieSlices) }
                             }
                             else -> {
                                 val maxV = uiState.trendExpense.maxOrNull() ?: 0f
                                 val ticks = yTicks(maxV)
-                                ChartWithAxes(
-                                    yTicks = ticks,
-                                    xLabels = uiState.trendLabels,
-                                    chart = { LineChart(pointsM = uiState.trendExpense, yMax = ticks.last()) }
-                                )
+                                ChartWithAxes(yTicks = ticks, xLabels = uiState.trendLabels, chart = { LineChart(pointsM = uiState.trendExpense, yMax = ticks.last()) })
                             }
                         }
                     }
@@ -229,12 +193,40 @@ fun ReportScreen(
                     shape = RoundedCornerShape(16.dp),
                     border = CardDefaults.outlinedCardBorder(),
                     colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
                 ) {
-                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        InfoChip(Icons.Outlined.TrendingUp, "Bạn đã tiết kiệm được 18% so với tháng trước", scheme.primaryContainer, scheme.primary)
-                        InfoChip(Icons.Outlined.Event, "Chi tiêu nhiều nhất vào thứ 6 và chủ nhật", scheme.secondaryContainer, scheme.secondary)
-                        InfoChip(Icons.Outlined.Paid, "Danh mục “Ăn uống” chiếm 35% tổng chi tiêu", scheme.tertiaryContainer, scheme.tertiary)
+                    Column(
+                        Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        if (!uiState.insightCard1.isNullOrBlank()) {
+                            InfoChip(
+                                Icons.Outlined.AccountBalanceWallet,
+                                uiState.insightCard1!!,
+                                scheme.primaryContainer,
+                                scheme.primary
+                            )
+                        }
+
+                        if (!uiState.insightCard2.isNullOrBlank()) {
+                            InfoChip(
+                                Icons.Outlined.Event,
+                                uiState.insightCard2!!,
+                                scheme.secondaryContainer,
+                                scheme.secondary
+                            )
+                        }
+
+                        if (!uiState.insightCard3.isNullOrBlank()) {
+                            InfoChip(
+                                Icons.Outlined.Paid,
+                                uiState.insightCard3!!,
+                                scheme.tertiaryContainer,
+                                scheme.tertiary
+                            )
+                        }
                     }
                 }
                 Spacer(Modifier.height(16.dp))
@@ -252,31 +244,30 @@ fun ReportScreen(
                     Column(Modifier.padding(16.dp)) {
                         Text("Xuất báo cáo", fontWeight = FontWeight.Medium, color = scheme.onSurface)
                         Spacer(Modifier.height(12.dp))
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             OutlinedButton(
-                                onClick = onExportPdf,
-                                modifier = Modifier.weight(1f).height(48.dp),
-                                shape = RoundedCornerShape(12.dp),
-                                border = BorderStroke(1.dp, scheme.outlineVariant)
-                            ) {
-                                Icon(Icons.Outlined.FileDownload, null)
-                                Spacer(Modifier.width(8.dp))
-                                Text("Xuất PDF")
-                            }
-
-                            OutlinedButton(
-                                onClick = { showExportDialog = true },
+                                onClick = { showExportPdfDialog = true },
                                 enabled = !uiState.isExporting,
                                 modifier = Modifier.weight(1f).height(48.dp),
                                 shape = RoundedCornerShape(12.dp),
                                 border = BorderStroke(1.dp, scheme.outlineVariant)
                             ) {
-                                if (uiState.isExporting) {
-                                    CircularProgressIndicator(Modifier.size(24.dp))
-                                } else {
+                                if (uiState.isExporting) { CircularProgressIndicator(Modifier.size(24.dp)) }
+                                else {
+                                    Icon(Icons.Outlined.FileDownload, null)
+                                    Spacer(Modifier.width(8.dp))
+                                    Text("Xuất PDF")
+                                }
+                            }
+                            OutlinedButton(
+                                onClick = { showExportExcelDialog = true },
+                                enabled = !uiState.isExporting,
+                                modifier = Modifier.weight(1f).height(48.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                border = BorderStroke(1.dp, scheme.outlineVariant)
+                            ) {
+                                if (uiState.isExporting) { CircularProgressIndicator(Modifier.size(24.dp)) }
+                                else {
                                     Icon(Icons.Outlined.FileDownload, null)
                                     Spacer(Modifier.width(8.dp))
                                     Text("Xuất Excel")
@@ -309,30 +300,20 @@ private fun ExportDateRangeDialog(
 
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-    val startDatePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = startDate.atStartOfDay(zone).toInstant().toEpochMilli()
-    )
-    val endDatePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = endDate.atStartOfDay(zone).toInstant().toEpochMilli()
-    )
+    val startDatePickerState = rememberDatePickerState(initialSelectedDateMillis = startDate.atStartOfDay(zone).toInstant().toEpochMilli())
+    val endDatePickerState = rememberDatePickerState(initialSelectedDateMillis = endDate.atStartOfDay(zone).toInstant().toEpochMilli())
 
     if (showStartDatePicker) {
         DatePickerDialog(
             onDismissRequest = { showStartDatePicker = false },
             confirmButton = {
                 TextButton(onClick = {
-                    startDatePickerState.selectedDateMillis?.let {
-                        startDate = Instant.ofEpochMilli(it).atZone(zone).toLocalDate()
-                    }
+                    startDatePickerState.selectedDateMillis?.let { startDate = Instant.ofEpochMilli(it).atZone(zone).toLocalDate() }
                     showStartDatePicker = false
                 }) { Text("OK") }
             },
-            dismissButton = {
-                TextButton(onClick = { showStartDatePicker = false }) { Text("Huỷ") }
-            }
-        ) {
-            DatePicker(state = startDatePickerState)
-        }
+            dismissButton = { TextButton(onClick = { showStartDatePicker = false }) { Text("Huỷ") } }
+        ) { DatePicker(state = startDatePickerState) }
     }
 
     if (showEndDatePicker) {
@@ -340,18 +321,12 @@ private fun ExportDateRangeDialog(
             onDismissRequest = { showEndDatePicker = false },
             confirmButton = {
                 TextButton(onClick = {
-                    endDatePickerState.selectedDateMillis?.let {
-                        endDate = Instant.ofEpochMilli(it).atZone(zone).toLocalDate()
-                    }
+                    endDatePickerState.selectedDateMillis?.let { endDate = Instant.ofEpochMilli(it).atZone(zone).toLocalDate() }
                     showEndDatePicker = false
                 }) { Text("OK") }
             },
-            dismissButton = {
-                TextButton(onClick = { showEndDatePicker = false }) { Text("Huỷ") }
-            }
-        ) {
-            DatePicker(state = endDatePickerState)
-        }
+            dismissButton = { TextButton(onClick = { showEndDatePicker = false }) { Text("Huỷ") } }
+        ) { DatePicker(state = endDatePickerState) }
     }
 
     AlertDialog(
@@ -364,11 +339,7 @@ private fun ExportDateRangeDialog(
                     onValueChange = {},
                     readOnly = true,
                     label = { Text("Từ ngày") },
-                    trailingIcon = {
-                        IconButton(onClick = { showStartDatePicker = true }) {
-                            Icon(Icons.Outlined.EditCalendar, "Chọn ngày bắt đầu")
-                        }
-                    },
+                    trailingIcon = { IconButton(onClick = { showStartDatePicker = true }) { Icon(Icons.Outlined.EditCalendar, "Chọn ngày bắt đầu") } },
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
@@ -376,11 +347,7 @@ private fun ExportDateRangeDialog(
                     onValueChange = {},
                     readOnly = true,
                     label = { Text("Đến ngày") },
-                    trailingIcon = {
-                        IconButton(onClick = { showEndDatePicker = true }) {
-                            Icon(Icons.Outlined.EditCalendar, "Chọn ngày kết thúc")
-                        }
-                    },
+                    trailingIcon = { IconButton(onClick = { showEndDatePicker = true }) { Icon(Icons.Outlined.EditCalendar, "Chọn ngày kết thúc") } },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -389,72 +356,39 @@ private fun ExportDateRangeDialog(
             TextButton(
                 onClick = { onExport(startDate, endDate) },
                 enabled = startDate.isBefore(endDate) || startDate.isEqual(endDate)
-            ) {
-                Text("Xuất file")
-            }
+            ) { Text("Xuất file") }
         },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Huỷ")
-            }
-        }
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Huỷ") } }
     )
 }
-
 
 private fun yTicks(maxValue: Float): List<Float> {
     val m = if (maxValue <= 0f) 1f else maxValue
     val step = max(0.5f, ceil(m / 4f * 2f) / 2f)
     return (0..4).map { it * step }
 }
-
 @Composable
-private fun ChartWithAxes(
-    yTicks: List<Float>,
-    xLabels: List<String>,
-    chart: @Composable BoxScope.() -> Unit
-) {
+private fun ChartWithAxes(yTicks: List<Float>, xLabels: List<String>, chart: @Composable BoxScope.() -> Unit) {
     val yAxisWidth = 44.dp
     val h = 200.dp
-
     Column(Modifier.fillMaxWidth().padding(12.dp)) {
-
         Row(Modifier.fillMaxWidth()) {
-            Column(
-                modifier = Modifier
-                    .width(yAxisWidth)
-                    .height(h),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                yTicks.reversed().forEach { v ->
-                    Text("${v}M", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
+            Column(modifier = Modifier.width(yAxisWidth).height(h), verticalArrangement = Arrangement.SpaceBetween) {
+                yTicks.reversed().forEach { v -> Text("${v}M", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant) }
             }
             Box(Modifier.height(h).weight(1f)) { chart() }
         }
-
         Spacer(Modifier.height(8.dp))
-
         Row(Modifier.fillMaxWidth()) {
             Spacer(Modifier.width(yAxisWidth))
             Row(Modifier.weight(1f)) {
                 if (xLabels.isNotEmpty()) {
-                    xLabels.forEach {
-                        Text(
-                            it,
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                    xLabels.forEach { Text(it, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f), textAlign = TextAlign.Center) }
                 }
             }
         }
     }
 }
-
-
 @Composable
 private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Float) {
     val scheme = MaterialTheme.colorScheme
@@ -470,12 +404,10 @@ private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Flo
         val plotH = h - pad * 2
         val groupW = plotW / n
         val barW = (groupW * 0.8f) / 2f
-
         for (i in 1 until 4) {
             val y = pad + plotH * i / 4f
             drawLine(grid, Offset(pad, y), Offset(pad + plotW, y), 1f)
         }
-
         for (i in 0 until n) {
             val inc = income.getOrNull(i) ?: 0f
             val exp = expense.getOrNull(i) ?: 0f
@@ -487,7 +419,6 @@ private fun BarCompareChart(income: List<Float>, expense: List<Float>, yMax: Flo
         }
     }
 }
-
 @Composable
 private fun LineChart(pointsM: List<Float>, yMax: Float) {
     val scheme = MaterialTheme.colorScheme
@@ -500,12 +431,10 @@ private fun LineChart(pointsM: List<Float>, yMax: Float) {
         val w = size.width - pad * 2
         val h = size.height - pad * 2
         val stepX = if (pointsM.size > 1) w / (pointsM.size - 1) else w
-
         for (i in 1 until 4) {
             val y = pad + h * i / 4f
             drawLine(grid, Offset(pad, y), Offset(pad + w, y), 1f)
         }
-
         val path = Path()
         pointsM.forEachIndexed { i, v ->
             val x = pad + stepX * i
@@ -521,15 +450,9 @@ private fun LineChart(pointsM: List<Float>, yMax: Float) {
         }
     }
 }
-
 @Composable
 private fun PieChartDynamic(data: List<ReportSlice>) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row(modifier = Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
         Canvas(Modifier.size(140.dp)) {
             val total = data.sumOf { it.value.toDouble() }.toFloat().coerceAtLeast(0.001f)
             val sizePx = min(size.width, size.height)
@@ -543,12 +466,7 @@ private fun PieChartDynamic(data: List<ReportSlice>) {
             }
         }
         Spacer(Modifier.width(12.dp))
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(4.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        Column(modifier = Modifier.weight(1f).padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (data.isEmpty()) {
                 Text("Không có dữ liệu ngân sách", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
@@ -556,75 +474,31 @@ private fun PieChartDynamic(data: List<ReportSlice>) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(10.dp).background(it.color, CircleShape))
                     Spacer(Modifier.width(8.dp))
-                    Text(
-                        it.label,
-                        Modifier.weight(1f),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
-                    )
+                    Text(it.label, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
                     Text("${"%.1f".format(it.value)}M", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
     }
 }
-
 @Composable
-private fun SegTab(
-    text: String,
-    selected: Boolean,
-    selectedColor: Color = MaterialTheme.colorScheme.primary,
-    selectedLabel: Color = MaterialTheme.colorScheme.onPrimary,
-    onClick: () -> Unit
-) {
+private fun SegTab(text: String, selected: Boolean, selectedColor: Color = MaterialTheme.colorScheme.primary, selectedLabel: Color = MaterialTheme.colorScheme.onPrimary, onClick: () -> Unit) {
     FilterChip(
         selected = selected,
         onClick = onClick,
         label = { Text(text, fontWeight = FontWeight.Medium) },
         shape = RoundedCornerShape(12.dp),
-        colors = FilterChipDefaults.filterChipColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            labelColor = MaterialTheme.colorScheme.onSurface,
-            selectedContainerColor = selectedColor,
-            selectedLabelColor = selectedLabel
-        ),
-        border = FilterChipDefaults.filterChipBorder(
-            enabled = true,
-            selected = selected,
-            borderColor = if (selected) Color.Transparent else MaterialTheme.colorScheme.outlineVariant,
-            borderWidth = if (selected) 0.dp else 1.dp
-        )
+        colors = FilterChipDefaults.filterChipColors(containerColor = MaterialTheme.colorScheme.surface, labelColor = MaterialTheme.colorScheme.onSurface, selectedContainerColor = selectedColor, selectedLabelColor = selectedLabel),
+        border = FilterChipDefaults.filterChipBorder(enabled = true, selected = selected, borderColor = if (selected) Color.Transparent else MaterialTheme.colorScheme.outlineVariant, borderWidth = if (selected) 0.dp else 1.dp)
     )
 }
-
 @Composable
-private fun KpiCard(
-    title: String,
-    value: String,
-    valueColor: Color,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    iconTint: Color,
-    iconBg: Color,
-    modifier: Modifier = Modifier
-) {
-    OutlinedCard(
-        modifier = modifier.height(112.dp),
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(14.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
+private fun KpiCard(title: String, value: String, valueColor: Color, icon: androidx.compose.ui.graphics.vector.ImageVector, iconTint: Color, iconBg: Color, modifier: Modifier = Modifier) {
+    OutlinedCard(modifier = modifier.height(112.dp), shape = RoundedCornerShape(18.dp), colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface), border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
+        Column(modifier = Modifier.fillMaxSize().padding(14.dp), verticalArrangement = Arrangement.SpaceBetween) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Surface(shape = CircleShape, color = iconBg, modifier = Modifier.size(34.dp)) {
-                    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                        Icon(icon, null, tint = iconTint)
-                    }
+                    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) { Icon(icon, null, tint = iconTint) }
                 }
                 Spacer(Modifier.width(10.dp))
                 Text(title, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, maxLines = 2, color = MaterialTheme.colorScheme.onSurface)
@@ -633,7 +507,6 @@ private fun KpiCard(
         }
     }
 }
-
 @Composable
 private fun InfoChip(icon: androidx.compose.ui.graphics.vector.ImageVector, text: String, bg: Color, tint: Color) {
     Surface(color = bg, shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
