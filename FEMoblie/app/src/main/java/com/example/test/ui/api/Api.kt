@@ -18,11 +18,6 @@ object AuthStore {
     private val _token = MutableStateFlow<String?>(null)
 
     val userIdFlow: StateFlow<String?> = _userId.asStateFlow()
-    val userNameFlow: StateFlow<String?> = _userName.asStateFlow()
-    val userEmailFlow: StateFlow<String?> = _userEmail.asStateFlow()
-    val userPhoneFlow: StateFlow<String?> = _userPhone.asStateFlow()
-    val userCreationDateFlow: StateFlow<String?> = _userCreationDate.asStateFlow()
-    val tokenFlow: StateFlow<String?> = _token.asStateFlow()
 
     var userId: String?
         get() = _userId.value
@@ -122,8 +117,10 @@ object Api {
     val chatbotService: ChatbotApi by lazy {
         retrofit.create(ChatbotApi::class.java)
     }
-
     val budgetService: BudgetApi by lazy {
         retrofit.create(BudgetApi::class.java)
+    }
+    val reportService: ReportApi by lazy {
+        retrofit.create(ReportApi::class.java)
     }
 }

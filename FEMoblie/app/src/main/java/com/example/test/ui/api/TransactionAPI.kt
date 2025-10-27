@@ -1,6 +1,5 @@
 package com.example.test.ui.api
 
-import com.example.test.ui.models.CategoryDto
 import com.example.test.ui.models.CreateTransactionRequest
 import com.example.test.ui.models.CreateTransactionResponse
 import com.example.test.ui.models.DeleteTransactionRequest

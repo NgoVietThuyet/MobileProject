@@ -36,7 +36,10 @@ import com.example.test.vm.ReportViewModel
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
-
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 private data class ReportSlice(val label: String, val value: Float, val color: Color)
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -52,12 +55,11 @@ fun ReportScreen(
     viewModel: ReportViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     var tab by remember { mutableStateOf(0) }
-
     val scheme = MaterialTheme.colorScheme
+
+    var showExportDialog by remember { mutableStateOf(false) }
 
     val pieSlices: List<ReportSlice> = remember(uiState.budgetPieData, scheme) {
         val palette = listOf(
@@ -73,8 +75,41 @@ fun ReportScreen(
         }
     }
 
+    if (showExportDialog) {
+        ExportDateRangeDialog(
+            onDismiss = { showExportDialog = false },
+            onExport = { start, end ->
+                showExportDialog = false
+                viewModel.exportExcelReport(start, end)
+            }
+        )
+    }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(uiState.exportSuccessMessage) {
+        if (uiState.exportSuccessMessage != null) {
+            snackbarHostState.showSnackbar(
+                message = uiState.exportSuccessMessage!!,
+                duration = SnackbarDuration.Short
+            )
+            viewModel.clearExportMessages()
+        }
+    }
+    LaunchedEffect(uiState.exportErrorMessage) {
+        if (uiState.exportErrorMessage != null) {
+            snackbarHostState.showSnackbar(
+                message = "Lỗi: ${uiState.exportErrorMessage}",
+                duration = SnackbarDuration.Short,
+                withDismissAction = true
+            )
+            viewModel.clearExportMessages()
+        }
+    }
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0),
         topBar = {
             AppHeader(
@@ -103,80 +138,33 @@ fun ReportScreen(
         ) {
             item {
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    SegTab(
-                        "Tuần",
-                        uiState.currentPeriod == 0,
-                        selectedColor = scheme.secondary,
-                        selectedLabel = scheme.onSecondary
-                    ) { viewModel.setPeriod(0) }
-                    SegTab(
-                        "Tháng",
-                        uiState.currentPeriod == 1,
-                        selectedColor = scheme.secondary,
-                        selectedLabel = scheme.onSecondary
-                    ) { viewModel.setPeriod(1) }
-                    SegTab(
-                        "Năm",
-                        uiState.currentPeriod == 2,
-                        selectedColor = scheme.secondary,
-                        selectedLabel = scheme.onSecondary
-                    ) { viewModel.setPeriod(2) }
+                    SegTab("Tuần", uiState.currentPeriod == 0, scheme.secondary, scheme.onSecondary) { viewModel.setPeriod(0) }
+                    SegTab("Tháng", uiState.currentPeriod == 1, scheme.secondary, scheme.onSecondary) { viewModel.setPeriod(1) }
+                    SegTab("Năm", uiState.currentPeriod == 2, scheme.secondary, scheme.onSecondary) { viewModel.setPeriod(2) }
                 }
                 Spacer(Modifier.height(12.dp))
             }
-
             item {
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     val incomeM = uiState.kpiIncome / 1_000_000f
                     val expenseM = uiState.kpiExpense / 1_000_000f
                     val savingM = (uiState.kpiIncome - uiState.kpiExpense) / 1_000_000f
 
-                    KpiCard(
-                        title = "Thu nhập",
-                        value = "+${"%.1f".format(incomeM)}M",
-                        valueColor = scheme.tertiary,
-                        icon = Icons.Outlined.TrendingUp,
-                        iconTint = scheme.tertiary,
-                        iconBg = scheme.tertiary.copy(alpha = 0.12f),
-                        modifier = Modifier.weight(1f)
-                    )
-                    KpiCard(
-                        title = "Chi tiêu",
-                        value = "-${"%.1f".format(expenseM)}M",
-                        valueColor = scheme.error,
-                        icon = Icons.Outlined.TrendingDown,
-                        iconTint = scheme.error,
-                        iconBg = scheme.error.copy(alpha = 0.12f),
-                        modifier = Modifier.weight(1f)
-                    )
-                    KpiCard(
-                        title = "Tiết kiệm",
-                        value = "${if (savingM > 0) "+" else ""}${"%.1f".format(savingM)}M",
-                        valueColor = scheme.primary,
-                        icon = Icons.Outlined.Savings,
-                        iconTint = scheme.primary,
-                        iconBg = scheme.primary.copy(alpha = 0.12f),
-                        modifier = Modifier.weight(1f)
-                    )
+                    KpiCard("Thu nhập", "+${"%.1f".format(incomeM)}M", scheme.tertiary, Icons.Outlined.TrendingUp, scheme.tertiary, scheme.tertiary.copy(alpha = 0.12f), Modifier.weight(1f))
+                    KpiCard("Chi tiêu", "-${"%.1f".format(expenseM)}M", scheme.error, Icons.Outlined.TrendingDown, scheme.error, scheme.error.copy(alpha = 0.12f), Modifier.weight(1f))
+                    KpiCard("Tiết kiệm", "${if (savingM > 0) "+" else ""}${"%.1f".format(savingM)}M", scheme.primary, Icons.Outlined.Savings, scheme.primary, scheme.primary.copy(alpha = 0.12f), Modifier.weight(1f))
                 }
                 Spacer(Modifier.height(12.dp))
             }
-
             item {
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     SegTab("Tổng quan", tab == 0) { tab = 0 }
@@ -188,29 +176,14 @@ fun ReportScreen(
 
             if (uiState.isLoading) {
                 item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(250.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
+                    Box(modifier = Modifier.fillMaxWidth().height(250.dp), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 }
             } else if (uiState.error != null) {
                 item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .padding(horizontal = 20.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Lỗi: ${uiState.error}",
-                            color = scheme.error,
-                            textAlign = TextAlign.Center
-                        )
+                    Box(modifier = Modifier.fillMaxWidth().height(250.dp).padding(horizontal = 20.dp), contentAlignment = Alignment.Center) {
+                        Text(text = "Lỗi: ${uiState.error}", color = scheme.error, textAlign = TextAlign.Center)
                     }
                 }
             } else {
@@ -219,27 +192,16 @@ fun ReportScreen(
                         shape = RoundedCornerShape(16.dp),
                         border = CardDefaults.outlinedCardBorder(),
                         colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
                     ) {
                         when (tab) {
                             0 -> {
-                                val maxV = max(
-                                    uiState.overviewIncome.maxOrNull() ?: 0f,
-                                    uiState.overviewExpense.maxOrNull() ?: 0f
-                                )
+                                val maxV = max(uiState.overviewIncome.maxOrNull() ?: 0f, uiState.overviewExpense.maxOrNull() ?: 0f)
                                 val ticks = yTicks(maxV)
                                 ChartWithAxes(
                                     yTicks = ticks,
                                     xLabels = uiState.overviewLabels,
-                                    chart = {
-                                        BarCompareChart(
-                                            income = uiState.overviewIncome,
-                                            expense = uiState.overviewExpense,
-                                            yMax = ticks.last()
-                                        )
-                                    }
+                                    chart = { BarCompareChart(income = uiState.overviewIncome, expense = uiState.overviewExpense, yMax = ticks.last()) }
                                 )
                             }
                             1 -> {
@@ -253,12 +215,7 @@ fun ReportScreen(
                                 ChartWithAxes(
                                     yTicks = ticks,
                                     xLabels = uiState.trendLabels,
-                                    chart = {
-                                        LineChart(
-                                            pointsM = uiState.trendExpense,
-                                            yMax = ticks.last()
-                                        )
-                                    }
+                                    chart = { LineChart(pointsM = uiState.trendExpense, yMax = ticks.last()) }
                                 )
                             }
                         }
@@ -272,32 +229,12 @@ fun ReportScreen(
                     shape = RoundedCornerShape(16.dp),
                     border = CardDefaults.outlinedCardBorder(),
                     colors = CardDefaults.outlinedCardColors(containerColor = scheme.surface),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
                 ) {
-                    Column(
-                        Modifier.padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        InfoChip(
-                            Icons.Outlined.TrendingUp,
-                            "Bạn đã tiết kiệm được 18% so với tháng trước",
-                            scheme.primaryContainer,
-                            scheme.primary
-                        )
-                        InfoChip(
-                            Icons.Outlined.Event,
-                            "Chi tiêu nhiều nhất vào thứ 6 và chủ nhật",
-                            scheme.secondaryContainer,
-                            scheme.secondary
-                        )
-                        InfoChip(
-                            Icons.Outlined.Paid,
-                            "Danh mục “Ăn uống” chiếm 35% tổng chi tiêu",
-                            scheme.tertiaryContainer,
-                            scheme.tertiary
-                        )
+                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        InfoChip(Icons.Outlined.TrendingUp, "Bạn đã tiết kiệm được 18% so với tháng trước", scheme.primaryContainer, scheme.primary)
+                        InfoChip(Icons.Outlined.Event, "Chi tiêu nhiều nhất vào thứ 6 và chủ nhật", scheme.secondaryContainer, scheme.secondary)
+                        InfoChip(Icons.Outlined.Paid, "Danh mục “Ăn uống” chiếm 35% tổng chi tiêu", scheme.tertiaryContainer, scheme.tertiary)
                     }
                 }
                 Spacer(Modifier.height(16.dp))
@@ -321,9 +258,7 @@ fun ReportScreen(
                         ) {
                             OutlinedButton(
                                 onClick = onExportPdf,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(48.dp),
+                                modifier = Modifier.weight(1f).height(48.dp),
                                 shape = RoundedCornerShape(12.dp),
                                 border = BorderStroke(1.dp, scheme.outlineVariant)
                             ) {
@@ -331,17 +266,21 @@ fun ReportScreen(
                                 Spacer(Modifier.width(8.dp))
                                 Text("Xuất PDF")
                             }
+
                             OutlinedButton(
-                                onClick = onExportExcel,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(48.dp),
+                                onClick = { showExportDialog = true },
+                                enabled = !uiState.isExporting,
+                                modifier = Modifier.weight(1f).height(48.dp),
                                 shape = RoundedCornerShape(12.dp),
                                 border = BorderStroke(1.dp, scheme.outlineVariant)
                             ) {
-                                Icon(Icons.Outlined.FileDownload, null)
-                                Spacer(Modifier.width(8.dp))
-                                Text("Xuất Excel")
+                                if (uiState.isExporting) {
+                                    CircularProgressIndicator(Modifier.size(24.dp))
+                                } else {
+                                    Icon(Icons.Outlined.FileDownload, null)
+                                    Spacer(Modifier.width(8.dp))
+                                    Text("Xuất Excel")
+                                }
                             }
                         }
                     }
@@ -351,6 +290,117 @@ fun ReportScreen(
         }
     }
 }
+
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ExportDateRangeDialog(
+    onDismiss: () -> Unit,
+    onExport: (LocalDate, LocalDate) -> Unit
+) {
+    val zone = ZoneId.systemDefault()
+    val today = LocalDate.now(zone)
+
+    var showStartDatePicker by remember { mutableStateOf(false) }
+    var showEndDatePicker by remember { mutableStateOf(false) }
+
+    var startDate by remember { mutableStateOf(today.withDayOfMonth(1)) }
+    var endDate by remember { mutableStateOf(today) }
+
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+    val startDatePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = startDate.atStartOfDay(zone).toInstant().toEpochMilli()
+    )
+    val endDatePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = endDate.atStartOfDay(zone).toInstant().toEpochMilli()
+    )
+
+    if (showStartDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { showStartDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    startDatePickerState.selectedDateMillis?.let {
+                        startDate = Instant.ofEpochMilli(it).atZone(zone).toLocalDate()
+                    }
+                    showStartDatePicker = false
+                }) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showStartDatePicker = false }) { Text("Huỷ") }
+            }
+        ) {
+            DatePicker(state = startDatePickerState)
+        }
+    }
+
+    if (showEndDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { showEndDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    endDatePickerState.selectedDateMillis?.let {
+                        endDate = Instant.ofEpochMilli(it).atZone(zone).toLocalDate()
+                    }
+                    showEndDatePicker = false
+                }) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showEndDatePicker = false }) { Text("Huỷ") }
+            }
+        ) {
+            DatePicker(state = endDatePickerState)
+        }
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Chọn khoảng thời gian") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                OutlinedTextField(
+                    value = startDate.format(formatter),
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Từ ngày") },
+                    trailingIcon = {
+                        IconButton(onClick = { showStartDatePicker = true }) {
+                            Icon(Icons.Outlined.EditCalendar, "Chọn ngày bắt đầu")
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = endDate.format(formatter),
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Đến ngày") },
+                    trailingIcon = {
+                        IconButton(onClick = { showEndDatePicker = true }) {
+                            Icon(Icons.Outlined.EditCalendar, "Chọn ngày kết thúc")
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onExport(startDate, endDate) },
+                enabled = startDate.isBefore(endDate) || startDate.isEqual(endDate)
+            ) {
+                Text("Xuất file")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Huỷ")
+            }
+        }
+    )
+}
+
 
 private fun yTicks(maxValue: Float): List<Float> {
     val m = if (maxValue <= 0f) 1f else maxValue
