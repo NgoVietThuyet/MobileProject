@@ -79,7 +79,7 @@ namespace BEMobile.Controllers
 
             try
             {
-                await _BudgetService.UpdateAmountByUserIdAsync(request);
+                await _BudgetService.UpdateInitAmountByUserIdAsync(request);
                 return Ok(new UpdateAmountResponse
                 {
                     Success = true,

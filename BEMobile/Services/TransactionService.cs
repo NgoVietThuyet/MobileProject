@@ -178,7 +178,7 @@ namespace BEMobile.Services
 
                 if (budgetId != null)
                 {
-                    await _budgetService.UpdateAmountByUserIdAsync(new UpdateAmountRequest
+                    await _budgetService.UpdateCurrentAmountByUserIdAsync(new UpdateAmountRequest
                     {
                         BudgetId = budgetId,
                         UserId = dto.UserId,
@@ -287,7 +287,7 @@ namespace BEMobile.Services
                     decimal diff = Math.Abs(newAmount - oldAmount);
 
 
-                    await _budgetService.UpdateAmountByUserIdAsync(new UpdateAmountRequest
+                    await _budgetService.UpdateCurrentAmountByUserIdAsync(new UpdateAmountRequest
                     {
                         BudgetId = budgetId,
                         UserId = dto.UserId,
@@ -352,7 +352,7 @@ namespace BEMobile.Services
 
                 if (budgetId != null)
                 {
-                    await _budgetService.UpdateAmountByUserIdAsync(new UpdateAmountRequest
+                    await _budgetService.UpdateCurrentAmountByUserIdAsync(new UpdateAmountRequest
                     {
                         BudgetId = budgetId,
                         UserId = transaction.UserId,

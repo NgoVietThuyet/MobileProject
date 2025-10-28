@@ -34,6 +34,7 @@ builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISavingGoalService, SavingGoalService>();
 
+
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -77,6 +78,30 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     context.Database.EnsureCreated();
 }
+
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    Task.Run(async () =>
+    {
+        try
+        {
+            using var scope = app.Services.CreateScope();
+            var budgetService = scope.ServiceProvider.GetRequiredService<IBudgetService>();
+
+            await budgetService.CheckAndCreateMonthlyBudgetsAsync();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($" [{DateTime.Now:HH:mm:ss}] Budget check done on app start");
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($" [{DateTime.Now:HH:mm:ss}] Error while checking budget on startup: {ex.Message}");
+            Console.ResetColor();
+        }
+    });
+});
 
 
 app.Run();

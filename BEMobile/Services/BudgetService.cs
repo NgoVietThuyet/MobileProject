@@ -19,10 +19,12 @@ namespace BEMobile.Services
         Task<IEnumerable<BudgetDto>> GetAllBudgetsAsync(string userId);
 
         Task<CreateBudgetResponse> CreateBudgetByUserAsync(CreatBudgetRequest request);
-        Task UpdateAmountByUserIdAsync(UpdateAmountRequest request);
-        //Task UpdateBudgetAsync(BudgetDto BudgetDto);
+        Task UpdateCurrentAmountByUserIdAsync(UpdateAmountRequest request);
+        Task UpdateInitAmountByUserIdAsync(UpdateAmountRequest request);
+
         Task<DeleteBudgetResponse> DeleteBudgetAsync(DeleteBudgetRequest request);
-        //Task<IEnumerable<BudgetDto>> SearchBudgetsAsync(string? name, string? email, string? phoneNumber);
+
+        Task CheckAndCreateMonthlyBudgetsAsync();
     }
     public class BudgetService : IBudgetService
     {
@@ -37,14 +39,30 @@ namespace BEMobile.Services
 
 
         public async Task<IEnumerable<BudgetDto>> GetAllBudgetsAsync(string userId)
-
         {
             if (_context.Budgets == null)
                 throw new Exception("Budget DbSet is null in AppDbContext");
-            var Budgets = await _context.Budgets
 
-                .Where(x  => x.UserId == userId)
+            var currentMonth = DateTime.UtcNow.Month;
+            var currentYear = DateTime.UtcNow.Year;
 
+            var allBudgets = await _context.Budgets
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
+
+            var filteredBudgets = allBudgets
+                .Where(u =>
+                {
+                    if (DateTime.TryParseExact(u.CreatedDate,
+                        "dd/MM/yyyy HH:mm:ss",
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        System.Globalization.DateTimeStyles.None,
+                        out DateTime created))
+                    {
+                        return created.Month == currentMonth && created.Year == currentYear;
+                    }
+                    return false;
+                })
                 .Select(u => new BudgetDto
                 {
                     UserId = u.UserId,
@@ -56,11 +74,13 @@ namespace BEMobile.Services
                     EndDate = u.EndDate,
                     CreatedDate = u.CreatedDate,
                     UpdatedDate = u.UpdatedDate,
-
                 })
-                .ToListAsync();
-            return Budgets;
+                .ToList();
+
+            return filteredBudgets;
         }
+
+
 
         public async Task<CreateBudgetResponse> CreateBudgetByUserAsync(CreatBudgetRequest request)
         {
@@ -86,10 +106,12 @@ namespace BEMobile.Services
                 Content = "Tạo ngân sách thành công"
             });
 
-            return new CreateBudgetResponse { 
-                Success = true, 
-                Message = "Tạo ngân sách OK", 
-                Budget = new BudgetDto { 
+            return new CreateBudgetResponse
+            {
+                Success = true,
+                Message = "Tạo ngân sách OK",
+                Budget = new BudgetDto
+                {
                     BudgetId = Budget.BudgetId,
                     UserId = Budget.UserId,
                     Initial_Amount = Budget.Initial_Amount,
@@ -101,7 +123,9 @@ namespace BEMobile.Services
                 }
             };
         }
-        public async Task UpdateAmountByUserIdAsync(UpdateAmountRequest request)
+
+
+        public async Task UpdateCurrentAmountByUserIdAsync(UpdateAmountRequest request)
         {
             try
             {
@@ -115,30 +139,95 @@ namespace BEMobile.Services
 
                 if (request.isAddAmount)
                 {
-                    budget.Current_Amount =
-                        (long.Parse(budget.Current_Amount) + long.Parse(request.UpdateAmount)).ToString();
+                    var checkAdd = long.Parse(budget.Current_Amount) + long.Parse(request.UpdateAmount);
+                    if (checkAdd <= long.Parse(budget.Initial_Amount))
+                    {
+                        budget.Current_Amount = checkAdd.ToString();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Số tiền vượt mức số tiền mặc định");
+                    }
+
                 }
                 else
                 {
-                    budget.Current_Amount =
-                        (long.Parse(budget.Current_Amount) - long.Parse(request.UpdateAmount)).ToString();
+                    var checkSub = long.Parse(budget.Current_Amount) - long.Parse(request.UpdateAmount);
+                    if (checkSub >= 0)
+                    {
+                        budget.Current_Amount = checkSub.ToString();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Số tiền âm");
+                    }
                 }
 
                 budget.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
-   
+
                 _context.Budgets.Update(budget);
-                    await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Bị lỗi", ex);
+            }
+        }
+
+        public async Task UpdateInitAmountByUserIdAsync(UpdateAmountRequest request)
+        {
+            try
+            {
+                var budget = await _context.Budgets
+                            .FirstOrDefaultAsync(b => b.BudgetId == request.BudgetId);
+
+                if (budget == null)
+                {
+                    throw new Exception("Không tìm thấy Budget");
+                }
+
+                if (request.isAddAmount)
+                {
+                    var checkAdd = long.Parse(budget.Initial_Amount) + long.Parse(request.UpdateAmount);
+                    if (checkAdd <= long.Parse(budget.Initial_Amount))
+                    {
+                        budget.Initial_Amount = checkAdd.ToString();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Số tiền vượt mức số tiền mặc định");
+                    }
+
+                }
+                else
+                {
+                    var checkSub = long.Parse(budget.Initial_Amount) - long.Parse(request.UpdateAmount);
+                    if (checkSub >= 0)
+                    {
+                        budget.Initial_Amount = checkSub.ToString();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Số tiền âm");
+                    }
+                }
+
+                budget.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
+
+                _context.Budgets.Update(budget);
+                await _context.SaveChangesAsync();
 
                 await _notificationService.PushNotificationAsync(new PushNotificationRequest
                 {
                     UserId = request.UserId,
-                    Content = "Cập nhật số tiền mới cho ngân sách"
+                    Content = "Cập nhật số tiền ban đầu cho ngân sách"
                 });
 
             }
             catch (Exception ex)
             {
-                throw new Exception("Bị lỗi",ex);
+                throw new Exception("Bị lỗi", ex);
             }
         }
         public async Task<DeleteBudgetResponse> DeleteBudgetAsync(DeleteBudgetRequest request)
@@ -186,6 +275,85 @@ namespace BEMobile.Services
             }
         }
 
+        public async Task CheckAndCreateMonthlyBudgetsAsync()
+        {
+            var now = DateTime.UtcNow;
+            var currentMonth = now.Month;
+            var currentYear = now.Year;
+
+            var latestBudget = await _context.Budgets
+                .OrderByDescending(b => b.CreatedDate)
+                .FirstOrDefaultAsync();
+
+            if (latestBudget == null)
+            {
+                Console.WriteLine(" Chưa có Budget nào trong DB, bỏ qua kiểm tra tháng mới.");
+                return;
+            }
+
+            if (!DateTime.TryParseExact(latestBudget.CreatedDate,
+                "dd/MM/yyyy HH:mm:ss",
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None,
+                out DateTime latestCreated))
+            {
+                Console.WriteLine("❌ Không parse được CreatedDate của Budget mới nhất.");
+                return;
+            }
+
+            if (latestCreated.Month < currentMonth || latestCreated.Year < currentYear)
+            {
+                Console.WriteLine(" Phát hiện tháng mới → khởi tạo Budget mới...");
+
+
+                var lastMonthBudgets = _context.Budgets
+                    .AsEnumerable()
+                    .Where(b =>
+                    {
+                        if (DateTime.TryParseExact(b.CreatedDate,
+                            "dd/MM/yyyy HH:mm:ss",
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.None,
+                            out DateTime created))
+                        {
+                            return created.Month == latestCreated.Month && created.Year == latestCreated.Year;
+                        }
+                    return false;
+                    })
+                    .ToList();
+
+
+
+
+                if (!lastMonthBudgets.Any())
+                {
+                    Console.WriteLine(" Không tìm thấy Budget của tháng trước.");
+                    return;
+                }
+
+                var newBudgets = lastMonthBudgets.Select(old => new Budget
+                {
+                    BudgetId = Guid.NewGuid().ToString(),
+                    UserId = old.UserId,
+                    CategoryId = old.CategoryId,
+                    Initial_Amount = old.Initial_Amount,
+                    Current_Amount = "0",
+                    StartDate = old.StartDate,
+                    EndDate = old.EndDate,
+                    CreatedDate = now.ToString("dd/MM/yyyy HH:mm:ss"),
+                    UpdatedDate = now.ToString("dd/MM/yyyy HH:mm:ss")
+                }).ToList();
+
+                await _context.Budgets.AddRangeAsync(newBudgets);
+                await _context.SaveChangesAsync();
+
+                Console.WriteLine($"Đã tạo {newBudgets.Count} Budget mới cho tháng {currentMonth}/{currentYear}");
+            }
+            else
+            {
+                Console.WriteLine(" Vẫn trong cùng tháng, không cần tạo Budget mới.");
+            }
+        }
 
 
         //public async Task<IEnumerable<BudgetDto>> SearchBudgetsAsync(string? name, string? email, string? phoneNumber)
