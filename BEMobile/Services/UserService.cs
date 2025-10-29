@@ -1,8 +1,11 @@
-﻿using BEMobile.Data.Entities;
+﻿using System.Text.RegularExpressions;
+using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
 using BEMobile.Models.RequestResponse.AccountRR.CreateAccount;
 using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
+using BEMobile.Models.RequestResponse.UserRR.ChangePassword;
 using BEMobile.Models.RequestResponse.UserRR.Login;
+using BEMobile.Models.RequestResponse.UserRR.SignUp;
 using BEMobile.Models.RequestResponse.UserRR.UpdateUser;
 using BEMobile.Models.RequestResponse.UserRR.UploadUserImage;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +15,12 @@ namespace BEMobile.Services
     public interface IUserService
     {
 
-        Task<UserDto> CreateUserAsync(UserDto userDto);
+        Task<SignUpResponse> CreateUserAsync(SignUpRequest request);
         Task<UpdateUserResponse> UpdateUserAsync(UpdateUserRequest request);
         Task<LoginResponse> IsLoginAsync(LoginRequest request);
         Task<UploadUserImageResponse> UploadUserImageAsync(UploadUserImageRequest request);
+        Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest request);
+
 
     }
 
@@ -31,9 +36,21 @@ namespace BEMobile.Services
             _accountService = accountService;
             _notificationService = notificationService;
         }
-        
-        public async Task<UserDto> CreateUserAsync(UserDto userDto)
+
+
+        private bool IsPasswordStrong(string password)
         {
+            if (string.IsNullOrEmpty(password))
+                return false;
+
+            // Yêu cầu: ít nhất 8 ký tự, có chữ hoa, chữ thường, số và ký tự đặc biệt
+            var regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{8,}$");
+            return regex.IsMatch(password);
+        }
+        public async Task<SignUpResponse> CreateUserAsync(SignUpRequest request)
+        {
+            var userDto = request.UserDto;
+
             var user = new User
             {
                 UserId = Guid.NewGuid().ToString(),
@@ -48,6 +65,24 @@ namespace BEMobile.Services
                 DateOfBirth = userDto.DateOfBirth,
                 CreatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss")
             };
+
+            if (userDto.Password != request.ConfirmPassword)
+            {
+                return new SignUpResponse
+                {
+                    Success = false,
+                    Message = "Mẩu khẩu xác nhận không chính xác"
+                };
+            }
+
+            if (!IsPasswordStrong(userDto.Password))
+            {
+                return new SignUpResponse
+                {
+                    Success = false,
+                    Message = "Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt"
+                };
+            }
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -67,10 +102,15 @@ namespace BEMobile.Services
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
             {
                 UserId = user.UserId,
-                Content = "Chào mừng bạn! Tài khoản người dùng của bạn đã được tạo thành công 🎉"
+                Content = "Chào mừng bạn! Tài khoản người dùng của bạn đã được tạo thành công "
             });
 
-            return userDto;
+            return new SignUpResponse
+            {
+                Success =true,
+                Message = "Đăng ký thành công",
+                User = userDto
+            };
         }
 
 
@@ -176,12 +216,6 @@ namespace BEMobile.Services
                 return response;
             }
 
-            if (request.Password != request.ConfirmPassword)
-            {
-                response.Success = false;
-                response.Message = "Mật khẩu xác nhận không chính xác.";
-                return response;
-            }
 
             response.Success = true;
             response.Message = "Đăng nhập thành công.";
@@ -251,6 +285,73 @@ namespace BEMobile.Services
             };
 
             return response;
+        }
+
+        public async Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            var response = new ChangePasswordResponse();
+
+            try
+            {
+                if (string.IsNullOrEmpty(request.UserId) ||
+                    string.IsNullOrEmpty(request.OldPassword) ||
+                    string.IsNullOrEmpty(request.NewPassword))
+                {
+                    response.Success = false;
+                    response.Message = "Vui lòng nhập đầy đủ thông tin.";
+                    return response;
+                }
+
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == request.UserId);
+                if (user == null)
+                {
+                    response.Success = false;
+                    response.Message = "Không tìm thấy người dùng.";
+                    return response;
+                }
+
+                if (user.Password != request.OldPassword)
+                {
+                    response.Success = false;
+                    response.Message = "Mật khẩu cũ không chính xác.";
+                    return response;
+                }
+
+                if (request.NewPassword != request.ConfirmPassword)
+                {
+                    response.Success = false;
+                    response.Message = "Mật khẩu xác nhận không khớp.";
+                    return response;
+                }
+
+                if (!IsPasswordStrong(request.NewPassword))
+                {
+                    response.Success = false;
+                    response.Message = "Mật khẩu mới phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.";
+                    return response;
+                }
+
+                user.Password = request.NewPassword;
+                user.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+
+                await _notificationService.PushNotificationAsync(new PushNotificationRequest
+                {
+                    UserId = user.UserId,
+                    Content = "Mật khẩu của bạn đã được thay đổi thành công."
+                });
+
+                response.Success = true;
+                response.Message = "Đổi mật khẩu thành công.";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = $"Lỗi khi đổi mật khẩu: {ex.Message}";
+                return response;
+            }
         }
 
     }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BEMobile")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b981cdaa3ef45537e0e7baff05a641b0628d8942")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c5cb92af6334ba7ddaa30cf5b42dc62f4c48aa4")]
 [assembly: System.Reflection.AssemblyProductAttribute("BEMobile")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BEMobile")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

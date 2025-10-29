@@ -4,6 +4,7 @@ using BEMobile.Models.RequestResponse.UserRR.Login;
 using BEMobile.Models.RequestResponse.UserRR.SignUp;
 using BEMobile.Models.RequestResponse.UserRR.UpdateUser;
 using BEMobile.Models.RequestResponse.UserRR.UploadUserImage;
+using BEMobile.Models.RequestResponse.UserRR.ChangePassword;
 using BEMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -27,55 +28,39 @@ namespace BEMobile.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<ActionResult<UserDto>> CreateUser([FromBody] SignUpRequest request)
+        [HttpPost("signup")]
+        public async Task<ActionResult<SignUpResponse>> CreateUser([FromBody] SignUpRequest request)
         {
             try
             {
+                var response = await _UserService.CreateUserAsync(request);
 
-
-                var User = await _UserService.CreateUserAsync(request.UserDto);
-                if (User == null)
-
-
+                if (!response.Success)
                 {
-                    return Unauthorized(new SignUpResponse
+                    return BadRequest(new SignUpResponse
                     {
                         Success = false,
-                        Message = "Đăng ký thất bại"
+                        Message = response.Message
                     });
                 }
-                else
+
+                return Ok(new SignUpResponse
                 {
-                    var response = new SignUpResponse
-                    {
-                        Success = true,
-                        Message = "Đăng ký thành công",
-                        User = new UserDto
-                        {
-
-
-                            UserId = User.UserId,
-                            Name = User.Name,
-                            Email = User.Email,
-                            PhoneNumber = User.PhoneNumber,
-                            Facebook = User.Facebook,
-                            Twitter = User.Twitter,
-                            CreatedDate = User.CreatedDate,
-                            UpdatedDate = User.UpdatedDate
-
-
-                        }
-                        // Có thể thêm Token nếu triển khai JWT
-                    };
-
-                    return Ok(response);
-                }
+                    Success = true,
+                    Message = response.Message,
+                    User = response.User
+                });
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, new SignUpResponse
+                {
+                    Success = false,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
+                });
             }
         }
+
 
         [HttpPut("Update")]
         public async Task<ActionResult<UpdateUserResponse>> UpdateUser([FromBody] UpdateUserRequest request)
@@ -121,6 +106,30 @@ namespace BEMobile.Controllers
                 {
                     Success = false,
                     Message = $"Đã xảy ra lỗi khi tải ảnh: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpPost("ChangePassword")]
+        [ProducesResponseType(typeof(ChangePasswordResponse), 200)]
+        [ProducesResponseType(typeof(ChangePasswordResponse), 400)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            try
+            {
+                var result = await _UserService.ChangePasswordAsync(request);
+
+                if (!result.Success)
+                    return BadRequest(result);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ChangePasswordResponse
+                {
+                    Success = false,
+                    Message = $"Lỗi hệ thống: {ex.Message}"
                 });
             }
         }

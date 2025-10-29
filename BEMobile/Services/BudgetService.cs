@@ -20,7 +20,7 @@ namespace BEMobile.Services
 
         Task<CreateBudgetResponse> CreateBudgetByUserAsync(CreatBudgetRequest request);
         Task UpdateCurrentAmountByUserIdAsync(UpdateAmountRequest request);
-        Task UpdateInitAmountByUserIdAsync(UpdateAmountRequest request);
+        Task<UpdateAmountResponse> UpdateInitAmountByUserIdAsync(UpdateAmountRequest request);
 
         Task<DeleteBudgetResponse> DeleteBudgetAsync(DeleteBudgetRequest request);
 
@@ -175,43 +175,44 @@ namespace BEMobile.Services
             }
         }
 
-        public async Task UpdateInitAmountByUserIdAsync(UpdateAmountRequest request)
+        public async Task<UpdateAmountResponse> UpdateInitAmountByUserIdAsync(UpdateAmountRequest request)
         {
             try
             {
                 var budget = await _context.Budgets
-                            .FirstOrDefaultAsync(b => b.BudgetId == request.BudgetId);
+                    .FirstOrDefaultAsync(b => b.BudgetId == request.BudgetId);
 
                 if (budget == null)
                 {
-                    throw new Exception("Không tìm thấy Budget");
-                }
-
-                if (request.isAddAmount)
-                {
-                    var checkAdd = long.Parse(budget.Initial_Amount) + long.Parse(request.UpdateAmount);
-                    if (checkAdd <= long.Parse(budget.Initial_Amount))
-                    {
-                        budget.Initial_Amount = checkAdd.ToString();
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Số tiền vượt mức số tiền mặc định");
-                    }
+                    throw new Exception("Không tìm thấy ngân sách (Budget).");
 
                 }
-                else
+
+                if (!long.TryParse(request.UpdateAmount, out long newAmount))
                 {
-                    var checkSub = long.Parse(budget.Initial_Amount) - long.Parse(request.UpdateAmount);
-                    if (checkSub >= 0)
-                    {
-                        budget.Initial_Amount = checkSub.ToString();
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Số tiền âm");
-                    }
+                    throw new ArgumentException("Giá trị nhập vào không hợp lệ.");
                 }
+
+                if (newAmount < 0)
+                {
+                    throw new ArgumentException("Số tiền không được âm.");
+                }
+
+                if (!long.TryParse(budget.Current_Amount, out long currentAmount))
+                {
+                    currentAmount = 0; // nếu null hoặc rỗng thì mặc định 0
+                }
+
+
+                if (newAmount < currentAmount)
+                {
+                    throw new ArgumentException("Số tiền mới thấp hơn số tiền hiện có của ngân sách.");
+
+                }
+
+
+
+                budget.Initial_Amount = newAmount.ToString();
 
                 budget.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
 
@@ -221,15 +222,25 @@ namespace BEMobile.Services
                 await _notificationService.PushNotificationAsync(new PushNotificationRequest
                 {
                     UserId = request.UserId,
-                    Content = "Cập nhật số tiền ban đầu cho ngân sách"
+                    Content = $"Đã cập nhật số tiền ban đầu mới của một ngân sách."
                 });
 
+                return new UpdateAmountResponse
+                {
+                    Success = true,
+                    Message = "Cập nhật số tiền thành công cho ngân sách"
+                };
             }
             catch (Exception ex)
             {
-                throw new Exception("Bị lỗi", ex);
+                return new UpdateAmountResponse
+                {
+                    Success = true,
+                    Message = "Cập nhật thất bại"
+                };
             }
         }
+
         public async Task<DeleteBudgetResponse> DeleteBudgetAsync(DeleteBudgetRequest request)
         {
             var response = new DeleteBudgetResponse();

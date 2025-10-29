@@ -583,6 +583,41 @@
   },
   {
     "ContainingType": "BEMobile.Controllers.UsersController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/Users/ChangePassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.UserRR.ChangePassword.ChangePasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BEMobile.Models.RequestResponse.UserRR.ChangePassword.ChangePasswordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "BEMobile.Models.RequestResponse.UserRR.ChangePassword.ChangePasswordResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.UsersController",
     "Method": "CreateUser",
     "RelativePath": "api/Users/Create",
     "HttpMethod": "POST",
@@ -597,7 +632,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "BEMobile.Models.DTOs.UserDto",
+        "Type": "BEMobile.Models.RequestResponse.UserRR.SignUp.SignUpResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -639,6 +674,32 @@
           "text/json"
         ],
         "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.UsersController",
+    "Method": "CreateUser",
+    "RelativePath": "api/Users/signup",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.UserRR.SignUp.SignUpRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BEMobile.Models.RequestResponse.UserRR.SignUp.SignUpResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
       }
     ]
   },
