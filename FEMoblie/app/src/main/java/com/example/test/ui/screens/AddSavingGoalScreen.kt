@@ -10,7 +10,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -27,9 +26,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
 import com.example.test.ui.components.AppHeader
 import com.example.test.ui.theme.AppGradient
+import com.example.test.vm.AddSavingGoalViewModel
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -41,12 +43,15 @@ import java.time.format.ResolverStyle
 fun AddSavingGoalScreen(
     onBack: () -> Unit,
     onCancel: () -> Unit,
-    onCreate: (SavingGoalDraft) -> Unit
+    onCreate: (Boolean) -> Unit,
+    viewModel: AddSavingGoalViewModel = hiltViewModel()
 ) {
     val scheme = MaterialTheme.colorScheme
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val gap = 24.dp
     val zone = ZoneId.systemDefault()
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     var name by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
@@ -64,31 +69,28 @@ fun AddSavingGoalScreen(
         } ?: ""
 
     var selectedIcon by rememberSaveable { mutableStateOf<String?>(null) }
-    var selectedColorArgb by rememberSaveable { mutableStateOf<Int?>(null) }
-    val selectedColor = selectedColorArgb?.let { Color(it) }
 
     val suggestions = remember {
-        listOf(
-            "🏠" to ("mua nhà" to "2–5 tỷ"),
-            "🚗" to ("mua xe" to "500M–2 tỷ"),
-            "✈️" to ("du lịch" to "10–50M"),
-            "🆘" to ("khẩn cấp" to "3–6 tháng lương"),
-            "💍" to ("đám cưới" to ""),
-            "🎓" to ("học tập" to "")
+        mapOf(
+            "🏠" to "mua nhà",
+            "🚗" to "mua xe",
+            "✈️" to "du lịch",
+            "🆘" to "khẩn cấp",
+            "💍" to "đám cưới",
+            "🎓" to "học tập"
         )
     }
-    val suggestionRows = remember { suggestions.chunked(2) }
+    val suggestionEntries = remember { suggestions.entries.toList() }
+    val suggestionRows = remember { suggestionEntries.chunked(2) }
 
-    val icons = remember { listOf("🏠","🚗","✈️","🍜","📅","💻","💍","😊","🆘","🌮","☕","💰","🎮","🐶","🍕","📷","🎵","🎯") }
+    val icons = remember { listOf("🏠","🚗","✈️","🍜","📅","💻","💍","🎓","🆘","🌮","☕","💰","🎮","🐶","🍕","📷","🎵","🎯") }
     val iconRows = remember { icons.chunked(6) }
 
-    val colors = remember {
-        listOf(
-            Color(0xFFE8F0FE), Color(0xFFF3E8FF), Color(0xFFFFEDD5),
-            Color(0xFFFEE2E2), Color(0xFFFEF3C7), Color(0xFFD1FAE5)
-        )
+    LaunchedEffect(uiState.success) {
+        if (uiState.success) {
+            onCreate(true)
+        }
     }
-    val colorRows = remember { colors.chunked(3) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -104,6 +106,14 @@ fun AddSavingGoalScreen(
             Surface(color = scheme.surface) {
                 Column(Modifier.fillMaxWidth().navigationBarsPadding()) {
                     Divider(color = scheme.outlineVariant, thickness = 1.dp)
+                    if (uiState.error != null) {
+                        Text(
+                            text = "Lỗi: ${uiState.error}",
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                            fontSize = 12.sp
+                        )
+                    }
                     Box(Modifier.fillMaxWidth().height(64.dp)) {
                         Row(
                             modifier = Modifier
@@ -116,29 +126,39 @@ fun AddSavingGoalScreen(
                                 onClick = onCancel,
                                 modifier = Modifier.weight(1f).height(40.dp),
                                 shape = RoundedCornerShape(12.dp),
-                                colors = ButtonDefaults.outlinedButtonColors(contentColor = scheme.onSurface)
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = scheme.onSurface),
+                                enabled = !uiState.isSubmitting
                             ) { Text("Hủy") }
 
                             Button(
                                 onClick = {
                                     val money = amount.toLongOrNull() ?: 0L
-                                    onCreate(
-                                        SavingGoalDraft(
-                                            title = name.trim(),
-                                            targetVnd = money,
-                                            targetDateMillis = dateState.selectedDateMillis,
-                                            emoji = selectedIcon,
-                                            color = selectedColor ?: scheme.primary
-                                        )
+                                    val draft = SavingGoalDraft(
+                                        title = name.trim(),
+                                        targetVnd = money,
+                                        targetDateMillis = dateState.selectedDateMillis,
+                                        emoji = selectedIcon
                                     )
+                                    viewModel.submitGoal(draft)
                                 },
                                 modifier = Modifier
                                     .weight(1f)
                                     .height(40.dp)
                                     .background(AppGradient.BluePurple, RoundedCornerShape(12.dp))
                                     .clip(RoundedCornerShape(12.dp)),
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-                            ) { Text("Tạo mục tiêu", color = scheme.onPrimary) }
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                                enabled = name.isNotBlank() && amount.isNotBlank() && selectedIcon != null && !uiState.isSubmitting
+                            ) {
+                                if (uiState.isSubmitting) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(24.dp),
+                                        color = scheme.onPrimary,
+                                        strokeWidth = 2.dp
+                                    )
+                                } else {
+                                    Text("Tạo mục tiêu", color = scheme.onPrimary)
+                                }
+                            }
                         }
                     }
                 }
@@ -160,14 +180,16 @@ fun AddSavingGoalScreen(
                     Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    row.forEach { (emoji, pair) ->
+                    row.forEach { entry ->
                         SuggestCard(
-                            emoji = emoji,
-                            title = pair.first,
-                            sub = pair.second,
+                            emoji = entry.key,
+                            title = entry.value,
                             modifier = Modifier.weight(1f),
                             scheme = scheme
-                        ) { name = pair.first }
+                        ) {
+                            name = entry.value
+                            selectedIcon = entry.key
+                        }
                     }
                     if (row.size == 1) Spacer(Modifier.weight(1f))
                 }
@@ -183,7 +205,8 @@ fun AddSavingGoalScreen(
                             placeholder = { Text("Nhập mục tiêu của bạn...") },
                             singleLine = true,
                             shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = !uiState.isSubmitting
                         )
                     }
 
@@ -196,7 +219,8 @@ fun AddSavingGoalScreen(
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             singleLine = true,
                             shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = !uiState.isSubmitting
                         )
                     }
 
@@ -212,15 +236,18 @@ fun AddSavingGoalScreen(
                                         val ms = d.atStartOfDay(zone).toInstant().toEpochMilli()
                                         dateMillis = ms
                                         dateState.selectedDateMillis = ms
+                                    } else {
+                                        dateMillis = null
+                                        dateState.selectedDateMillis = null
                                     }
                                 }
                             },
-                            placeholder = { Text("dd/MM/yyyy") },
+                            placeholder = { Text("dd/MM/yyyy (tuỳ chọn)") },
                             singleLine = true,
                             shape = RoundedCornerShape(12.dp),
                             modifier = Modifier.fillMaxWidth(),
                             leadingIcon = {
-                                IconButton(onClick = { showDatePicker = true }) {
+                                IconButton(onClick = { showDatePicker = true }, enabled = !uiState.isSubmitting) {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_calendar),
                                         contentDescription = "Chọn ngày",
@@ -228,7 +255,8 @@ fun AddSavingGoalScreen(
                                     )
                                 }
                             },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            enabled = !uiState.isSubmitting
                         )
                     }
                 }
@@ -244,26 +272,21 @@ fun AddSavingGoalScreen(
                         SelectableIcon(
                             emoji = e,
                             selected = selectedIcon == e,
-                            onClick = { selectedIcon = e },
+                            onClick = {
+                                if (!uiState.isSubmitting) {
+                                    selectedIcon = e
+                                    if (suggestions.containsKey(e)) {
+                                        name = suggestions[e] ?: ""
+                                    } else {
+                                        name = ""
+                                    }
+                                }
+                            },
                             scheme = scheme
                         )
                     }
-                }
-            }
-
-            item { SectionLabel("Chọn màu sắc", scheme) }
-            items(colorRows) { row ->
-                Row(
-                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    row.forEach { c ->
-                        SelectableColor(
-                            color = c,
-                            selected = selectedColor == c,
-                            onClick = { selectedColorArgb = c.value.toInt() },
-                            scheme = scheme
-                        )
+                    repeat(6 - row.size) {
+                        Spacer(Modifier.size(48.dp))
                     }
                 }
             }
@@ -296,7 +319,6 @@ private fun SectionLabel(text: String, scheme: ColorScheme) {
 private fun SuggestCard(
     emoji: String,
     title: String,
-    sub: String,
     modifier: Modifier = Modifier,
     scheme: ColorScheme,
     onClick: () -> Unit
@@ -315,7 +337,6 @@ private fun SuggestCard(
             Text(emoji, fontSize = 18.sp)
             Spacer(Modifier.height(8.dp))
             Text(title, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center, color = scheme.onSurface)
-            if (sub.isNotBlank()) Text(sub, fontSize = 12.sp, color = scheme.onSurfaceVariant)
         }
     }
 }
@@ -337,29 +358,9 @@ private fun SelectableIcon(
     }
 }
 
-@Composable
-private fun SelectableColor(
-    color: Color,
-    selected: Boolean,
-    onClick: () -> Unit,
-    scheme: ColorScheme
-) {
-    Surface(
-        shape = CircleShape,
-        color = scheme.surface,
-        border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) scheme.primary else scheme.outlineVariant),
-        modifier = Modifier.size(56.dp).clickable { onClick() }
-    ) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Box(Modifier.size(40.dp).clip(CircleShape).background(color))
-        }
-    }
-}
-
 data class SavingGoalDraft(
     val title: String,
     val targetVnd: Long,
     val targetDateMillis: Long?,
-    val emoji: String?,
-    val color: Color
+    val emoji: String?
 )

@@ -1,8 +1,12 @@
 package com.example.test.ui.api
 
-import com.example.test.ui.models.CreateSavingGoalRequest
+
+import com.example.test.ui.models.SavingGoalCreatePayload
+import com.example.test.ui.models.SavingGoalCreateResponse
+import com.example.test.ui.models.SavingGoalDeleteReq
 import com.example.test.ui.models.SavingGoalDto
-import com.example.test.ui.models.UpdateSavingGoalAmountRequest
+import com.example.test.ui.models.SavingGoalUpdateAmountReq
+import com.example.test.ui.models.SimpleSuccessResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,11 +23,16 @@ interface SavingGoalApi {
 
     @POST("api/SavingGoal/Create")
     suspend fun createSavingGoal(
-        @Body request: CreateSavingGoalRequest
-    ): Response<SavingGoalDto>
+        @Body req: SavingGoalCreatePayload
+    ): Response<SavingGoalCreateResponse>
 
     @PUT("api/SavingGoal/UpdateAmount")
     suspend fun updateSavingGoalAmount(
-        @Body request: UpdateSavingGoalAmountRequest
+        @Body req: SavingGoalUpdateAmountReq
     ): Response<SavingGoalDto>
+
+    @PUT("api/SavingGoal/DeleteSaving")
+    suspend fun deleteSavingGoal(
+        @Body req: SavingGoalDeleteReq
+    ): Response<SimpleSuccessResponse>
 }

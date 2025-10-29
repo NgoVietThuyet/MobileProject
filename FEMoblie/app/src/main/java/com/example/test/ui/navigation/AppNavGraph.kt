@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -111,7 +112,7 @@ sealed class Screen(val route: String) {
     data object Saving : Screen("saving")
     data object SavingDetail : Screen("saving_detail/{index}") {
         const val ARG = "index"
-        fun create(index: Int) = "saving_detail/$index"
+        fun create(index: String) = "saving_detail/$index"
     }
     data object SavingAdd : Screen("saving_add")
     data object Setting : Screen("setting")
@@ -455,39 +456,65 @@ fun AppNavGraph(navController: NavHostController) {
                 )
             }
 
-            composable(Screen.Saving.route) {
-                SavingsScreen(
-                    onHome = { navController.navigate(Screen.Home.route) },
-                    onReport = { navController.navigate(Screen.Report.route) },
-                    onSettings = { navController.navigate(Screen.Setting.route) },
-                    onCamera = { navController.navigate(Screen.Scan.route) },
-                    onSaving = { },
-                    onAddGoal = { navController.navigate(Screen.SavingAdd.route) },
-                    onGoalClick = { index -> navController.navigate(Screen.SavingDetail.create(index)) }
-                )
-            }
-
             composable(Screen.SavingAdd.route) {
                 AddSavingGoalScreen(
                     onBack = { navController.popBackStack() },
                     onCancel = { navController.popBackStack() },
-                    onCreate = { _ -> navController.popBackStack() }
+                    onCreate = { success ->
+                        if (success) {
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("should_refresh_savings", true)
+                        }
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(Screen.Saving.route) { backStackEntry ->
+                SavingsScreen(
+                    onHome = { navController.navigate(Screen.Home.route) { launchSingleTop = true } },
+                    onReport = { navController.navigate(Screen.Report.route) { launchSingleTop = true } },
+                    onSettings = { navController.navigate(Screen.Setting.route) { launchSingleTop = true } },
+                    onCamera = { navController.navigate(Screen.Scan.route) { launchSingleTop = true } },
+                    onSaving = {  },
+                    onAddGoal = { navController.navigate(Screen.SavingAdd.route) },
+                    onGoalClick = { goalId ->
+                        val route = Screen.SavingDetail.create(goalId)
+                        Log.d("Navigation", "Navigating to: $route with goalId: $goalId")
+                        navController.navigate(route)
+                    },
+                    backStackEntry = backStackEntry
                 )
             }
 
             composable(
                 route = Screen.SavingDetail.route,
-                arguments = listOf(navArgument(Screen.SavingDetail.ARG) { type = NavType.IntType })
-            ) { backStack ->
-                val idx = backStack.arguments!!.getInt(Screen.SavingDetail.ARG)
-                val goal = HomeMock.savingGoals.getOrNull(idx) ?: HomeMock.savingGoals.first()
+                arguments = listOf(navArgument(Screen.SavingDetail.ARG) { type = NavType.StringType })
+            ) { backStackEntry ->
+                val goalId = backStackEntry.arguments?.getString(Screen.SavingDetail.ARG)
+
                 SavingDetailScreen(
-                    goal = goal,
-                    onBack = { navController.popBackStack() },
-                    onDelete = { navController.popBackStack() }
+                    goalId = goalId,
+                    onNavigateBack = { refreshNeeded ->
+                        if (refreshNeeded) {
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("should_refresh_savings", true)
+                            Log.d("Navigation", "Set refresh signal for SavingsScreen on update.")
+                        }
+                        navController.popBackStack()
+                    },
+                    onDeleteSuccess = {
+
+                        navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("should_refresh_savings", true)
+                        Log.d("Navigation", "Set refresh signal after delete for SavingsScreen.")
+                        navController.popBackStack()
+                    },
                 )
             }
-
             composable(Screen.Setting.route) {
                 SettingScreen(
                     dark = dark,

@@ -1,5 +1,6 @@
 package com.example.test.ui.api
 
+import com.example.test.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -122,5 +123,8 @@ object Api {
     }
     val reportService: ReportApi by lazy {
         retrofit.create(ReportApi::class.java)
+    }
+    val savinggoalService: SavingGoalApi by lazy {
+        retrofit.create(SavingGoalApi::class.java)
     }
 }

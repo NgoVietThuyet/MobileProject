@@ -62,4 +62,5 @@ object NetworkModule {
     @Provides @Singleton fun provideBudgetApi(retrofit: Retrofit): BudgetApi = retrofit.create(BudgetApi::class.java)
     @Provides @Singleton fun provideCategoryApi(retrofit: Retrofit): CategoryApi = retrofit.create(CategoryApi::class.java)
     @Provides @Singleton fun provideReportApi(retrofit: Retrofit): ReportApi = retrofit.create(ReportApi::class.java)
+    @Provides @Singleton fun provideSavingGoalApi(retrofit: Retrofit): SavingGoalApi = retrofit.create(SavingGoalApi::class.java)
 }

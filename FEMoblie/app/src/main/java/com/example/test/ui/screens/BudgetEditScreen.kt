@@ -3,6 +3,8 @@
 package com.example.test.ui.screens
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,13 +12,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
@@ -26,10 +31,12 @@ import com.example.test.ui.api.AuthStore
 import com.example.test.ui.components.AppHeader
 import com.example.test.ui.models.BudgetDto
 import com.example.test.ui.models.UpdateBudgetAmountReq
-import com.example.test.ui.theme.AppGradient
 import kotlinx.coroutines.launch
+import java.util.Locale
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
@@ -48,7 +55,7 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
     var usedVnd by remember { mutableStateOf(0L) }
     var totalVndInitial by remember { mutableStateOf<Long?>(null) }
 
-    var totalVndRaw by remember { mutableStateOf("") }
+    var totalVndRaw by rememberSaveable { mutableStateOf("") }
     fun sanitizeDigits(s: String) = s.filter { it.isDigit() }
     val totalVndLong: Long? = totalVndRaw.toLongOrNull()
     val isUpdateEnabled = !isSubmitting && totalVndLong != null && budgetId != null
@@ -111,65 +118,73 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp)
         ) {
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(24.dp))
 
-            Box(
+            OutlinedCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
-                    .background(brush = AppGradient.BlueGreen, shape = RoundedCornerShape(16.dp))
-                    .padding(16.dp)
+                    .padding(0.dp),
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(1.dp, cs.outlineVariant),
+                colors = CardDefaults.outlinedCardColors(containerColor = cs.surface)
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterStart)
-                        .background(cs.surface.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
-                        .padding(horizontal = 16.dp, vertical = 14.dp)
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Surface(color = categoryColor ?: cs.secondary, shape = RoundedCornerShape(8.dp)) {
-                                Box(Modifier.size(28.dp), contentAlignment = Alignment.Center) {
-                                    Text(categoryIcon ?: "💰")
-                                }
-                            }
-                            Spacer(Modifier.width(12.dp))
-                            Text(
-                                text = categoryName ?: "Danh mục",
-                                color = cs.onPrimary,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        }
-
-                        val displayTotalVnd = totalVndInitial ?: 0L
-                        Text(
-                            text = "${usedVnd} / ${displayTotalVnd} ₫",
-                            color = cs.onPrimary,
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Start
-                        )
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp)
-                                .background(cs.onPrimary.copy(alpha = 0.35f), RoundedCornerShape(999.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(
+                            color = categoryColor?.copy(alpha = 0.1f) ?: cs.primaryContainer,
+                            shape = RoundedCornerShape(8.dp)
                         ) {
-                            val progress = if (displayTotalVnd > 0)
-                                (usedVnd.toFloat() / displayTotalVnd).coerceIn(0f, 1f)
-                            else 0f
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth(progress)
-                                    .fillMaxHeight()
-                                    .background(categoryColor ?: cs.primary, RoundedCornerShape(999.dp))
-                            )
+                            Box(Modifier.size(36.dp), contentAlignment = Alignment.Center) {
+                                Text(categoryIcon ?: "💰", fontSize = 18.sp)
+                            }
                         }
+                        Spacer(Modifier.width(12.dp))
+                        Text(
+                            text = categoryName ?: "Danh mục",
+                            color = cs.onSurface,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium
+                        )
                     }
+
+                    val displayTotalVnd = totalVndLong ?: totalVndInitial ?: 0L
+                    val displayUsedVnd = usedVnd
+
+                    Text(
+                        text = "${formatVnd(displayUsedVnd)} / ${formatVnd(displayTotalVnd)}",
+                        color = cs.onSurface,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start
+                    )
+
+                    val progress = if (displayTotalVnd > 0)
+                        (displayUsedVnd.toFloat() / displayTotalVnd).coerceIn(0f, 1f)
+                    else 0f
+                    val pct = (progress * 100).roundToInt()
+
+                    ContinuousLinearProgress(
+                        progress = progress,
+                        color = categoryColor ?: cs.primary,
+                        trackColor = cs.surfaceVariant,
+                        height = 8.dp,
+                        corner = 4.dp
+                    )
+
+                    Text(
+                        text = "$pct% đã dùng",
+                        color = cs.onSurfaceVariant,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
+
 
             Spacer(Modifier.height(16.dp))
 
@@ -178,14 +193,14 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                 Spacer(Modifier.height(12.dp))
             }
 
-            Card(
+            OutlinedCard(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = cs.surface),
-                border = BorderStroke(1.dp, cs.outline),
+                colors = CardDefaults.outlinedCardColors(containerColor = cs.surface),
+                border = BorderStroke(1.dp, cs.outlineVariant),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(Modifier.padding(16.dp)) {
-                    Text("Cập nhật tổng ngân sách (đơn vị: VND)", fontWeight = FontWeight.Medium, color = cs.onSurface)
+                    Text("Cập nhật tổng ngân sách (VND)", fontWeight = FontWeight.Medium, color = cs.onSurface)
                     Spacer(Modifier.height(12.dp))
 
                     OutlinedTextField(
@@ -196,10 +211,12 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                         singleLine = true,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
                         isError = totalVndRaw.isNotEmpty() && totalVndLong == null,
                         supportingText = {
                             if (totalVndRaw.isNotEmpty() && totalVndLong == null) Text("Giá trị không hợp lệ")
-                        }
+                        },
+                        enabled = !isLoading && !isSubmitting
                     )
 
                     Spacer(Modifier.height(12.dp))
@@ -232,18 +249,18 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                                 }
                             }
                         },
-                        enabled = isUpdateEnabled,
-                        modifier = Modifier.fillMaxWidth(),
+                        enabled = isUpdateEnabled && !isLoading,
+                        modifier = Modifier.fillMaxWidth().height(48.dp),
+                        shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = cs.primary, contentColor = cs.onPrimary)
                     ) {
                         if (isSubmitting) {
-                            CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(18.dp))
+                            CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(20.dp), color = cs.onPrimary)
                             Spacer(Modifier.width(8.dp))
+                            Text("Đang cập nhật...")
                         } else {
-                            Icon(painter = painterResource(R.drawable.increase), contentDescription = null)
-                            Spacer(Modifier.width(8.dp))
+                            Text("Lưu thay đổi")
                         }
-                        Text("Cập nhật")
                     }
                 }
             }
@@ -252,12 +269,13 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
 
             OutlinedButton(
                 onClick = { showDeleteConfirm = true },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !isSubmitting && budgetId != null,
+                modifier = Modifier.fillMaxWidth().height(48.dp),
+                enabled = !isSubmitting && budgetId != null && !isLoading,
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = cs.error),
-                border = BorderStroke(1.dp, cs.error)
+                border = BorderStroke(1.dp, cs.error),
+                shape = RoundedCornerShape(12.dp)
             ) {
-                Icon(painter = painterResource(R.drawable.ic_trash), contentDescription = "Xoá ngân sách")
+                Icon(painter = painterResource(R.drawable.ic_trash), contentDescription = "Xoá ngân sách", tint = cs.error)
                 Spacer(Modifier.width(8.dp))
                 Text("Xoá ngân sách")
             }
@@ -265,8 +283,8 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
             if (showDeleteConfirm) {
                 AlertDialog(
                     onDismissRequest = { showDeleteConfirm = false },
-                    title = { Text("Xoá ngân sách?") },
-                    text = { Text("Hành động này không thể hoàn tác.") },
+                    title = { Text("Xác nhận xóa") },
+                    text = { Text("Bạn có chắc chắn muốn xóa ngân sách '${categoryName ?: ""}' không? Hành động này không thể hoàn tác.") },
                     confirmButton = {
                         TextButton(
                             onClick = {
@@ -291,7 +309,7 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                                 }
                             },
                             colors = ButtonDefaults.textButtonColors(contentColor = cs.error)
-                        ) { Text("Xoá") }
+                        ) { Text("Xóa") }
                     },
                     dismissButton = { TextButton(onClick = { showDeleteConfirm = false }) { Text("Huỷ") } }
                 )
@@ -318,4 +336,34 @@ private fun pickColor(i: Int): Color {
         Color(0xFF9C27B0)
     )
     return colors[i % colors.size]
+}
+
+private fun formatVnd(value: Long): String {
+    val format = java.text.NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+    return format.format(value).replace(" ₫", "đ").replace("₫", "đ")
+}
+
+@Composable
+private fun ContinuousLinearProgress(
+    progress: Float,
+    color: Color,
+    trackColor: Color,
+    height: Dp,
+    corner: Dp,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(height)
+            .clip(RoundedCornerShape(corner))
+            .background(trackColor)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(progress)
+                .background(color)
+        )
+    }
 }
