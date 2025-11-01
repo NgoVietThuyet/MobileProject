@@ -5,6 +5,8 @@ using BEMobile.Services;
 using BEMobile;
 using BEMobile.Connectors;
 
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 
 
@@ -53,6 +55,12 @@ builder.Services.AddScoped<IImageService, ImageService>();
 // graph
 builder.Services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
 builder.Services.AddSingleton<INeo4jConnector, Neo4jConnector>();
+
+
+//JWT
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.AddScoped<IJwtService, JwtService>();
+
 
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();

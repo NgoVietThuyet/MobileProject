@@ -679,6 +679,48 @@
   },
   {
     "ContainingType": "BEMobile.Controllers.UsersController",
+    "Method": "PhoneLogin",
+    "RelativePath": "api/Users/phone-login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.UserRR.PhoneLogin.PhoneLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BEMobile.Models.RequestResponse.UserRR.PhoneLogin.PhoneLoginResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.UsersController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/Users/refresh-token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.UserRR.RefreshToken.RefreshTokenRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.UsersController",
     "Method": "CreateUser",
     "RelativePath": "api/Users/signup",
     "HttpMethod": "POST",
@@ -726,46 +768,6 @@
           "text/json"
         ],
         "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "BEMobile.Controllers.UsersController",
-    "Method": "UploadProfileImage",
-    "RelativePath": "api/Users/UploadProfileImage",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "UserId",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "ImageFile",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "BEMobile.Models.RequestResponse.UserRR.UploadUserImage.UploadUserImageResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      },
-      {
-        "Type": "BEMobile.Models.RequestResponse.UserRR.UploadUserImage.UploadUserImageResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 400
       }
     ]
   },

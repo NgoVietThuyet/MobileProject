@@ -7,7 +7,6 @@ using BEMobile.Models.RequestResponse.UserRR.ChangePassword;
 using BEMobile.Models.RequestResponse.UserRR.Login;
 using BEMobile.Models.RequestResponse.UserRR.SignUp;
 using BEMobile.Models.RequestResponse.UserRR.UpdateUser;
-using BEMobile.Models.RequestResponse.UserRR.UploadUserImage;
 using Microsoft.EntityFrameworkCore;
 
 namespace BEMobile.Services
@@ -18,8 +17,9 @@ namespace BEMobile.Services
         Task<SignUpResponse> CreateUserAsync(SignUpRequest request);
         Task<UpdateUserResponse> UpdateUserAsync(UpdateUserRequest request);
         Task<LoginResponse> IsLoginAsync(LoginRequest request);
-        Task<UploadUserImageResponse> UploadUserImageAsync(UploadUserImageRequest request);
         Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest request);
+
+        Task<User?> GetUserByRefreshTokenAsync(string refreshToken);
 
 
     }
@@ -28,13 +28,15 @@ namespace BEMobile.Services
     {
         private readonly AppDbContext _context;
         private readonly IAccountService _accountService;
+        private readonly IJwtService _jwtService;
         private readonly INotificationService _notificationService;
 
-        public UserService(AppDbContext context, IAccountService accountService, INotificationService notificationService)
+        public UserService(AppDbContext context, IAccountService accountService, INotificationService notificationService, IJwtService jwtService)
         {
             _context = context;
             _accountService = accountService;
             _notificationService = notificationService;
+            _jwtService = jwtService;
         }
 
 
@@ -112,7 +114,6 @@ namespace BEMobile.Services
                 User = userDto
             };
         }
-
 
         public async Task<UpdateUserResponse> UpdateUserAsync(UpdateUserRequest request)
         {
@@ -201,7 +202,6 @@ namespace BEMobile.Services
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-
             if (user == null)
             {
                 response.Success = false;
@@ -216,71 +216,24 @@ namespace BEMobile.Services
                 return response;
             }
 
+            // Access Token + Refresh Token
+            var accessToken = _jwtService.GenerateAccessToken(user);
+            var refreshToken = _jwtService.GenerateRefreshToken();
 
-            response.Success = true;
-            response.Message = "Đăng nhập thành công.";
-            response.User = new UserDto
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                PhoneNumber = user.PhoneNumber,
-                Facebook = user.Facebook,
-                Twitter = user.Twitter,
-                Email = user.Email,
-                Job = user.Job,
-                Google = user.Google,
-                DateOfBirth = user.DateOfBirth,
-                CreatedDate = user.CreatedDate,
-                UpdatedDate = user.UpdatedDate,
-                UrlImage = user.UrlImage
-            };
-
-            return response;
-        }
-
-        public async Task<UploadUserImageResponse> UploadUserImageAsync(UploadUserImageRequest request)
-        {
-            var response = new UploadUserImageResponse();
-
-            if (request.ImageFile == null || request.ImageFile.Length == 0)
-            {
-                response.Success = false;
-                response.Message = "Ảnh tải lên không hợp lệ";
-                return response;
-            }
-            Console.WriteLine($"[DEBUG] Upload request: UserId={request.UserId}");
-
-
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == request.UserId);
-            if (user == null)
-            {
-                response.Success = false;
-                response.Message = "Không tìm thấy người dùng";
-                return response;
-            }
-
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "users");
-            if (!Directory.Exists(uploadsFolder))
-                Directory.CreateDirectory(uploadsFolder);
-
-            var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(request.ImageFile.FileName)}";
-            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await request.ImageFile.CopyToAsync(stream);
-            }
-
-            user.UrlImage = $"/images/users/{uniqueFileName}";
-            user.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(30);
             await _context.SaveChangesAsync();
 
             response.Success = true;
-            response.Message = "Cập nhật ảnh đại diện thành công";
+            response.Message = "Đăng nhập thành công.";
+            response.AccessToken = accessToken;
+            response.RefreshToken = refreshToken;
             response.User = new UserDto
             {
                 UserId = user.UserId,
                 Name = user.Name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
                 UrlImage = user.UrlImage
             };
 
@@ -353,6 +306,12 @@ namespace BEMobile.Services
                 return response;
             }
         }
+
+        public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+        }
+
 
     }
 }

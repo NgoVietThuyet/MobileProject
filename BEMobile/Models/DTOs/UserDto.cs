@@ -1,5 +1,6 @@
-﻿using BEMobile.Data.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using BEMobile.Data.Entities;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BEMobile.Models.DTOs
@@ -18,6 +19,10 @@ namespace BEMobile.Models.DTOs
         public string? Password { get; set; }
 
         public string? UrlImage { get; set; }
+
+
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiry { get; set; }
 
         public string? CreatedDate { get; set; }
         public string? UpdatedDate { get; set; }

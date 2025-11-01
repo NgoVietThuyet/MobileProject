@@ -12,6 +12,7 @@ namespace BEMobile.Services
         Task<CreateAccountResponse> CreateAccountAsync(CreateAccountRequest req);
         Task<DetailAccountResponse?> GetAccountByUserIdAsync(DetailAccountRequest req);
         Task<DeleteAccountResponse> DeleteAccountAsync(DeleteAccountRequest req);
+        Task UpdateBalanceAsync(string userId, long amount, bool isIncrease);
     }
 
     public class AccountService : IAccountService
@@ -99,5 +100,49 @@ namespace BEMobile.Services
                 Message = "Xóa tài khoản thành công"
             };
         }
+
+        public async Task UpdateBalanceAsync(string userId, long amount, bool isIncrease)
+        {
+            // 1️ Lấy tài khoản theo UserId
+            var account = await _db.Accounts.FirstOrDefaultAsync(a => a.UserId == userId);
+            if (account == null)
+                throw new Exception($"Không tìm thấy tài khoản với UserId = {userId}");
+
+            // 2️ Parse số dư hiện tại
+            long currentBalance = 0;
+            if (!long.TryParse(account.Balance, out currentBalance))
+                throw new Exception("Số dư hiện tại của tài khoản không hợp lệ.");
+
+            // 3️Cập nhật số dư
+            if (isIncrease)
+            {
+                // Cộng thêm tiền
+                currentBalance += amount;
+            }
+            else
+            {
+                // Trừ tiền, kiểm tra đủ số dư
+                if (currentBalance < amount)
+                    throw new Exception("Số dư tài khoản không đủ để thực hiện giao dịch.");
+                currentBalance -= amount;
+            }
+
+            // 4️Lưu lại
+            account.Balance = currentBalance.ToString();
+            account.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
+
+            _db.Accounts.Update(account);
+            await _db.SaveChangesAsync();
+
+            // 5️ Gửi thông báo (nếu cần)
+            string action = isIncrease ? "được cộng thêm" : "bị trừ đi";
+            await _notificationService.PushNotificationAsync(new PushNotificationRequest
+            {
+                UserId = userId,
+                Content = $"Số dư tài khoản của bạn vừa {action} {amount:N0} VNĐ. " +
+                          $"Số dư hiện tại: {currentBalance:N0} VNĐ."
+            });
+        }
+
     }
 }

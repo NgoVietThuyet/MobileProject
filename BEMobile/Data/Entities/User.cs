@@ -9,7 +9,6 @@ namespace BEMobile.Data.Entities
     public class User
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
         [Column("USER_ID")]
 
@@ -47,6 +46,12 @@ namespace BEMobile.Data.Entities
 
         [Column("URL_IMAGE")]
         public string? UrlImage { get; set; }
+
+        [Column("REFRESH_TOKEN")]
+        public string? RefreshToken { get; set; }
+
+        [Column("REFRESH_TOKEN_EXPIRY")]
+        public DateTime? RefreshTokenExpiry { get; set; }
 
         [Column("CREATED_DATE")]
         public string? CreatedDate { get; set; } 

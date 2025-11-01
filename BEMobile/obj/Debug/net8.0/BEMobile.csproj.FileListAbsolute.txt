@@ -939,3 +939,7 @@ D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\refint\BEMobile.dll
 D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.pdb
 D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\BEMobile.genruntimeconfig.cache
 D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\ref\BEMobile.dll
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\FirebaseAdmin.dll
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Google.Api.Gax.dll
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\femobile-firebase-adminsdk.json

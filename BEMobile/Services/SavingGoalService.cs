@@ -22,11 +22,13 @@ namespace BEMobile.Services
     {
         private readonly AppDbContext _context;
         private readonly INotificationService _notificationService;
+        private readonly IAccountService _accountService;
 
-        public SavingGoalService(AppDbContext context, INotificationService notificationService)
+        public SavingGoalService(AppDbContext context, INotificationService notificationService, IAccountService accountService)
         {
             _context = context;
             _notificationService = notificationService;
+            _accountService = accountService;
         }
 
 
@@ -97,11 +99,23 @@ namespace BEMobile.Services
                 {
                     savingGoal.CurrentAmount =
                         (long.Parse(savingGoal.CurrentAmount) + long.Parse(request.UpdateAmount)).ToString();
+                    
+                    await _accountService.UpdateBalanceAsync(
+                    savingGoal.UserId,
+                    long.Parse(request.UpdateAmount),
+                    isIncrease: false // trừ tiền tài khoản khi thêm vào saving goal
+                    );
                 }
                 else
                 {
                     savingGoal.CurrentAmount =
                         (long.Parse(savingGoal.CurrentAmount) - long.Parse(request.UpdateAmount)).ToString();
+
+                    await _accountService.UpdateBalanceAsync(
+                    savingGoal.UserId,
+                    long.Parse(request.UpdateAmount),
+                    isIncrease: true // trừ tiền tài khoản khi thêm vào saving goal
+                    );
                 }
 
                 savingGoal.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
