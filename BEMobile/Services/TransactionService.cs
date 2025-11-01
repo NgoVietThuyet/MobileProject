@@ -24,10 +24,11 @@ namespace BEMobile.Services
         private readonly INotificationService _notificationService;
         private readonly INeo4jConnector _neo4jConnector;
 
-        public TransactionService(AppDbContext context, INotificationService notificationService)
+        public TransactionService(AppDbContext context, INotificationService notificationService, INeo4jConnector neo4J)
         {
             _context = context;
             _notificationService = notificationService;
+            _neo4jConnector = neo4J;
         }
 
         public async Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync(string userId)
@@ -131,13 +132,21 @@ namespace BEMobile.Services
 
             dto.TransactionId = transaction.TransactionId;
             dto.CreatedDate = transaction.CreatedDate;
-
-            await _neo4jConnector.AddTransactionAsync(dto);
+            string a= "0";
+            try
+            {
+                await _neo4jConnector.AddTransactionAsync(dto);
+                a = "10";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"lỗi Neo4j: {ex.Message}");
+            }
 
             return new CreateTransactionResponse
             {
                 Success = true,
-                Message = "Tạo giao dịch thành công",
+                Message = "Tạo giao dịch thành công" + a,
                 Transaction = dto
             };
         }

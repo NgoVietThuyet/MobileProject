@@ -15,7 +15,7 @@ namespace BEMobile.Controllers
             _reportService = reportService;
         }
 
-        [HttpGet("export-template")]
+        [HttpGet("export-excel")]
         public async Task<IActionResult> ExportReportByTemplate([FromQuery] GenerateExcelReportRequest reportRequest)
         {
             try
@@ -25,6 +25,21 @@ namespace BEMobile.Controllers
                 return File(excelBytes,
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     $"BaoCaoTaiChinh_{reportRequest.StartDate:ddMMyyyy}_{reportRequest.EndDate:ddMMyyyy}.xlsx");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi khi tạo báo cáo: {ex.Message}");
+            }
+        }
+        [HttpGet("export-pdf")]
+        public async Task<IActionResult> ExportReportToPDF([FromQuery] GenerateExcelReportRequest reportRequest)
+        {
+            try
+            {
+                var pdfBytes = await _reportService.GeneratePdfReportByTemplateAsync(reportRequest);
+                return File(pdfBytes,
+                    "application/pdf",
+                    $"BaoCaoTaiChinh_{reportRequest.StartDate:ddMMyyyy}_{reportRequest.EndDate:ddMMyyyy}.pdf");
             }
             catch (Exception ex)
             {

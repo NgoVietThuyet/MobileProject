@@ -66,6 +66,10 @@
               "target": "Package",
               "version": "[1.72.0, )"
             },
+            "Hangfire.Core": {
+              "target": "Package",
+              "version": "[1.8.21, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.9, )"
@@ -101,6 +105,10 @@
             "OpenCvSharp4.runtime.win": {
               "target": "Package",
               "version": "[4.11.0.20250507, )"
+            },
+            "Spire.XLS": {
+              "target": "Package",
+              "version": "[15.10.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

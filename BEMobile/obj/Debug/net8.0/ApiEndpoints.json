@@ -278,6 +278,11 @@
         "IsRequired": false
       },
       {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "embedBase64",
         "Type": "System.Boolean",
         "IsRequired": false
@@ -366,7 +371,33 @@
   {
     "ContainingType": "BEMobile.Controllers.ReportsController",
     "Method": "ExportReportByTemplate",
-    "RelativePath": "api/Reports/export-template",
+    "RelativePath": "api/Reports/export-excel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "StartDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "EndDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.ReportsController",
+    "Method": "ExportReportToPDF",
+    "RelativePath": "api/Reports/export-pdf",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -400,6 +431,32 @@
       {
         "Name": "request",
         "Type": "BEMobile.Models.RequestResponse.SavingGoalRR.CreateSavingGoalRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BEMobile.Data.Entities.SavingGoal",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BEMobile.Controllers.SavingGoalController",
+    "Method": "DeleteSavingGoalAysnc",
+    "RelativePath": "api/SavingGoal/DeleteSaving",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BEMobile.Models.RequestResponse.SavingGoalRR.Delete.DeleteSavingRequest",
         "IsRequired": true
       }
     ],

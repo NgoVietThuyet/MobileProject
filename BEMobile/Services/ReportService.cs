@@ -1,17 +1,21 @@
 ﻿using BEMobile.Data.Entities;
 using BEMobile.Models.RequestResponse.ReportRR;
-using Google;
+
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
 using System.Globalization;
-
+using Spire.Xls;
+using Font = System.Drawing.Font;
+using ExcelHorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment;
 namespace BEMobile.Services
 {
     public interface IReportService
     {
         Task<byte[]> GenerateExcelReportByTemplateAsync(GenerateExcelReportRequest reportRequest);
+        Task<byte[]> GeneratePdfReportByTemplateAsync(GenerateExcelReportRequest reportRequest);
+
     }
 
     public class ReportService : IReportService
@@ -93,23 +97,29 @@ namespace BEMobile.Services
 
             // Định dạng - TRUYỀN THÊM incomeCount
             FormatWorksheet(worksheet, incomeTransactions.Count, expenseTransactions.Count, incomeTransactions.Count);
+            worksheet.Workbook.Worksheets[worksheet.Index].PrinterSettings.HorizontalCentered = true;
+            worksheet.PrinterSettings.FitToPage = true;
+            worksheet.PrinterSettings.FitToWidth = 1;   // 1 trang theo chiều rộng
+            worksheet.PrinterSettings.FitToHeight = 0;  // chiều cao tự do
 
             return package.GetAsByteArray();
         }
         private void CreateTemplateHeader(ExcelWorksheet worksheet)
         {
+
             // Header THU NHẬP (giữ nguyên)
             worksheet.Cells["A1"].Value = "THU NHẬP";
             worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            worksheet.Cells["A1:D1"].Merge = true;
+            worksheet.Cells["A1:E1"].Merge = true;
 
             worksheet.Cells["A2"].Value = "STT";
             worksheet.Cells["B2"].Value = "Tên thu nhập";
             worksheet.Cells["C2"].Value = "Giá tiền";
             worksheet.Cells["D2"].Value = "Thời gian";
+            worksheet.Cells["E2"].Value = "Ghi chú";
 
             // Định dạng header thu nhập
-            var headerCells = new[] { "A1:D1", "A2", "B2", "C2", "D2" };
+            var headerCells = new[] { "A1:E1", "A2", "B2", "C2", "D2", "E2"};
             foreach (var cell in headerCells)
             {
                 worksheet.Cells[cell].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -124,7 +134,11 @@ namespace BEMobile.Services
         private void FillIncomeData(ExcelWorksheet worksheet, List<Transaction> incomeTransactions, Dictionary<string, string> categoryDict)
         {
             int startRow = 3;
-
+            worksheet.Cells[$"A{3}:A{incomeTransactions.Count + 2}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"B{3}:B{incomeTransactions.Count + 2}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"C{3}:C{incomeTransactions.Count + 2}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"D{3}:D{incomeTransactions.Count + 2}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"E{3}:E{incomeTransactions.Count + 2}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
             for (int i = 0; i < incomeTransactions.Count; i++)
             {
                 var transaction = incomeTransactions[i];
@@ -132,9 +146,9 @@ namespace BEMobile.Services
                 var displayDate = transaction.UpdatedDate ?? transaction.CreatedDate;
 
                 worksheet.Cells[$"A{row}"].Value = i + 1; // STT
+                worksheet.Cells[$"A{row}:E{row}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
 
-                
                 if (transaction.CategoryId != null && categoryDict.TryGetValue(transaction.CategoryId, out string name))
                 {
                     worksheet.Cells[$"B{row}"].Value = name; // Tên thu nhập
@@ -145,35 +159,43 @@ namespace BEMobile.Services
                     worksheet.Cells[$"C{row}"].Value = amount;
                 }
                 worksheet.Cells[$"D{row}"].Value = displayDate; // Thời gian
+                worksheet.Cells[$"E{row}"].Value = transaction.Note; // Ghi chú
             }
 
             // Tổng thu nhập
             if (incomeTransactions.Any())
             {
                 int totalRow = startRow + incomeTransactions.Count;
-                worksheet.Cells[$"F{startRow}"].Value = "Tổng thu nhập";
-                worksheet.Cells[$"G{startRow}"].Formula = $"SUM(C{startRow}:C{totalRow - 1})";
-                worksheet.Cells[$"F{startRow}"].Style.Font.Bold = true;
-                worksheet.Cells[$"G{startRow}"].Style.Font.Bold = true;
+                worksheet.Cells[$"A{incomeTransactions.Count + 4}"].Value = "Tổng thu nhập";
+                worksheet.Cells[$"B{incomeTransactions.Count + 4} "].Formula = $"SUM(C{startRow}:C{totalRow - 1})";
+                worksheet.Cells[$"B{incomeTransactions.Count + 4} "].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells[$"A{incomeTransactions.Count + 4}"].Style.Font.Bold = true;
+                worksheet.Cells[$"B{incomeTransactions.Count+ 4 }"].Style.Font.Bold = true;
             }
         }
         private void FillExpenseData(ExcelWorksheet worksheet, List<Transaction> expenseTransactions, int incomeCount, Dictionary<string, string> categoryDict)
         {
             // Bắt đầu từ dòng cuối cùng của bảng thu nhập + 3 dòng (2 dòng trống + 1 dòng header)
-            int startRow = 3 + incomeCount + 3;
+            int startRow = 3 + incomeCount + 5;
 
             // Header CHI TIÊU - đặt ở vị trí mới
             worksheet.Cells[$"A{startRow - 1}"].Value = "CHI TIÊU";
-            worksheet.Cells[$"A{startRow - 1}:D{startRow - 1}"].Merge = true;
+            worksheet.Cells[$"A{startRow - 1}:E{startRow - 1}"].Merge = true;
             worksheet.Cells[$"A{startRow-1}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
             worksheet.Cells[$"A{startRow}"].Value = "STT";
             worksheet.Cells[$"B{startRow}"].Value = "Tên giao dịch";
             worksheet.Cells[$"C{startRow}"].Value = "Giá tiền";
             worksheet.Cells[$"D{startRow}"].Value = "Thời gian";
+            worksheet.Cells[$"E{startRow}"].Value = "Ghi chú";
+            worksheet.Cells[$"A{startRow}:A{expenseTransactions.Count + startRow }"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"B{startRow}:B{expenseTransactions.Count + startRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"C{startRow}:C{expenseTransactions.Count + startRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"D{startRow}:D{expenseTransactions.Count + startRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[$"E{startRow}:E{expenseTransactions.Count + startRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
             // Định dạng header chi tiêu
-            var expenseHeaderCells = new[] { $"A{startRow - 1}:D{startRow-1}", $"A{startRow}", $"B{startRow}", $"C{startRow}", $"D{startRow}" };
+            var expenseHeaderCells = new[] { $"A{startRow - 1}:E{startRow - 1}", $"A{startRow}", $"B{startRow}", $"C{startRow}", $"D{startRow}", $"E{ startRow }" };
             foreach (var cell in expenseHeaderCells)
             {
                 worksheet.Cells[cell].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -191,7 +213,7 @@ namespace BEMobile.Services
                 var displayDate = transaction.UpdatedDate ?? transaction.CreatedDate;
 
                 worksheet.Cells[$"A{row}"].Value = i + 1;
-                
+                worksheet.Cells[$"A{row}:E{row}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 if (transaction.CategoryId != null && categoryDict.TryGetValue(transaction.CategoryId, out string name))
                 {
                     worksheet.Cells[$"B{row}"].Value = name;
@@ -208,27 +230,21 @@ namespace BEMobile.Services
                 }
 
                 worksheet.Cells[$"D{row}"].Value = displayDate;
+                worksheet.Cells[$"E{row}"].Value = transaction.Note;    
             }
 
             // Tổng chi tiêu - đặt ở vị trí mới
             if (expenseTransactions.Any())
             {
                 int totalRow = startRow + 1 + expenseTransactions.Count;
-                worksheet.Cells[$"F{startRow + 1}"].Value = "Tổng chi tiêu";
+                worksheet.Cells[$"A{totalRow + 1}"].Value = "Tổng chi tiêu";
 
-                // Tính tổng trực tiếp
-                decimal totalExpense = 0;
-                foreach (var transaction in expenseTransactions)
-                {
-                    if (decimal.TryParse(transaction.Amount, out decimal amount))
-                    {
-                        totalExpense += amount;
-                    }
-                }
-                worksheet.Cells[$"G{startRow + 1}"].Value = totalExpense;
+                
+                worksheet.Cells[$"B{totalRow + 1}"].Formula = $"SUM(C{startRow + 1}:C{totalRow - 1})";
+                worksheet.Cells[$"B{totalRow + 1} "].Style.Numberformat.Format = "#,##0";
 
-                worksheet.Cells[$"F{startRow + 1}"].Style.Font.Bold = true;
-                worksheet.Cells[$"G{startRow + 1}"].Style.Font.Bold = true;
+                worksheet.Cells[$"A{totalRow + 1}"].Style.Font.Bold = true;
+                worksheet.Cells[$"B{totalRow + 1}"].Style.Font.Bold = true;
             }
         }
         private void FormatWorksheet(ExcelWorksheet worksheet, int incomeCount, int expenseCount, int totalIncomeCount)
@@ -237,41 +253,22 @@ namespace BEMobile.Services
             if (incomeCount > 0)
             {
                 worksheet.Cells[$"C3:C{2 + incomeCount}"].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells[$"A3:E{2 + incomeCount}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
             }
-            worksheet.Cells["G3"].Style.Numberformat.Format = "#,##0";
+            worksheet.Cells["B3"].Style.Numberformat.Format = "#,##0";
 
             // Định dạng cột số tiền CHI TIÊU
             if (expenseCount > 0)
             {
-                int expenseDataStartRow = 3 + totalIncomeCount + 3 + 1;
+                int expenseDataStartRow = 3 + totalIncomeCount + 5 + 1;
                 worksheet.Cells[$"C{expenseDataStartRow}:C{expenseDataStartRow + expenseCount - 1}"].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells[$"A{expenseDataStartRow}:E{expenseDataStartRow + expenseCount - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
             }
 
-            int expenseTotalRow = 3 + totalIncomeCount + 3 + 1;
-            worksheet.Cells[$"G{expenseTotalRow}"].Style.Numberformat.Format = "#,##0";
+            int expenseTotalRow = 3 + totalIncomeCount + 5 + 1;
+            worksheet.Cells[$"B{expenseTotalRow}"].Style.Numberformat.Format = "#,##0";
 
-            // Định dạng border cho dữ liệu THU NHẬP
-            if (incomeCount > 0)
-            {
-                worksheet.Cells[$"A3:D{2 + incomeCount}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                // ... [các định dạng border khác cho thu nhập] ...
-            }
-
-            // Định dạng border cho dữ liệu CHI TIÊU
-            if (expenseCount > 0)
-            {
-                int expenseDataStartRow = 3 + totalIncomeCount + 3 + 1;
-                int expenseDataEndRow = expenseDataStartRow + expenseCount - 1;
-
-                // Border cho dữ liệu
-                worksheet.Cells[$"A{expenseDataStartRow}:D{expenseDataEndRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                // ... [các định dạng border khác cho chi tiêu] ...
-
-                //// Border cho header chi tiêu
-                //worksheet.Cells[$"A{expenseDataStartRow - 1}:D{expenseDataStartRow - 1}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                //worksheet.Cells[$"A{expenseDataStartRow}:D{expenseDataStartRow}"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-            }
-
+            
             // Căn giữa các cột STT
             if (incomeCount > 0)
             {
@@ -280,7 +277,7 @@ namespace BEMobile.Services
 
             if (expenseCount > 0)
             {
-                int expenseDataStartRow = 3 + totalIncomeCount + 3 + 1;
+                int expenseDataStartRow = 3 + totalIncomeCount + 5 + 1;
                 worksheet.Cells[$"A{expenseDataStartRow}:A{expenseDataStartRow + expenseCount - 1}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             }
 
@@ -292,5 +289,27 @@ namespace BEMobile.Services
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
             }
         }
+
+        // Convert excel to pdf
+
+        public async Task<byte[]> GeneratePdfReportByTemplateAsync(GenerateExcelReportRequest reportRequest)
+        {
+            // Step 1: Generate Excel as byte[]
+            var excelBytes = await GenerateExcelReportByTemplateAsync(reportRequest);
+
+            // Step 2: Convert Excel bytes to PDF using Spire.XLS
+            using var workbook = new Spire.Xls.Workbook();
+
+            // Load from memory stream
+            using var excelStream = new MemoryStream(excelBytes);
+            workbook.LoadFromStream(excelStream);
+
+            // Export to PDF
+            using var pdfStream = new MemoryStream();
+            workbook.SaveToStream(pdfStream, Spire.Xls.FileFormat.PDF);
+
+            return pdfStream.ToArray();
+        }
+
     }
 }

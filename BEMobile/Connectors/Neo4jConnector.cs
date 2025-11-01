@@ -56,17 +56,24 @@ namespace BEMobile.Connectors
         public async Task<IResultCursor> AddTransactionAsync(TransactionDto data)
         {
 
-            string createdIsoDate = DateTime.ParseExact(data.CreatedDate, "dd/MM/yyyy HH:mm:ss", null).ToString("yyyy-MM-dd");
-            string updatedIsoDate = DateTime.ParseExact(data.UpdatedDate, "dd/MM/yyyy HH:mm:ss", null).ToString("yyyy-MM-dd");
+            string createdIsoDate = DateTime.ParseExact(data.CreatedDate, "dd/MM/yyyy HH:mm:ss", null).ToString("yyyy/MM/dd");
+            string updatedIsoDate;
+            try
+            {
+                updatedIsoDate = DateTime.ParseExact(data.UpdatedDate, "dd/MM/yyyy HH:mm:ss", null).ToString("yyyy/MM/dd");
+            }catch(Exception e)
+            {
+                updatedIsoDate = data.UpdatedDate.ToString();
+            }
             string tranId = "GD" + data.TransactionId;
             string cateId = "DM" + data.CategoryId;
 
             var parameters = new
             {
-                userId = data.UserId,
+                userId = "1",
                 transactionId = tranId,
                 type = data.Type,
-                amount = data.Amount,
+                amount = data.Amount.ToString(),
                 note = data.Note,
                 createdDate = createdIsoDate,
                 updatedDate = updatedIsoDate,
@@ -76,9 +83,9 @@ namespace BEMobile.Connectors
             var query = @"
         MATCH (user:`Mã người dùng` {name: $userId}) 
         MATCH (category:`Mã danh mục` {name: $categoryId})
-        CREATE (t:Transaction {name: $transactionId})
+        CREATE (t:`Mã giao dịch` {name: $transactionId})
 
-        MERGE (typeNode:`Loại giao dịch' {name: $type})
+        MERGE (typeNode:`Loại giao dịch` {name: $type})
         
         CREATE (amountNode:`Số tiền` {name: $amount})
         CREATE (noteNode:`Ghi chú` {name: $note})
@@ -94,9 +101,8 @@ namespace BEMobile.Connectors
         CREATE (t)-[:`CÓ_DANH_MỤC`]->(category)
         
         RETURN t, user, category, amountNode, noteNode
-    "";
     ";
-
+            
             return await ExecuteWriteAsync(query, parameters);
         }
 
@@ -111,7 +117,7 @@ namespace BEMobile.Connectors
             {
                 transactionId = tranId,
                 type = data.Type,
-                amount = data.Amount,
+                amount = data.Amount.ToString(),
                 note = data.Note,
                 updatedDate = updatedIsoDate,
                 categoryId = cateId

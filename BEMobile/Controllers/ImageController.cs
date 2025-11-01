@@ -17,7 +17,7 @@ namespace BEMobile.Controllers
         }
 
         [HttpPost("imageUpload")]
-        public async Task<IActionResult> UploadImage(IFormFile file, [FromQuery] bool embedBase64 = false)
+        public async Task<IActionResult> UploadImage(IFormFile file, [FromQuery] string userId,[FromQuery] bool embedBase64 = false)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace BEMobile.Controllers
                 {
                     var transactions = await _imageService.ProcessReceiptToTransactionsAsync(
                         file,
-                        userId: "omg",
+                        userId: userId,
                         embedBase64: embedBase64,
                         cancellationToken: cts.Token 
                     );

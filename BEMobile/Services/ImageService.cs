@@ -120,7 +120,7 @@ namespace BEMobile.Services
                     TransactionId = "",
                     UserId = userId ?? string.Empty,
                     CategoryId = e.Category ?? string.Empty,
-                    Type = "expense",
+                    Type = "EXPENSE",
                     Amount = e.Amount.ToString(),
                     Note = string.IsNullOrWhiteSpace(e.Note) ? null : e.Note,
                     CreatedDate = DateTime.UtcNow.ToString("o"),
@@ -143,7 +143,7 @@ Hãy phân tích hình ảnh hóa đơn và trả về mảng JSON các đối t
 
 Yêu cầu:
 1. Xác định các mặt hàng và giá tiền (đọc giá tiền cho mỗi món nhưng lưu ý thêm nếu có thuế hoặc giảm giá)
-2. Gán mỗi mặt hàng vào một danh mục phù hợp
+2. Gán mỗi mặt hàng vào một danh mục phù hợp(Tính tổng tiền các mặt hàng cùng danh mục, phần note sẽ thêm dấu phẩy vào giữa các mặt hàng cùng loại)
 3. Nếu danh mục không có mặt hàng, hãy bỏ qua
 
 Ví dụ đầu ra:

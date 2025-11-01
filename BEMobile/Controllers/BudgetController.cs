@@ -105,7 +105,14 @@ namespace BEMobile.Controllers
                 return Ok(new UpdateAmountResponse
                 {
                     Success = false,
-                    Message = "Cập nhật số tiền không thành công"
+                    Message = ex.Message
+                });
+            }
+            catch (ArgumentException ex){ 
+                return Ok(new UpdateAmountResponse
+                {
+                    Success = false,
+                    Message= ex.Message
                 });
             }
         }
