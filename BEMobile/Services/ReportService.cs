@@ -6,8 +6,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
 using System.Globalization;
-using Spire.Xls;
-using Font = System.Drawing.Font;
+
 using ExcelHorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment;
 namespace BEMobile.Services
 {
