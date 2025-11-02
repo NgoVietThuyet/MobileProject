@@ -2,10 +2,7 @@
 using BEMobile.Models.DTOs;
 using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
 using BEMobile.Models.RequestResponse.SavingGoalRR;
-using BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount;
-using Microsoft.EntityFrameworkCore;
-
-
+using BEMobile.Models.RequestResponse.SavingGoalRR.Delete;
 namespace BEMobile.Services
 {
     public interface ISavingGoalService
@@ -15,7 +12,7 @@ namespace BEMobile.Services
         Task<SavingGoal> CreateSavingGoalAsync(CreateSavingGoalRequest request);
         Task UpdateAmountAsync(UpdateAmountGoalRequest request);
         ////Task UpdateBudgetAsync(BudgetDto BudgetDto);
-        //Task<bool> DeleteBudgetAsync(string id);
+        Task DeleteSavingGoalAsync(DeleteSavingRequest deleteSavingRequest);
 
     }
     public class SavingGoalService : ISavingGoalService
@@ -137,34 +134,26 @@ namespace BEMobile.Services
                 throw new Exception("Bị lỗi", ex);
             }
         }
-        //public async Task<bool> DeleteBudgetAsync(string id)
-        //{
-        //    try
-        //    {
-        //        // 1️⃣ Tìm Budget theo ID
-        //        var budget = await _context.Budgets
-        //            .FirstOrDefaultAsync(b => b.BudgetId == id);
+        public async Task DeleteSavingGoalAsync(DeleteSavingRequest deleteSavingRequest)
+        {
+            try
+            {
+                // 1️⃣ Tìm Budget theo ID
+                var saving = await _context.SavingGoals
+                    .FirstOrDefaultAsync(b => b.GoalId == deleteSavingRequest.id);
 
-        //        // 2️⃣ Kiểm tra nếu không tồn tại
-        //        if (budget == null)
-        //        {
-        //            return false; // Không có budget nào trùng ID
-        //        }
+                // 3️⃣ Xóa entity
+                _context.SavingGoals.Remove(saving);
 
-        //        // 3️⃣ Xóa entity
-        //        _context.Budgets.Remove(budget);
-
-        //        // 4️⃣ Lưu thay đổi
-        //        await _context.SaveChangesAsync();
-
-        //        return true; // Xóa thành công
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // 5️⃣ Ném lỗi có thông tin chi tiết
-        //        throw new Exception($"Lỗi khi xóa Budget có ID = {id}", ex);
-        //    }
-        //}
+                // 4️⃣ Lưu thay đổi
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // 5️⃣ Ném lỗi có thông tin chi tiết
+                throw new Exception($"Lỗi khi xóa Budget có Id", ex);
+            }
+        }
 
 
         //public async Task<IEnumerable<BudgetDto>> SearchBudgetsAsync(string? name, string? email, string? phoneNumber)

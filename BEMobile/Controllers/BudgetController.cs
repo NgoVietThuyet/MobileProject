@@ -91,7 +91,14 @@ namespace BEMobile.Controllers
                 return StatusCode(500, new UpdateAmountResponse
                 {
                     Success = false,
-                    Message = $"Cập nhật thất bại: {ex.Message}"
+                    Message = ex.Message
+                });
+            }
+            catch (ArgumentException ex){ 
+                return Ok(new UpdateAmountResponse
+                {
+                    Success = false,
+                    Message= ex.Message
                 });
             }
         }
