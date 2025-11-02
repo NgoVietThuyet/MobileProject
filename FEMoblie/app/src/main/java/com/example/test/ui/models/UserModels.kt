@@ -8,6 +8,8 @@ data class LoginResp(
     @SerializedName("success") val success: Boolean,
     @SerializedName("message") val message: String,
     @SerializedName("user") val user: UserDto,
+    @SerializedName("accessToken") val accessToken: String? = null,
+    @SerializedName("refreshToken") val refreshToken: String? = null
 )
 
 data class SignUpRequest(@SerializedName("userDto") val userDto: UserDto)
@@ -23,8 +25,6 @@ data class UserDto(
     @SerializedName("phoneNumber") val phoneNumber: String,
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String? = null,
-    @SerializedName("facebook") val facebook: String? = null,
-    @SerializedName("twitter") val twitter: String? = null,
     @SerializedName("createdDate") val createdDate: String? = null,
     @SerializedName("updatedDate") val updatedDate: String? = null
 )
@@ -34,4 +34,26 @@ data class RegisterReq(
     val email: String,
     val phoneNumber: String,
     val password: String
+)
+
+data class RefreshTokenReq(
+    @SerializedName("refreshToken") val refreshToken: String
+)
+
+data class RefreshTokenResp(
+    @SerializedName("accessToken") val accessToken: String,
+    @SerializedName("refreshToken") val refreshToken: String
+)
+
+// Change Password Request
+data class ChangePasswordRequest(
+    @SerializedName("userId") val userId: String,
+    @SerializedName("oldPassword") val oldPassword: String,
+    @SerializedName("newPassword") val newPassword: String,
+    @SerializedName("confirmPassword") val confirmPassword: String
+)
+
+data class ChangePasswordResponse(
+    @SerializedName("success") val success: Boolean,
+    @SerializedName("message") val message: String
 )

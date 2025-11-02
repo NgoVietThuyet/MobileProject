@@ -4,7 +4,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,19 +21,22 @@ import androidx.compose.ui.unit.sp
 import com.example.test.R
 import com.example.test.ui.components.AuthContainer
 import com.example.test.ui.theme.AppGradient
+import com.example.test.utils.SoundManager
 
 @Composable
 fun EmailLoginScreen(
     onBack: () -> Unit = {},
-    onLogin: (email: String, password: String) -> Unit,
+    onLogin: (email: String, password: String, onError: (String) -> Unit) -> Unit,
     onRegister: () -> Unit = {}
 ) {
     val scheme = MaterialTheme.colorScheme
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var rememberMe by remember { mutableStateOf(false) }
     var passwordVisible by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
     AuthContainer(
         iconRes = R.drawable.ic_email,
@@ -47,7 +52,9 @@ fun EmailLoginScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 OutlinedTextField(
@@ -135,8 +142,32 @@ fun EmailLoginScreen(
                     )
                 }
 
+                // Khoảng không gian cố định cho error message (tránh đẩy button)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    if (errorMessage.isNotBlank()) {
+                        Text(
+                            text = errorMessage,
+                            color = Color.Red,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+
                 Button(
-                    onClick = { onLogin(email.trim(), password) },
+                    onClick = {
+                        SoundManager.playClick(context)
+                        errorMessage = "" // Xóa lỗi cũ
+                        onLogin(email.trim(), password) { error ->
+                            errorMessage = error
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),

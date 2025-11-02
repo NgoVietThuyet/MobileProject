@@ -16,8 +16,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.ui.platform.LocalContext
 import com.example.test.R
 import com.example.test.ui.theme.AppGradient
+import com.example.test.utils.SoundManager
 
 @Composable
 fun AuthContainer(
@@ -29,6 +31,7 @@ fun AuthContainer(
     gradientColors: List<Color>? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    val context = LocalContext.current
     val scheme = MaterialTheme.colorScheme
     val topBarHeight = 64.dp
 
@@ -52,7 +55,10 @@ fun AuthContainer(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (onBack != null) {
-                        IconButton(onClick = onBack) {
+                        IconButton(onClick = {
+                            SoundManager.playClick(context)
+                            onBack()
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_back),
                                 contentDescription = "Back",

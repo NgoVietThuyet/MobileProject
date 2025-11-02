@@ -1,3 +1,47 @@
 <resources>
     <string name="app_name">Quản lý thu chi</string>
+
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="full_name">Họ và tên</string>
+
+    <string name="home">Trang chủ</string>
+    <string name="report">Báo cáo</string>
+    <string name="saving">Tiết kiệm</string>
+    <string name="settings">Cài đặt</string>
+
+    <string name="income">Thu nhập</string>
+    <string name="expense">Chi tiêu</string>
+    <string name="budget">Ngân sách</string>
+    <string name="transaction">Giao dịch</string>
+
+    <string name="dark_mode">Chế độ tối</string>
+    <string name="vietnamese_mode">Tiếng Việt</string>
+    <string name="personal_info">Thông tin cá nhân</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="logout">Đăng xuất</string>
+
+    <string name="old_password">Mật khẩu hiện tại</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
+
+    <string name="password_weak">Yếu</string>
+    <string name="password_medium">Trung bình</string>
+    <string name="password_strong">Mạnh</string>
+    <string name="password_very_strong">Cực mạnh</string>
+
+    <string name="at_least_8_chars">Ít nhất 8 ký tự</string>
+    <string name="upper_lower_case">Chữ hoa và chữ thường</string>
+    <string name="at_least_1_number">Ít nhất 1 số</string>
+    <string name="at_least_1_special">Ít nhất 1 ký tự đặc biệt</string>
+
+    <string name="password_tips_title">💡 Mẹo tạo mật khẩu mạnh</string>
+    <string name="password_tip_1">• Kết hợp chữ hoa, chữ thường, số và ký tự đặc biệt (@, #, $, %, ...)</string>
+    <string name="password_tip_2">• Độ dài tối thiểu 8 ký tự, khuyến nghị 12 ký tự trở lên</string>
+    <string name="password_tip_3">• Không sử dụng thông tin cá nhân (tên, ngày sinh, số điện thoại)</string>
+    <string name="password_tip_4">• Không sử dụng lại mật khẩu từ các tài khoản khác</string>
+    <string name="password_tip_5">• Thay đổi mật khẩu định kỳ 3-6 tháng/lần</string>
 </resources>

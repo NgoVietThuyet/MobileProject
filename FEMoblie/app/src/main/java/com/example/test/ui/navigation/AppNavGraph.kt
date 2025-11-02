@@ -14,9 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.flow.first
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,29 +52,68 @@ import org.json.JSONObject
 import com.example.test.ui.api.Api
 import com.example.test.ui.api.AuthStore
 import com.example.test.ui.scan.UploadResult
+import com.example.test.utils.SoundManager
 import com.example.test.vm.AllTransactionViewModel
 
-private fun extractServerMessage(raw: String): String? = try {
-    val obj = JSONObject(raw)
-    obj.optString("message").takeIf { it.isNotBlank() }
-        ?: obj.optString("detail").takeIf { it.isNotBlank() }
-        ?: obj.optString("title").takeIf { it.isNotBlank() }
-        ?: run {
+private fun extractServerMessage(raw: String): String? {
+    try {
+        val obj = JSONObject(raw)
+
+        val title = obj.optString("title").takeIf { it.isNotBlank() }
+        if (title != null && title.contains("validation", ignoreCase = true)) {
             if (obj.has("errors")) {
-                val errs = obj.get("errors")
-                when (errs) {
-                    is JSONArray -> (0 until errs.length()).joinToString("; ") { errs.getString(it) }
-                    is JSONObject -> errs.keys().asSequence().joinToString("; ") { key ->
-                        val arr = errs.optJSONArray(key)
-                        if (arr != null) "$key: " + (0 until arr.length()).joinToString(", ") { arr.getString(it) }
-                        else "$key: ${errs.optString(key)}"
+                val errs = obj.getJSONObject("errors")
+                val errorMessages = mutableListOf<String>()
+                errs.keys().forEach { key ->
+                    val arr = errs.optJSONArray(key)
+                    if (arr != null && arr.length() > 0) {
+                        val errorMsg = arr.getString(0)
+                        val translatedMsg = when {
+                            errorMsg.contains("required", ignoreCase = true) -> "Trường này bắt buộc"
+                            errorMsg.contains("invalid", ignoreCase = true) -> "Giá trị không hợp lệ"
+                            errorMsg.contains("email", ignoreCase = true) && errorMsg.contains("format", ignoreCase = true) -> "Email không đúng định dạng"
+                            errorMsg.contains("email", ignoreCase = true) -> "Email không hợp lệ"
+                            errorMsg.contains("password", ignoreCase = true) && errorMsg.contains("incorrect", ignoreCase = true) -> "Mật khẩu không đúng"
+                            errorMsg.contains("password", ignoreCase = true) && errorMsg.contains("length", ignoreCase = true) -> "Mật khẩu phải có ít nhất 6 ký tự"
+                            errorMsg.contains("password", ignoreCase = true) -> "Mật khẩu không hợp lệ"
+                            errorMsg.contains("user", ignoreCase = true) && errorMsg.contains("not found", ignoreCase = true) -> "Không tìm thấy người dùng"
+                            errorMsg.contains("already exists", ignoreCase = true) -> "Thông tin đã tồn tại"
+                            errorMsg.contains("unauthorized", ignoreCase = true) -> "Không có quyền truy cập"
+                            else -> errorMsg
+                        }
+                        errorMessages.add(translatedMsg)
                     }
-                    else -> errs.toString()
                 }
-            } else null
+                if (errorMessages.isNotEmpty()) {
+                    return errorMessages.joinToString(", ")
+                } else {
+                    return "Thông tin không hợp lệ"
+                }
+            }
+            return "Thông tin không hợp lệ"
         }
-} catch (_: Exception) {
-    raw.ifBlank { null }
+
+        // Xử lý message thông thường
+        return obj.optString("message").takeIf { it.isNotBlank() }
+            ?: obj.optString("detail").takeIf { it.isNotBlank() }
+            ?: title
+            ?: run {
+                if (obj.has("errors")) {
+                    val errs = obj.get("errors")
+                    when (errs) {
+                        is JSONArray -> (0 until errs.length()).joinToString("; ") { errs.getString(it) }
+                        is JSONObject -> errs.keys().asSequence().joinToString("; ") { key ->
+                            val arr = errs.optJSONArray(key)
+                            if (arr != null) (0 until arr.length()).joinToString(", ") { arr.getString(it) }
+                            else errs.optString(key)
+                        }
+                        else -> errs.toString()
+                    }
+                } else null
+            }
+    } catch (_: Exception) {
+        return raw.ifBlank { null }
+    }
 }
 
 sealed class Screen(val route: String) {
@@ -121,6 +163,7 @@ sealed class Screen(val route: String) {
     data object CurrentUnit : Screen("current_unit")
     data object Scan : Screen("scan")
     data object ScanResult : Screen("scan_result")
+    data object ChangePassword : Screen("change_password")
 }
 
 private data class TxNav(
@@ -174,15 +217,45 @@ private fun androidx.navigation.NavController.switchTo(route: String) {
 fun AppNavGraph(navController: NavHostController) {
     val settingsVm: SettingsViewModel = viewModel()
     val dark by settingsVm.darkMode.collectAsStateWithLifecycle()
+    val soundEnabled by settingsVm.soundEnabled.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val authRepo = remember { com.example.test.data.AuthRepository(context) }
+    val scope = rememberCoroutineScope()
+    var startDest by remember { mutableStateOf<String?>(null) }
 
-    NavHost(navController = navController, startDestination = "auth") {
+    LaunchedEffect(Unit) {
+        scope.launch {
+            val userId = authRepo.userIdFlow.first()
+            val userName = authRepo.userNameFlow.first()
+            val userEmail = authRepo.userEmailFlow.first()
+            val userPhone = authRepo.userPhoneFlow.first()
+            val userCreationDate = authRepo.userCreationDateFlow.first()
+            val token = authRepo.tokenFlow.first()
+            val refreshToken = authRepo.refreshTokenFlow.first()
+
+            AuthStore.loadFromDataStore(userId, userName, userEmail, userPhone, userCreationDate, token, refreshToken)
+
+            Api.onTokensRefreshed = { newAccessToken, newRefreshToken ->
+                scope.launch {
+                    authRepo.updateTokens(newAccessToken, newRefreshToken)
+                }
+            }
+
+            startDest = if (userId != null) "main" else "auth"
+        }
+    }
+
+    if (startDest == null) {
+        return
+    }
+
+    NavHost(navController = navController, startDestination = startDest!!) {
         navigation(startDestination = Screen.Login.route, route = "auth") {
             composable(Screen.Login.route) {
                 LoginScreen(
                     onNavigateToEmail = { navController.navigate(Screen.EmailLogin.route) },
                     onNavigateToPhone = { navController.navigate(Screen.PhoneLogin.route) },
-                    onNavigateToRegister = { navController.navigate(Screen.Register.route) },
-                    onFb = { navController.navigate(Screen.Home.route) }
+                    onNavigateToRegister = { navController.navigate(Screen.Register.route) }
                 )
             }
 
@@ -190,10 +263,11 @@ fun AppNavGraph(navController: NavHostController) {
                 val ctx = LocalContext.current
                 val scope = rememberCoroutineScope()
                 val usersApi = remember { Api.usersService }
+                val authRepo = remember { com.example.test.data.AuthRepository(ctx) }
 
                 EmailLoginScreen(
                     onBack = { navController.popBackStack() },
-                    onLogin = { email, password ->
+                    onLogin = { email, password, onError ->
                         scope.launch {
                             try {
                                 val res = usersApi.login(LoginReq(email, password))
@@ -204,7 +278,18 @@ fun AppNavGraph(navController: NavHostController) {
                                     AuthStore.userEmail = body.user.email
                                     AuthStore.userPhone = body.user.phoneNumber
                                     AuthStore.userCreationDate = body.user.createdDate
+                                    AuthStore.token = body.accessToken
+                                    AuthStore.refreshToken = body.refreshToken
 
+                                    authRepo.saveUserInfo(
+                                        userId = body.user.userId,
+                                        userName = body.user.name,
+                                        userEmail = body.user.email,
+                                        userPhone = body.user.phoneNumber,
+                                        userCreationDate = body.user.createdDate,
+                                        token = body.accessToken,
+                                        refreshToken = body.refreshToken
+                                    )
 
                                     navController.navigate("main") {
                                         popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
@@ -212,16 +297,21 @@ fun AppNavGraph(navController: NavHostController) {
                                     }
                                 } else {
                                     val msg = res.errorBody()?.string()?.let(::extractServerMessage)
-                                        ?: "Đăng nhập thất bại"
-                                    Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show()
+                                        ?: "❌ Đăng nhập thất bại"
+                                    onError(msg)
                                 }
                             } catch (e: kotlinx.coroutines.CancellationException) {
                                 throw e
-                            } catch (e: Exception) {
-                                val isConnErr = e is java.net.UnknownHostException ||
-                                        e is java.net.ConnectException || e is java.net.SocketTimeoutException
-                                val msg = if (isConnErr) "Mất kết nối máy chủ" else (e.localizedMessage ?: "Đăng nhập thất bại")
-                                Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show()
+                            } catch (_: java.net.UnknownHostException) {
+                                onError("❌ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
+                            } catch (_: java.net.SocketTimeoutException) {
+                                onError("❌ Hết thời gian chờ. Vui lòng thử lại")
+                            } catch (_: java.net.ConnectException) {
+                                onError("❌ Không thể kết nối đến máy chủ")
+                            } catch (_: java.io.IOException) {
+                                onError("❌ Lỗi kết nối. Vui lòng thử lại")
+                            } catch (_: Exception) {
+                                onError("❌ Đăng nhập thất bại. Vui lòng thử lại")
                             }
                         }
                     },
@@ -232,7 +322,8 @@ fun AppNavGraph(navController: NavHostController) {
             composable(Screen.PhoneLogin.route) {
                 PhoneLoginScreen(
                     onBack = { navController.popBackStack() },
-                    onRequestOtp = { phone ->
+                    onRequestOtp = { phone, verificationId ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set("verificationId", verificationId)
                         navController.navigate(Screen.OtpVerification.createRoute(phone))
                     }
                 )
@@ -245,8 +336,11 @@ fun AppNavGraph(navController: NavHostController) {
                 exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right) }
             ) { backStackEntry ->
                 val phone = Uri.decode(backStackEntry.arguments?.getString(Screen.OtpVerification.ARG).orEmpty())
+                val verificationId = navController.previousBackStackEntry?.savedStateHandle?.get<String>("verificationId") ?: ""
+
                 OtpVerificationScreen(
                     phoneNumber = phone,
+                    verificationId = verificationId,
                     onBack = { navController.popBackStack() },
                     onVerify = {
                         navController.navigate("main") {
@@ -265,7 +359,7 @@ fun AppNavGraph(navController: NavHostController) {
 
                 RegisterScreen(
                     onBack = { navController.popBackStack() },
-                    onRegister = { fullName, email, phone, password ->
+                    onRegister = { fullName, email, phone, password, onError ->
                         val now = Instant.now().toString()
                         val id = UUID.randomUUID().toString()
                         scope.launch {
@@ -285,36 +379,36 @@ fun AppNavGraph(navController: NavHostController) {
                                 )
 
                                 if (res.isSuccessful) {
-                                    Toast.makeText(ctx, "Đăng ký thành công", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(ctx, "✅ Đăng ký thành công", Toast.LENGTH_LONG).show()
                                     navController.popBackStack(Screen.Login.route, false)
                                 } else {
                                     val code = res.code()
                                     val serverMsg = res.errorBody()?.string()?.let(::extractServerMessage)
                                     val msg = serverMsg ?: when (code) {
-                                        400 -> "Thông tin không hợp lệ. Kiểm tra họ tên, email, số điện thoại, mật khẩu."
-                                        401 -> "Bạn chưa được xác thực."
-                                        403 -> "Bạn không có quyền thực hiện thao tác này."
-                                        404 -> "Không tìm thấy endpoint đăng ký."
-                                        409 -> "Email hoặc số điện thoại đã tồn tại."
-                                        422 -> "Dữ liệu không hợp lệ."
-                                        429 -> "Quá nhiều yêu cầu. Thử lại sau."
-                                        in 500..599 -> "Máy chủ lỗi ($code). Thử lại sau."
-                                        else -> "Đăng ký thất bại ($code)."
+                                        400 -> "❌ Thông tin không hợp lệ. Kiểm tra họ tên, email, số điện thoại, mật khẩu"
+                                        401 -> "❌ Bạn chưa được xác thực"
+                                        403 -> "❌ Bạn không có quyền thực hiện thao tác này"
+                                        404 -> "❌ Không tìm thấy endpoint đăng ký"
+                                        409 -> "❌ Email hoặc số điện thoại đã tồn tại"
+                                        422 -> "❌ Dữ liệu không hợp lệ"
+                                        429 -> "❌ Quá nhiều yêu cầu. Thử lại sau"
+                                        in 500..599 -> "❌ Máy chủ lỗi ($code). Thử lại sau"
+                                        else -> "❌ Đăng ký thất bại ($code)"
                                     }
-                                    Toast.makeText(ctx, msg, Toast.LENGTH_LONG).show()
+                                    onError(msg)
                                 }
                             } catch (e: kotlinx.coroutines.CancellationException) {
                                 throw e
                             } catch (_: java.net.UnknownHostException) {
-                                Toast.makeText(ctx, "Không có internet hoặc tên miền máy chủ không hợp lệ", Toast.LENGTH_LONG).show()
+                                onError("❌ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
                             } catch (_: java.net.SocketTimeoutException) {
-                                Toast.makeText(ctx, "Hết thời gian chờ. Kiểm tra kết nối mạng", Toast.LENGTH_LONG).show()
+                                onError("❌ Hết thời gian chờ. Vui lòng thử lại")
                             } catch (_: java.net.ConnectException) {
-                                Toast.makeText(ctx, "Không thể kết nối máy chủ", Toast.LENGTH_LONG).show()
+                                onError("❌ Không thể kết nối đến máy chủ")
                             } catch (_: java.io.IOException) {
-                                Toast.makeText(ctx, "Lỗi mạng. Vui lòng thử lại", Toast.LENGTH_LONG).show()
-                            } catch (e: Exception) {
-                                Toast.makeText(ctx, "Lỗi không xác định: ${e.localizedMessage ?: e.javaClass.simpleName}", Toast.LENGTH_LONG).show()
+                                onError("❌ Lỗi kết nối. Vui lòng thử lại")
+                            } catch (_: Exception) {
+                                onError("❌ Đăng ký thất bại. Vui lòng thử lại")
                             }
                         }
                     }
@@ -324,16 +418,20 @@ fun AppNavGraph(navController: NavHostController) {
 
         navigation(startDestination = Screen.Home.route, route = "main") {
 
-            composable(Screen.Home.route) {
+            composable(
+                route = Screen.Home.route,
+                enterTransition = { null },
+                exitTransition = { null }
+            ) {
                 HomeScreen(
                     onOpenBudgetAll = { navController.navigate(Screen.BudgetAll.route) },
                     onAddIncome = { navController.navigate(Screen.IncomeCreate.route) },
                     onAddExpense = { navController.navigate(Screen.ExpenseCreate.route) },
                     onOpenNotifications = { navController.navigate(Screen.Notifications.route) },
                     onOpenAllTransactions = { navController.navigate(Screen.TransactionsAll.route) },
-                    onReport = { navController.navigate(Screen.Report.route) },
-                    onSaving = { navController.navigate(Screen.Saving.route) },
-                    onSetting = { navController.navigate(Screen.Setting.route) },
+                    onReport = { navController.switchTo(Screen.Report.route) },
+                    onSaving = { navController.switchTo(Screen.Saving.route) },
+                    onSetting = { navController.switchTo(Screen.Setting.route) },
                     onCamera = { navController.navigate(Screen.Scan.route) }
                 )
             }
@@ -447,11 +545,15 @@ fun AppNavGraph(navController: NavHostController) {
                 )
             }
 
-            composable(Screen.Report.route) {
+            composable(
+                route = Screen.Report.route,
+                enterTransition = { null },
+                exitTransition = { null }
+            ) {
                 ReportScreen(
-                    onHome = { navController.navigate(Screen.Home.route) },
-                    onSaving = { navController.navigate(Screen.Saving.route) },
-                    onSetting = { navController.navigate(Screen.Setting.route) },
+                    onHome = { navController.switchTo(Screen.Home.route) },
+                    onSaving = { navController.switchTo(Screen.Saving.route) },
+                    onSetting = { navController.switchTo(Screen.Setting.route) },
                     onCamera = { navController.navigate(Screen.Scan.route) }
                 )
             }
@@ -471,12 +573,16 @@ fun AppNavGraph(navController: NavHostController) {
                 )
             }
 
-            composable(Screen.Saving.route) { backStackEntry ->
+            composable(
+                route = Screen.Saving.route,
+                enterTransition = { null },
+                exitTransition = { null }
+            ) { backStackEntry ->
                 SavingsScreen(
-                    onHome = { navController.navigate(Screen.Home.route) { launchSingleTop = true } },
-                    onReport = { navController.navigate(Screen.Report.route) { launchSingleTop = true } },
-                    onSettings = { navController.navigate(Screen.Setting.route) { launchSingleTop = true } },
-                    onCamera = { navController.navigate(Screen.Scan.route) { launchSingleTop = true } },
+                    onHome = { navController.switchTo(Screen.Home.route) },
+                    onReport = { navController.switchTo(Screen.Report.route) },
+                    onSettings = { navController.switchTo(Screen.Setting.route) },
+                    onCamera = { navController.navigate(Screen.Scan.route) },
                     onSaving = {  },
                     onAddGoal = { navController.navigate(Screen.SavingAdd.route) },
                     onGoalClick = { goalId ->
@@ -515,23 +621,35 @@ fun AppNavGraph(navController: NavHostController) {
                     },
                 )
             }
-            composable(Screen.Setting.route) {
+            composable(
+                route = Screen.Setting.route,
+                enterTransition = { null },
+                exitTransition = { null }
+            ) {
+                val ctx = LocalContext.current
+                val scope = rememberCoroutineScope()
+                val authRepo = remember { com.example.test.data.AuthRepository(ctx) }
+
                 SettingScreen(
                     dark = dark,
                     onToggleDark = settingsVm::setDarkMode,
-                    onHome = { navController.navigate(Screen.Home.route) },
-                    onReport = { navController.navigate(Screen.Report.route) },
-                    onSaving = { navController.navigate(Screen.Saving.route) },
+                    soundEnabled = soundEnabled,
+                    onToggleSound = settingsVm::setSoundEnabled,
+                    onHome = { navController.switchTo(Screen.Home.route) },
+                    onReport = { navController.switchTo(Screen.Report.route) },
+                    onSaving = { navController.switchTo(Screen.Saving.route) },
                     onPersonalInfo = { navController.navigate(Screen.PersonalInfo.route) },
-                    onProfilePicture = { navController.navigate(Screen.ProfilePicture.route) },
-                    onLanguages = { },
-                    onCurrency = { navController.navigate(Screen.CurrentUnit.route) },
+                    onChangePassword = { navController.navigate(Screen.ChangePassword.route) },
                     onLogout = {
-                        AuthStore.clear()
-                        navController.navigate("auth") {
-                            popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
-                            launchSingleTop = true
-                            restoreState = false
+                        scope.launch {
+                            AuthStore.clear()
+                            authRepo.clearUserInfo()
+
+                            navController.navigate("auth") {
+                                popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
+                                launchSingleTop = true
+                                restoreState = false
+                            }
                         }
                     },
                     onSetting = { },
@@ -541,7 +659,54 @@ fun AppNavGraph(navController: NavHostController) {
 
             composable(Screen.PersonalInfo.route) {
                 PersonalInfoScreen(
-                    onBack = { navController.switchTo(Screen.Setting.route) },
+                    onBack = { navController.popBackStack() },
+                )
+            }
+
+            composable(Screen.ChangePassword.route) {
+                val ctx = LocalContext.current
+                val scope = rememberCoroutineScope()
+                val usersApi = remember { Api.usersService }
+
+                ChangePasswordScreen(
+                    onBack = { navController.popBackStack() },
+                    onChangePassword = { oldPassword, newPassword, onError ->
+                        scope.launch {
+                            val userId = AuthStore.userId
+                            if (userId == null) {
+                                onError("❌ Không tìm thấy thông tin người dùng")
+                                return@launch
+                            }
+                            try {
+                                val request = com.example.test.ui.models.ChangePasswordRequest(
+                                    userId = userId,
+                                    oldPassword = oldPassword,
+                                    newPassword = newPassword,
+                                    confirmPassword = newPassword
+                                )
+                                val response = usersApi.changePassword(request)
+                                if (response.isSuccessful && response.body()?.success == true) {
+                                    Toast.makeText(ctx, "✅ Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show()
+                                    navController.popBackStack()
+                                } else {
+                                    val msg = response.body()?.message ?: "Đổi mật khẩu thất bại"
+                                    onError("❌ $msg")
+                                }
+                            } catch (e: kotlinx.coroutines.CancellationException) {
+                                throw e
+                            } catch (_: java.net.UnknownHostException) {
+                                onError("❌ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
+                            } catch (_: java.net.SocketTimeoutException) {
+                                onError("❌ Hết thời gian chờ. Vui lòng thử lại")
+                            } catch (_: java.net.ConnectException) {
+                                onError("❌ Không thể kết nối đến máy chủ")
+                            } catch (_: java.io.IOException) {
+                                onError("❌ Lỗi kết nối. Vui lòng thử lại")
+                            } catch (_: Exception) {
+                                onError("❌ Đổi mật khẩu thất bại. Vui lòng thử lại")
+                            }
+                        }
+                    }
                 )
             }
 

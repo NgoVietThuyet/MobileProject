@@ -65,6 +65,7 @@ fun EditIncomeScreen(
     var selected by remember(tx.id, initialSelectedCategory) { mutableStateOf(initialSelectedCategory) }
 
     var showDatePicker by remember { mutableStateOf(false) }
+    var showDeleteConfirm by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
     )
@@ -149,7 +150,7 @@ fun EditIncomeScreen(
                 }
 
                 OutlinedButton(
-                    onClick = { viewModel.deleteTransaction(tx.id) },
+                    onClick = { showDeleteConfirm = true },
                     enabled = uiState.deleteStatus != SaveStatus.LOADING,
                     modifier = Modifier
                         .weight(1f)
@@ -282,6 +283,26 @@ fun EditIncomeScreen(
                         TextButton(onClick = { showDatePicker = false }) { Text("Huỷ") }
                     }
                 ) { DatePicker(state = datePickerState) }
+            }
+
+            if (showDeleteConfirm) {
+                AlertDialog(
+                    onDismissRequest = { showDeleteConfirm = false },
+                    title = { Text("Xác nhận xóa") },
+                    text = { Text("Bạn có chắc chắn muốn xóa giao dịch này không? Hành động này không thể hoàn tác.") },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                showDeleteConfirm = false
+                                viewModel.deleteTransaction(tx.id)
+                            },
+                            colors = ButtonDefaults.textButtonColors(contentColor = scheme.error)
+                        ) { Text("Xóa") }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showDeleteConfirm = false }) { Text("Huỷ") }
+                    }
+                )
             }
 
             Spacer(Modifier.height(24.dp))

@@ -44,6 +44,7 @@ import com.example.test.ui.components.AppHeader
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
 import com.example.test.ui.theme.AppGradient
+import com.example.test.utils.SoundManager
 import com.example.test.vm.ProfileViewModel
 import java.util.*
 
@@ -55,22 +56,19 @@ private val BrandGreen = Color(0xFF16A34A)
 fun SettingScreen(
     dark: Boolean,
     onToggleDark: (Boolean) -> Unit,
+    soundEnabled: Boolean,
+    onToggleSound: (Boolean) -> Unit,
     onHome: () -> Unit = {},
     onReport: () -> Unit = {},
     onSaving: () -> Unit = {},
     onPersonalInfo: () -> Unit = {},
-    onProfilePicture: () -> Unit = {},
-    onLanguages: () -> Unit = {},
-    onCurrency: () -> Unit = {},
+    onChangePassword: () -> Unit = {},
     onLogout: () -> Unit = {},
     onSetting: () -> Unit = {},
     onCamera: () -> Unit = {},
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-    var notif by rememberSaveable { mutableStateOf(false) }
-    var sounds by rememberSaveable { mutableStateOf(true) }
-    var isVi by rememberSaveable { mutableStateOf(true) }
-
+    val context = androidx.compose.ui.platform.LocalContext.current
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -185,10 +183,10 @@ fun SettingScreen(
                     )
                     Divider(color = DividerDefaults.color)
                     NavRow(
-                        icon = painterResource(R.drawable.ic_camera),
-                        title = "Ảnh đại diện",
-                        sub = "Đổi ảnh đại diện",
-                        onMoreClick = onProfilePicture
+                        icon = painterResource(R.drawable.ic_lock),
+                        title = "Đổi mật khẩu",
+                        sub = "Thay đổi mật khẩu đăng nhập",
+                        onMoreClick = onChangePassword
                     )
                 }
                 Spacer(Modifier.height(24.dp))
@@ -203,44 +201,26 @@ fun SettingScreen(
                 Spacer(Modifier.height(8.dp))
                 SectionCard {
                     ToggleRow(
-                        icon = painterResource(R.drawable.ic_bell),
-                        title = "Thông báo",
-                        sub = "Nhận thông báo giao dịch",
-                        checked = notif,
-                        onChecked = { notif = it }
-                    )
-                    Divider(color = DividerDefaults.color)
-                    ToggleRow(
                         icon = painterResource(R.drawable.ic_moon),
                         title = "Chế độ tối",
                         sub = "Tăng bảo mật và thoải mái mắt",
                         checked = dark,
-                        onChecked = onToggleDark
+                        onChecked = {
+                            SoundManager.playClick(context)
+                            onToggleDark(it)
+                        }
                     )
                     Divider(color = DividerDefaults.color)
                     ToggleRow(
                         icon = painterResource(R.drawable.ic_volume),
                         title = "Âm thanh",
                         sub = "Âm thanh ứng dụng",
-                        checked = sounds,
-                        onChecked = { sounds = it }
-                    )
-                    Divider(color = DividerDefaults.color)
-                    NavRow(
-                        icon = painterResource(R.drawable.ic_language),
-                        title = "Ngôn ngữ",
-                        sub = if (isVi) "Hiện tại: Tiếng Việt" else "Current: English",
-                        onMoreClick = {
-                            isVi = !isVi
-                            onLanguages()
+                        checked = soundEnabled,
+                        onChecked = {
+                            // Play sound before toggling so user can hear it
+                            SoundManager.playClick(context)
+                            onToggleSound(it)
                         }
-                    )
-                    Divider(color = DividerDefaults.color)
-                    NavRow(
-                        icon = rememberVectorPainter(Icons.Outlined.Language),
-                        title = "Thay đổi đơn vị tiền tệ",
-                        sub = "Chọn đơn vị tiền tệ mà bạn muốn",
-                        onMoreClick = onCurrency
                     )
                 }
                 Spacer(Modifier.height(24.dp))
@@ -276,7 +256,10 @@ fun SettingScreen(
 
             item {
                 OutlinedButton(
-                    onClick = onLogout,
+                    onClick = {
+                        SoundManager.playClick(context)
+                        onLogout()
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
@@ -337,10 +320,14 @@ private fun NavRow(
     sub: String,
     onMoreClick: () -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(role = Role.Button, onClick = onMoreClick)
+            .clickable(role = Role.Button, onClick = {
+                SoundManager.playClick(context)
+                onMoreClick()
+            })
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

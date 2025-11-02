@@ -36,6 +36,12 @@ object LocalCategoryDataSource {
 
     fun find(id: String): CategoryDto? =
         allCategories.firstOrNull { it.categoryId.equals(id, ignoreCase = true) }
+
+    fun findByName(name: String): CategoryDto? =
+        allCategories.firstOrNull { it.name.equals(name, ignoreCase = true) }
+
+    fun getDefaultCategory(): CategoryDto =
+        allCategories.first { it.categoryId == "1" } // "Khác"
 }
 
 object SavingGoalCategories {

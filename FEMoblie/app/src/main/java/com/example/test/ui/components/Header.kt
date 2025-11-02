@@ -11,8 +11,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.test.utils.SoundManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,6 +32,7 @@ fun AppHeader(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     backContentDescription: String = "Quay lại",
 ) {
+    val context = LocalContext.current
     Column(modifier) {
         Box {
             Box(
@@ -42,7 +45,10 @@ fun AppHeader(
                 title = { title?.let { Text(it, fontWeight = FontWeight.SemiBold) } },
                 navigationIcon = {
                     if (showBack) {
-                        IconButton(onClick = onBack) {
+                        IconButton(onClick = {
+                            SoundManager.playClick(context)
+                            onBack()
+                        }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                                 contentDescription = backContentDescription

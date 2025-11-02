@@ -8,7 +8,7 @@ import retrofit2.http.Streaming
 
 interface ReportApi {
     @Streaming
-    @GET("api/Reports/export-template")
+    @GET("api/Reports/export-excel")
     suspend fun exportReport(
         @Query("userId") userId: String,
         @Query("StartDate") startDate: String,

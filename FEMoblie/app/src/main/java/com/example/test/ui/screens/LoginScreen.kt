@@ -23,8 +23,7 @@ import com.example.test.ui.theme.AppGradient
 fun LoginScreen(
     onNavigateToEmail: () -> Unit = {},
     onNavigateToPhone: () -> Unit = {},
-    onNavigateToRegister: () -> Unit = {},
-    onFb: () -> Unit = {}
+    onNavigateToRegister: () -> Unit = {}
 ) {
     val scheme = MaterialTheme.colorScheme
 
@@ -104,34 +103,6 @@ fun LoginScreen(
             }
         }
 
-        Spacer(Modifier.height(40.dp))
-
-        // Social login
-        Surface(
-            shape = RoundedCornerShape(20.dp),
-            border = BorderStroke(1.dp, scheme.outlineVariant),
-            color = scheme.surface,
-            tonalElevation = 2.dp,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier.padding(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Text("Hoặc đăng nhập với", fontSize = 14.sp, color = scheme.onSurfaceVariant)
-
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    SocialButton(R.drawable.ic_facebook, "Facebook", onClick = onFb)
-                    SocialButton(R.drawable.ic_google, "Google")
-                    SocialButton(R.drawable.ic_x, "X")
-                }
-            }
-        }
-
         Spacer(Modifier.height(32.dp))
 
         // Footer
@@ -146,28 +117,5 @@ fun LoginScreen(
                 modifier = Modifier.clickable { onNavigateToRegister() }
             )
         }
-    }
-}
-
-@Composable
-fun SocialButton(iconRes: Int, desc: String, onClick: () -> Unit = {}) {
-    val scheme = MaterialTheme.colorScheme
-    OutlinedIconButton(
-        onClick = onClick,
-        modifier = Modifier.size(50.dp),
-        shape = CircleShape,
-        colors = IconButtonDefaults.outlinedIconButtonColors(
-            containerColor = scheme.surfaceVariant
-        ),
-        border = BorderStroke(1.dp, scheme.outlineVariant)
-    ) {
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = desc,
-            tint = Color.Unspecified,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        )
     }
 }

@@ -22,6 +22,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions += "environment"
+    productFlavors {
+        create("emulator") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:5012/\"")
+            versionNameSuffix = "-emulator"
+        }
+        create("device") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"http://192.168.1.2:5012/\"")
+            versionNameSuffix = "-device"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,7 +52,10 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions { jvmTarget = "11" }
-    buildFeatures { compose = true }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -107,12 +124,10 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:21.2.0")
-
-    // Facebook Login
-    implementation("com.facebook.android:facebook-login:17.0.0")
 
     implementation("com.squareup.retrofit2:converter-scalars:2.11.0")
 

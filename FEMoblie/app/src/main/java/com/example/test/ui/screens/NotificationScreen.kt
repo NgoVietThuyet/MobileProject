@@ -41,6 +41,7 @@ fun NotificationScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val all = uiState.notifications
     var tab by rememberSaveable { mutableStateOf(NotifTab.ALL) }
+    var notificationToDelete by remember { mutableStateOf<String?>(null) }
 
     val filtered = remember(all, tab) { if (tab == NotifTab.UNREAD) all.filter { it.unread } else all }
     val totalCount = all.size
@@ -102,12 +103,32 @@ fun NotificationScreen(
                             NotificationCard(
                                 data = item,
                                 onClick = { viewModel.markAsRead(item.id) },
-                                onDelete = { viewModel.deleteNotification(item.id) }
+                                onDelete = { notificationToDelete = item.id }
                             )
                             Spacer(Modifier.height(12.dp))
                         }
                     }
                 }
+            }
+
+            if (notificationToDelete != null) {
+                AlertDialog(
+                    onDismissRequest = { notificationToDelete = null },
+                    title = { Text("Xác nhận xóa") },
+                    text = { Text("Bạn có chắc chắn muốn xóa thông báo này không? Hành động này không thể hoàn tác.") },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                notificationToDelete?.let { viewModel.deleteNotification(it) }
+                                notificationToDelete = null
+                            },
+                            colors = ButtonDefaults.textButtonColors(contentColor = scheme.error)
+                        ) { Text("Xóa") }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { notificationToDelete = null }) { Text("Huỷ") }
+                    }
+                )
             }
         }
     }

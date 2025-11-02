@@ -24,7 +24,7 @@ interface BudgetApi {
         @Body req: UpdateBudgetAmountReq
     ): Response<BudgetDto>
 
-    @DELETE("api/Budgets/DeleteById")
+    @DELETE("api/Budgets/Delete")
     suspend fun deleteBudgetById(
         @Query("id") budgetId: String
     ): Response<Unit>

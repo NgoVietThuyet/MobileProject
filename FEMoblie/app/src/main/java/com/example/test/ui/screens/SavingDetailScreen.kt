@@ -113,6 +113,7 @@ fun SavingDetailScreen(
     val totalTarget = remember(goal?.targetAmount) { parseMoneyStringToLong(goal?.targetAmount) }
     var currentSavedDisplay by rememberSaveable(initialSaved) { mutableStateOf(initialSaved) }
     var input by rememberSaveable { mutableStateOf("") }
+    var showDeleteConfirm by remember { mutableStateOf(false) }
 
     LaunchedEffect(initialSaved) {
         currentSavedDisplay = initialSaved
@@ -348,7 +349,7 @@ fun SavingDetailScreen(
                     }
 
                     OutlinedButton(
-                        onClick = { detailViewModel.deleteGoal(goal.savingGoalId) },
+                        onClick = { showDeleteConfirm = true },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
@@ -365,6 +366,26 @@ fun SavingDetailScreen(
                             Spacer(Modifier.width(8.dp))
                             Text("Xóa mục tiêu")
                         }
+                    }
+
+                    if (showDeleteConfirm) {
+                        AlertDialog(
+                            onDismissRequest = { showDeleteConfirm = false },
+                            title = { Text("Xác nhận xóa") },
+                            text = { Text("Bạn có chắc chắn muốn xóa mục tiêu '${goal.title ?: ""}' không? Hành động này không thể hoàn tác.") },
+                            confirmButton = {
+                                TextButton(
+                                    onClick = {
+                                        showDeleteConfirm = false
+                                        detailViewModel.deleteGoal(goal.savingGoalId)
+                                    },
+                                    colors = ButtonDefaults.textButtonColors(contentColor = scheme.error)
+                                ) { Text("Xóa") }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = { showDeleteConfirm = false }) { Text("Huỷ") }
+                            }
+                        )
                     }
 
                 } else {

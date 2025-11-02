@@ -230,6 +230,7 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                             scope.launch {
                                 try {
                                     val req = UpdateBudgetAmountReq(
+                                        userId = AuthStore.userId,
                                         budgetId = id,
                                         updateAmount = vnd.toString(),
                                         isAddAmount = false

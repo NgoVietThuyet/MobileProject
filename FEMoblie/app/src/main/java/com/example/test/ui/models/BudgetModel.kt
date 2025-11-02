@@ -19,6 +19,7 @@ data class BudgetDto(
 
 
 data class UpdateBudgetAmountReq(
+    @SerializedName("userId") val userId: String?,
     @SerializedName("budgetId") val budgetId: String,
     @SerializedName("updateAmount") val updateAmount: String,
     @SerializedName("isAddAmount") val isAddAmount: Boolean

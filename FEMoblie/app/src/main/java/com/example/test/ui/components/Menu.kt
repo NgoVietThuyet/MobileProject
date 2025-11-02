@@ -10,10 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.R
+import com.example.test.utils.SoundManager
 
 enum class BottomTab { HOME, REPORT, SAVING, SETTINGS }
 
@@ -26,6 +28,7 @@ fun MainBottomBar(
     onSaving: () -> Unit,
     onSetting: () -> Unit
 ) {
+    val context = LocalContext.current
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp),
@@ -53,7 +56,10 @@ fun MainBottomBar(
                     .size(50.dp)
                     .clip(RoundedCornerShape(25.dp))
                     .background(MaterialTheme.colorScheme.primaryContainer)
-                    .clickable { onCamera() },
+                    .clickable {
+                        SoundManager.playClick(context)
+                        onCamera()
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -86,11 +92,15 @@ private fun BottomItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     val selectedBg = MaterialTheme.colorScheme.secondaryContainer
     val selectedContent = MaterialTheme.colorScheme.onSecondaryContainer
     val unselectedContent = MaterialTheme.colorScheme.onSurfaceVariant
 
-    Box(modifier = modifier.clickable(onClick = onClick), contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.clickable(onClick = {
+        SoundManager.playClick(context)
+        onClick()
+    }), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
