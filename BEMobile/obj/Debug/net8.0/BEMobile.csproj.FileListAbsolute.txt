@@ -942,4 +942,9 @@ D:\MobileApp2\MobileProject\BEMobile\obj\Debug\net8.0\ref\BEMobile.dll
 D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\FirebaseAdmin.dll
 D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Google.Api.Gax.dll
 D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
-D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\femobile-firebase-adminsdk.json
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\HarfBuzzSharp.dll
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\Spire.XLS.dll
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\osx\native\libHarfBuzzSharp.dylib
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-arm64\native\libHarfBuzzSharp.dll
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x64\native\libHarfBuzzSharp.dll
+D:\MobileApp2\MobileProject\BEMobile\bin\Debug\net8.0\runtimes\win-x86\native\libHarfBuzzSharp.dll

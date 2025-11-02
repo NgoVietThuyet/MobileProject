@@ -3,6 +3,8 @@ using BEMobile.Models.DTOs;
 using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
 using BEMobile.Models.RequestResponse.SavingGoalRR;
 using BEMobile.Models.RequestResponse.SavingGoalRR.Delete;
+using BEMobile.Models.RequestResponse.SavingGoalRR.UpdateAmount;
+using Microsoft.EntityFrameworkCore;
 namespace BEMobile.Services
 {
     public interface ISavingGoalService
@@ -73,10 +75,19 @@ namespace BEMobile.Services
             _context.SavingGoals.Add(savingGoal);
             await _context.SaveChangesAsync();
 
+            string formattedAmount = long.TryParse(savingGoal.TargetAmount, out var amount)
+        ? amount.ToString("N0")
+        : savingGoal.TargetAmount;
+
+            string deadlineText = string.IsNullOrEmpty(savingGoal.Deadline)
+                ? "không có hạn chót"
+                : $"hạn đến {savingGoal.Deadline}";
+
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
             {
                 UserId = savingGoal.UserId,
-                Content = $"Bạn đã tạo mục tiêu tiết kiệm '{savingGoal.Title}' với số tiền {savingGoal.TargetAmount}."
+                Content = $" Bạn đã tạo mục tiêu tiết kiệm **'{savingGoal.Title}'** " +
+                          $"với số tiền mục tiêu **{formattedAmount} VNĐ**, {deadlineText}."
             });
             return savingGoal;
         }
@@ -120,10 +131,16 @@ namespace BEMobile.Services
                 _context.SavingGoals.Update(savingGoal);
                 await _context.SaveChangesAsync();
 
+                string actionText = request.isAddAmount ? "thêm" : "rút";
+                string formattedUpdate = request.UpdateAmount;
+                string formattedTotal = long.Parse(savingGoal.CurrentAmount).ToString("N0");
+
                 await _notificationService.PushNotificationAsync(new PushNotificationRequest
                 {
                     UserId = savingGoal.UserId,
-                    Content = $"Cập nhật số tiền trong mục tiêu '{savingGoal.Title}' thành {savingGoal.CurrentAmount}."
+                    Content = $"💰 Bạn vừa **{actionText} {formattedUpdate} VNĐ** " +
+                              $"cho mục tiêu **'{savingGoal.Title}'**. " +
+                              $"Số tiền hiện tại: **{formattedTotal} VNĐ**."
                 });
 
 
@@ -138,19 +155,30 @@ namespace BEMobile.Services
         {
             try
             {
-                // 1️⃣ Tìm Budget theo ID
+     
                 var saving = await _context.SavingGoals
                     .FirstOrDefaultAsync(b => b.GoalId == deleteSavingRequest.id);
 
-                // 3️⃣ Xóa entity
+                string formattedAmount = long.TryParse(saving.CurrentAmount, out var amount)
+            ? amount.ToString("N0")
+            : saving.CurrentAmount;
+
+            
                 _context.SavingGoals.Remove(saving);
 
-                // 4️⃣ Lưu thay đổi
+          
                 await _context.SaveChangesAsync();
+
+                await _notificationService.PushNotificationAsync(new PushNotificationRequest
+                {
+                    UserId = saving.UserId,
+                    Content = $"🗑️ Bạn đã xóa mục tiêu tiết kiệm **'{saving.Title}'** " +
+                      $"với số tiền hiện có là **{formattedAmount} VNĐ**."
+                });
             }
             catch (Exception ex)
             {
-                // 5️⃣ Ném lỗi có thông tin chi tiết
+               
                 throw new Exception($"Lỗi khi xóa Budget có Id", ex);
             }
         }

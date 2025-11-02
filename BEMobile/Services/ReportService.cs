@@ -108,10 +108,13 @@ namespace BEMobile.Services
             worksheet.PrinterSettings.FitToWidth = 1;   // 1 trang theo chiều rộng
             worksheet.PrinterSettings.FitToHeight = 0;  // chiều cao tự do
 
+            string startDate = reportRequest.StartDate.ToString("dd/MM/yyyy");
+            string endDate = reportRequest.EndDate.ToString("dd/MM/yyyy");
+
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
             {
                 UserId = reportRequest.UserId,
-                Content = "Bạn đã xuất thành công một báo cáo"
+                Content = $"Bạn đã xuất thành công báo cáo với những giao dịch từ ngày **{startDate}** đến **{endDate}**."
             });
 
             return package.GetAsByteArray();

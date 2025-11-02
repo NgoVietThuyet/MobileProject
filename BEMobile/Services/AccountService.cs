@@ -113,7 +113,7 @@ namespace BEMobile.Services
             if (!long.TryParse(account.Balance, out currentBalance))
                 throw new Exception("Số dư hiện tại của tài khoản không hợp lệ.");
 
-            // 3️Cập nhật số dư
+            // 3️ Cập nhật số dư
             if (isIncrease)
             {
                 // Cộng thêm tiền
@@ -127,7 +127,7 @@ namespace BEMobile.Services
                 currentBalance -= amount;
             }
 
-            // 4️Lưu lại
+            // 4️ Lưu lại
             account.Balance = currentBalance.ToString();
             account.UpdatedDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
 

@@ -86,6 +86,14 @@ namespace BEMobile.Controllers
                     Message = "Cập nhật số tiền thành công"
                 });
             }
+            catch (ArgumentException ex)
+            {
+                return Ok(new UpdateAmountResponse
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, new UpdateAmountResponse
@@ -94,13 +102,7 @@ namespace BEMobile.Controllers
                     Message = ex.Message
                 });
             }
-            catch (ArgumentException ex){ 
-                return Ok(new UpdateAmountResponse
-                {
-                    Success = false,
-                    Message= ex.Message
-                });
-            }
+            
         }
 
         [HttpDelete("Delete")]

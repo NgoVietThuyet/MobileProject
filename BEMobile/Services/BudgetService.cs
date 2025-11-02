@@ -100,10 +100,15 @@ namespace BEMobile.Services
             _context.Budgets.Add(Budget);
             await _context.SaveChangesAsync();
 
+            var category = await _context.Categories
+        .FirstOrDefaultAsync(c => c.Id == request.CategoryId);
+            var categoryName = category?.Name ?? "Không xác định";
+
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
             {
                 UserId = request.UserId,
-                Content = "Tạo ngân sách thành công"
+                Content = $"🎯 Bạn đã tạo một ngân sách mới có danh mục là **{categoryName}**, " +
+            $"với số tiền ban đầu là **{request.Initial_Amount:N0} VNĐ**."
             });
 
             return new CreateBudgetResponse
@@ -219,10 +224,16 @@ namespace BEMobile.Services
                 _context.Budgets.Update(budget);
                 await _context.SaveChangesAsync();
 
+                var category = await _context.Categories
+            .FirstOrDefaultAsync(c => c.Id == budget.CategoryId);
+
+                var categoryName = category?.Name ?? "Không xác định";
+
                 await _notificationService.PushNotificationAsync(new PushNotificationRequest
                 {
                     UserId = request.UserId,
-                    Content = $"Đã cập nhật số tiền ban đầu mới của một ngân sách."
+                    Content = $"Bạn đã thay đổi số tiền ban đầu mới là {newAmount:N0} VNĐ " +
+                      $"cho ngân sách thuộc danh mục **{categoryName}**."
                 });
 
                 return new UpdateAmountResponse
@@ -264,13 +275,23 @@ namespace BEMobile.Services
                     return response;
                 }
 
+                var category = await _context.Categories
+            .FirstOrDefaultAsync(c => c.Id == budget.CategoryId);
+
+                var categoryName = category?.Name ?? "Không xác định";
+
+                var initialAmount = long.TryParse(budget.Initial_Amount, out var parsedAmount)
+                    ? parsedAmount.ToString("N0")
+                    : budget.Initial_Amount;
+
                 _context.Budgets.Remove(budget);
                 await _context.SaveChangesAsync();
 
                 await _notificationService.PushNotificationAsync(new PushNotificationRequest
                 {
                     UserId = request.UserId,
-                    Content = "Bạn đã xóa ngân sách"
+                    Content = $"🗑️ Bạn đã xóa ngân sách thuộc danh mục **{categoryName}**, " +
+                              $"với số tiền ban đầu là **{initialAmount} VNĐ**."
                 });
 
                 response.Success = true;
@@ -308,7 +329,7 @@ namespace BEMobile.Services
                 System.Globalization.DateTimeStyles.None,
                 out DateTime latestCreated))
             {
-                Console.WriteLine("❌ Không parse được CreatedDate của Budget mới nhất.");
+                Console.WriteLine(" Không parse được CreatedDate của Budget mới nhất.");
                 return;
             }
 

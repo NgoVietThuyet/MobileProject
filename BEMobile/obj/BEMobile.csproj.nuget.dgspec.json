@@ -106,6 +106,10 @@
               "target": "Package",
               "version": "[4.11.0.20250507, )"
             },
+            "Spire.XLS": {
+              "target": "Package",
+              "version": "[15.10.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"

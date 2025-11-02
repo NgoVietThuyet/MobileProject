@@ -98,7 +98,7 @@ namespace BEMobile.Services
                 };
             }
 
-            if (dto.Type != "Income" && dto.Type != "Expense")
+            if (dto.Type != "INCOME" && dto.Type != "EXPENSE")
             {
                 return new CreateTransactionResponse
                 {
@@ -134,9 +134,9 @@ namespace BEMobile.Services
             if (!string.IsNullOrEmpty(account.Balance))
                 decimal.TryParse(account.Balance, out currentBalance);
 
-            if (dto.Type == "Income")
+            if (dto.Type == "INCOME")
                 currentBalance += amountValue;
-            else if (dto.Type == "Expense")
+            else if (dto.Type == "EXPENSE")
                 currentBalance -= amountValue;
 
             if (currentBalance < 0)
@@ -166,13 +166,24 @@ namespace BEMobile.Services
             await _context.SaveChangesAsync();
 
             // creating notification
+            var category = await _context.Categories
+    .FirstOrDefaultAsync(c => c.Id == dto.CategoryId);
+            var categoryName = category?.Name ?? "Không xác định";
+
+            // Format số tiền
+            string formattedAmount = decimal.Parse(dto.Amount).ToString("N0");
+
+            // Tạo nội dung thông báo dựa theo loại giao dịch
+            string action = dto.Type == "INCOME" ? "thêm khoản thu" : "thêm khoản chi";
+
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
             {
                 UserId = dto.UserId,
-                Content = "Bạn đã thêm một giao dịch mới!"
+                Content = $"Bạn vừa {action} **{formattedAmount} VNĐ** " +
+                          $"trong danh mục **{categoryName}**."
             });
 
-            if(dto.Type == "Expense")
+            if (dto.Type == "Expense")
             {
                 var budgetId = await FindMatchingBudgetIdAsync(dto.UserId, dto.CategoryId, transaction.CreatedDate);
 
@@ -183,7 +194,7 @@ namespace BEMobile.Services
                         BudgetId = budgetId,
                         UserId = dto.UserId,
                         UpdateAmount = dto.Amount,
-                        isAddAmount = dto.Type == "Expense" ? true : false
+                        isAddAmount = dto.Type == "EXPENSE" ? true : false
                     });
                 }
             }    
@@ -214,7 +225,7 @@ namespace BEMobile.Services
                 };
             }
 
-            if (dto.Type != "Income" && dto.Type != "Expense")
+            if (dto.Type != "INCOME" && dto.Type != "EXPENSE")
             {
                 return new UpdateTransactionResponse
                 {
@@ -240,14 +251,14 @@ namespace BEMobile.Services
 
             var isIncreased = newAmount > oldAmount ? true : false;
 
-            if (existing.Type == "Income")
+            if (existing.Type == "INCOME")
                 currentBalance -= oldAmount;
-            else if (existing.Type == "Expense")
+            else if (existing.Type == "EXPENSE")
                 currentBalance += oldAmount;
 
-            if (dto.Type == "Income")
+            if (dto.Type == "INCOME")
                 currentBalance += newAmount;
-            else if (dto.Type == "Expense")
+            else if (dto.Type == "EXPENSE")
                 currentBalance -= newAmount;
 
             if (currentBalance < 0)
@@ -272,13 +283,26 @@ namespace BEMobile.Services
 
             await _context.SaveChangesAsync();
 
+            var category = await _context.Categories
+    .FirstOrDefaultAsync(c => c.Id == dto.CategoryId);
+            var categoryName = category?.Name ?? "Không xác định";
+
+            // Format số tiền mới
+            string formattedAmount = newAmount.ToString("N0");
+
+            //  Xác định hành động và emoji
+            string actionText = dto.Type == "INCOME" ? "cập nhật khoản thu" : "cập nhật khoản chi";
+
+            //  Gửi notification chi tiết
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
             {
                 UserId = dto.UserId,
-                Content = "Bạn đã sửa một giao dịch và số dư đã được cập nhật!"
+                Content = $" Bạn vừa {actionText} trong danh mục **{categoryName}**, " +
+                          $"số tiền mới là **{formattedAmount} VNĐ**. " +
+                          $"Số dư tài khoản của bạn đã được cập nhật."
             });
 
-            if (dto.Type == "Expense")
+            if (dto.Type == "EXPENSE")
             {
                 var budgetId = await FindMatchingBudgetIdAsync(dto.UserId, dto.CategoryId, existing.CreatedDate);
 
@@ -332,9 +356,9 @@ namespace BEMobile.Services
             decimal.TryParse(account.Balance, out decimal currentBalance);
             decimal.TryParse(transaction.Amount, out decimal amount);
 
-            if (transaction.Type == "Income")
+            if (transaction.Type == "INCOME")
                 currentBalance -= amount;
-            else if (transaction.Type == "Expense")
+            else if (transaction.Type == "EXPENSE")
                 currentBalance += amount;
 
             if (currentBalance < 0)
@@ -346,7 +370,7 @@ namespace BEMobile.Services
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
 
-            if (transaction.Type == "Expense")
+            if (transaction.Type == "EXPENSE")
             {
                 var budgetId = await FindMatchingBudgetIdAsync(transaction.UserId, transaction.CategoryId, transaction.CreatedDate);
 
@@ -360,13 +384,22 @@ namespace BEMobile.Services
                         isAddAmount = false
                     });
                 }
-            } 
-                
+            }
+
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(c => c.Id == transaction.CategoryId);
+            var categoryName = category?.Name ?? "Không xác định";
+
+            string formattedAmount = amount.ToString("N0");
+
+            string typeText = transaction.Type == "INCOME" ? "khoản thu" : "khoản chi";
 
             await _notificationService.PushNotificationAsync(new PushNotificationRequest
             {
                 UserId = transaction.UserId,
-                Content = "Bạn đã xóa một giao dịch! Số dư và ngân sách của bạn đã được cập nhật."
+                Content = $"Bạn đã xóa **{typeText}** trị giá **{formattedAmount} VNĐ** " +
+                          $"trong danh mục **{categoryName}**. " +
+                          $"Số dư và ngân sách của bạn đã được cập nhật."
             });
 
             return new DeleteTransactionResponse
@@ -375,6 +408,7 @@ namespace BEMobile.Services
                 Message = "Xóa giao dịch thành công và đã cập nhật ngân sách"
             };
         }
+
 
 
     }
