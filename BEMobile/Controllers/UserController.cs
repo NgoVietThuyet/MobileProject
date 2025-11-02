@@ -45,7 +45,6 @@ namespace BEMobile.Controllers
 
 
         [HttpPost("Create")]
-        [HttpPost("signup")]
         public async Task<ActionResult<SignUpResponse>> CreateUser([FromBody] SignUpRequest request)
         {
             try
