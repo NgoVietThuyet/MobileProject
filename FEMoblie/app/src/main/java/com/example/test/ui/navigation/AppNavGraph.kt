@@ -374,7 +374,8 @@ fun AppNavGraph(navController: NavHostController) {
                                             password = password,
                                             createdDate = now,
                                             updatedDate = now
-                                        )
+                                        ),
+                                        confirmPassword = password
                                     )
                                 )
 

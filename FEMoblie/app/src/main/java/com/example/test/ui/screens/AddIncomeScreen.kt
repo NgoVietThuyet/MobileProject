@@ -129,7 +129,7 @@ fun AddIncomeScreen(
                                 categoryId = selectedCategory!!.categoryId,
                                 note = note.trim(),
                                 dateMillis = dateMillis,
-                                type = "Income"
+                                type = "INCOME"
                             )
                         },
                         enabled = isValid,

@@ -12,12 +12,15 @@ data class LoginResp(
     @SerializedName("refreshToken") val refreshToken: String? = null
 )
 
-data class SignUpRequest(@SerializedName("userDto") val userDto: UserDto)
+data class SignUpRequest(
+    @SerializedName("userDto") val userDto: UserDto,
+    @SerializedName("confirmPassword") val confirmPassword: String
+)
 
 data class SignUpResponse(
     @SerializedName("success") val success: Boolean,
     @SerializedName("message") val message: String,
-    @SerializedName("user") val user: UserDto? = null
+    @SerializedName("user") val user: UserDto? = null,
 )
 data class UserDto(
     @SerializedName("userId") val userId: String? = null,

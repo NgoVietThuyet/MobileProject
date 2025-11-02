@@ -127,7 +127,7 @@ fun AddExpenseScreen(
                                 categoryId = selectedCategory!!.categoryId,
                                 note = note.trim(),
                                 dateMillis = dateMillis,
-                                type = "Expense"
+                                type = "EXPENSE"
                             )
                         },
                         enabled = isValid,

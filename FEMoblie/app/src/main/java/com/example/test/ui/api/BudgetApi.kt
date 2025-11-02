@@ -26,7 +26,7 @@ interface BudgetApi {
 
     @DELETE("api/Budgets/Delete")
     suspend fun deleteBudgetById(
-        @Query("id") budgetId: String
+        @Query("budgetId") budgetId: String
     ): Response<Unit>
 
     @POST("api/Budgets/Create")
