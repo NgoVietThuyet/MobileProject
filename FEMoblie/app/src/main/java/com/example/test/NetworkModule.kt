@@ -25,7 +25,8 @@ object NetworkModule {
         .setLenient()
         .create()
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -37,11 +38,17 @@ object NetworkModule {
             if (token != null) builder.addHeader("Authorization", "Bearer $token")
             chain.proceed(builder.build())
         }
+
         return OkHttpClient.Builder()
             .addInterceptor(logging)
             .addInterceptor(authInterceptor)
+            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+            .callTimeout(90, java.util.concurrent.TimeUnit.SECONDS)
             .build()
     }
+
 
     @Provides @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {

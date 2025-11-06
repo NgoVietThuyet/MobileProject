@@ -297,21 +297,21 @@ fun AppNavGraph(navController: NavHostController) {
                                     }
                                 } else {
                                     val msg = res.errorBody()?.string()?.let(::extractServerMessage)
-                                        ?: "❌ Đăng nhập thất bại"
+                                        ?: "Đăng nhập thất bại"
                                     onError(msg)
                                 }
                             } catch (e: kotlinx.coroutines.CancellationException) {
                                 throw e
                             } catch (_: java.net.UnknownHostException) {
-                                onError("❌ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
+                                onError("Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
                             } catch (_: java.net.SocketTimeoutException) {
-                                onError("❌ Hết thời gian chờ. Vui lòng thử lại")
+                                onError("Hết thời gian chờ. Vui lòng thử lại")
                             } catch (_: java.net.ConnectException) {
-                                onError("❌ Không thể kết nối đến máy chủ")
+                                onError("Không thể kết nối đến máy chủ")
                             } catch (_: java.io.IOException) {
-                                onError("❌ Lỗi kết nối. Vui lòng thử lại")
+                                onError("Lỗi kết nối. Vui lòng thử lại")
                             } catch (_: Exception) {
-                                onError("❌ Đăng nhập thất bại. Vui lòng thử lại")
+                                onError("Đăng nhập thất bại. Vui lòng thử lại")
                             }
                         }
                     },
@@ -386,30 +386,30 @@ fun AppNavGraph(navController: NavHostController) {
                                     val code = res.code()
                                     val serverMsg = res.errorBody()?.string()?.let(::extractServerMessage)
                                     val msg = serverMsg ?: when (code) {
-                                        400 -> "❌ Thông tin không hợp lệ. Kiểm tra họ tên, email, số điện thoại, mật khẩu"
-                                        401 -> "❌ Bạn chưa được xác thực"
-                                        403 -> "❌ Bạn không có quyền thực hiện thao tác này"
-                                        404 -> "❌ Không tìm thấy endpoint đăng ký"
-                                        409 -> "❌ Email hoặc số điện thoại đã tồn tại"
-                                        422 -> "❌ Dữ liệu không hợp lệ"
-                                        429 -> "❌ Quá nhiều yêu cầu. Thử lại sau"
-                                        in 500..599 -> "❌ Máy chủ lỗi ($code). Thử lại sau"
-                                        else -> "❌ Đăng ký thất bại ($code)"
+                                        400 -> "Thông tin không hợp lệ. Kiểm tra họ tên, email, số điện thoại, mật khẩu"
+                                        401 -> "Bạn chưa được xác thực"
+                                        403 -> "Bạn không có quyền thực hiện thao tác này"
+                                        404 -> "Không tìm thấy endpoint đăng ký"
+                                        409 -> "Email hoặc số điện thoại đã tồn tại"
+                                        422 -> "Dữ liệu không hợp lệ"
+                                        429 -> "Quá nhiều yêu cầu. Thử lại sau"
+                                        in 500..599 -> "Máy chủ lỗi ($code). Thử lại sau"
+                                        else -> "Đăng ký thất bại ($code)"
                                     }
                                     onError(msg)
                                 }
                             } catch (e: kotlinx.coroutines.CancellationException) {
                                 throw e
                             } catch (_: java.net.UnknownHostException) {
-                                onError("❌ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
+                                onError("Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
                             } catch (_: java.net.SocketTimeoutException) {
-                                onError("❌ Hết thời gian chờ. Vui lòng thử lại")
+                                onError("Hết thời gian chờ. Vui lòng thử lại")
                             } catch (_: java.net.ConnectException) {
-                                onError("❌ Không thể kết nối đến máy chủ")
+                                onError("Không thể kết nối đến máy chủ")
                             } catch (_: java.io.IOException) {
-                                onError("❌ Lỗi kết nối. Vui lòng thử lại")
+                                onError("Lỗi kết nối. Vui lòng thử lại")
                             } catch (_: Exception) {
-                                onError("❌ Đăng ký thất bại. Vui lòng thử lại")
+                                onError("Đăng ký thất bại. Vui lòng thử lại")
                             }
                         }
                     }
@@ -675,7 +675,7 @@ fun AppNavGraph(navController: NavHostController) {
                         scope.launch {
                             val userId = AuthStore.userId
                             if (userId == null) {
-                                onError("❌ Không tìm thấy thông tin người dùng")
+                                onError("Không tìm thấy thông tin người dùng")
                                 return@launch
                             }
                             try {
@@ -691,20 +691,20 @@ fun AppNavGraph(navController: NavHostController) {
                                     navController.popBackStack()
                                 } else {
                                     val msg = response.body()?.message ?: "Đổi mật khẩu thất bại"
-                                    onError("❌ $msg")
+                                    onError("$msg")
                                 }
                             } catch (e: kotlinx.coroutines.CancellationException) {
                                 throw e
                             } catch (_: java.net.UnknownHostException) {
-                                onError("❌ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
+                                onError("Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng")
                             } catch (_: java.net.SocketTimeoutException) {
-                                onError("❌ Hết thời gian chờ. Vui lòng thử lại")
+                                onError("Hết thời gian chờ. Vui lòng thử lại")
                             } catch (_: java.net.ConnectException) {
-                                onError("❌ Không thể kết nối đến máy chủ")
+                                onError("Không thể kết nối đến máy chủ")
                             } catch (_: java.io.IOException) {
-                                onError("❌ Lỗi kết nối. Vui lòng thử lại")
+                                onError("Lỗi kết nối. Vui lòng thử lại")
                             } catch (_: Exception) {
-                                onError("❌ Đổi mật khẩu thất bại. Vui lòng thử lại")
+                                onError("Đổi mật khẩu thất bại. Vui lòng thử lại")
                             }
                         }
                     }

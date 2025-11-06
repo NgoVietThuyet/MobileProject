@@ -75,9 +75,10 @@ class AddTransactionViewModel @Inject constructor(
             _uiState.update { it.copy(saveStatus = SaveStatus.LOADING) }
 
             val createdDateString = Instant.ofEpochMilli(dateMillis)
-                .atZone(ZoneId.systemDefault())
+                .atZone(ZoneId.of("Asia/Ho_Chi_Minh"))
                 .toLocalDateTime()
                 .format(apiDateFormatter)
+
 
             val transactionDto = TransactionDto(
                 userId = uid,

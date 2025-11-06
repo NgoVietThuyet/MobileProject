@@ -1,6 +1,7 @@
 package com.example.test.data
 
 import com.example.test.ui.models.CategoryDto
+import com.google.android.gms.common.util.CollectionUtils.listOf
 import java.util.Locale
 
 object LocalCategoryDataSource {

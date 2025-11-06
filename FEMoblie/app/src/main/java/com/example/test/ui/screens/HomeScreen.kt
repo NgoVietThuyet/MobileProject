@@ -42,6 +42,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.test.R
+import com.example.test.data.LocalCategoryDataSource
 import com.example.test.ui.components.BottomTab
 import com.example.test.ui.components.MainBottomBar
 import com.example.test.ui.mock.TxType
@@ -50,6 +51,7 @@ import com.example.test.ui.theme.AppGradient
 import com.example.test.ui.util.MoneyUiConfig
 import com.example.test.ui.util.NumberFmt
 import com.example.test.vm.ChatViewModel
+import com.example.test.vm.CreateTransactionStatus
 import com.example.test.vm.HomeBudgetViewModel
 import com.example.test.vm.HomeViewModel
 import java.text.NumberFormat
@@ -999,25 +1001,44 @@ private fun TransactionChatCard(
     chatViewModel: ChatViewModel
 ) {
     val scheme = MaterialTheme.colorScheme
-    val snackbarHostState = remember { SnackbarHostState() }
     val createStatus by chatViewModel.createTransactionStatus.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
 
-    var isAdded by remember { mutableStateOf(false) }
+    // ===== Resolve danh mục từ ID/Name -> icon + tên hiển thị =====
+    val catDto = remember(data.category, data.categoryId) {
+        // Ưu tiên dùng categoryId; nếu backend chỉ trả "category" là ID (vd: "8") thì lấy luôn
+        val idGuess = data.categoryId?.takeIf { it.isNotBlank() } ?: data.category
+        LocalCategoryDataSource.find(idGuess)
+            ?: LocalCategoryDataSource.findByName(data.category)
+            ?: LocalCategoryDataSource.getDefaultCategory()
+    }
+    val displayName = catDto.name           // ví dụ: "Ăn uống"
+    val displayIcon = catDto.icon           // ví dụ: "🍜"
+    val resolvedCategoryId = catDto.categoryId // ví dụ: "8"
 
+    val isIncome = data.type.equals("income", ignoreCase = true) ||
+            data.type.equals("INCOME", ignoreCase = true)
+
+    // ===== State cục bộ cho từng thẻ =====
+    var isAdded by remember(data) { mutableStateOf(false) }
+    var submitted by remember(data) { mutableStateOf(false) }
+    var isLoading by remember(data) { mutableStateOf(false) }
+
+    // Chỉ nhận kết quả cho đúng thẻ đã bấm
     LaunchedEffect(createStatus) {
+        if (!submitted) return@LaunchedEffect
         when (createStatus) {
-            is com.example.test.vm.CreateTransactionStatus.Success -> {
+            is CreateTransactionStatus.Success -> {
                 isAdded = true
-                snackbarHostState.showSnackbar("Đã thêm giao dịch thành công!")
+                isLoading = false
+                submitted = false
                 chatViewModel.resetCreateTransactionStatus()
             }
-            is com.example.test.vm.CreateTransactionStatus.Error -> {
-                val error = (createStatus as com.example.test.vm.CreateTransactionStatus.Error).message
-                snackbarHostState.showSnackbar("Lỗi: $error")
+            is CreateTransactionStatus.Error -> {
+                isLoading = false
+                submitted = false
                 chatViewModel.resetCreateTransactionStatus()
             }
-            else -> {}
+            else -> Unit
         }
     }
 
@@ -1053,7 +1074,7 @@ private fun TransactionChatCard(
                 )
             }
 
-            // Transaction Row (giống TxRowLine)
+            // Nội dung giao dịch
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -1067,13 +1088,13 @@ private fun TransactionChatCard(
                     contentColor = scheme.onSurfaceVariant
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Text(data.emoji ?: "💰", fontSize = 18.sp)
+                        Text(displayIcon, fontSize = 18.sp)
                     }
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Text(
-                        data.category,
+                        displayName, // ← tên danh mục đã resolve (vd: Ăn uống)
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp,
                         color = scheme.onSurface
@@ -1086,22 +1107,26 @@ private fun TransactionChatCard(
                         )
                     }
                 }
-                val amtColor = if (data.type == "income") scheme.tertiary else scheme.error
+
+                val amtColor = if (isIncome) scheme.tertiary else scheme.error
+                val amountLong = data.amount.toLongOrNull() ?: 0L
                 Text(
-                    text = (if (data.type == "income") "+" else "-") + vn(data.amount.toLongOrNull() ?: 0L),
+                    text = (if (isIncome) "+" else "-") + vn(amountLong),
                     color = amtColor,
                     fontWeight = FontWeight.Bold
                 )
             }
 
-            // Add button
+            // Nút thêm / trạng thái đã thêm
             if (!isAdded) {
                 Button(
                     onClick = {
+                        submitted = true
+                        isLoading = true
                         chatViewModel.createTransaction(
                             amount = data.amount,
-                            categoryId = data.categoryId,
-                            categoryName = data.category,
+                            categoryId = resolvedCategoryId, // ← ID đã resolve (vd: "8")
+                            categoryName = displayName,      // ← Tên đã resolve (vd: "Ăn uống")
                             note = data.note,
                             type = data.type
                         )
@@ -1114,9 +1139,9 @@ private fun TransactionChatCard(
                         containerColor = scheme.primary,
                         contentColor = scheme.onPrimary
                     ),
-                    enabled = createStatus !is com.example.test.vm.CreateTransactionStatus.Loading
+                    enabled = !isLoading
                 ) {
-                    if (createStatus is com.example.test.vm.CreateTransactionStatus.Loading) {
+                    if (isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(18.dp),
                             color = scheme.onPrimary,
@@ -1135,7 +1160,6 @@ private fun TransactionChatCard(
                     }
                 }
             } else {
-                // Success state
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -1144,12 +1168,7 @@ private fun TransactionChatCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(
-                        "✓",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = scheme.tertiary
-                    )
+                    Text("✓", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = scheme.tertiary)
                     Spacer(Modifier.width(8.dp))
                     Text(
                         "Đã thêm vào giao dịch",
@@ -1162,6 +1181,8 @@ private fun TransactionChatCard(
         }
     }
 }
+
+
 
 @Composable
 private fun MeBubble(text: String) {

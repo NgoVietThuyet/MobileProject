@@ -116,32 +116,6 @@ fun EmailLoginScreen(
                     )
                 )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(
-                            checked = rememberMe,
-                            onCheckedChange = { rememberMe = it },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = scheme.primary,
-                                checkmarkColor = scheme.onPrimary,
-                                uncheckedColor = scheme.outline,
-                                disabledUncheckedColor = scheme.outlineVariant
-                            )
-                        )
-                        Text("Ghi nhớ", fontSize = 14.sp, color = scheme.onSurface)
-                    }
-                    Text(
-                        "Quên mật khẩu?",
-                        color = scheme.primary,
-                        fontSize = 14.sp,
-                        modifier = Modifier.clickable { }
-                    )
-                }
-
                 // Khoảng không gian cố định cho error message (tránh đẩy button)
                 Box(
                     modifier = Modifier

@@ -29,6 +29,7 @@ import com.example.test.data.LocalCategoryDataSource
 import com.example.test.ui.api.Api
 import com.example.test.ui.api.AuthStore
 import com.example.test.ui.components.AppHeader
+import com.example.test.ui.models.BudgetDeleteReq
 import com.example.test.ui.models.BudgetDto
 import com.example.test.ui.models.UpdateBudgetAmountReq
 import kotlinx.coroutines.launch
@@ -289,12 +290,14 @@ fun BudgetEditScreen(index: Int, onBack: () -> Unit) {
                     confirmButton = {
                         TextButton(
                             onClick = {
-                                val id = budgetId ?: return@TextButton
+                                val id = budgetId
                                 isSubmitting = true
                                 showDeleteConfirm = false
                                 scope.launch {
                                     try {
-                                        val res = budgetApi.deleteBudgetById(id)
+                                        val res = budgetApi.deleteBudget(
+                                            BudgetDeleteReq(id = id)
+                                        )
                                         if (res.isSuccessful) {
                                             snackbar(scope, snackbarHostState, "Đã xoá ngân sách")
                                             onBack()

@@ -128,7 +128,7 @@ fun EditIncomeScreen(
                                 note = note,
                                 date = date,
                                 originalDateTime = tx.dateTime,
-                                type = "Income"
+                                type = "INCOME"
                             )
                         }
                     },

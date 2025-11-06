@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -26,7 +27,14 @@ import com.example.test.ui.components.AuthContainer
 import com.example.test.ui.theme.AppGradient
 import com.example.test.utils.PasswordValidator
 import com.example.test.utils.SoundManager
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.ResolverStyle
+import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
     onBack: () -> Unit = {},
@@ -44,12 +52,15 @@ fun RegisterScreen(
     var birthday by rememberSaveable { mutableStateOf("") }
     var occupation by rememberSaveable { mutableStateOf("") }
 
+    // DatePicker state for birthday
+    var showBirthdayPicker by rememberSaveable { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
+
     // Step 2: Account Info
     var email by rememberSaveable { mutableStateOf("") }
     var phone by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
-    var agreePolicy by rememberSaveable { mutableStateOf(false) }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
@@ -113,397 +124,422 @@ fun RegisterScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     if (currentStep == 1) {
-                    // ===== STEP 1: Personal Info =====
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = firstName,
-                            onValueChange = { firstName = it },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp),
-                            placeholder = { Text("Tên", fontSize = 14.sp) },
-                            singleLine = true,
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = scheme.surfaceVariant,
-                                unfocusedContainerColor = scheme.surfaceVariant,
-                                focusedBorderColor = scheme.primary,
-                                unfocusedBorderColor = scheme.outlineVariant
-                            )
-                        )
-                        OutlinedTextField(
-                            value = lastName,
-                            onValueChange = { lastName = it },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp),
-                            placeholder = { Text("Họ", fontSize = 14.sp) },
-                            singleLine = true,
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = scheme.surfaceVariant,
-                                unfocusedContainerColor = scheme.surfaceVariant,
-                                focusedBorderColor = scheme.primary,
-                                unfocusedBorderColor = scheme.outlineVariant
-                            )
-                        )
-                    }
-
-                    OutlinedTextField(
-                        value = birthday,
-                        onValueChange = { birthday = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        placeholder = { Text("Sinh nhật (VD: 01/01/2000)", fontSize = 14.sp) },
-                        singleLine = true,
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_user),
-                                contentDescription = null,
-                                tint = scheme.onSurfaceVariant
-                            )
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = scheme.surfaceVariant,
-                            unfocusedContainerColor = scheme.surfaceVariant,
-                            focusedBorderColor = scheme.primary,
-                            unfocusedBorderColor = scheme.outlineVariant
-                        )
-                    )
-
-                    OutlinedTextField(
-                        value = occupation,
-                        onValueChange = { occupation = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        placeholder = { Text("Nghề nghiệp", fontSize = 14.sp) },
-                        singleLine = true,
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_user),
-                                contentDescription = null,
-                                tint = scheme.onSurfaceVariant
-                            )
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = scheme.surfaceVariant,
-                            unfocusedContainerColor = scheme.surfaceVariant,
-                            focusedBorderColor = scheme.primary,
-                            unfocusedBorderColor = scheme.outlineVariant
-                        )
-                    )
-
-                    // Error box
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(24.dp),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        if (errorMessage.isNotBlank()) {
-                            Text(
-                                text = errorMessage,
-                                color = Color.Red,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        }
-                    }
-
-                    // Button Tiếp tục
-                    Button(
-                        onClick = {
-                            SoundManager.playClick(ctx)
-                            errorMessage = ""
-                            when {
-                                firstName.isBlank() -> errorMessage = "❌ Vui lòng nhập tên"
-                                lastName.isBlank() -> errorMessage = "❌ Vui lòng nhập họ"
-                                birthday.isBlank() -> errorMessage = "❌ Vui lòng nhập sinh nhật"
-                                occupation.isBlank() -> errorMessage = "❌ Vui lòng nhập nghề nghiệp"
-                                else -> {
-                                    currentStep = 2
-                                }
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                        contentPadding = PaddingValues(0.dp),
-                        shape = RoundedCornerShape(24.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    brush = AppGradient.BluePurple,
-                                    shape = RoundedCornerShape(24.dp)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("Tiếp tục", color = scheme.onPrimary, fontSize = 16.sp)
-                        }
-                    }
-
-                } else if (currentStep == 2) {
-                    // ===== STEP 2: Email & Phone =====
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        placeholder = { Text("Email", fontSize = 14.sp) },
-                        singleLine = true,
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_email),
-                                contentDescription = null,
-                                tint = scheme.onSurfaceVariant
-                            )
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = scheme.surfaceVariant,
-                            unfocusedContainerColor = scheme.surfaceVariant,
-                            focusedBorderColor = scheme.primary,
-                            unfocusedBorderColor = scheme.outlineVariant
-                        )
-                    )
-
-                    OutlinedTextField(
-                        value = phone,
-                        onValueChange = { phone = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        placeholder = { Text("Số điện thoại", fontSize = 14.sp) },
-                        singleLine = true,
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_phone),
-                                contentDescription = null,
-                                tint = scheme.onSurfaceVariant
-                            )
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = scheme.surfaceVariant,
-                            unfocusedContainerColor = scheme.surfaceVariant,
-                            focusedBorderColor = scheme.primary,
-                            unfocusedBorderColor = scheme.outlineVariant
-                        )
-                    )
-
-                    // Error box
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(20.dp),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        if (errorMessage.isNotBlank()) {
-                            Text(
-                                text = errorMessage,
-                                color = Color.Red,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        }
-                    }
-
-                    // Button Tiếp tục
-                    Button(
-                        onClick = {
-                            SoundManager.playClick(ctx)
-                            errorMessage = ""
-                            when {
-                                email.isBlank() -> errorMessage = "❌ Vui lòng nhập email"
-                                phone.isBlank() -> errorMessage = "❌ Vui lòng nhập số điện thoại"
-                                else -> {
-                                    currentStep = 3
-                                }
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                        contentPadding = PaddingValues(0.dp),
-                        shape = RoundedCornerShape(24.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    brush = AppGradient.BluePurple,
-                                    shape = RoundedCornerShape(24.dp)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("Tiếp tục", color = scheme.onPrimary, fontSize = 16.sp)
-                        }
-                    }
-
-                } else {
-                    // ===== STEP 3: Password & Security =====
-                    OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        placeholder = { Text("Mật khẩu", fontSize = 14.sp) },
-                        singleLine = true,
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_lock),
-                                contentDescription = null,
-                                tint = scheme.onSurfaceVariant
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                Icon(
-                                    imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                    contentDescription = null
-                                )
-                            }
-                        },
-                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = scheme.surfaceVariant,
-                            unfocusedContainerColor = scheme.surfaceVariant,
-                            focusedBorderColor = scheme.primary,
-                            unfocusedBorderColor = scheme.outlineVariant
-                        )
-                    )
-
-                    if (password.isNotEmpty()) {
-                        val validationResult = PasswordValidator.validate(password)
+                        // ===== STEP 1: Personal Info =====
                         Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 4.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(
-                                text = if (validationResult.isValid) "✓" else "✗",
-                                color = if (validationResult.isValid) Color(0xFF4CAF50) else scheme.error,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = if (validationResult.isValid) "Mật khẩu hợp lệ" else validationResult.message,
-                                color = if (validationResult.isValid) Color(0xFF4CAF50) else scheme.error,
-                                fontSize = 12.sp
-                            )
-                        }
-                    }
-
-                    OutlinedTextField(
-                        value = confirmPassword,
-                        onValueChange = { confirmPassword = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        placeholder = { Text("Nhập lại mật khẩu", fontSize = 14.sp) },
-                        singleLine = true,
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_lock),
-                                contentDescription = null,
-                                tint = scheme.onSurfaceVariant
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
-                                Icon(
-                                    imageVector = if (confirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                    contentDescription = null
+                            OutlinedTextField(
+                                value = firstName,
+                                onValueChange = { firstName = it },
+                                modifier = Modifier.weight(1f),
+                                shape = RoundedCornerShape(12.dp),
+                                placeholder = { Text("Tên", fontSize = 14.sp) },
+                                singleLine = true,
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedContainerColor = scheme.surfaceVariant,
+                                    unfocusedContainerColor = scheme.surfaceVariant,
+                                    focusedBorderColor = scheme.primary,
+                                    unfocusedBorderColor = scheme.outlineVariant
                                 )
-                            }
-                        },
-                        visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = scheme.surfaceVariant,
-                            unfocusedContainerColor = scheme.surfaceVariant,
-                            focusedBorderColor = scheme.primary,
-                            unfocusedBorderColor = scheme.outlineVariant
-                        )
-                    )
-
-                    Spacer(Modifier.height(4.dp))
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(
-                            checked = agreePolicy,
-                            onCheckedChange = { agreePolicy = it },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = scheme.primary,
-                                checkmarkColor = scheme.onPrimary
                             )
-                        )
-                        Text("Đồng ý với điều khoản", fontSize = 14.sp)
-                    }
-
-                    // Error box
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(20.dp),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        if (errorMessage.isNotBlank()) {
-                            Text(
-                                text = errorMessage,
-                                color = Color.Red,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium
+                            OutlinedTextField(
+                                value = lastName,
+                                onValueChange = { lastName = it },
+                                modifier = Modifier.weight(1f),
+                                shape = RoundedCornerShape(12.dp),
+                                placeholder = { Text("Họ", fontSize = 14.sp) },
+                                singleLine = true,
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedContainerColor = scheme.surfaceVariant,
+                                    unfocusedContainerColor = scheme.surfaceVariant,
+                                    focusedBorderColor = scheme.primary,
+                                    unfocusedBorderColor = scheme.outlineVariant
+                                )
                             )
                         }
-                    }
 
-                    // Button Đăng ký
-                    Button(
-                        onClick = {
-                            SoundManager.playClick(ctx)
-                            errorMessage = ""
-                            when {
-                                email.isBlank() -> errorMessage = "❌ Vui lòng nhập email"
-                                phone.isBlank() -> errorMessage = "❌ Vui lòng nhập số điện thoại"
-                                password.isBlank() -> errorMessage = "❌ Vui lòng nhập mật khẩu"
-                                password.isBlank() -> errorMessage = "❌ Vui lòng nhập mật khẩu"
-                                !PasswordValidator.validate(password).isValid -> {
-                                    errorMessage = "❌ ${PasswordValidator.validate(password).message}"
+                        OutlinedTextField(
+                            value = birthday,
+                            onValueChange = { birthday = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            placeholder = { Text("Sinh nhật (VD: 01/01/2000)", fontSize = 14.sp) },
+                            singleLine = true,
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_user),
+                                    contentDescription = null,
+                                    tint = scheme.onSurfaceVariant
+                                )
+                            },
+                            trailingIcon = {
+                                IconButton(onClick = {
+                                    // nếu đã có birthday, preselect
+                                    val millis = runCatching { parseBirthdayToMillis(birthday) }.getOrNull()
+                                    if (millis != null) datePickerState.selectedDateMillis = millis
+                                    showBirthdayPicker = true
+                                }) {
+                                    Icon(imageVector = Icons.Filled.DateRange, contentDescription = null)
                                 }
-                                confirmPassword.isBlank() -> errorMessage = "❌ Vui lòng nhập lại mật khẩu"
-                                password != confirmPassword -> errorMessage = "❌ Mật khẩu không khớp"
-                                !agreePolicy -> errorMessage = "❌ Vui lòng đồng ý với điều khoản sử dụng"
-                                else -> {
-                                    val fullName = "$firstName $lastName"
-                                    onRegister(fullName.trim(), email.trim(), phone.trim(), password) { error ->
-                                        errorMessage = error
-                                    }
+                            },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = scheme.surfaceVariant,
+                                unfocusedContainerColor = scheme.surfaceVariant,
+                                focusedBorderColor = scheme.primary,
+                                unfocusedBorderColor = scheme.outlineVariant
+                            )
+                        )
+
+                        if (showBirthdayPicker) {
+                            DatePickerDialog(
+                                onDismissRequest = { showBirthdayPicker = false },
+                                confirmButton = {
+                                    TextButton(onClick = {
+                                        val millis = datePickerState.selectedDateMillis
+                                        if (millis != null) {
+                                            birthday = formatMillisToBirthday(millis)
+                                        }
+                                        showBirthdayPicker = false
+                                    }) { Text("Chọn") }
+                                },
+                                dismissButton = {
+                                    TextButton(onClick = { showBirthdayPicker = false }) { Text("Hủy") }
                                 }
+                            ) {
+                                DatePicker(state = datePickerState, showModeToggle = false)
                             }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                        contentPadding = PaddingValues(0.dp),
-                        shape = RoundedCornerShape(24.dp)
-                    ) {
+                        }
+
+                        OutlinedTextField(
+                            value = occupation,
+                            onValueChange = { occupation = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            placeholder = { Text("Nghề nghiệp", fontSize = 14.sp) },
+                            singleLine = true,
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_user),
+                                    contentDescription = null,
+                                    tint = scheme.onSurfaceVariant
+                                )
+                            },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = scheme.surfaceVariant,
+                                unfocusedContainerColor = scheme.surfaceVariant,
+                                focusedBorderColor = scheme.primary,
+                                unfocusedBorderColor = scheme.outlineVariant
+                            )
+                        )
+
+                        // Error box
                         Box(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    brush = AppGradient.BluePurple,
-                                    shape = RoundedCornerShape(24.dp)
-                                ),
-                            contentAlignment = Alignment.Center
+                                .fillMaxWidth()
+                                .height(24.dp),
+                            contentAlignment = Alignment.CenterStart
                         ) {
-                            Text("Đăng ký", color = scheme.onPrimary, fontSize = 16.sp)
+                            if (errorMessage.isNotBlank()) {
+                                Text(
+                                    text = errorMessage,
+                                    color = Color.Red,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+
+                        // Button Tiếp tục
+                        Button(
+                            onClick = {
+                                SoundManager.playClick(ctx)
+                                errorMessage = ""
+                                when {
+                                    firstName.isBlank() -> errorMessage = "Vui lòng nhập tên"
+                                    lastName.isBlank() -> errorMessage = "Vui lòng nhập họ"
+                                    birthday.isBlank() -> errorMessage = "Vui lòng nhập sinh nhật"
+                                    !isValidBirthday(birthday) -> errorMessage = "Sinh nhật phải đúng định dạng dd/MM/yyyy, hợp lệ và không vượt quá hôm nay"
+                                    occupation.isBlank() -> errorMessage = "Vui lòng nhập nghề nghiệp"
+                                    else -> {
+                                        currentStep = 2
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                            contentPadding = PaddingValues(0.dp),
+                            shape = RoundedCornerShape(24.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        brush = AppGradient.BluePurple,
+                                        shape = RoundedCornerShape(24.dp)
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Tiếp tục", color = scheme.onPrimary, fontSize = 16.sp)
+                            }
+                        }
+
+                    } else if (currentStep == 2) {
+                        // ===== STEP 2: Email & Phone =====
+                        OutlinedTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            placeholder = { Text("Email", fontSize = 14.sp) },
+                            singleLine = true,
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_email),
+                                    contentDescription = null,
+                                    tint = scheme.onSurfaceVariant
+                                )
+                            },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = scheme.surfaceVariant,
+                                unfocusedContainerColor = scheme.surfaceVariant,
+                                focusedBorderColor = scheme.primary,
+                                unfocusedBorderColor = scheme.outlineVariant
+                            )
+                        )
+
+                        OutlinedTextField(
+                            value = phone,
+                            onValueChange = { input ->
+                                val digits = input.filter { it.isDigit() }.take(10)
+                                phone = digits
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            placeholder = { Text("Số điện thoại (10 số, bắt đầu bằng 0)", fontSize = 14.sp) },
+                            singleLine = true,
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_phone),
+                                    contentDescription = null,
+                                    tint = scheme.onSurfaceVariant
+                                )
+                            },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = scheme.surfaceVariant,
+                                unfocusedContainerColor = scheme.surfaceVariant,
+                                focusedBorderColor = scheme.primary,
+                                unfocusedBorderColor = scheme.outlineVariant
+                            )
+                        )
+
+                        // Error box
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(20.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            if (errorMessage.isNotBlank()) {
+                                Text(
+                                    text = errorMessage,
+                                    color = Color.Red,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+
+                        // Button Tiếp tục
+                        Button(
+                            onClick = {
+                                SoundManager.playClick(ctx)
+                                errorMessage = ""
+                                when {
+                                    email.isBlank() -> errorMessage = "Vui lòng nhập email"
+                                    !isValidEmail(email.trim()) -> errorMessage = "Email không hợp lệ. Ví dụ: ten@domain.com"
+                                    phone.isBlank() -> errorMessage = "Vui lòng nhập số điện thoại"
+                                    !isValidPhone(phone) -> errorMessage = "" +
+                                            "Số điện thoại phải đủ 10 số và bắt đầu bằng 0"
+                                    else -> {
+                                        currentStep = 3
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                            contentPadding = PaddingValues(0.dp),
+                            shape = RoundedCornerShape(24.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        brush = AppGradient.BluePurple,
+                                        shape = RoundedCornerShape(24.dp)
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Tiếp tục", color = scheme.onPrimary, fontSize = 16.sp)
+                            }
+                        }
+
+                    } else {
+                        // ===== STEP 3: Password & Security =====
+                        OutlinedTextField(
+                            value = password,
+                            onValueChange = { password = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            placeholder = { Text("Mật khẩu", fontSize = 14.sp) },
+                            singleLine = true,
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_lock),
+                                    contentDescription = null,
+                                    tint = scheme.onSurfaceVariant
+                                )
+                            },
+                            trailingIcon = {
+                                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                    Icon(
+                                        imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                        contentDescription = null
+                                    )
+                                }
+                            },
+                            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = scheme.surfaceVariant,
+                                unfocusedContainerColor = scheme.surfaceVariant,
+                                focusedBorderColor = scheme.primary,
+                                unfocusedBorderColor = scheme.outlineVariant
+                            )
+                        )
+
+                        if (password.isNotEmpty()) {
+                            val validationResult = PasswordValidator.validate(password)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 4.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    text = if (validationResult.isValid) "✓" else "✗",
+                                    color = if (validationResult.isValid) Color(0xFF4CAF50) else scheme.error,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = if (validationResult.isValid) "Mật khẩu hợp lệ" else validationResult.message,
+                                    color = if (validationResult.isValid) Color(0xFF4CAF50) else scheme.error,
+                                    fontSize = 12.sp
+                                )
+                            }
+                        }
+
+                        OutlinedTextField(
+                            value = confirmPassword,
+                            onValueChange = { confirmPassword = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            placeholder = { Text("Nhập lại mật khẩu", fontSize = 14.sp) },
+                            singleLine = true,
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_lock),
+                                    contentDescription = null,
+                                    tint = scheme.onSurfaceVariant
+                                )
+                            },
+                            trailingIcon = {
+                                IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                                    Icon(
+                                        imageVector = if (confirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                        contentDescription = null
+                                    )
+                                }
+                            },
+                            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = scheme.surfaceVariant,
+                                unfocusedContainerColor = scheme.surfaceVariant,
+                                focusedBorderColor = scheme.primary,
+                                unfocusedBorderColor = scheme.outlineVariant
+                            )
+                        )
+
+                        Spacer(Modifier.height(4.dp))
+
+                        // Error box
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(20.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            if (errorMessage.isNotBlank()) {
+                                Text(
+                                    text = errorMessage,
+                                    color = Color.Red,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+
+                        // Button Đăng ký
+                        Button(
+                            onClick = {
+                                SoundManager.playClick(ctx)
+                                errorMessage = ""
+                                when {
+                                    email.isBlank() -> errorMessage = "Vui lòng nhập email"
+                                    !isValidEmail(email.trim()) -> errorMessage = "Email không hợp lệ. Ví dụ: ten@domain.com"
+                                    phone.isBlank() -> errorMessage = "Vui lòng nhập số điện thoại"
+                                    !isValidPhone(phone) -> errorMessage = "Số điện thoại phải đủ 10 số và bắt đầu bằng 0"
+                                    password.isBlank() -> errorMessage = "Vui lòng nhập mật khẩu"
+                                    !PasswordValidator.validate(password).isValid -> {
+                                        errorMessage = "${PasswordValidator.validate(password).message}"
+                                    }
+                                    confirmPassword.isBlank() -> errorMessage = "Vui lòng nhập lại mật khẩu"
+                                    password != confirmPassword -> errorMessage = "Mật khẩu không khớp"
+                                    else -> {
+                                        val fullName = "$firstName $lastName"
+                                        onRegister(fullName.trim(), email.trim(), phone.trim(), password) { error ->
+                                            errorMessage = error
+                                        }
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                            contentPadding = PaddingValues(0.dp),
+                            shape = RoundedCornerShape(24.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        brush = AppGradient.BluePurple,
+                                        shape = RoundedCornerShape(24.dp)
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Đăng ký", color = scheme.onPrimary, fontSize = 16.sp)
+                            }
                         }
                     }
                 }
             }
-        }
         }
     }
 }
@@ -537,3 +573,33 @@ private fun StepIndicator(
     }
 }
 
+// ===================== Helpers & Validators =====================
+private val BIRTHDAY_FORMATTER: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("dd/MM/uuuu", Locale.getDefault())
+        .withResolverStyle(ResolverStyle.STRICT)
+
+private fun isValidBirthday(value: String): Boolean {
+    return try {
+        val date = LocalDate.parse(value, BIRTHDAY_FORMATTER)
+        !date.isAfter(LocalDate.now())
+    } catch (e: Exception) {
+        false
+    }
+}
+
+private fun formatMillisToBirthday(millis: Long): String {
+    val ld = Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDate()
+    return ld.format(BIRTHDAY_FORMATTER)
+}
+
+private fun parseBirthdayToMillis(value: String): Long {
+    val date = LocalDate.parse(value, BIRTHDAY_FORMATTER)
+    val zdt = date.atStartOfDay(ZoneId.systemDefault())
+    return zdt.toInstant().toEpochMilli()
+}
+
+private fun isValidEmail(input: String): Boolean =
+    android.util.Patterns.EMAIL_ADDRESS.matcher(input).matches()
+
+private fun isValidPhone(input: String): Boolean =
+    Regex("^0\\d{9}$").matches(input)

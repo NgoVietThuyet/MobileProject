@@ -128,7 +128,7 @@ fun EditExpenseScreen(
                                 note = note,
                                 date = date,
                                 originalDateTime = tx.dateTime,
-                                type = "Expense"
+                                type = "EXPENSE"
                             )
                         }
                     },

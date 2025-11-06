@@ -65,3 +65,7 @@ data class CategoryCreateResponse(
     @SerializedName("message") val message: String? = null,
     @SerializedName("category") val category: CategoryCreateDto? = null
 )
+data class BudgetDeleteReq(
+    @SerializedName("budgetId")
+    val id: String?
+)

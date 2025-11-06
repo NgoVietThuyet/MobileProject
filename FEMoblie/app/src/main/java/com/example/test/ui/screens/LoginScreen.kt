@@ -77,29 +77,7 @@ fun LoginScreen(
                 }
 
                 // Phone button
-                OutlinedButton(
-                    onClick = { onNavigateToPhone() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(24.dp),
-                    border = BorderStroke(1.dp, scheme.outlineVariant),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = scheme.onSurface)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_phone),
-                            contentDescription = "Phone",
-                            tint = scheme.onSurface,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        Text("Đăng nhập bằng SĐT", color = scheme.onSurface, fontSize = 16.sp)
-                    }
-                }
+
             }
         }
 

@@ -3,7 +3,8 @@ package com.example.test.ui.models
 import com.google.gson.annotations.SerializedName
 
 data class ChatbotRequest(
-    @SerializedName("text") val text: String
+    @SerializedName("text") val text: String,
+    @SerializedName("userId") val userid: String?
 )
 
 data class ChatbotResponse(
