@@ -130,7 +130,7 @@ namespace BEMobile
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Reports> Reports { get; set; }
-
+        public virtual DbSet<User> User { get; set; }
 
     }
     

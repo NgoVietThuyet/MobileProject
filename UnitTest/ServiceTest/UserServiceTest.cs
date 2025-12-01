@@ -1,139 +1,280 @@
 using Xunit;
-using Moq; 
+using Moq;
 using BEMobile.Services;
 using BEMobile.Data.Entities;
 using BEMobile.Models.DTOs;
+using BEMobile.Models.RequestResponse.UserRR.SignUp;
 using BEMobile.Models.RequestResponse.UserRR.UpdateUser;
+using BEMobile.Models.RequestResponse.UserRR.Login;
+using BEMobile.Models.RequestResponse.UserRR.ChangePassword;
 using BEMobile.Models.RequestResponse.AccountRR.CreateAccount;
-using MockQueryable.Moq; // Thư viện giúp mock Async query
+using BEMobile.Models.RequestResponse.NotificationRR.PushNotification;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Threading;
+using System;
 
-namespace BEMobile.Tests.Services
+namespace BEMobile.Tests.ServiceTest
 {
-    public class UserServicePureTests
+    public class UserServiceTest : IDisposable
     {
-        private readonly Mock<AppDbContext> _mockContext;
+        private readonly AppDbContext _context;
+        
         private readonly Mock<IAccountService> _mockAccountService;
+        private readonly Mock<INotificationService> _mockNotificationService;
+        private readonly Mock<IJwtService> _mockJwtService;
+        private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
+
         private readonly UserService _userService;
-        private readonly Mock<DbSet<User>> _mockUserSet;
 
-        public UserServicePureTests()
+        public UserServiceTest()
         {
-            // 1. Mock AccountService
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockAccountService = new Mock<IAccountService>();
+            _mockNotificationService = new Mock<INotificationService>();
+            _mockJwtService = new Mock<IJwtService>();
 
-            // 2. Mock DbContext
-            _mockContext = new Mock<AppDbContext>();
+            _context = new AppDbContext(options, _mockHttpContextAccessor.Object);
 
-            // 3. Khởi tạo Service với các Mock
-            _userService = new UserService(_mockContext.Object, _mockAccountService.Object);
+            _userService = new UserService(
+                _context, 
+                _mockAccountService.Object,
+                _mockNotificationService.Object,
+                _mockJwtService.Object
+            );
         }
 
-        // --- TEST LOGIC: VALIDATION (Không liên quan DB) ---
+        public void Dispose()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+        }
+
+        // =========================================================
+        // 1. TEST CreateUserAsync
+        // =========================================================
 
         [Fact]
-        public async Task UpdateUserAsync_ShouldFail_WhenRequestIsNull()
+        public async Task CreateUser_ShouldFail_WhenConfirmPasswordDoesNotMatch()
         {
-            // Act
-            var result = await _userService.UpdateUserAsync(null);
+            var request = new SignUpRequest
+            {
+                UserDto = new UserDto { Password = "PassWord@123" },
+                ConfirmPassword = "WrongPassword"
+            };
 
-            // Assert
+            var result = await _userService.CreateUserAsync(request);
+
             Assert.False(result.Success);
-            Assert.Equal("Request body is null.", result.Message);
+            Assert.Contains("không chính xác", result.Message);
         }
 
         [Fact]
-        public async Task UpdateUserAsync_ShouldFail_WhenUserIdIsMissing()
+        public async Task CreateUser_ShouldSuccess_WhenValid()
         {
-            // Arrange
-            var request = new UpdateUserRequest { UserId = "" }; // Empty ID
+            // ===> [TEST NÀY SẼ FAIL] <===
+            var request = new SignUpRequest
+            {
+                UserDto = new UserDto 
+                { 
+                    Name = "Ngọ Viết Thuyết", 
+                    Email = "thuyetnv@email.com",
+                    Password = "Admin@123",
+                    PhoneNumber = "0900000000"
+                },
+                ConfirmPassword = "Admin@123"
+            };
 
-            // Act
-            var result = await _userService.UpdateUserAsync(request);
+            var result = await _userService.CreateUserAsync(request);
 
-            // Assert
-            Assert.False(result.Success);
-            Assert.Contains("UserId is missing", result.Message);
-        }
-
-        // --- TEST LOGIC: DATA INTERACTION (Mock DbSet) ---
-
-        [Fact]
-        public async Task UpdateUserAsync_ShouldFail_WhenUserNotFound()
-        {
-            // Arrange
-            // Tạo một List rỗng (giả lập DB không có user nào)
-            var usersList = new List<User>(); 
+            // LOGIC FAIL: Tạo thành công (True), nhưng ta lại Assert là False
+            Assert.False(result.Success, "CỐ TÌNH FAIL: Mong đợi False nhưng thực tế là True (Tạo thành công)"); 
             
-            // Biến List thành Mock DbSet có hỗ trợ Async (nhờ MockQueryable.Moq)
-            var mockSet = usersList.AsQueryable().BuildMockDbSet();
+            // Các đoạn dưới này sẽ không chạy tới được vì đã Fail ở trên
+            var userInDb = await _context.User.FirstOrDefaultAsync(u => u.Email == "thuyetnv@email.com");
+            Assert.NotNull(userInDb);
+        }
 
-            // Setup: Khi gọi _context.Users thì trả về cái mockSet rỗng kia
-            _mockContext.Setup(c => c.Users).Returns(mockSet.Object);
+        // =========================================================
+        // 2. TEST UpdateUserAsync
+        // =========================================================
 
-            var request = new UpdateUserRequest { UserId = "123" };
+        [Fact]
+        public async Task UpdateUser_ShouldFail_WhenUserNotFound()
+        {
+            var request = new UpdateUserRequest { UserId = "not-exist", Name = "New Name" };
 
-            // Act
             var result = await _userService.UpdateUserAsync(request);
 
-            // Assert
             Assert.False(result.Success);
             Assert.Contains("not found", result.Message);
         }
 
         [Fact]
-        public async Task UpdateUserAsync_ShouldSuccess_WhenUserExists()
+        public async Task UpdateUser_ShouldSuccess_WhenUserExists()
         {
-            // Arrange
-            // Tạo data giả trong bộ nhớ
-            var existingUser = new User { UserId = "123", Name = "Old Name" };
-            var usersList = new List<User> { existingUser };
-
-            // Mock DbSet từ List trên
-            var mockSet = usersList.AsQueryable().BuildMockDbSet();
-
-            // Setup Context trả về MockSet
-            _mockContext.Setup(c => c.Users).Returns(mockSet.Object);
-
-            var request = new UpdateUserRequest 
+            // ===> [TEST NÀY SẼ FAIL] <===
+            var existingUser = new User 
             { 
-                UserId = "123", 
-                Name = "New Name",
-                Email = "new@test.com"
+                UserId = "u1", 
+                Name = "Thuyet", 
+                Email = "thuyet@email.com" 
             };
+            _context.User.Add(existingUser);
+            await _context.SaveChangesAsync();
 
-            // Act
+            // Code update thành tên "Văn"
+            var request = new UpdateUserRequest { UserId = "u1", Name = "Văn" };
             var result = await _userService.UpdateUserAsync(request);
 
-            // Assert
             Assert.True(result.Success);
-            Assert.Equal("New Name", result.User.Name);
+            
+            var updatedUser = await _context.User.FindAsync("u1");
 
-            // Quan trọng: Verify xem hàm SaveChangesAsync có được gọi đúng 1 lần không?
-            _mockContext.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            // LOGIC FAIL: Trong DB là "Văn", nhưng ta bắt nó phải bằng "Thịnh"
+            Assert.Equal("Thịnh", updatedUser.Name); 
+        }
+
+        // =========================================================
+        // 3. TEST IsLoginAsync
+        // =========================================================
+
+        [Fact]
+        public async Task IsLogin_ShouldFail_WhenPasswordWrong()
+        {
+            var user = new User 
+            { 
+                UserId = "u2", 
+                Name = "Thịnh", 
+                Email = "thinh@email.com", 
+                Password = "RealPassword" 
+            };
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+
+            var request = new LoginRequest { Email = "thinh@email.com", Password = "WrongPassword" };
+            var result = await _userService.IsLoginAsync(request);
+
+            Assert.False(result.Success);
+            Assert.Contains("không chính xác", result.Message);
         }
 
         [Fact]
-        public async Task CreateUserAsync_ShouldCallAddAndSaveChanges()
+        public async Task IsLogin_ShouldSuccess_WhenCredentialsCorrect()
         {
-            // Arrange
-            var mockSet = new List<User>().AsQueryable().BuildMockDbSet();
-            _mockContext.Setup(c => c.Users).Returns(mockSet.Object);
+            var user = new User 
+            { 
+                UserId = "u3", 
+                Name = "Ngọ Viết Thuyết", 
+                Email = "thuyetnv@email.com", 
+                Password = "RealPassword" 
+            };
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
 
-            var userDto = new UserDto { Name = "Test User", Email = "test@email.com" };
+            _mockJwtService.Setup(j => j.GenerateAccessToken(It.IsAny<User>())).Returns("fake-token");
+            _mockJwtService.Setup(j => j.GenerateRefreshToken()).Returns("fake-refresh");
 
-            // Act
-            await _userService.CreateUserAsync(userDto);
+            var request = new LoginRequest { Email = "thuyetnv@email.com", Password = "RealPassword" };
+            var result = await _userService.IsLoginAsync(request);
 
-            // Assert
-            // Kiểm tra xem hàm Add() của DbSet có được gọi với đúng object User không
-            _mockContext.Verify(c => c.Users.Add(It.Is<User>(u => u.Name == "Test User")), Times.Once);
+            Assert.True(result.Success);
+            Assert.Equal("fake-token", result.AccessToken);
             
-            // Kiểm tra SaveChangesAsync được gọi
-            _mockContext.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            var userInDb = await _context.User.FindAsync("u3");
+            Assert.Equal("fake-refresh", userInDb.RefreshToken);
+        }
+
+        // =========================================================
+        // 4. TEST ChangePasswordAsync
+        // =========================================================
+
+        [Fact]
+        public async Task ChangePassword_ShouldFail_WhenOldPasswordWrong()
+        {
+            var user = new User 
+            { 
+                UserId = "u4", 
+                Name = "Văn", 
+                Password = "OldPassword" 
+            };
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+
+            var request = new ChangePasswordRequest 
+            { 
+                UserId = "u4", 
+                OldPassword = "WrongPassword",
+                NewPassword = "New@123", 
+                ConfirmPassword = "New@123" 
+            };
+
+            var result = await _userService.ChangePasswordAsync(request);
+
+            Assert.False(result.Success);
+            Assert.Contains("Mật khẩu cũ không chính xác", result.Message);
+        }
+
+        [Fact]
+        public async Task ChangePassword_ShouldFail_WhenNewPasswordWeak()
+        {
+            var user = new User 
+            { 
+                UserId = "u5", 
+                Name = "Thịnh", 
+                Password = "OldPassword" 
+            };
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+
+            var request = new ChangePasswordRequest 
+            { 
+                UserId = "u5", 
+                OldPassword = "OldPassword",
+                NewPassword = "weak",
+                ConfirmPassword = "weak"
+            };
+
+            var result = await _userService.ChangePasswordAsync(request);
+
+            Assert.False(result.Success);
+            Assert.Contains("ít nhất 8 ký tự", result.Message);
+        }
+
+        [Fact]
+        public async Task ChangePassword_ShouldSuccess_WhenValid()
+        {
+            var user = new User 
+            { 
+                UserId = "u6", 
+                Name = "Ngọ Viết Thuyết", 
+                Password = "OldPassword" 
+            };
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+
+            var request = new ChangePasswordRequest 
+            { 
+                UserId = "u6", 
+                OldPassword = "OldPassword",
+                NewPassword = "NewPass@123",
+                ConfirmPassword = "NewPass@123"
+            };
+
+            var result = await _userService.ChangePasswordAsync(request);
+
+            Assert.True(result.Success);
+            
+            var updatedUser = await _context.User.FindAsync("u6");
+            Assert.Equal("NewPass@123", updatedUser.Password);
+            
+            _mockNotificationService.Verify(x => x.PushNotificationAsync(It.IsAny<PushNotificationRequest>()), Times.Once);
         }
     }
 }
